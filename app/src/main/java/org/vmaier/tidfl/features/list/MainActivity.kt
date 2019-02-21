@@ -1,7 +1,8 @@
-package org.vmaier.tidfl
+package org.vmaier.tidfl.features.list
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import org.vmaier.tidfl.R
 
 
 class MainActivity : AppCompatActivity() {
