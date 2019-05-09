@@ -9,12 +9,33 @@
 
     <fragment
             android:id="@+id/fragment_main"
-            android:name="org.vmaier.tidfl.features.list.MainFragment"
+            android:name="org.vmaier.tidfl.features.list.TaskListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout="@layout/fragment_task_list"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintVertical_bias="1.0"/>
+
+    <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            app:layout_anchor="@id/fragment_main"
+            app:layout_anchorGravity="bottom|right|end"
+            android:clickable="true"
+            app:srcCompat="@drawable/baseline_add_24"
+            android:id="@+id/fab"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:focusable="true"
+            app:fabSize="normal"/>
 
 </android.support.constraint.ConstraintLayout>

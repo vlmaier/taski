@@ -1,5 +1,11 @@
 package org.vmaier.tidfl.data
 
+
+/**
+ * Created by Vladas Maier
+ * on 09.05.2019
+ * at 21:00
+ */
 sealed class Difficulty(val factor: Double) {
     object TRIVIAL : Difficulty(0.5)
     object REGULAR : Difficulty(1.0)

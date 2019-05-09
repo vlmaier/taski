@@ -2,6 +2,12 @@ package org.vmaier.tidfl.data
 
 import java.util.*
 
+
+/**
+ * Created by Vladas Maier
+ * on 09.05.2019
+ * at 21:00
+ */
 data class Task(
     val goal: String,
     val details: String = "",
