@@ -1,9 +1,12 @@
 package org.vmaier.tidfl.features.list
 
+import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import org.vmaier.tidfl.R
+import org.vmaier.tidfl.databinding.ActivityMainBinding
 
 
 /**
@@ -13,15 +16,11 @@ import org.vmaier.tidfl.R
  */
 class MainActivity : AppCompatActivity() {
 
+    lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        fab.setOnClickListener { _ ->
-            val manager = supportFragmentManager
-            val transaction = manager.beginTransaction()
-            transaction.add(R.id.fragment_main, CreateTaskFragment())
-            transaction.commit()
-        }
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        navController = this.findNavController(R.id.nav_host_fragment)
     }
 }

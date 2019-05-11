@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation_graph" app:startDestination="@id/taskListFragment">
+
+    <fragment android:id="@+id/taskListFragment"
+              android:name="org.vmaier.tidfl.features.list.TaskListFragment"
+              android:label="TaskListFragment"
+              tools:layout="@layout/fragment_task_list">
+
+        <action android:id="@+id/action_taskListFragment_to_createTaskFragment"
+                app:destination="@id/createTaskFragment"/>
+
+        <action android:id="@+id/action_taskListFragment_to_taskDetailsFragment"
+                app:destination="@+id/taskDetailsFragment"/>
+
+    </fragment>
+
+    <fragment android:id="@+id/createTaskFragment"
+              android:name="org.vmaier.tidfl.features.list.CreateTaskFragment"
+              android:label="CreateTaskFragment"
+              tools:layout="@layout/fragment_create_task"/>
+
+    <fragment android:id="@+id/taskDetailsFragment"
+              android:name="org.vmaier.tidfl.features.list.TaskDetailsFragment"
+              android:label="TaskDetailsFragment"
+              tools:layout="@layout/fragment_task_details">
+
+        <argument android:name="goal" app:argType="string"/>
+        <argument android:name="details" app:argType="string"/>
+    </fragment>
+
+</navigation>
