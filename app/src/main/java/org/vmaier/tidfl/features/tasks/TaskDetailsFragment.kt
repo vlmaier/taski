@@ -1,4 +1,4 @@
-package org.vmaier.tidfl.features.list
+package org.vmaier.tidfl.features.tasks
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -19,11 +19,13 @@ class TaskDetailsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
             : View? {
+
         val binding = DataBindingUtil.inflate<FragmentTaskDetailsBinding>(
             inflater, R.layout.fragment_task_details, container, false)
+
         val args = TaskDetailsFragmentArgs.fromBundle(this.arguments!!)
-        val displayString = "${args.goal} ${args.details}"
-        binding.textViewTaskDetails.text = displayString
+        binding.goalTextView.text = args.goal
+        binding.detailsTextView.text = args.details
         return binding.root;
     }
 }

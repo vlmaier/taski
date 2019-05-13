@@ -30,6 +30,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation "android.arch.navigation:navigation-fragment-ktx:$navVersion"
     implementation "android.arch.navigation:navigation-ui-ktx:$navVersion"
     implementation fileTree(dir: 'libs', include: ['*.jar'])

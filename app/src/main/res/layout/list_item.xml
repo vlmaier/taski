@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        android:layout_width="match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:padding="@dimen/margin_medium"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/goal_list_item"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
-        android:padding="@dimen/margin_medium"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        tools:text="Goal"
+        android:textStyle="bold"/>
 
     <TextView
-            android:id="@+id/goal_list_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Goal"
-            android:textStyle="bold"/>
-
-    <TextView
-            android:id="@+id/details_list_item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Details"/>
+        android:id="@+id/details_list_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Details"/>
 
 </LinearLayout>

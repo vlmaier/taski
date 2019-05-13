@@ -1,4 +1,4 @@
-package org.vmaier.tidfl.features.list
+package org.vmaier.tidfl.features.tasks
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
