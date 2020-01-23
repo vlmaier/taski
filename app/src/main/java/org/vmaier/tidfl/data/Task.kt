@@ -11,12 +11,12 @@ import java.util.*
 data class Task(
     val goal: String,
     val details: String = "",
+    val status: Status = Status.OPEN,
     val createdAt: Date = Date(),
     val duration: Int,
     val difficulty: Difficulty = Difficulty.REGULAR,
     val affectedSkills: List<Skill>? = listOf()
 ) {
-
     val goldGain: Double
 
         /**
