@@ -9,7 +9,7 @@
         tools:context=".features.tasks.CreateTaskFragment">
 
         <TextView
-            android:id="@+id/create_task_header"
+            android:id="@+id/header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -26,24 +26,24 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/create_task_goal"
+            android:id="@+id/goal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:ems="10"
             android:hint="Goal to achieve"
             android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintBottom_toBottomOf="@+id/select_icon_button"
+            app:layout_constraintEnd_toStartOf="@+id/select_icon_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/create_task_header" />
+            app:layout_constraintTop_toTopOf="@+id/select_icon_button"
+            app:layout_constraintVertical_bias="0.509" />
 
         <EditText
-            android:id="@+id/create_task_details"
+            android:id="@+id/details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -55,12 +55,11 @@
             android:hint="Details"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/create_task_goal" />
+            app:layout_constraintTop_toBottomOf="@+id/select_icon_button" />
 
         <Spinner
-            android:id="@+id/create_task_duration_unit"
+            android:id="@+id/duration_unit"
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:layout_marginTop="16dp"
@@ -70,26 +69,26 @@
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/create_task_duration_value"
-            app:layout_constraintTop_toBottomOf="@+id/create_task_details" />
+            app:layout_constraintStart_toEndOf="@+id/duration_value"
+            app:layout_constraintTop_toBottomOf="@+id/details" />
 
         <Spinner
-            android:id="@+id/create_task_duration_value"
+            android:id="@+id/duration_value"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:entries="@array/duration_minutes"
             android:spinnerMode="dropdown"
-            app:layout_constraintEnd_toStartOf="@+id/create_task_duration_unit"
+            app:layout_constraintEnd_toStartOf="@+id/duration_unit"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/create_task_details" />
+            app:layout_constraintTop_toBottomOf="@+id/details" />
 
         <Spinner
-            android:id="@+id/create_task_difficulty"
+            android:id="@+id/difficulty"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
@@ -101,7 +100,7 @@
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/create_task_duration_value" />
+            app:layout_constraintTop_toBottomOf="@+id/duration_value" />
 
         <Button
             android:id="@+id/create_task_button"
@@ -117,6 +116,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/select_icon_button"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@android:drawable/ic_menu_gallery"
+            android:onClick="selectIconButtonClicked"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

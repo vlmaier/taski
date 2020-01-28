@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_create_task.*
 import org.vmaier.tidfl.R
-import org.vmaier.tidfl.data.Difficulty
-import org.vmaier.tidfl.data.Task
 import org.vmaier.tidfl.databinding.FragmentCreateTaskBinding
 
 

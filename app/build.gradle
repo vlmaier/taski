@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "org.vmaier.tidfl"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -28,8 +28,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility "1.6"
-        targetCompatibility "1.6"
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     buildToolsVersion '29.0.2'
 }
@@ -45,6 +49,7 @@ dependencies {
     implementation 'com.android.support:design:29.0.0'
     implementation 'com.android.support:recyclerview-v7:29.0.0'
     implementation 'com.maltaisn:icondialog:3.1.0'
+    implementation project(path: ':iconpack-default-1.0.0')
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

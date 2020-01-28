@@ -5,7 +5,21 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="icdStyle">@style/CustomIconDialogStyle</item>
+    </style>
+
+    <style name="CustomIconDialogStyle" parent="IcdStyle">
+        <item name="icdIconSize">64dp</item>
+        <item name="icdIconColor">@color/colorSecondary</item>
+        <item name="icdSelectedIconColor">@color/colorPrimary</item>
+        <item name="icdDialogButtonStyle">@style/Widget.AppCompat.Button.ButtonBar.AlertDialog</item>
+        <item name="icdSearchIconStyle">@style/CustomSearchIconStyle</item>
+    </style>
+
+    <style name="CustomSearchIconStyle" parent="IcdSearchIconStyle">
+        <item name="tint">@color/colorSecondary</item>
     </style>
 
 </resources>

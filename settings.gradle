@@ -1,1 +1,2 @@
+include ':iconpack-default-1.0.0'
 include ':app'

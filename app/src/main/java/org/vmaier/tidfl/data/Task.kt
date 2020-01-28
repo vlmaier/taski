@@ -12,9 +12,10 @@ data class Task(
     val goal: String,
     val details: String = "",
     val status: Status = Status.OPEN,
-    val createdAt: Date = Date(),
+    val createdAt: String = Date().toString(),
     val duration: Int,
     val difficulty: Difficulty = Difficulty.REGULAR,
+    val icon: Int = 0,
     val affectedSkills: List<Skill>? = listOf()
 ) {
     val goldGain: Double

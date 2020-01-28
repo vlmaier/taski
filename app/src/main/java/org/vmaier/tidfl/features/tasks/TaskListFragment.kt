@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_task_list.*
+import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Task
 import org.vmaier.tidfl.databinding.FragmentTaskListBinding
@@ -22,11 +24,6 @@ import org.vmaier.tidfl.databinding.FragmentTaskListBinding
  * at 21:00
  */
 class TaskListFragment : Fragment() {
-
-    private val tasks = listOf(
-        Task(goal = "Do Dishes", duration = 15),
-        Task(goal = "Make an Android App", details = "Things I Do For Loot", duration = 3600)
-    )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
             : View? {
@@ -42,6 +39,11 @@ class TaskListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity?.application
+
+        val dbHandler = DatabaseHandler(activity!!.applicationContext)
+        val tasks = dbHandler.findAllTasks()
 
         list_recycler_view.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -70,10 +72,12 @@ class TaskListFragment : Fragment() {
 
         private var goalView: TextView? = itemView.findViewById(R.id.task_goal)
         private var detailsView: TextView? = itemView.findViewById(R.id.task_details)
+        private var iconView: ImageView? = itemView.findViewById(R.id.task_icon)
 
         fun bind(task: Task) {
             goalView?.text = task.goal
             detailsView?.text = task.details
+            iconView?.background = App.iconPack?.getIcon(task.icon)?.drawable
             itemView.setOnClickListener {
                 it.findNavController().navigate(
                     TaskListFragmentDirections.actionTaskListFragmentToTaskDetailsFragment(task.goal, task.details))
