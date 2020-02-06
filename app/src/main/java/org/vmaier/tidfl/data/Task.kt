@@ -9,6 +9,7 @@ import java.util.*
  * at 21:00
  */
 data class Task(
+    val id: Long,
     val goal: String,
     val details: String = "",
     val status: Status = Status.OPEN,

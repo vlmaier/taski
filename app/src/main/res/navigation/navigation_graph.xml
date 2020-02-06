@@ -20,7 +20,12 @@
     <fragment android:id="@+id/createTaskFragment"
         android:name="org.vmaier.tidfl.features.tasks.CreateTaskFragment"
         android:label="CreateTaskFragment"
-        tools:layout="@layout/fragment_create_task"/>
+        tools:layout="@layout/fragment_create_task">
+        <action
+            android:id="@+id/action_createTaskFragment_to_taskListFragment"
+            app:destination="@id/taskListFragment"
+            app:popUpTo="@id/taskListFragment" />
+    </fragment>
 
     <fragment android:id="@+id/taskDetailsFragment"
         android:name="org.vmaier.tidfl.features.tasks.TaskDetailsFragment"

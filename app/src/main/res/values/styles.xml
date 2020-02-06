@@ -15,10 +15,11 @@
         <item name="icdIconColor">@color/colorSecondary</item>
         <item name="icdSelectedIconColor">@color/colorPrimary</item>
         <item name="icdDialogButtonStyle">@style/Widget.AppCompat.Button.ButtonBar.AlertDialog</item>
-        <item name="icdSearchIconStyle">@style/CustomSearchIconStyle</item>
+        <item name="icdSearchIconStyle">@style/CustomIconStyle</item>
+        <item name="icdCancelSearchIconStyle">@style/CustomIconStyle</item>
     </style>
 
-    <style name="CustomSearchIconStyle" parent="IcdSearchIconStyle">
+    <style name="CustomIconStyle" parent="IcdSearchIconStyle">
         <item name="tint">@color/colorSecondary</item>
     </style>
 

@@ -40,7 +40,7 @@
             app:layout_constraintEnd_toStartOf="@+id/select_icon_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/select_icon_button"
-            app:layout_constraintVertical_bias="0.509" />
+            app:layout_constraintVertical_bias="0.500" />
 
         <EditText
             android:id="@+id/details"
@@ -111,7 +111,6 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="16dp"
-            android:onClick="createTaskButtonClicked"
             android:text="Create Task"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +123,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:background="@android:drawable/ic_menu_gallery"
+            android:background="@drawable/ic_baseline_assignment_24"
             android:onClick="selectIconButtonClicked"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header" />

@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_task_list.*
@@ -40,18 +41,26 @@ class TaskListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.application
-
         val dbHandler = DatabaseHandler(activity!!.applicationContext)
         val tasks = dbHandler.findAllTasks()
 
         list_recycler_view.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = TaskListAdapter(tasks)
+            adapter = TaskListAdapter(tasks, dbHandler)
         }
+
+        val swipeHandler = object : SwipeToCompleteCallback(activity!!.applicationContext) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = list_recycler_view.adapter as TaskListAdapter
+                adapter.removeTaskAt(viewHolder.adapterPosition)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(list_recycler_view)
     }
 
-    class TaskListAdapter(private val list: List<Task>)
+    class TaskListAdapter(private val items: MutableList<Task>,
+                          private val dbHandler: DatabaseHandler)
         : RecyclerView.Adapter<TaskViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : TaskViewHolder {
@@ -60,23 +69,32 @@ class TaskListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-            val task: Task = list[position]
+            val task: Task = items[position]
             holder.bind(task)
         }
 
-        override fun getItemCount() : Int = list.size
+        override fun getItemCount() : Int = items.size
+
+        fun removeTaskAt(position: Int) {
+            val removedAt = items.removeAt(position)
+            notifyItemRemoved(position)
+            dbHandler.deleteTask(removedAt)
+        }
     }
 
     class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup)
         : RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent, false)) {
 
+        private var id : Long = 0
         private var goalView: TextView? = itemView.findViewById(R.id.task_goal)
         private var detailsView: TextView? = itemView.findViewById(R.id.task_details)
         private var iconView: ImageView? = itemView.findViewById(R.id.task_icon)
 
         fun bind(task: Task) {
+            id = task.id
             goalView?.text = task.goal
             detailsView?.text = task.details
+            // TODO: set correct background color (black)
             iconView?.background = App.iconPack?.getIcon(task.icon)?.drawable
             itemView.setOnClickListener {
                 it.findNavController().navigate(
