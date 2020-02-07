@@ -17,8 +17,8 @@ import org.vmaier.tidfl.databinding.FragmentTaskDetailsBinding
  */
 class TaskDetailsFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
-            : View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
         val binding = DataBindingUtil.inflate<FragmentTaskDetailsBinding>(
             inflater, R.layout.fragment_task_details, container, false)

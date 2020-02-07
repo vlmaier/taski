@@ -16,7 +16,8 @@ import java.util.*
  * on 13.05.2019
  * at 19:13
  */
-class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
+class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
+    DB_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase?) {
 
@@ -62,7 +63,8 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, nul
         return tasks
     }
 
-    fun addTask(goal: String, details: String, status: Status, duration: Int, difficulty: Difficulty, iconId: Int): Boolean {
+    fun addTask(goal: String, details: String, status: Status, duration: Int,
+                difficulty: Difficulty, iconId: Int): Boolean {
 
         val db = this.writableDatabase
         val values = ContentValues()
@@ -83,7 +85,9 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, nul
 
         val db = this.writableDatabase
         val success = db.delete(TASKS, "$ID = ?", arrayOf(task.id.toString()))
-        Log.i("DB", "Removal of task with ID ${task.id} is ${if(success != -1) "successful" else "failed"}")
+        Log.i("DB", "Removal of task with ID ${task.id} is " +
+                if(success != -1) "successful" else "failed"
+        )
         db.close()
         return (Integer.parseInt("$success") != -1)
     }

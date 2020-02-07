@@ -15,7 +15,7 @@ import com.maltaisn.iconpack.defaultpack.createDefaultIconPack
 class App : Application() {
 
     companion object {
-        var iconPack: IconPack? = null
+        lateinit var iconPack: IconPack
 
         fun loadIconPack(context : Context) {
             val loader = IconPackLoader(context)

@@ -25,21 +25,23 @@ abstract class SwipeToCompleteCallback(context: Context) : SimpleCallback(0, Ite
     private val intrinsicWidth = doneIcon?.intrinsicWidth
     private val intrinsicHeight = doneIcon?.intrinsicHeight
     private val background = ColorDrawable()
-    private val backgroundColor = Color.parseColor("#2bbd7e")
+    private val backgroundColor = ContextCompat.getColor(context, R.color.colorGreenDark)
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+    override fun getMovementFlags(recyclerView: RecyclerView,
+                                  viewHolder: RecyclerView.ViewHolder): Int {
         /**
          * To disable "swipe" for specific item return 0 here.
          * For example:
          * if (viewHolder?.itemViewType == YourAdapter.SOME_TYPE) return 0
          * if (viewHolder?.adapterPosition == 0) return 0
          */
-        if (viewHolder.adapterPosition == 10) return 0
+        // if (viewHolder.adapterPosition == 10) return 0
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 
-    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+    override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                        target: RecyclerView.ViewHolder): Boolean {
         return false
     }
 
@@ -53,14 +55,16 @@ abstract class SwipeToCompleteCallback(context: Context) : SimpleCallback(0, Ite
         val isCanceled = dX == 0f && !isCurrentlyActive
 
         if (isCanceled) {
-            clearCanvas(c, itemView.right + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
+            clearCanvas(c, itemView.right + dX, itemView.top.toFloat(),
+                itemView.right.toFloat(), itemView.bottom.toFloat())
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             return
         }
 
         // Draw the green complete background
         background.color = backgroundColor
-        background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+        background.setBounds(itemView.right + dX.toInt(), itemView.top,
+            itemView.right, itemView.bottom)
         background.draw(c)
 
         // Calculate position of done icon

@@ -26,8 +26,8 @@ import org.vmaier.tidfl.databinding.FragmentTaskListBinding
  */
 class TaskListFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
-            : View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
 
         val binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
             inflater, R.layout.fragment_task_list, container, false)
@@ -83,22 +83,26 @@ class TaskListFragment : Fragment() {
     }
 
     class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup)
-        : RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent, false)) {
+        : RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent,
+        false)) {
 
         private var id : Long = 0
         private var goalView: TextView? = itemView.findViewById(R.id.task_goal)
         private var detailsView: TextView? = itemView.findViewById(R.id.task_details)
         private var iconView: ImageView? = itemView.findViewById(R.id.task_icon)
+        private var xpView: TextView? = itemView.findViewById(R.id.task_xp_gain)
 
         fun bind(task: Task) {
             id = task.id
             goalView?.text = task.goal
             detailsView?.text = task.details
-            // TODO: set correct background color (black)
-            iconView?.background = App.iconPack?.getIcon(task.icon)?.drawable
+            iconView?.background = App.iconPack.getIcon(task.icon)?.drawable
+            xpView?.text = "${task.xpGain} XP"
+
             itemView.setOnClickListener {
                 it.findNavController().navigate(
-                    TaskListFragmentDirections.actionTaskListFragmentToTaskDetailsFragment(task.goal, task.details))
+                    TaskListFragmentDirections.actionTaskListFragmentToTaskDetailsFragment
+                        (task.goal, task.details))
             }
         }
     }
