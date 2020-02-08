@@ -76,7 +76,27 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, nul
         values.put(DIFFICULTY, difficulty.name)
         values.put(ICON_ID, iconId)
         val success = db.insert(TASKS, null, values)
-        Log.i("DB", "Inserted ID $success")
+        Log.i("DB", "Inserted task with ID $success")
+        db.close()
+        return (Integer.parseInt("$success") != -1)
+    }
+
+    fun updateTask(id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
+                   iconId: Int): Boolean {
+
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(GOAL, goal)
+        values.put(DETAILS, details)
+        values.put(CREATED_AT, Date().toString())
+        values.put(DURATION, duration)
+        values.put(DIFFICULTY, difficulty.name)
+        values.put(ICON_ID, iconId)
+        val success = db.update(TASKS, values, "$ID = ?",
+            arrayOf(id.toString()))
+        Log.i("DB", "Update of task with ID $id " +
+                if(success != -1) "successful" else "failed"
+        )
         db.close()
         return (Integer.parseInt("$success") != -1)
     }
@@ -84,8 +104,9 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, nul
     fun deleteTask(task: Task): Boolean {
 
         val db = this.writableDatabase
-        val success = db.delete(TASKS, "$ID = ?", arrayOf(task.id.toString()))
-        Log.i("DB", "Removal of task with ID ${task.id} is " +
+        val success = db.delete(TASKS, "$ID = ?",
+            arrayOf(task.id.toString()))
+        Log.i("DB", "Removal of task with ID ${task.id} " +
                 if(success != -1) "successful" else "failed"
         )
         db.close()
@@ -93,6 +114,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, nul
     }
 
     companion object {
+
         private const val DB_NAME = "tidfl"
         private const val DB_VERSION = 1
         private const val TASKS = "tasks"
@@ -104,8 +126,5 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, nul
         private const val DURATION = "duration"
         private const val DIFFICULTY = "difficulty"
         private const val ICON_ID = "icon_id"
-
-        // TODO: outsource to skills table: task to skill(s) relationship (1:n)
-        // private val AFFECTED_SKILLS = "affectedSkills"
     }
 }

@@ -1,0 +1,20 @@
+package org.vmaier.tidfl.features.tasks
+
+import android.view.View
+import android.view.View.OnFocusChangeListener
+import org.vmaier.tidfl.hideKeyboard
+
+
+/**
+ * Created by Vladas Maier
+ * on 08/02/2020.
+ * at 16:53
+ */
+class KeyBoardHider : OnFocusChangeListener {
+
+    override fun onFocusChange(v: View, hasFocus: Boolean) {
+        if (!hasFocus) {
+            v.hideKeyboard()
+        }
+    }
+}

@@ -16,26 +16,33 @@
 
         <action android:id="@+id/action_taskListFragment_to_taskDetailsFragment"
             app:destination="@+id/taskDetailsFragment"/>
+        <action
+            android:id="@+id/action_taskListFragment_to_editTaskFragment"
+            app:destination="@id/editTaskFragment" />
 
     </fragment>
 
     <fragment android:id="@+id/createTaskFragment"
         android:name="org.vmaier.tidfl.features.tasks.CreateTaskFragment"
         android:label="CreateTaskFragment"
-        tools:layout="@layout/fragment_create_task">
-        <action
-            android:id="@+id/action_createTaskFragment_to_taskListFragment"
-            app:destination="@id/taskListFragment"
-            app:popUpTo="@id/taskListFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_create_task"/>
 
     <fragment android:id="@+id/taskDetailsFragment"
         android:name="org.vmaier.tidfl.features.tasks.TaskDetailsFragment"
         android:label="TaskDetailsFragment"
         tools:layout="@layout/fragment_task_details">
+        <argument
+            android:name="task"
+            app:argType="org.vmaier.tidfl.data.Task" />
+    </fragment>
 
-        <argument android:name="goal" app:argType="string"/>
-        <argument android:name="details" app:argType="string"/>
+    <fragment
+        android:id="@+id/editTaskFragment"
+        android:name="org.vmaier.tidfl.features.tasks.EditTaskFragment"
+        android:label="EditTaskFragment"
+        tools:layout="@layout/fragment_edit_task">
+        <argument android:name="task"
+            app:argType="org.vmaier.tidfl.data.Task" />
     </fragment>
 
 </navigation>

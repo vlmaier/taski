@@ -20,12 +20,13 @@ class TaskDetailsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val binding = DataBindingUtil.inflate<FragmentTaskDetailsBinding>(
-            inflater, R.layout.fragment_task_details, container, false)
+        val binding =
+            DataBindingUtil.inflate<FragmentTaskDetailsBinding>(inflater,
+                R.layout.fragment_task_details, container, false)
 
         val args = TaskDetailsFragmentArgs.fromBundle(this.arguments!!)
-        binding.goalTextView.text = args.goal
-        binding.detailsTextView.text = args.details
+        binding.goalTextView.text = args.task.goal
+        binding.detailsTextView.text = args.task.details
         return binding.root;
     }
 }

@@ -12,6 +12,7 @@ import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
 import org.vmaier.tidfl.databinding.ActivityMainBinding
 import org.vmaier.tidfl.features.tasks.CreateTaskFragment
+import org.vmaier.tidfl.features.tasks.EditTaskFragment
 
 
 /**
@@ -48,7 +49,15 @@ class MainActivity : AppCompatActivity(), IconDialog.Callback {
     override fun onIconDialogIconsSelected(dialog: IconDialog, icons: List<Icon>) {
         val selectedIcon = icons[0]
         if (icons.isNotEmpty()) {
-            CreateTaskFragment.setIcon(this, selectedIcon)
+            val fragment = supportFragmentManager.primaryNavigationFragment!!
+            val fragments = fragment.childFragmentManager.fragments
+            fragments.forEach {
+                if (it is CreateTaskFragment) {
+                    CreateTaskFragment.setIcon(this, selectedIcon)
+                } else if (it is EditTaskFragment) {
+                    EditTaskFragment.setIcon(this, selectedIcon)
+                }
+            }
         }
     }
 }
