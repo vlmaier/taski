@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_task_list.*
 import org.vmaier.tidfl.App
+import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Task
 import org.vmaier.tidfl.databinding.FragmentTaskListBinding
@@ -42,6 +44,9 @@ class TaskListFragment : Fragment() {
 
         val binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
             inflater, R.layout.fragment_task_list, container, false)
+
+        MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+
         binding.fab.setOnClickListener {
             it.findNavController().navigate(
                 TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment())

@@ -123,7 +123,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            tools:background="@drawable/round_work_24"
+            tools:background="@drawable/ic_baseline_assignment_24"
             tools:backgroundTint="@color/colorSecondary"
             android:onClick="selectIconButtonClicked"
             app:layout_constraintEnd_toEndOf="parent"

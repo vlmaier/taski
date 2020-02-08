@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.databinding.FragmentTaskDetailsBinding
 
@@ -23,6 +25,8 @@ class TaskDetailsFragment : Fragment() {
         val binding =
             DataBindingUtil.inflate<FragmentTaskDetailsBinding>(inflater,
                 R.layout.fragment_task_details, container, false)
+
+        MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
         val args = TaskDetailsFragmentArgs.fromBundle(this.arguments!!)
         binding.goalTextView.text = args.task.goal

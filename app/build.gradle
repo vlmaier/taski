@@ -50,6 +50,7 @@ dependencies {
     implementation 'com.android.support:design:29.0.0'
     implementation 'com.android.support:recyclerview-v7:29.0.0'
     implementation 'com.maltaisn:icondialog:3.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation project(path: ':iconpack-default-1.0.0')
 
     testImplementation 'junit:junit:4.13'

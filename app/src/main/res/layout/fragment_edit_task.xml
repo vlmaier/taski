@@ -126,7 +126,7 @@
             android:onClick="selectIconButtonClicked"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/header"
-            tools:background="@drawable/round_work_24"
+            tools:background="@drawable/ic_baseline_assignment_24"
             tools:backgroundTint="@color/colorSecondary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
