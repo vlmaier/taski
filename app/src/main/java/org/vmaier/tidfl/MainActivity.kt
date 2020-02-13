@@ -3,6 +3,7 @@ package org.vmaier.tidfl
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,13 +13,14 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.navigation.NavigationView.*
+import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
 import org.vmaier.tidfl.databinding.ActivityMainBinding
 import org.vmaier.tidfl.features.tasks.CreateTaskFragment
+import org.vmaier.tidfl.features.tasks.DatabaseHandler
 import org.vmaier.tidfl.features.tasks.EditTaskFragment
 
 
@@ -38,6 +40,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     companion object {
         private const val ICON_DIALOG_TAG = "icon_dialog"
         lateinit var drawerLayout: DrawerLayout
+        lateinit var xpCounter : TextView
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +62,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
+
+        val headerView = navView.getHeaderView(0)
+        xpCounter = headerView.findViewById<View>(R.id.xp_counter) as TextView
+        xpCounter.text = "${DatabaseHandler(this).calculateOverallXp()}XP"
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())

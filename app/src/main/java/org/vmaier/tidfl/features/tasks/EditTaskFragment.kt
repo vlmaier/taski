@@ -125,7 +125,6 @@ class EditTaskFragment : Fragment() {
                 Difficulty.REGULAR -> 1
                 Difficulty.HARD -> 2
                 Difficulty.INSANE -> 3
-                else -> 0
             }
         )
 
@@ -137,7 +136,8 @@ class EditTaskFragment : Fragment() {
 
         binding.durationUnit.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             var firstTimeCalled = true
-            override fun onItemSelected(parent : AdapterView<*>, view: View, pos: Int, id: Long) {
+            override fun onItemSelected(parent : AdapterView<*>, view: View?, pos: Int, id: Long) {
+                if (pos < 0) return
                 val resourceArrayId : Int
                 if (binding.durationUnit.selectedItem.toString() == "minutes") {
                     resourceArrayId = R.array.duration_minutes

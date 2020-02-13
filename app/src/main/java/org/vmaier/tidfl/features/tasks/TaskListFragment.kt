@@ -96,9 +96,10 @@ class TaskListFragment : Fragment() {
         fun completeTask(context: Context, position: Int) {
             val completedTask = items.removeAt(position)
             notifyItemRemoved(position)
-            dbHandler.deleteTask(completedTask)
+            dbHandler.completeTask(completedTask)
             Toast.makeText(context, "Task done (+${completedTask.xpGain}XP)",
                 Toast.LENGTH_SHORT).show()
+            MainActivity.xpCounter.text = "${DatabaseHandler(context).calculateOverallXp()}XP"
         }
     }
 

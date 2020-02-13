@@ -32,6 +32,13 @@ import kotlin.random.Random
  */
 class CreateTaskFragment : Fragment() {
 
+    private val KEY_GOAL = "goal"
+    private val KEY_DETAILS = "details"
+    private val KEY_DIFFICULTY = "difficulty"
+    private val KEY_DURATION_UNIT = "duration_unit"
+    private val KEY_DURATION_VALUE = "duration_value"
+    private val KEY_ICON_ID = "icon_id"
+
     companion object {
 
         lateinit var mContext: Context
@@ -61,7 +68,8 @@ class CreateTaskFragment : Fragment() {
 
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
-        val randomIconId = Random.nextInt(App.iconPack.allIcons.size)
+        val randomIconId = if (savedInstanceState != null)
+            savedInstanceState.getInt(KEY_ICON_ID) else Random.nextInt(App.iconPack.allIcons.size)
         val randomIconDrawable = App.iconPack.getIconDrawable(
             randomIconId, IconDrawableLoader(mContext)
         )!!
@@ -79,8 +87,10 @@ class CreateTaskFragment : Fragment() {
         }
 
         binding.durationUnit.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent : AdapterView<*>, view: View, pos: Int, id: Long) {
-                var scrollTo = 0
+            override fun onItemSelected(parent : AdapterView<*>, view: View?, pos: Int, id: Long) {
+                if (pos < 0) return
+                var scrollTo = if (savedInstanceState != null)
+                    savedInstanceState.getInt(KEY_DURATION_VALUE) else 0
                 val resourceArrayId = when (binding.durationUnit.selectedItem.toString()) {
                     "minutes" -> {
                         scrollTo = 2
@@ -105,6 +115,39 @@ class CreateTaskFragment : Fragment() {
         binding.details.onFocusChangeListener = KeyBoardHider()
 
         return binding.root
+    }
+
+    override fun onSaveInstanceState(out: Bundle) {
+        super.onSaveInstanceState(out)
+
+        out.putString(KEY_GOAL, binding.goal.text.toString())
+        out.putString(KEY_DETAILS, binding.goal.text.toString())
+        out.putInt(KEY_DIFFICULTY, binding.difficulty.selectedItemPosition)
+        out.putInt(KEY_DURATION_UNIT, binding.durationUnit.selectedItemPosition)
+        out.putInt(KEY_DURATION_VALUE, binding.durationValue.selectedItemPosition)
+        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.selectIconButton.tag.toString()))
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            binding.goal.setText(savedInstanceState.getString(KEY_GOAL, ""))
+            binding.details.setText(savedInstanceState.getString(KEY_DETAILS, ""))
+            binding.difficulty.setSelection(
+                savedInstanceState.getInt(KEY_DIFFICULTY, 0))
+            val unitPos = savedInstanceState.getInt(KEY_DURATION_UNIT, 0)
+            binding.durationUnit.setSelection(unitPos)
+            val resourceArrayId = when (unitPos) {
+                0 -> R.array.duration_minutes
+                1 -> R.array.duration_hours
+                2 -> R.array.duration_days
+                else -> R.array.duration_minutes
+            }
+            val values = resources.getStringArray(resourceArrayId)
+            binding.durationValue.adapter = ArrayAdapter(mContext,
+                android.R.layout.simple_spinner_dropdown_item, values)
+        }
     }
 
     private fun createTaskButtonClicked(view : View) {
