@@ -17,7 +17,7 @@ class App : Application() {
     companion object {
         lateinit var iconPack: IconPack
 
-        fun loadIconPack(context : Context) {
+        fun loadIconPack(context: Context) {
             val loader = IconPackLoader(context)
             val iconPack = createDefaultIconPack(loader)
             iconPack.loadDrawables(loader.drawableLoader)

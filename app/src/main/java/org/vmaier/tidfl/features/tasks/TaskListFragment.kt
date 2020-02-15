@@ -32,24 +32,31 @@ import org.vmaier.tidfl.databinding.FragmentTaskListBinding
  */
 class TaskListFragment : Fragment() {
 
-    lateinit var mContext: Context
+    companion object {
+        lateinit var mContext: Context
+        lateinit var taskListAdapter: TaskListAdapter
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         val binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
-            inflater, R.layout.fragment_task_list, container, false)
+            inflater, R.layout.fragment_task_list, container, false
+        )
 
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
         binding.fab.setOnClickListener {
             it.findNavController().navigate(
-                TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment())
+                TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment()
+            )
         }
         return binding.root
     }
@@ -60,9 +67,10 @@ class TaskListFragment : Fragment() {
         val dbHandler = DatabaseHandler(mContext)
         val tasks = dbHandler.findAllTasks()
 
+        taskListAdapter = TaskListAdapter(tasks, mContext)
         list_recycler_view.apply {
             layoutManager = LinearLayoutManager(activity)
-            adapter = TaskListAdapter(tasks, mContext)
+            adapter = taskListAdapter
         }
 
         val swipeHandler = object : SwipeToCompleteCallback(mContext) {
@@ -75,13 +83,18 @@ class TaskListFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(list_recycler_view)
     }
 
-    class TaskListAdapter(private val items: MutableList<Task>,
-                          private val context: Context)
-        : RecyclerView.Adapter<TaskViewHolder>() {
+    class TaskListAdapter(list: MutableList<Task>, private val context: Context) :
+        RecyclerView.Adapter<TaskViewHolder>() {
+
+        var items: MutableList<Task> = list.toMutableList()
+            set(value) {
+                field = value
+                notifyDataSetChanged()
+            }
 
         private val dbHandler = DatabaseHandler(context)
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : TaskViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
             val inflater = LayoutInflater.from(parent.context)
             return TaskViewHolder(inflater, parent)
         }
@@ -91,23 +104,28 @@ class TaskListFragment : Fragment() {
             holder.bind(context, task)
         }
 
-        override fun getItemCount() : Int = items.size
+        override fun getItemCount(): Int = items.size
 
         fun completeTask(context: Context, position: Int) {
             val completedTask = items.removeAt(position)
             notifyItemRemoved(position)
             dbHandler.completeTask(completedTask)
-            Toast.makeText(context, "Task done (+${completedTask.xpGain}XP)",
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context, "Task done (+${completedTask.xpGain}XP)",
+                Toast.LENGTH_SHORT
+            ).show()
             MainActivity.xpCounter.text = "${DatabaseHandler(context).calculateOverallXp()}XP"
         }
     }
 
-    class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup)
-        : RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent,
-        false)) {
+    class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView.ViewHolder(
+        inflater.inflate(
+            R.layout.list_item, parent,
+            false
+        )
+    ) {
 
-        private var id : Long = 0
+        private var id: Long = 0
         private var goalView: TextView? = itemView.findViewById(R.id.task_goal)
         private var detailsView: TextView? = itemView.findViewById(R.id.task_details)
         private var iconView: ImageView? = itemView.findViewById(R.id.task_icon)
@@ -118,8 +136,11 @@ class TaskListFragment : Fragment() {
             goalView?.text = task.goal
             detailsView?.text = task.details
             val drawable = App.iconPack.getIcon(task.iconId)?.drawable!!
-            DrawableCompat.setTint(drawable, ContextCompat.getColor(
-                    context, R.color.colorSecondary))
+            DrawableCompat.setTint(
+                drawable, ContextCompat.getColor(
+                    context, R.color.colorSecondary
+                )
+            )
             iconView?.background = App.iconPack.getIcon(task.iconId)?.drawable
             xpView?.text = "${task.xpGain}XP"
 
@@ -130,7 +151,10 @@ class TaskListFragment : Fragment() {
             }
             itemView.setOnLongClickListener {
                 it.findNavController().navigate(
-                    TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(task)
+                    TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(
+                        task,
+                        this.adapterPosition
+                    )
                 )
                 true
             }

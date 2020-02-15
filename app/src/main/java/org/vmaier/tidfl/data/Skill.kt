@@ -6,7 +6,7 @@ package org.vmaier.tidfl.data
  * on 09.05.2019
  * at 21:00
  */
-data class Skill (
+data class Skill(
     val name: String,
     val description: String,
     val category: Category,

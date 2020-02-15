@@ -3,31 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/taskListFragment"
-    app:defaultNavHost="true">
+    app:defaultNavHost="true"
+    app:startDestination="@id/taskListFragment">
 
-    <fragment android:id="@+id/taskListFragment"
+    <fragment
+        android:id="@+id/taskListFragment"
         android:name="org.vmaier.tidfl.features.tasks.TaskListFragment"
         android:label="TaskListFragment"
         tools:layout="@layout/fragment_task_list">
 
-        <action android:id="@+id/action_taskListFragment_to_createTaskFragment"
-            app:destination="@id/createTaskFragment"/>
+        <action
+            android:id="@+id/action_taskListFragment_to_createTaskFragment"
+            app:destination="@id/createTaskFragment" />
 
-        <action android:id="@+id/action_taskListFragment_to_taskDetailsFragment"
-            app:destination="@+id/taskDetailsFragment"/>
+        <action
+            android:id="@+id/action_taskListFragment_to_taskDetailsFragment"
+            app:destination="@+id/taskDetailsFragment" />
         <action
             android:id="@+id/action_taskListFragment_to_editTaskFragment"
             app:destination="@id/editTaskFragment" />
 
     </fragment>
 
-    <fragment android:id="@+id/createTaskFragment"
+    <fragment
+        android:id="@+id/createTaskFragment"
         android:name="org.vmaier.tidfl.features.tasks.CreateTaskFragment"
         android:label="CreateTaskFragment"
-        tools:layout="@layout/fragment_create_task"/>
+        tools:layout="@layout/fragment_create_task" />
 
-    <fragment android:id="@+id/taskDetailsFragment"
+    <fragment
+        android:id="@+id/taskDetailsFragment"
         android:name="org.vmaier.tidfl.features.tasks.TaskDetailsFragment"
         android:label="TaskDetailsFragment"
         tools:layout="@layout/fragment_task_details">
@@ -41,8 +46,12 @@
         android:name="org.vmaier.tidfl.features.tasks.EditTaskFragment"
         android:label="EditTaskFragment"
         tools:layout="@layout/fragment_edit_task">
-        <argument android:name="task"
+        <argument
+            android:name="task"
             app:argType="org.vmaier.tidfl.data.Task" />
+        <argument
+            android:name="itemPosition"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

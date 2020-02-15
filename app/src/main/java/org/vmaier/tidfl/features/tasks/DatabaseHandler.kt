@@ -16,31 +16,33 @@ import java.util.*
  * on 13.05.2019
  * at 19:13
  */
-class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
-    DB_VERSION) {
+class DatabaseHandler(context: Context) : SQLiteOpenHelper(
+    context, DB_NAME, null,
+    DB_VERSION
+) {
 
     override fun onCreate(db: SQLiteDatabase?) {
 
         val CREATE_TABLE =
             "CREATE TABLE $TASKS (" +
-                "$ID Integer PRIMARY KEY, " +
-                "$GOAL TEXT, " +
-                "$DETAILS TEXT, " +
-                "$STATUS TEXT, " +
-                "$CREATED_AT TEXT, " +
-                "$DURATION INTEGER, " +
-                "$DIFFICULTY TEXT," +
-                "$ICON_ID TEXT," +
-                "$XP_GAIN TEXT" +
-                ")"
+                    "$ID Integer PRIMARY KEY, " +
+                    "$GOAL TEXT, " +
+                    "$DETAILS TEXT, " +
+                    "$STATUS TEXT, " +
+                    "$CREATED_AT TEXT, " +
+                    "$DURATION INTEGER, " +
+                    "$DIFFICULTY TEXT," +
+                    "$ICON_ID TEXT," +
+                    "$XP_GAIN TEXT" +
+                    ")"
         db?.execSQL(CREATE_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-
+        // nothing to upgrade yet
     }
 
-    fun calculateOverallXp() : Long {
+    fun calculateOverallXp(): Long {
 
         val query = "SELECT SUM($XP_GAIN) FROM $TASKS WHERE $STATUS = 'DONE'"
         val db = this.writableDatabase
@@ -74,8 +76,31 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, nul
         return tasks
     }
 
-    fun addTask(goal: String, details: String, status: Status, duration: Int,
-                difficulty: Difficulty, iconId: Int): Boolean {
+    fun findTask(taskId: Long): Task? {
+
+        val query = "SELECT * FROM $TASKS WHERE $ID = $taskId"
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(query, null)
+        var task: Task? = null
+        if (cursor.moveToFirst()) {
+            val id = cursor.getLong(0)
+            val goal = cursor.getString(1)
+            val details = cursor.getString(2)
+            val status = Status.valueOf(cursor.getString(3))
+            val createdAt = cursor.getString(4)
+            val duration = cursor.getInt(5)
+            val difficulty = Difficulty.valueOf(cursor.getString(6))
+            val iconId = cursor.getInt(7)
+            task = Task(id, goal, details, status, createdAt, duration, difficulty, iconId)
+        }
+        cursor.close()
+        return task
+    }
+
+    fun addTask(
+        goal: String, details: String, status: Status, duration: Int,
+        difficulty: Difficulty, iconId: Int
+    ): Boolean {
 
         val db = this.writableDatabase
         val values = ContentValues()
@@ -93,8 +118,10 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, nul
         return (Integer.parseInt("$success") != -1)
     }
 
-    fun updateTask(id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
-                   iconId: Int): Boolean {
+    fun updateTask(
+        id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
+        iconId: Int
+    ): Task? {
 
         val db = this.writableDatabase
         val values = ContentValues()
@@ -105,13 +132,16 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, nul
         values.put(DIFFICULTY, difficulty.name)
         values.put(ICON_ID, iconId)
         values.put(XP_GAIN, difficulty.factor.times(duration).toInt())
-        val success = db.update(TASKS, values, "$ID = ?",
-            arrayOf(id.toString()))
-        Log.i("DB", "Updating of task with ID $id " +
-                if(success != -1) "successful" else "failed"
+        val success = db.update(
+            TASKS, values, "$ID = ?",
+            arrayOf(id.toString())
+        )
+        Log.i(
+            "DB", "Updating of task with ID $id " +
+                    if (success != -1) "successful" else "failed"
         )
         db.close()
-        return (Integer.parseInt("$success") != -1)
+        return findTask(id)
     }
 
     fun completeTask(task: Task): Boolean {
@@ -119,10 +149,13 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(context, DB_NAME, nul
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(STATUS, Status.DONE.name)
-        val success = db.update(TASKS, values, "$ID = ?",
-            arrayOf(task.id.toString()))
-        Log.i("DB", "Completing of task with ID ${task.id} " +
-                if(success != -1) "successful" else "failed"
+        val success = db.update(
+            TASKS, values, "$ID = ?",
+            arrayOf(task.id.toString())
+        )
+        Log.i(
+            "DB", "Completing of task with ID ${task.id} " +
+                    if (success != -1) "successful" else "failed"
         )
         db.close()
         return (Integer.parseInt("$success") != -1)

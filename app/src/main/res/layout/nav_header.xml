@@ -6,17 +6,17 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/colorPrimary"
-        android:orientation="vertical"
         android:gravity="bottom"
+        android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingBottom="16dp">
 
         <ImageView
+            android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@mipmap/ic_launcher_round"
-            android:id="@+id/imageView"
-            android:layout_marginBottom="15dp"/>
+            android:layout_marginBottom="15dp"
+            app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
             android:layout_width="match_parent"
@@ -30,9 +30,9 @@
             android:id="@+id/xp_counter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
             android:layout_marginTop="8dp"
-            android:text="0XP" />
+            android:text="0XP"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 </layout>

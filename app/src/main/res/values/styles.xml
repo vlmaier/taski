@@ -14,7 +14,8 @@
         <item name="icdIconSize">64dp</item>
         <item name="icdIconColor">@color/colorSecondary</item>
         <item name="icdSelectedIconColor">@color/colorPrimary</item>
-        <item name="icdDialogButtonStyle">@style/Widget.AppCompat.Button.ButtonBar.AlertDialog</item>
+        <item name="icdDialogButtonStyle">@style/Widget.AppCompat.Button.ButtonBar.AlertDialog
+        </item>
         <item name="icdSearchIconStyle">@style/CustomIconStyle</item>
         <item name="icdCancelSearchIconStyle">@style/CustomIconStyle</item>
     </style>

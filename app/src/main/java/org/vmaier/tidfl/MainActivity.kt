@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     companion object {
         private const val ICON_DIALOG_TAG = "icon_dialog"
         lateinit var drawerLayout: DrawerLayout
-        lateinit var xpCounter : TextView
+        lateinit var xpCounter: TextView
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             ?: IconDialog.newInstance(IconDialogSettings())
     }
 
-    fun selectIconButtonClicked(view: View) {
+    fun selectIconButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
         iconDialog.show(supportFragmentManager, ICON_DIALOG_TAG)
     }
 
@@ -95,10 +95,14 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_profile -> {}
-            R.id.nav_tasks -> {}
-            R.id.nav_categories -> {}
-            R.id.nav_skills -> {}
+            R.id.nav_profile -> {
+            }
+            R.id.nav_tasks -> {
+            }
+            R.id.nav_categories -> {
+            }
+            R.id.nav_skills -> {
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
