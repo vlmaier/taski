@@ -120,7 +120,7 @@ class TaskListFragment : Fragment() {
 
     class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView.ViewHolder(
         inflater.inflate(
-            R.layout.list_item, parent,
+            R.layout.card_item, parent,
             false
         )
     ) {
@@ -146,17 +146,11 @@ class TaskListFragment : Fragment() {
 
             itemView.setOnClickListener {
                 it.findNavController().navigate(
-                    TaskListFragmentDirections.actionTaskListFragmentToTaskDetailsFragment(task)
-                )
-            }
-            itemView.setOnLongClickListener {
-                it.findNavController().navigate(
                     TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(
                         task,
                         this.adapterPosition
                     )
                 )
-                true
             }
         }
     }

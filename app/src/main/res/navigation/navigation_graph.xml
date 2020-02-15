@@ -14,14 +14,19 @@
 
         <action
             android:id="@+id/action_taskListFragment_to_createTaskFragment"
-            app:destination="@id/createTaskFragment" />
+            app:destination="@id/createTaskFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
 
         <action
-            android:id="@+id/action_taskListFragment_to_taskDetailsFragment"
-            app:destination="@+id/taskDetailsFragment" />
-        <action
             android:id="@+id/action_taskListFragment_to_editTaskFragment"
-            app:destination="@id/editTaskFragment" />
+            app:destination="@id/editTaskFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
 
     </fragment>
 
@@ -30,16 +35,6 @@
         android:name="org.vmaier.tidfl.features.tasks.CreateTaskFragment"
         android:label="CreateTaskFragment"
         tools:layout="@layout/fragment_create_task" />
-
-    <fragment
-        android:id="@+id/taskDetailsFragment"
-        android:name="org.vmaier.tidfl.features.tasks.TaskDetailsFragment"
-        android:label="TaskDetailsFragment"
-        tools:layout="@layout/fragment_task_details">
-        <argument
-            android:name="task"
-            app:argType="org.vmaier.tidfl.data.Task" />
-    </fragment>
 
     <fragment
         android:id="@+id/editTaskFragment"

@@ -35,6 +35,7 @@
             android:layout_marginRight="16dp"
             android:ems="10"
             android:hint="Goal to achieve"
+            android:textSize="24sp"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toBottomOf="@+id/select_icon_button"
             app:layout_constraintEnd_toStartOf="@+id/select_icon_button"
@@ -49,12 +50,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:ems="10"
             android:hint="Details"
             android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/goal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/select_icon_button" />
 
