@@ -118,6 +118,19 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         return (Integer.parseInt("$success") != -1)
     }
 
+    fun checkForChanges(
+        id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
+        iconId: Int
+    ): Boolean {
+
+        val task = findTask(id) ?: return false
+        return !(task.goal == goal &&
+                task.details == details &&
+                task.duration == duration &&
+                task.difficulty == difficulty &&
+                task.iconId == iconId)
+    }
+
     fun updateTask(
         id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
         iconId: Int

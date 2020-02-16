@@ -1,22 +1,14 @@
 ### Things I Do For Loot
 
 #### TODO:
-- [x] visual feedback on touch
 - [ ] localization
 - [ ] skills & categories
 - [ ] app icon
 - [ ] landscape mode layout
-- [x] navigation animations
-- [x] details view
 - [ ] overall level
-- [x] save state in all fragments / activities
-- [x] remove edit task button (save in `onSaveInstanceState`)
-- [x] do not allow multiline in edit text fields
-- [x] set input type for all edit text fields
 - [ ] spinner design
-- [x] set correct focus when navigating to edit task fragment
-- [x] more margin for both fragments
-- [ ] toast when task was successfully updated
+- [x] toast when task was successfully updated
+- [ ] swipe left to cancel task
 
 ---
 

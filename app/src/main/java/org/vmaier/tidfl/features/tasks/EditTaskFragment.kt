@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
@@ -144,10 +145,16 @@ class EditTaskFragment : TaskFragment() {
             binding.difficulty.selectedItem.toString().toUpperCase(Locale.getDefault())
         )
         val iconId: Int = Integer.parseInt(binding.editIconButton.tag.toString())
-        val updatedTask = dbHandler.updateTask(
-            task.id, goal, details, finalDuration, difficulty, iconId
-        )
-        TaskListFragment.taskListAdapter.items.set(itemPosition, updatedTask!!)
-        TaskListFragment.taskListAdapter.notifyItemChanged(itemPosition)
+        if (dbHandler.checkForChanges(task.id, goal, details, finalDuration, difficulty, iconId)) {
+            val updatedTask = dbHandler.updateTask(
+                task.id, goal, details, finalDuration, difficulty, iconId
+            )
+            TaskListFragment.taskListAdapter.items.set(itemPosition, updatedTask!!)
+            TaskListFragment.taskListAdapter.notifyItemChanged(itemPosition)
+            Toast.makeText(
+                context, "Task updated",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }
