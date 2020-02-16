@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
@@ -83,6 +84,11 @@ class CreateTaskFragment : TaskFragment() {
             it.hideKeyboard()
         }
 
+        binding.cancelButton.setOnClickListener {
+            it.findNavController().popBackStack()
+            it.hideKeyboard()
+        }
+
         binding.durationUnit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 if (pos < 0) return
@@ -105,7 +111,17 @@ class CreateTaskFragment : TaskFragment() {
         binding.goal.onFocusChangeListener = KeyBoardHider()
         binding.details.onFocusChangeListener = KeyBoardHider()
 
+        binding.goal.requestFocus()
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.goal.hideKeyboard()
+        binding.details.hideKeyboard()
     }
 
     override fun onSaveInstanceState(out: Bundle) {

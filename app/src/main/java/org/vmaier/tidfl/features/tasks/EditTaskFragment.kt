@@ -105,12 +105,16 @@ class EditTaskFragment : TaskFragment() {
         binding.goal.onFocusChangeListener = KeyBoardHider()
         binding.details.onFocusChangeListener = KeyBoardHider()
 
+        binding.header.isFocusable = true
+
         return binding.root;
     }
 
     override fun onPause() {
         super.onPause()
         saveChangesOnTask()
+        binding.goal.hideKeyboard()
+        binding.details.hideKeyboard()
     }
 
     override fun onSaveInstanceState(out: Bundle) {
