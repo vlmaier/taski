@@ -100,7 +100,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     fun addTask(
         goal: String, details: String, status: Status, duration: Int,
         difficulty: Difficulty, iconId: Int
-    ): Boolean {
+    ): Task? {
 
         val db = this.writableDatabase
         val values = ContentValues()
@@ -113,9 +113,9 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         values.put(ICON_ID, iconId)
         values.put(XP_GAIN, difficulty.factor.times(duration).toInt())
         val success = db.insert(TASKS, null, values)
-        Log.i("DB", "Inserted task with ID $success")
+        Log.i("DB", "Added new task (ID: $success)")
         db.close()
-        return (Integer.parseInt("$success") != -1)
+        return findTask(success)
     }
 
     fun checkForChanges(
@@ -151,27 +151,28 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         )
         Log.i(
             "DB", "Updating of task with ID $id " +
-                    if (success != -1) "successful" else "failed"
+                    if (success != -1) "is successful" else "failed"
         )
         db.close()
         return findTask(id)
     }
 
-    fun completeTask(task: Task): Boolean {
+    fun updateTaskStatus(task: Task, status: Status): Task? {
 
         val db = this.writableDatabase
         val values = ContentValues()
-        values.put(STATUS, Status.DONE.name)
+        values.put(STATUS, status.name)
         val success = db.update(
             TASKS, values, "$ID = ?",
             arrayOf(task.id.toString())
         )
         Log.i(
-            "DB", "Completing of task with ID ${task.id} " +
-                    if (success != -1) "successful" else "failed"
+            "DB", "Updating status of task with ID ${task.id}" +
+                    " (${task.status.name} -> ${status.name})" +
+                    if (success != -1) " is successful" else "failed"
         )
         db.close()
-        return (Integer.parseInt("$success") != -1)
+        return findTask(task.id)
     }
 
     companion object {

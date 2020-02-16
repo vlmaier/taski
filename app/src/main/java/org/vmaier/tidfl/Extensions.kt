@@ -1,6 +1,10 @@
 package org.vmaier.tidfl
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import org.vmaier.tidfl.data.Difficulty
@@ -102,4 +106,19 @@ fun Int.convert(unit: DurationUnit): Int {
         DurationUnit.HOURS -> this.times(60)
         DurationUnit.DAYS -> this.times(60).times(24)
     }
+}
+
+fun Drawable.toBitmap(): Bitmap {
+    if (this is BitmapDrawable) {
+        return this.bitmap
+    }
+    val bitmap = Bitmap.createBitmap(
+        this.intrinsicWidth,
+        this.intrinsicHeight,
+        Bitmap.Config.ARGB_8888
+    )
+    val canvas = Canvas(bitmap)
+    this.setBounds(0, 0, canvas.width, canvas.height)
+    this.draw(canvas)
+    return bitmap
 }

@@ -8,7 +8,7 @@
 - [ ] overall level
 - [ ] spinner design
 - [x] toast when task was successfully updated
-- [ ] swipe left to cancel task
+- [x] swipe left to cancel task
 
 ---
 
