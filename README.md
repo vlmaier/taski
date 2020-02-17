@@ -9,6 +9,8 @@
 - [ ] spinner design
 - [x] toast when task was successfully updated
 - [x] swipe left to cancel task
+- [x] limit characters for edit text fields
+- [x] adjust font size depending on length of the input
 
 ---
 
@@ -19,7 +21,7 @@
 - [x] details
 - [x] status (open, done, failed)
 - [ ] recurring (none, every [x] day)
-- [ ] start time
+- [x] start time
 - [ ] end time
 - [ ] notify at (list of notification timestamps)
 - [ ] tags

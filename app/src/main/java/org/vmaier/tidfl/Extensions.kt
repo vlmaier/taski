@@ -40,6 +40,15 @@ fun Task.getPosForUnitSpinner(): Int {
     }
 }
 
+fun Task.getHumanReadableValue(): String {
+    val unit = this.getDurationUnit()
+    return "${this.convertToSpinnerValue(unit)} " + when (unit) {
+        DurationUnit.MINUTES -> "min"
+        DurationUnit.HOURS -> "h"
+        DurationUnit.DAYS -> "d"
+    }
+}
+
 fun Task.getPosForValueSpinner(): Int {
     return when (this.getPosForUnitSpinner()) {
         0 -> when (this.convertToSpinnerValue(DurationUnit.MINUTES)) {

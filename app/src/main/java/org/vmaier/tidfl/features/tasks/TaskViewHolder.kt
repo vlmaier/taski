@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Task
+import org.vmaier.tidfl.getHumanReadableValue
 
 
 /**
@@ -31,6 +32,7 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
     private var detailsView: TextView? = itemView.findViewById(R.id.task_details)
     private var iconView: ImageView? = itemView.findViewById(R.id.task_icon)
     private var xpView: TextView? = itemView.findViewById(R.id.task_xp_gain)
+    private var durationView: TextView? = itemView.findViewById(R.id.task_duration)
 
     fun bind(context: Context, task: Task) {
         id = task.id
@@ -44,6 +46,7 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
         )
         iconView?.background = App.iconPack.getIcon(task.iconId)?.drawable
         xpView?.text = "${task.xpGain}XP"
+        durationView?.text = "${task.getHumanReadableValue()}"
 
         itemView.setOnClickListener {
             it.findNavController().navigate(
