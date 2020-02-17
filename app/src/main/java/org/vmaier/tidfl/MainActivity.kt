@@ -96,12 +96,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_profile -> {
+
             }
             R.id.nav_tasks -> {
+                navController.navigate(R.id.taskListFragment)
             }
             R.id.nav_categories -> {
+
             }
             R.id.nav_skills -> {
+
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)

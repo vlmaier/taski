@@ -58,8 +58,6 @@ class EditTaskFragment : TaskFragment() {
             false
         )
 
-        MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-
         val args = EditTaskFragmentArgs.fromBundle(this.arguments!!)
         task = args.task
         itemPosition = args.itemPosition

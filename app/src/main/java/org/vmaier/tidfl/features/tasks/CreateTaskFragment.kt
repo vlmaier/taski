@@ -58,8 +58,6 @@ class CreateTaskFragment : TaskFragment() {
             inflater, R.layout.fragment_create_task, container, false
         )
 
-        MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-
         val iconId = saved?.getInt(KEY_ICON_ID) ?: Random.nextInt(App.iconPack.allIcons.size)
         val iconDrawable = App.iconPack.getIconDrawable(
             iconId, IconDrawableLoader(mContext)
