@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.vmaier.tidfl.MainActivity
+import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.Status
-import org.vmaier.tidfl.data.Task
+import org.vmaier.tidfl.data.entity.Task
 
 
 /**
@@ -54,7 +55,9 @@ class TaskListAdapter(list: MutableList<Task>, private val context: Context) :
 
         val updateTask = dbHandler.updateTaskStatus(task, status)
         if (status != Status.FAILED) {
-            MainActivity.xpCounter.text = "${DatabaseHandler(context).calculateOverallXp()}XP"
+            MainActivity.xpCounter.text = "${DatabaseHandler(
+                context
+            ).calculateOverallXp()}XP"
         }
         return updateTask
     }

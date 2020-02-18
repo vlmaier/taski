@@ -1,7 +1,9 @@
-package org.vmaier.tidfl.data
+package org.vmaier.tidfl.data.entity
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import org.vmaier.tidfl.data.Difficulty
+import org.vmaier.tidfl.data.Status
 import java.util.*
 
 

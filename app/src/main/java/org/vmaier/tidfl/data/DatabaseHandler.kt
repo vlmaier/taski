@@ -1,13 +1,11 @@
-package org.vmaier.tidfl.features.tasks
+package org.vmaier.tidfl.data
 
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import org.vmaier.tidfl.data.Difficulty
-import org.vmaier.tidfl.data.Status
-import org.vmaier.tidfl.data.Task
+import org.vmaier.tidfl.data.entity.Task
 import java.util.*
 
 
@@ -97,7 +95,18 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
                 val duration = cursor.getInt(5)
                 val difficulty = Difficulty.valueOf(cursor.getString(6))
                 val iconId = cursor.getInt(7)
-                tasks.add(Task(id, goal, details, status, createdAt, duration, difficulty, iconId))
+                tasks.add(
+                    Task(
+                        id,
+                        goal,
+                        details,
+                        status,
+                        createdAt,
+                        duration,
+                        difficulty,
+                        iconId
+                    )
+                )
                 cursor.moveToNext()
             }
         }
@@ -120,7 +129,16 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
             val duration = cursor.getInt(5)
             val difficulty = Difficulty.valueOf(cursor.getString(6))
             val iconId = cursor.getInt(7)
-            task = Task(id, goal, details, status, createdAt, duration, difficulty, iconId)
+            task = Task(
+                id,
+                goal,
+                details,
+                status,
+                createdAt,
+                duration,
+                difficulty,
+                iconId
+            )
         }
         cursor.close()
         return task

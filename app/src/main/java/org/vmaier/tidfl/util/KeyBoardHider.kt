@@ -1,8 +1,7 @@
-package org.vmaier.tidfl.features.tasks
+package org.vmaier.tidfl.util
 
 import android.view.View
 import android.view.View.OnFocusChangeListener
-import org.vmaier.tidfl.hideKeyboard
 
 
 /**

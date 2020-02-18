@@ -15,10 +15,15 @@ import androidx.navigation.findNavController
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.*
+import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.DurationUnit
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.databinding.FragmentCreateTaskBinding
+import org.vmaier.tidfl.util.KeyBoardHider
+import org.vmaier.tidfl.util.convert
+import org.vmaier.tidfl.util.getResourceArrayId
+import org.vmaier.tidfl.util.hideKeyboard
 import java.util.*
 import kotlin.random.Random
 
@@ -105,8 +110,10 @@ class CreateTaskFragment : TaskFragment() {
                 // do nothing
             }
         }
-        binding.goal.onFocusChangeListener = KeyBoardHider()
-        binding.details.onFocusChangeListener = KeyBoardHider()
+        binding.goal.onFocusChangeListener =
+            KeyBoardHider()
+        binding.details.onFocusChangeListener =
+            KeyBoardHider()
 
         binding.goal.requestFocus()
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

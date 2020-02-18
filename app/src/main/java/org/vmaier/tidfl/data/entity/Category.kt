@@ -1,4 +1,4 @@
-package org.vmaier.tidfl.data
+package org.vmaier.tidfl.data.entity
 
 
 /**

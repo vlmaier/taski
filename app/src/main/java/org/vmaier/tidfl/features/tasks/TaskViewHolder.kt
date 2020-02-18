@@ -11,8 +11,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
-import org.vmaier.tidfl.data.Task
-import org.vmaier.tidfl.getHumanReadableValue
+import org.vmaier.tidfl.data.entity.Task
+import org.vmaier.tidfl.util.getHumanReadableValue
 
 
 /**

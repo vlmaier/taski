@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Status
-import org.vmaier.tidfl.toBitmap
+import org.vmaier.tidfl.util.toBitmap
 
 
 /**

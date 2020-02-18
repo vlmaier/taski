@@ -1,4 +1,4 @@
-package org.vmaier.tidfl.data
+package org.vmaier.tidfl.data.entity
 
 
 /**
@@ -6,8 +6,9 @@ package org.vmaier.tidfl.data
  * on 09.05.2019
  * at 21:00
  */
-data class Skill(
+data class Perk(
     val name: String,
     val description: String,
-    val category: Category
+    val goldGainFactor: Double,
+    val xpGainFactor: Double
 )

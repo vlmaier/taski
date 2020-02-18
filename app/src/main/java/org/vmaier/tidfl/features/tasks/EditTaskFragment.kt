@@ -14,10 +14,12 @@ import androidx.databinding.DataBindingUtil
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.*
+import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.DurationUnit
-import org.vmaier.tidfl.data.Task
+import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.databinding.FragmentEditTaskBinding
+import org.vmaier.tidfl.util.*
 import java.util.*
 
 
@@ -100,8 +102,10 @@ class EditTaskFragment : TaskFragment() {
         binding.durationUnit.setSelection(unitPos)
         binding.difficulty.setSelection(difficultyPos)
 
-        binding.goal.onFocusChangeListener = KeyBoardHider()
-        binding.details.onFocusChangeListener = KeyBoardHider()
+        binding.goal.onFocusChangeListener =
+            KeyBoardHider()
+        binding.details.onFocusChangeListener =
+            KeyBoardHider()
 
         binding.header.isFocusable = true
 

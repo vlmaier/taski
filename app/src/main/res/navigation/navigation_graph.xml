@@ -43,7 +43,7 @@
         tools:layout="@layout/fragment_edit_task">
         <argument
             android:name="task"
-            app:argType="org.vmaier.tidfl.data.Task" />
+            app:argType="org.vmaier.tidfl.data.entity.Task" />
         <argument
             android:name="itemPosition"
             app:argType="integer" />

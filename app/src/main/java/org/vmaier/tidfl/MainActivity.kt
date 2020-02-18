@@ -20,7 +20,7 @@ import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
 import org.vmaier.tidfl.databinding.ActivityMainBinding
 import org.vmaier.tidfl.features.tasks.CreateTaskFragment
-import org.vmaier.tidfl.features.tasks.DatabaseHandler
+import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.features.tasks.EditTaskFragment
 
 

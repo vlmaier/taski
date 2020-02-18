@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_task_list.*
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
+import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.databinding.FragmentTaskListBinding
 
 
