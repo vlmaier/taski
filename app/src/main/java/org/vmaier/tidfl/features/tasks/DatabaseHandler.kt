@@ -23,19 +23,48 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
 
     override fun onCreate(db: SQLiteDatabase?) {
 
-        val CREATE_TABLE =
+        val CREATE_TABLE_TASKS =
             "CREATE TABLE $TASKS (" +
-                    "$ID Integer PRIMARY KEY, " +
+                    "$ID INTEGER PRIMARY KEY, " +
                     "$GOAL TEXT, " +
                     "$DETAILS TEXT, " +
                     "$STATUS TEXT, " +
                     "$CREATED_AT TEXT, " +
                     "$DURATION INTEGER, " +
-                    "$DIFFICULTY TEXT," +
-                    "$ICON_ID TEXT," +
+                    "$DIFFICULTY TEXT, " +
+                    "$ICON_ID INTEGER, " +
                     "$XP_GAIN TEXT" +
                     ")"
-        db?.execSQL(CREATE_TABLE)
+
+        val CREATE_TABLE_CATEGORIES =
+            "CREATE TABLE $CATEGORIES (" +
+                    "$ID INTEGER PRIMARY KEY, " +
+                    "$NAME TEXT, " +
+                    "$DESCRIPTION TEXT" +
+                    ")"
+
+        val CREATE_TABLE_SKILLS =
+            "CREATE TABLE $SKILLS (" +
+                    "$ID INTEGER PRIMARY KEY, " +
+                    "$NAME TEXT, " +
+                    "$DESCRIPTION TEXT, " +
+                    "$CATEGORY_ID INTEGER, " +
+                    "FOREIGN KEY($CATEGORY_ID) REFERENCES $CATEGORIES($ID)" +
+                    ")"
+
+        val CREATE_TABLE_TASK_SKILLS =
+            "CREATE TABLE $TASK_SKILLS (" +
+                    "$TASK_ID INTEGER, " +
+                    "$SKILL_ID INTEGER, " +
+                    "PRIMARY KEY($TASK_ID, $SKILL_ID), " +
+                    "FOREIGN KEY($TASK_ID) REFERENCES $TASKS($ID), " +
+                    "FOREIGN KEY($SKILL_ID) REFERENCES $SKILLS($ID)" +
+                    ")"
+
+        db?.execSQL(CREATE_TABLE_TASKS)
+        db?.execSQL(CREATE_TABLE_CATEGORIES)
+        db?.execSQL(CREATE_TABLE_SKILLS)
+        db?.execSQL(CREATE_TABLE_TASK_SKILLS)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -118,7 +147,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         return findTask(success)
     }
 
-    fun checkForChanges(
+    fun checkForChangesWithinTask(
         id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
         iconId: Int
     ): Boolean {
@@ -179,7 +208,12 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
 
         private const val DB_NAME = "tidfl"
         private const val DB_VERSION = 1
+
         private const val TASKS = "tasks"
+        private const val CATEGORIES = "categories"
+        private const val SKILLS = "skills"
+        private const val TASK_SKILLS = "task_skills"
+
         private const val ID = "id"
         private const val GOAL = "goal"
         private const val DETAILS = "details"
@@ -189,5 +223,10 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         private const val DIFFICULTY = "difficulty"
         private const val ICON_ID = "icon_id"
         private const val XP_GAIN = "xp_gain"
+        private const val NAME = "name";
+        private const val DESCRIPTION = "description"
+        private const val CATEGORY_ID = "category_id"
+        private const val TASK_ID = "task_id"
+        private const val SKILL_ID = "skill_id"
     }
 }

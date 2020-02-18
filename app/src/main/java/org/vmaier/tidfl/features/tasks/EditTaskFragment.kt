@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
-import androidx.drawerlayout.widget.DrawerLayout
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.*
@@ -143,7 +142,7 @@ class EditTaskFragment : TaskFragment() {
             binding.difficulty.selectedItem.toString().toUpperCase(Locale.getDefault())
         )
         val iconId: Int = Integer.parseInt(binding.editIconButton.tag.toString())
-        if (dbHandler.checkForChanges(task.id, goal, details, finalDuration, difficulty, iconId)) {
+        if (dbHandler.checkForChangesWithinTask(task.id, goal, details, finalDuration, difficulty, iconId)) {
             val updatedTask = dbHandler.updateTask(
                 task.id, goal, details, finalDuration, difficulty, iconId
             )
