@@ -101,11 +101,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             R.id.nav_tasks -> {
                 navController.navigate(R.id.taskListFragment)
             }
-            R.id.nav_categories -> {
-
-            }
             R.id.nav_skills -> {
-
+                navController.navigate(R.id.skillListFragment)
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)

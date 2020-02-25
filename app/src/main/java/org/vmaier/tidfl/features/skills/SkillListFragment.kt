@@ -1,4 +1,4 @@
-package org.vmaier.tidfl.features.tasks
+package org.vmaier.tidfl.features.skills
 
 import android.content.Context
 import android.os.Bundle
@@ -9,25 +9,33 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_task_list.*
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DatabaseHandler
+import org.vmaier.tidfl.data.entity.Category
+import org.vmaier.tidfl.data.entity.Skill
+import org.vmaier.tidfl.databinding.FragmentSkillListBinding
 import org.vmaier.tidfl.databinding.FragmentTaskListBinding
+import org.vmaier.tidfl.features.tasks.SwipeCallbackHandler
+import org.vmaier.tidfl.features.tasks.TaskAdapter
+import org.vmaier.tidfl.features.tasks.TaskListFragment
+import org.vmaier.tidfl.features.tasks.TaskListFragmentDirections
 
 
 /**
  * Created by Vladas Maier
- * on 09.05.2019
- * at 21:00
+ * on 25/02/2020.
+ * at 18:01
  */
-class TaskListFragment : Fragment() {
+class SkillListFragment : Fragment() {
 
     companion object {
         lateinit var mContext: Context
-        lateinit var taskAdapter: TaskAdapter
+        lateinit var skillAdapter: SkillAdapter
     }
 
     override fun onAttach(context: Context) {
@@ -40,16 +48,14 @@ class TaskListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
-            inflater, R.layout.fragment_task_list, container, false
+        val binding = DataBindingUtil.inflate<FragmentSkillListBinding>(
+            inflater, R.layout.fragment_skill_list, container, false
         )
 
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
         binding.fab.setOnClickListener {
-            it.findNavController().navigate(
-                TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment()
-            )
+
         }
         return binding.root
     }
@@ -57,17 +63,19 @@ class TaskListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dbHandler = DatabaseHandler(mContext)
-        val tasks = dbHandler.findAllTasks()
+        val skills = mutableListOf(
+            Skill(
+                1, "Reading", Category(1, "Intellect"), 116
+            ),
+            Skill(
+                2, "Programming", Category(1, "Intellect"), 896
+            )
+        )
 
-        taskAdapter = TaskAdapter(tasks, mContext)
+        skillAdapter = SkillAdapter(skills, mContext)
         rv.apply {
-            layoutManager = LinearLayoutManager(activity)
-            adapter = taskAdapter
+            layoutManager = GridLayoutManager(activity, 2)
+            adapter = skillAdapter
         }
-
-        val simpleItemTouchCallback = SwipeCallbackHandler()
-        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-        itemTouchHelper.attachToRecyclerView(rv)
     }
 }

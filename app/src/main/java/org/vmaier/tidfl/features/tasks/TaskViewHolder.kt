@@ -22,7 +22,7 @@ import org.vmaier.tidfl.util.getHumanReadableValue
  */
 class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView.ViewHolder(
     inflater.inflate(
-        R.layout.card_item, parent,
+        R.layout.task_item, parent,
         false
     )
 ) {

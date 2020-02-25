@@ -7,6 +7,6 @@ package org.vmaier.tidfl.data.entity
  * at 21:00
  */
 data class Category(
-        val name: String,
-        val description: String
+        val id: Long,
+        val name: String
 )

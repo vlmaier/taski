@@ -49,4 +49,10 @@
             app:argType="integer" />
     </fragment>
 
+    <fragment
+        android:id="@+id/skillListFragment"
+        android:name="org.vmaier.tidfl.features.skills.SkillListFragment"
+        android:label="SkillListFragment"
+        tools:layout="@layout/fragment_skill_list"/>
+
 </navigation>

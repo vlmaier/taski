@@ -151,8 +151,8 @@ class EditTaskFragment : TaskFragment() {
             val updatedTask = dbHandler.updateTask(
                     task.id, goal, details, finalDuration, difficulty, iconId
             )
-            TaskListFragment.taskListAdapter.items.set(itemPosition, updatedTask!!)
-            TaskListFragment.taskListAdapter.notifyItemChanged(itemPosition)
+            TaskListFragment.taskAdapter.items.set(itemPosition, updatedTask!!)
+            TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
             Toast.makeText(
                     context, "Task updated",
                     Toast.LENGTH_SHORT

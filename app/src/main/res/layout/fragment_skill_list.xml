@@ -7,7 +7,7 @@
         android:id="@+id/task_list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".features.tasks.TaskListFragment">
+        tools:context=".features.skills.SkillListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"
@@ -20,11 +20,13 @@
             android:layout_marginRight="2dp"
             android:layout_marginBottom="2dp"
             android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/task_item" />
+            tools:listitem="@layout/skill_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

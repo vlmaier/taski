@@ -7,7 +7,18 @@ package org.vmaier.tidfl.data.entity
  * at 21:00
  */
 data class Skill(
+        val id: Long,
         val name: String,
-        val description: String,
-        val category: Category
-)
+        val category: Category,
+        val iconId: Int
+) {
+        val xpGain: Int
+        get() {
+                return 0
+        }
+
+        val level: Int
+        get() {
+                return 1
+        }
+}

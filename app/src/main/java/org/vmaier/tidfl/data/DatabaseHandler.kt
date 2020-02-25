@@ -37,15 +37,14 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         val CREATE_TABLE_CATEGORIES =
                 "CREATE TABLE $CATEGORIES (" +
                         "$ID INTEGER PRIMARY KEY, " +
-                        "$NAME TEXT, " +
-                        "$DESCRIPTION TEXT" +
+                        "$NAME TEXT" +
                         ")"
 
         val CREATE_TABLE_SKILLS =
                 "CREATE TABLE $SKILLS (" +
                         "$ID INTEGER PRIMARY KEY, " +
                         "$NAME TEXT, " +
-                        "$DESCRIPTION TEXT, " +
+                        "$ICON_ID INTEGER, " +
                         "$CATEGORY_ID INTEGER, " +
                         "FOREIGN KEY($CATEGORY_ID) REFERENCES $CATEGORIES($ID)" +
                         ")"
@@ -242,7 +241,6 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         private const val ICON_ID = "icon_id"
         private const val XP_GAIN = "xp_gain"
         private const val NAME = "name";
-        private const val DESCRIPTION = "description"
         private const val CATEGORY_ID = "category_id"
         private const val TASK_ID = "task_id"
         private const val SKILL_ID = "skill_id"

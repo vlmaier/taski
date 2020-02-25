@@ -1,6 +1,5 @@
 package org.vmaier.tidfl.features.tasks
 
-import android.content.Context
 import android.graphics.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -18,7 +17,7 @@ import org.vmaier.tidfl.util.toBitmap
  * on 06/02/2020.
  * at 19:09
  */
-class SwipeCallbackHandler(context: Context) :
+class SwipeCallbackHandler :
         SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     override fun onMove(
@@ -33,7 +32,7 @@ class SwipeCallbackHandler(context: Context) :
         val position = viewHolder.adapterPosition
 
         if (direction == ItemTouchHelper.LEFT) {
-            val doneTask = TaskListFragment.taskListAdapter.removeItem(position, Status.DONE)
+            val doneTask = TaskListFragment.taskAdapter.removeItem(position, Status.DONE)
             // showing snack bar with undo option
             Snackbar.make(
                     viewHolder.itemView,
@@ -41,10 +40,10 @@ class SwipeCallbackHandler(context: Context) :
                     Snackbar.LENGTH_LONG
             ).setAction("UNDO") {
                 // undo is selected, restore the deleted item
-                TaskListFragment.taskListAdapter.restoreItem(doneTask!!, position)
+                TaskListFragment.taskAdapter.restoreItem(doneTask!!, position)
             }.setActionTextColor(Color.YELLOW).show()
         } else {
-            val failedTask = TaskListFragment.taskListAdapter.removeItem(position, Status.FAILED)
+            val failedTask = TaskListFragment.taskAdapter.removeItem(position, Status.FAILED)
             // showing snack bar with undo option
             Snackbar.make(
                     viewHolder.itemView,
@@ -52,7 +51,7 @@ class SwipeCallbackHandler(context: Context) :
                     Snackbar.LENGTH_LONG
             ).setAction("UNDO") {
                 // undo is selected, restore the deleted item
-                TaskListFragment.taskListAdapter.restoreItem(failedTask!!, position)
+                TaskListFragment.taskAdapter.restoreItem(failedTask!!, position)
             }.setActionTextColor(Color.YELLOW).show()
         }
     }
