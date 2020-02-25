@@ -19,12 +19,12 @@ import org.vmaier.tidfl.util.toBitmap
  * at 19:09
  */
 class SwipeCallbackHandler(context: Context) :
-    SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     override fun onMove(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
     ): Boolean {
         return false
     }
@@ -36,9 +36,9 @@ class SwipeCallbackHandler(context: Context) :
             val doneTask = TaskListFragment.taskListAdapter.removeItem(position, Status.DONE)
             // showing snack bar with undo option
             Snackbar.make(
-                viewHolder.itemView,
-                " Task completed (+${doneTask?.xpGain}XP)",
-                Snackbar.LENGTH_LONG
+                    viewHolder.itemView,
+                    " Task completed (+${doneTask?.xpGain}XP)",
+                    Snackbar.LENGTH_LONG
             ).setAction("UNDO") {
                 // undo is selected, restore the deleted item
                 TaskListFragment.taskListAdapter.restoreItem(doneTask!!, position)
@@ -47,9 +47,9 @@ class SwipeCallbackHandler(context: Context) :
             val failedTask = TaskListFragment.taskListAdapter.removeItem(position, Status.FAILED)
             // showing snack bar with undo option
             Snackbar.make(
-                viewHolder.itemView,
-                " Task failed",
-                Snackbar.LENGTH_LONG
+                    viewHolder.itemView,
+                    " Task failed",
+                    Snackbar.LENGTH_LONG
             ).setAction("UNDO") {
                 // undo is selected, restore the deleted item
                 TaskListFragment.taskListAdapter.restoreItem(failedTask!!, position)
@@ -58,13 +58,13 @@ class SwipeCallbackHandler(context: Context) :
     }
 
     override fun onChildDraw(
-        c: Canvas,
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        dX: Float,
-        dY: Float,
-        actionState: Int,
-        isCurrentlyActive: Boolean
+            c: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
     ) {
 
         val icon: Bitmap
@@ -79,22 +79,22 @@ class SwipeCallbackHandler(context: Context) :
             if (dX > 0) {
                 p.color = ContextCompat.getColor(TaskListFragment.mContext, R.color.colorRedCancel)
                 val background =
-                    RectF(
-                        itemView.left.toFloat(),
-                        itemView.top.toFloat(),
-                        dX,
-                        itemView.bottom.toFloat()
-                    )
+                        RectF(
+                                itemView.left.toFloat(),
+                                itemView.top.toFloat(),
+                                dX,
+                                itemView.bottom.toFloat()
+                        )
                 c.drawRect(background, p)
                 icon = AppCompatResources.getDrawable(
-                    TaskListFragment.mContext,
-                    R.drawable.ic_outline_cancel_24
+                        TaskListFragment.mContext,
+                        R.drawable.ic_outline_cancel_24
                 )?.toBitmap()!!
                 val destination = RectF(
-                    itemView.left.toFloat() + width,
-                    itemView.top.toFloat() + width,
-                    itemView.left.toFloat() + 2 * width,
-                    itemView.bottom.toFloat() - width
+                        itemView.left.toFloat() + width,
+                        itemView.top.toFloat() + width,
+                        itemView.left.toFloat() + 2 * width,
+                        itemView.bottom.toFloat() - width
                 )
                 c.drawBitmap(icon, null, destination, p)
 
@@ -102,34 +102,34 @@ class SwipeCallbackHandler(context: Context) :
             } else {
                 p.color = ContextCompat.getColor(TaskListFragment.mContext, R.color.colorGreenDone)
                 val background = RectF(
-                    itemView.right.toFloat() + dX,
-                    itemView.top.toFloat(),
-                    itemView.right.toFloat(),
-                    itemView.bottom.toFloat()
+                        itemView.right.toFloat() + dX,
+                        itemView.top.toFloat(),
+                        itemView.right.toFloat(),
+                        itemView.bottom.toFloat()
                 )
                 c.drawRect(background, p)
                 icon =
-                    AppCompatResources.getDrawable(
-                        TaskListFragment.mContext,
-                        R.drawable.ic_baseline_done_24
-                    )?.toBitmap()!!
+                        AppCompatResources.getDrawable(
+                                TaskListFragment.mContext,
+                                R.drawable.ic_baseline_done_24
+                        )?.toBitmap()!!
                 val destination = RectF(
-                    itemView.right.toFloat() - 2 * width,
-                    itemView.top.toFloat() + width,
-                    itemView.right.toFloat() - width,
-                    itemView.bottom.toFloat() - width
+                        itemView.right.toFloat() - 2 * width,
+                        itemView.top.toFloat() + width,
+                        itemView.right.toFloat() - width,
+                        itemView.bottom.toFloat() - width
                 )
                 c.drawBitmap(icon, null, destination, p)
             }
         }
         super.onChildDraw(
-            c,
-            recyclerView,
-            viewHolder,
-            dX,
-            dY,
-            actionState,
-            isCurrentlyActive
+                c,
+                recyclerView,
+                viewHolder,
+                dX,
+                dY,
+                actionState,
+                isCurrentlyActive
         )
     }
 }

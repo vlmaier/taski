@@ -14,9 +14,9 @@ import java.util.*
  */
 @Parcelize
 data class Task(
-    val id: Long, val goal: String, val details: String = "",
-    val status: Status = Status.OPEN, val createdAt: String = Date().toString(),
-    val duration: Int, val difficulty: Difficulty = Difficulty.REGULAR, val iconId: Int
+        val id: Long, val goal: String, val details: String = "",
+        val status: Status = Status.OPEN, val createdAt: String = Date().toString(),
+        val duration: Int, val difficulty: Difficulty = Difficulty.REGULAR, val iconId: Int
 ) : Parcelable {
 
     val xpGain: Int

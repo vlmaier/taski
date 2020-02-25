@@ -1,7 +1,5 @@
 package org.vmaier.tidfl.data.entity
 
-import org.vmaier.tidfl.data.entity.Category
-
 
 /**
  * Created by Vladas Maier
@@ -9,7 +7,7 @@ import org.vmaier.tidfl.data.entity.Category
  * at 21:00
  */
 data class Skill(
-    val name: String,
-    val description: String,
-    val category: Category
+        val name: String,
+        val description: String,
+        val category: Category
 )
