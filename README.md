@@ -1,61 +1,37 @@
 ### Things I Do For Loot
 
 #### TODO:
-- [ ] localization
-- [ ] skills & categories
+
+##### Skill Management
+- [ ] create skill
+- [ ] edit skill
+- [ ] delete skill
+- [ ] view skill(s)
+- [ ] assign (multiple) skills to tasks
+- [ ] track xp gained on skill(s) after task completion
+- [ ] track skill level
+- [ ] track cumulative xp gained on category
+
+##### Profile Management
+- [ ] track overall xp gained
+- [ ] track overall level
+
+##### Statistics
+- [ ] xp gained daily / weekly / monthly (bar graph)
+- [ ] tasks completed daily / weekly / monthly (bar graph)
+- [ ] skill levels / xp gained overview (pie chart)
+- [ ] cumulative xp gained on category (pie chart) 
+
+##### Localization
+- [ ] outsource all hardcoded and relevant strings to strings.xml
+- [ ] German
+- [ ] English
+- [ ] French
+- [ ] Italian
+- [ ] Spanish
+- [ ] Russian
+
+##### UI
 - [ ] app icon
-- [ ] landscape mode layout
-- [ ] overall level
-- [ ] spinner design
-- [x] toast when task was successfully updated
-- [x] swipe left to cancel task
-- [x] limit characters for edit text fields
-- [x] adjust font size depending on length of the input
-
----
-
-#### Entities:
-##### Task
-- [x] id (database id)
-- [x] goal (title)
-- [x] details
-- [x] status (open, done, failed)
-- [ ] recurring (none, every [x] day)
-- [x] start time
-- [ ] end time
-- [ ] notify at (list of notification timestamps)
-- [ ] tags
-- [x] priority
-- [x] duration
-- [x] icon
-- [x] calculated amount of xp
-- [ ] affected skills
-
-##### Priority
-- [x] value (trivial, regular, hard, insane)
-
-##### Tag
-- [ ] value
-
-##### Notification
-- [ ] time
-- [ ] task id
-
-##### List<Task>
-- [ ] tasks
-- [ ] grouped by (priority, end time, tags, status)
-
-##### Skill
-- [ ] name
-- [ ] description
-- [ ] amount of xp
-- [ ] level
-- [ ] icon
-
-##### Skill Group
-- [ ] name
-- [ ] description
-- [ ] assigned skills
-- [ ] summarized amount of xp
-- [ ] summarized level
-- [ ] icon
+- [ ] landscape layout
+- [ ] clean spinner design
