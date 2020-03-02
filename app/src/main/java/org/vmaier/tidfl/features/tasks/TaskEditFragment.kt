@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.App
@@ -19,26 +18,25 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.DurationUnit
-import org.vmaier.tidfl.data.Status
-import org.vmaier.tidfl.databinding.FragmentCreateTaskBinding
-import org.vmaier.tidfl.util.KeyBoardHider
-import org.vmaier.tidfl.util.convert
-import org.vmaier.tidfl.util.getResourceArrayId
-import org.vmaier.tidfl.util.hideKeyboard
+import org.vmaier.tidfl.data.entity.Task
+import org.vmaier.tidfl.databinding.FragmentEditTaskBinding
+import org.vmaier.tidfl.util.*
 import java.util.*
-import kotlin.random.Random
 
 
 /**
  * Created by Vladas Maier
- * on 09.05.2019
- * at 21:16
+ * on 08/02/2020.
+ * at 11:26
  */
-class CreateTaskFragment : TaskFragment() {
+class TaskEditFragment : TaskFragment() {
+
+    var itemPosition: Int = 0
 
     companion object {
 
-        lateinit var binding: FragmentCreateTaskBinding
+        lateinit var binding: FragmentEditTaskBinding
+        lateinit var task: Task
 
         fun setIcon(context: Context, icon: Icon) {
 
@@ -49,50 +47,36 @@ class CreateTaskFragment : TaskFragment() {
                     context, R.color.colorSecondary
                 )
             )
-            binding.selectIconButton.background = drawable
-            binding.selectIconButton.tag = icon.id
+            binding.editIconButton.background = drawable
+            binding.editIconButton.tag = icon.id
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?)
+            : View? {
 
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_create_task, container, false
+            inflater, R.layout.fragment_edit_task, container,
+            false
         )
 
-        val iconId = saved?.getInt(KEY_ICON_ID) ?: Random.nextInt(App.iconPack.allIcons.size)
-        val iconDrawable = App.iconPack.getIconDrawable(
-            iconId, IconDrawableLoader(mContext)
-        )!!
-
-        DrawableCompat.setTint(
-            iconDrawable, ContextCompat.getColor(
-                mContext, R.color.colorSecondary
-            )
+        val args = TaskEditFragmentArgs.fromBundle(this.arguments!!)
+        task = args.task
+        itemPosition = args.itemPosition
+        binding.goal.setText(if (saved != null) saved.getString(KEY_GOAL) else task.goal)
+        binding.details.setText(if (saved != null) saved.getString(KEY_DETAILS) else task.details)
+        val iconId = if (saved != null) saved.getInt(KEY_ICON_ID) else task.iconId
+        binding.editIconButton.background = App.iconPack.getIconDrawable(
+            iconId, IconDrawableLoader(this.context!!)
         )
+        binding.editIconButton.tag = iconId
 
-        binding.selectIconButton.background = iconDrawable
-        binding.selectIconButton.tag = iconId
-
-        binding.goal.setText(saved?.getString(KEY_GOAL) ?: "")
-        binding.details.setText(saved?.getString(KEY_DETAILS) ?: "")
-        binding.difficulty.setSelection(saved?.getInt(KEY_DIFFICULTY) ?: 1)
-
-        binding.createTaskButton.setOnClickListener {
-            createTaskButtonClicked(it)
-            it.findNavController().popBackStack()
-            it.hideKeyboard()
-        }
-
-        binding.cancelButton.setOnClickListener {
-            it.findNavController().popBackStack()
-            it.hideKeyboard()
-        }
+        val unitPos = saved?.getInt(KEY_DURATION_UNIT) ?: task.getPosForUnitSpinner()
+        val valuePos = saved?.getInt(KEY_DURATION_VALUE) ?: task.getPosForValueSpinner()
+        val difficultyPos = saved?.getInt(KEY_DIFFICULTY) ?: task.getPosForDifficultySpinner()
 
         binding.durationUnit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            var firstTimeCalled = true
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 if (pos < 0) return
                 val unit = DurationUnit.valueOf(
@@ -104,27 +88,34 @@ class CreateTaskFragment : TaskFragment() {
                     android.R.layout.simple_spinner_dropdown_item, values
                 )
                 binding.durationValue.adapter = adapter
-                binding.durationValue.setSelection(saved?.getInt(KEY_DURATION_VALUE) ?: 0)
+                if (firstTimeCalled) {
+                    binding.durationValue.setSelection(valuePos)
+                    firstTimeCalled = false
+                } else if (saved != null) {
+                    binding.durationValue.setSelection(saved.getInt(KEY_DURATION_VALUE))
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // do nothing
             }
         }
+        binding.durationUnit.setSelection(unitPos)
+        binding.difficulty.setSelection(difficultyPos)
+
         binding.goal.onFocusChangeListener =
             KeyBoardHider()
         binding.details.onFocusChangeListener =
             KeyBoardHider()
 
-        binding.goal.requestFocus()
-        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        binding.header.isFocusable = true
 
-        return binding.root
+        return binding.root;
     }
 
     override fun onPause() {
         super.onPause()
+        saveChangesOnTask()
         binding.goal.hideKeyboard()
         binding.details.hideKeyboard()
     }
@@ -137,10 +128,12 @@ class CreateTaskFragment : TaskFragment() {
         out.putInt(KEY_DIFFICULTY, binding.difficulty.selectedItemPosition)
         out.putInt(KEY_DURATION_UNIT, binding.durationUnit.selectedItemPosition)
         out.putInt(KEY_DURATION_VALUE, binding.durationValue.selectedItemPosition)
-        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.selectIconButton.tag.toString()))
+        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.editIconButton.tag.toString()))
+
+        saveChangesOnTask()
     }
 
-    private fun createTaskButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
+    private fun saveChangesOnTask() {
 
         val dbHandler = DatabaseHandler(mContext)
         val goal = binding.goal.text.toString()
@@ -153,7 +146,25 @@ class CreateTaskFragment : TaskFragment() {
         val difficulty = Difficulty.valueOf(
             binding.difficulty.selectedItem.toString().toUpperCase(Locale.getDefault())
         )
-        val iconId: Int = Integer.parseInt(binding.selectIconButton.tag.toString())
-        dbHandler.addTask(goal, details, Status.OPEN, finalDuration, difficulty, iconId)
+        val iconId: Int = Integer.parseInt(binding.editIconButton.tag.toString())
+        if (dbHandler.checkForChangesWithinTask(
+                task.id,
+                goal,
+                details,
+                finalDuration,
+                difficulty,
+                iconId
+            )
+        ) {
+            val updatedTask = dbHandler.updateTask(
+                task.id, goal, details, finalDuration, difficulty, iconId
+            )
+            TaskListFragment.taskAdapter.items.set(itemPosition, updatedTask!!)
+            TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
+            Toast.makeText(
+                context, "Task updated",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

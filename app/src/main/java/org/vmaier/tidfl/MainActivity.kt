@@ -20,9 +20,9 @@ import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
 import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.databinding.ActivityMainBinding
-import org.vmaier.tidfl.features.skills.CreateSkillFragment
-import org.vmaier.tidfl.features.tasks.CreateTaskFragment
-import org.vmaier.tidfl.features.tasks.EditTaskFragment
+import org.vmaier.tidfl.features.skills.SkillCreateFragment
+import org.vmaier.tidfl.features.tasks.TaskCreateFragment
+import org.vmaier.tidfl.features.tasks.TaskEditFragment
 
 
 /**
@@ -86,14 +86,14 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             val fragments = fragment.childFragmentManager.fragments
             fragments.forEach {
                 when (it) {
-                    is CreateTaskFragment -> {
-                        CreateTaskFragment.setIcon(this, selectedIcon)
+                    is TaskCreateFragment -> {
+                        TaskCreateFragment.setIcon(this, selectedIcon)
                     }
-                    is EditTaskFragment -> {
-                        EditTaskFragment.setIcon(this, selectedIcon)
+                    is TaskEditFragment -> {
+                        TaskEditFragment.setIcon(this, selectedIcon)
                     }
-                    is CreateSkillFragment -> {
-                        CreateSkillFragment.setIcon(this, selectedIcon)
+                    is SkillCreateFragment -> {
+                        SkillCreateFragment.setIcon(this, selectedIcon)
                     }
                 }
             }

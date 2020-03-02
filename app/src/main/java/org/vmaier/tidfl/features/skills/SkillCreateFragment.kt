@@ -27,7 +27,7 @@ import kotlin.random.Random
  * on 02/03/2020.
  * at 20:02
  */
-class CreateSkillFragment : SkillFragment() {
+class SkillCreateFragment : SkillFragment() {
 
     companion object {
 

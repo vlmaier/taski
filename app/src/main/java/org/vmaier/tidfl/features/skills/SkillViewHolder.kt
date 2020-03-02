@@ -20,7 +20,7 @@ import org.vmaier.tidfl.data.entity.Skill
  */
 class SkillViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView.ViewHolder(
     inflater.inflate(
-        R.layout.skill_item, parent,
+        R.layout.item_skill, parent,
         false
     )
 ) {
