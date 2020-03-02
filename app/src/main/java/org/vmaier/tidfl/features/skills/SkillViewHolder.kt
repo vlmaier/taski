@@ -35,7 +35,7 @@ class SkillViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerVie
     fun bind(context: Context, skill: Skill) {
         id = skill.id
         nameView?.text = skill.name
-        categoryView?.text = "(${skill.category.name})"
+        categoryView?.text = "(${skill.category})"
         val drawable = App.iconPack.getIcon(skill.iconId)?.drawable!!
         DrawableCompat.setTint(
             drawable, ContextCompat.getColor(

@@ -45,9 +45,9 @@ class CreateTaskFragment : TaskFragment() {
             val drawable = IconDrawableLoader(context).loadDrawable(icon)!!
             drawable.clearColorFilter()
             DrawableCompat.setTint(
-                    drawable, ContextCompat.getColor(
+                drawable, ContextCompat.getColor(
                     context, R.color.colorSecondary
-            )
+                )
             )
             binding.selectIconButton.background = drawable
             binding.selectIconButton.tag = icon.id
@@ -55,23 +55,23 @@ class CreateTaskFragment : TaskFragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            saved: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        saved: Bundle?
     ): View? {
 
         binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_create_task, container, false
+            inflater, R.layout.fragment_create_task, container, false
         )
 
         val iconId = saved?.getInt(KEY_ICON_ID) ?: Random.nextInt(App.iconPack.allIcons.size)
         val iconDrawable = App.iconPack.getIconDrawable(
-                iconId, IconDrawableLoader(mContext)
+            iconId, IconDrawableLoader(mContext)
         )!!
 
         DrawableCompat.setTint(
-                iconDrawable, ContextCompat.getColor(
+            iconDrawable, ContextCompat.getColor(
                 mContext, R.color.colorSecondary
-        )
+            )
         )
 
         binding.selectIconButton.background = iconDrawable
@@ -96,12 +96,12 @@ class CreateTaskFragment : TaskFragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 if (pos < 0) return
                 val unit = DurationUnit.valueOf(
-                        binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
+                    binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
                 )
                 val values = resources.getStringArray(unit.getResourceArrayId())
                 val adapter: ArrayAdapter<String> = ArrayAdapter(
-                        mContext,
-                        android.R.layout.simple_spinner_dropdown_item, values
+                    mContext,
+                    android.R.layout.simple_spinner_dropdown_item, values
                 )
                 binding.durationValue.adapter = adapter
                 binding.durationValue.setSelection(saved?.getInt(KEY_DURATION_VALUE) ?: 0)
@@ -112,9 +112,9 @@ class CreateTaskFragment : TaskFragment() {
             }
         }
         binding.goal.onFocusChangeListener =
-                KeyBoardHider()
+            KeyBoardHider()
         binding.details.onFocusChangeListener =
-                KeyBoardHider()
+            KeyBoardHider()
 
         binding.goal.requestFocus()
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -147,11 +147,11 @@ class CreateTaskFragment : TaskFragment() {
         val details = binding.details.text.toString()
         val duration = binding.durationValue.selectedItem.toString().toInt()
         val durationUnit = DurationUnit.valueOf(
-                binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
+            binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
         )
         val finalDuration = duration.convert(durationUnit)
         val difficulty = Difficulty.valueOf(
-                binding.difficulty.selectedItem.toString().toUpperCase(Locale.getDefault())
+            binding.difficulty.selectedItem.toString().toUpperCase(Locale.getDefault())
         )
         val iconId: Int = Integer.parseInt(binding.selectIconButton.tag.toString())
         dbHandler.addTask(goal, details, Status.OPEN, finalDuration, difficulty, iconId)

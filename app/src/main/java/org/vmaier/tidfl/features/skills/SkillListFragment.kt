@@ -10,20 +10,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_task_list.*
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DatabaseHandler
-import org.vmaier.tidfl.data.entity.Category
-import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentSkillListBinding
-import org.vmaier.tidfl.databinding.FragmentTaskListBinding
-import org.vmaier.tidfl.features.tasks.SwipeCallbackHandler
-import org.vmaier.tidfl.features.tasks.TaskAdapter
-import org.vmaier.tidfl.features.tasks.TaskListFragment
-import org.vmaier.tidfl.features.tasks.TaskListFragmentDirections
 
 
 /**
@@ -55,7 +46,9 @@ class SkillListFragment : Fragment() {
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
         binding.fab.setOnClickListener {
-
+            it.findNavController().navigate(
+                SkillListFragmentDirections.actionSkillListFragmentToCreateSkillFragment()
+            )
         }
         return binding.root
     }
@@ -63,14 +56,8 @@ class SkillListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val skills = mutableListOf(
-            Skill(
-                1, "Reading", Category(1, "Intellect"), 116
-            ),
-            Skill(
-                2, "Programming", Category(1, "Intellect"), 896
-            )
-        )
+        val dbHandler = DatabaseHandler(mContext)
+        val skills = dbHandler.findAllSkills()
 
         skillAdapter = SkillAdapter(skills, mContext)
         rv.apply {

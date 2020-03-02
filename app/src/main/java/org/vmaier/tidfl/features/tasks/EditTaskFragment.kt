@@ -43,9 +43,9 @@ class EditTaskFragment : TaskFragment() {
             val drawable = IconDrawableLoader(context).loadDrawable(icon)!!
             drawable.clearColorFilter()
             DrawableCompat.setTint(
-                    drawable, ContextCompat.getColor(
+                drawable, ContextCompat.getColor(
                     context, R.color.colorSecondary
-            )
+                )
             )
             binding.editIconButton.background = drawable
             binding.editIconButton.tag = icon.id
@@ -56,8 +56,8 @@ class EditTaskFragment : TaskFragment() {
             : View? {
 
         binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_edit_task, container,
-                false
+            inflater, R.layout.fragment_edit_task, container,
+            false
         )
 
         val args = EditTaskFragmentArgs.fromBundle(this.arguments!!)
@@ -67,7 +67,7 @@ class EditTaskFragment : TaskFragment() {
         binding.details.setText(if (saved != null) saved.getString(KEY_DETAILS) else task.details)
         val iconId = if (saved != null) saved.getInt(KEY_ICON_ID) else task.iconId
         binding.editIconButton.background = App.iconPack.getIconDrawable(
-                iconId, IconDrawableLoader(this.context!!)
+            iconId, IconDrawableLoader(this.context!!)
         )
         binding.editIconButton.tag = iconId
 
@@ -80,12 +80,12 @@ class EditTaskFragment : TaskFragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
                 if (pos < 0) return
                 val unit = DurationUnit.valueOf(
-                        binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
+                    binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
                 )
                 val values = resources.getStringArray(unit.getResourceArrayId())
                 val adapter: ArrayAdapter<String> = ArrayAdapter(
-                        mContext,
-                        android.R.layout.simple_spinner_dropdown_item, values
+                    mContext,
+                    android.R.layout.simple_spinner_dropdown_item, values
                 )
                 binding.durationValue.adapter = adapter
                 if (firstTimeCalled) {
@@ -104,9 +104,9 @@ class EditTaskFragment : TaskFragment() {
         binding.difficulty.setSelection(difficultyPos)
 
         binding.goal.onFocusChangeListener =
-                KeyBoardHider()
+            KeyBoardHider()
         binding.details.onFocusChangeListener =
-                KeyBoardHider()
+            KeyBoardHider()
 
         binding.header.isFocusable = true
 
@@ -140,22 +140,30 @@ class EditTaskFragment : TaskFragment() {
         val details = binding.details.text.toString()
         val duration = binding.durationValue.selectedItem.toString().toInt()
         val durationUnit = DurationUnit.valueOf(
-                binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
+            binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
         )
         val finalDuration = duration.convert(durationUnit)
         val difficulty = Difficulty.valueOf(
-                binding.difficulty.selectedItem.toString().toUpperCase(Locale.getDefault())
+            binding.difficulty.selectedItem.toString().toUpperCase(Locale.getDefault())
         )
         val iconId: Int = Integer.parseInt(binding.editIconButton.tag.toString())
-        if (dbHandler.checkForChangesWithinTask(task.id, goal, details, finalDuration, difficulty, iconId)) {
+        if (dbHandler.checkForChangesWithinTask(
+                task.id,
+                goal,
+                details,
+                finalDuration,
+                difficulty,
+                iconId
+            )
+        ) {
             val updatedTask = dbHandler.updateTask(
-                    task.id, goal, details, finalDuration, difficulty, iconId
+                task.id, goal, details, finalDuration, difficulty, iconId
             )
             TaskListFragment.taskAdapter.items.set(itemPosition, updatedTask!!)
             TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
             Toast.makeText(
-                    context, "Task updated",
-                    Toast.LENGTH_SHORT
+                context, "Task updated",
+                Toast.LENGTH_SHORT
             ).show()
         }
     }

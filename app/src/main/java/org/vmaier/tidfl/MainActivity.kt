@@ -20,6 +20,7 @@ import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
 import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.databinding.ActivityMainBinding
+import org.vmaier.tidfl.features.skills.CreateSkillFragment
 import org.vmaier.tidfl.features.tasks.CreateTaskFragment
 import org.vmaier.tidfl.features.tasks.EditTaskFragment
 
@@ -56,8 +57,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         navView = findViewById(R.id.nav_view)
 
         val toggle = ActionBarDrawerToggle(
-                this, drawerLayout, toolbar,
-                0, 0
+            this, drawerLayout, toolbar,
+            0, 0
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         xpCounter.text = "${DatabaseHandler(this).calculateOverallXp()}XP"
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
-                ?: IconDialog.newInstance(IconDialogSettings())
+            ?: IconDialog.newInstance(IconDialogSettings())
     }
 
     fun selectIconButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -84,10 +85,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             val fragment = supportFragmentManager.primaryNavigationFragment!!
             val fragments = fragment.childFragmentManager.fragments
             fragments.forEach {
-                if (it is CreateTaskFragment) {
-                    CreateTaskFragment.setIcon(this, selectedIcon)
-                } else if (it is EditTaskFragment) {
-                    EditTaskFragment.setIcon(this, selectedIcon)
+                when (it) {
+                    is CreateTaskFragment -> {
+                        CreateTaskFragment.setIcon(this, selectedIcon)
+                    }
+                    is EditTaskFragment -> {
+                        EditTaskFragment.setIcon(this, selectedIcon)
+                    }
+                    is CreateSkillFragment -> {
+                        CreateSkillFragment.setIcon(this, selectedIcon)
+                    }
                 }
             }
         }

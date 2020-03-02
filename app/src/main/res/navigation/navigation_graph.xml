@@ -53,6 +53,16 @@
         android:id="@+id/skillListFragment"
         android:name="org.vmaier.tidfl.features.skills.SkillListFragment"
         android:label="SkillListFragment"
-        tools:layout="@layout/fragment_skill_list"/>
+        tools:layout="@layout/fragment_skill_list">
+        <action
+            android:id="@+id/action_skillListFragment_to_createSkillFragment"
+            app:destination="@id/createSkillFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createSkillFragment"
+        android:name="org.vmaier.tidfl.features.skills.CreateSkillFragment"
+        android:label="CreateSkillFragment"
+        tools:layout="@layout/fragment_create_skill" />
 
 </navigation>
