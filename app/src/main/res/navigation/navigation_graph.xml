@@ -32,13 +32,13 @@
 
     <fragment
         android:id="@+id/createTaskFragment"
-        android:name="org.vmaier.tidfl.features.tasks.CreateTaskFragment"
+        android:name="org.vmaier.tidfl.features.tasks.TaskCreateFragment"
         android:label="CreateTaskFragment"
         tools:layout="@layout/fragment_create_task" />
 
     <fragment
         android:id="@+id/editTaskFragment"
-        android:name="org.vmaier.tidfl.features.tasks.EditTaskFragment"
+        android:name="org.vmaier.tidfl.features.tasks.TaskEditFragment"
         android:label="EditTaskFragment"
         tools:layout="@layout/fragment_edit_task">
         <argument
@@ -56,12 +56,16 @@
         tools:layout="@layout/fragment_skill_list">
         <action
             android:id="@+id/action_skillListFragment_to_createSkillFragment"
-            app:destination="@id/createSkillFragment" />
+            app:destination="@id/createSkillFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
 
     <fragment
         android:id="@+id/createSkillFragment"
-        android:name="org.vmaier.tidfl.features.skills.CreateSkillFragment"
+        android:name="org.vmaier.tidfl.features.skills.SkillCreateFragment"
         android:label="CreateSkillFragment"
         tools:layout="@layout/fragment_create_skill" />
 
