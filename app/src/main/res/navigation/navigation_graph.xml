@@ -61,6 +61,13 @@
             app:exitAnim="@anim/exit_to_left"
             app:popEnterAnim="@anim/enter_from_left"
             app:popExitAnim="@anim/exit_to_right" />
+        <action
+            android:id="@+id/action_skillListFragment_to_skillEditFragment"
+            app:destination="@id/skillEditFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
 
     <fragment
@@ -68,5 +75,18 @@
         android:name="org.vmaier.tidfl.features.skills.SkillCreateFragment"
         android:label="CreateSkillFragment"
         tools:layout="@layout/fragment_create_skill" />
+
+    <fragment
+        android:id="@+id/skillEditFragment"
+        android:name="org.vmaier.tidfl.features.skills.SkillEditFragment"
+        android:label="SkillEditFragment"
+        tools:layout="@layout/fragment_edit_skill" >
+        <argument
+            android:name="skill"
+            app:argType="org.vmaier.tidfl.data.entity.Skill" />
+        <argument
+            android:name="itemPosition"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

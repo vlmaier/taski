@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
@@ -47,7 +48,12 @@ class SkillViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerVie
         levelView?.text = "Level ${skill.level}"
 
         itemView.setOnClickListener {
-
+            it.findNavController().navigate(
+                SkillListFragmentDirections.actionSkillListFragmentToSkillEditFragment(
+                    skill,
+                    this.adapterPosition
+                )
+            )
         }
     }
 }

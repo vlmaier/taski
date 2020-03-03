@@ -25,7 +25,7 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="Edit task"
+                android:text="Task information"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/edit_icon_button"

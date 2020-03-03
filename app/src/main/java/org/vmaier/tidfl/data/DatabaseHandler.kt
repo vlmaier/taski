@@ -252,6 +252,16 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
                 task.iconId == iconId)
     }
 
+    fun checkForChangesWithinSkill(
+        id: Long, name: String, category: String, iconId: Int
+    ): Boolean {
+
+        val skill = findSkill(id) ?: return false
+        return !(skill.name == name &&
+                skill.category == category &&
+                skill.iconId == iconId)
+    }
+
     fun updateTask(
         id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
         iconId: Int
@@ -276,6 +286,27 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         )
         db.close()
         return findTask(id)
+    }
+
+    fun updateSkill(
+        id: Long, name: String, category: String, iconId: Int
+    ): Skill? {
+
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(NAME, name)
+        values.put(CATEGORY, category)
+        values.put(ICON_ID, iconId)
+        val success = db.update(
+            SKILLS, values, "$ID = ?",
+            arrayOf(id.toString())
+        )
+        Log.i(
+            "DB", "Updating of skill with ID $id " +
+                    if (success != -1) "is successful" else "failed"
+        )
+        db.close()
+        return findSkill(id)
     }
 
     fun updateTaskStatus(task: Task, status: Status): Task? {
