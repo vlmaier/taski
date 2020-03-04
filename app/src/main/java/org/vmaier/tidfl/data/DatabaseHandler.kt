@@ -65,7 +65,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     fun calculateOverallXp(): Long {
 
         val query = "SELECT SUM($XP_GAIN) FROM $TASKS WHERE $STATUS = 'DONE'"
-        val db = this.writableDatabase
+        val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
         val xpCounter = if (cursor.moveToFirst()) cursor.getLong(0) else 0
         cursor.close()
@@ -75,7 +75,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     fun findAllTasks(): MutableList<Task> {
 
         val query = "SELECT * FROM $TASKS WHERE $STATUS = 'OPEN'"
-        val db = this.writableDatabase
+        val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
         val tasks = arrayListOf<Task>()
         if (cursor.moveToFirst()) {
@@ -110,7 +110,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     fun findAllSkills(): MutableList<Skill> {
 
         val query = "SELECT * FROM $SKILLS"
-        val db = this.writableDatabase
+        val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
         val skills = arrayListOf<Skill>()
         if (cursor.moveToFirst()) {
@@ -137,7 +137,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     fun findAllCategories(): ArrayList<String> {
 
         val query = "SELECT DISTINCT(category) FROM $SKILLS"
-        val db = this.writableDatabase
+        val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
         val categories = arrayListOf<String>()
         if (cursor.moveToFirst()) {
@@ -154,7 +154,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     fun findTask(taskId: Long): Task? {
 
         val query = "SELECT * FROM $TASKS WHERE $ID = $taskId"
-        val db = this.writableDatabase
+        val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
         var task: Task? = null
         if (cursor.moveToFirst()) {
@@ -205,7 +205,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     fun findSkill(skillId: Long): Skill? {
 
         val query = "SELECT * FROM $SKILLS WHERE $ID = $skillId"
-        val db = this.writableDatabase
+        val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
         var skill: Skill? = null
         if (cursor.moveToFirst()) {
@@ -307,6 +307,24 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         )
         db.close()
         return findSkill(id)
+    }
+
+    fun deleteSkill(skill: Skill) {
+
+        val db = this.writableDatabase
+        val success = db.delete(
+            SKILLS,  "$ID = ?",
+            arrayOf(skill.id.toString())
+        )
+        Log.i(
+            "DB", "Deleting of skill '${skill.name}'" +
+                    if (success != -1) " is successful" else "failed"
+        )
+        db.close()
+    }
+
+    fun restoreSkill(skill: Skill) {
+        addSkill(skill.name, skill.category, skill.iconId)
     }
 
     fun updateTaskStatus(task: Task, status: Status): Task? {

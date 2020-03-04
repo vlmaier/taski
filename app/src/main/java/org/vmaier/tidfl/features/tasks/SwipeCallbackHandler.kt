@@ -36,7 +36,7 @@ class SwipeCallbackHandler :
             // showing snack bar with undo option
             Snackbar.make(
                 viewHolder.itemView,
-                " Task completed (+${doneTask?.xpGain}XP)",
+                "Task completed (+${doneTask?.xpGain}XP)",
                 Snackbar.LENGTH_LONG
             ).setAction("UNDO") {
                 // undo is selected, restore the deleted item
@@ -47,7 +47,7 @@ class SwipeCallbackHandler :
             // showing snack bar with undo option
             Snackbar.make(
                 viewHolder.itemView,
-                " Task failed",
+                "Task failed",
                 Snackbar.LENGTH_LONG
             ).setAction("UNDO") {
                 // undo is selected, restore the deleted item

@@ -1,6 +1,7 @@
 package org.vmaier.tidfl.features.skills
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.App
@@ -69,6 +72,20 @@ class SkillEditFragment : SkillFragment() {
         binding.category.onFocusChangeListener = KeyBoardHider()
 
         binding.header.isFocusable = true
+
+        binding.deleteButton.setOnClickListener {
+            val removedSkill = SkillListFragment.skillAdapter.removeItem(itemPosition)
+            Snackbar.make(
+                it,
+                "Skill deleted",
+                Snackbar.LENGTH_LONG
+            ).setAction("UNDO") {
+                // undo is selected, restore the deleted item
+                SkillListFragment.skillAdapter.restoreItem(removedSkill!!, itemPosition)
+            }.setActionTextColor(Color.YELLOW).show()
+            it.findNavController().popBackStack()
+            it.hideKeyboard()
+        }
 
         return binding.root;
     }

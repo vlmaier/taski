@@ -21,6 +21,7 @@ import com.maltaisn.icondialog.pack.IconPack
 import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.databinding.ActivityMainBinding
 import org.vmaier.tidfl.features.skills.SkillCreateFragment
+import org.vmaier.tidfl.features.skills.SkillEditFragment
 import org.vmaier.tidfl.features.tasks.TaskCreateFragment
 import org.vmaier.tidfl.features.tasks.TaskEditFragment
 
@@ -94,6 +95,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                     }
                     is SkillCreateFragment -> {
                         SkillCreateFragment.setIcon(this, selectedIcon)
+                    }
+                    is SkillEditFragment -> {
+                        SkillEditFragment.setIcon(this, selectedIcon)
                     }
                 }
             }

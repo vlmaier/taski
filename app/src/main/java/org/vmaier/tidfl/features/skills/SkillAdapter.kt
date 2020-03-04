@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.entity.Skill
 
 
@@ -14,6 +15,8 @@ import org.vmaier.tidfl.data.entity.Skill
  */
 class SkillAdapter(list: MutableList<Skill>, private val context: Context) :
     RecyclerView.Adapter<SkillViewHolder>() {
+
+    private val dbHandler = DatabaseHandler(context)
 
     var items: MutableList<Skill> = list.toMutableList()
         set(value) {
@@ -32,4 +35,18 @@ class SkillAdapter(list: MutableList<Skill>, private val context: Context) :
     }
 
     override fun getItemCount(): Int = items.size
+
+    fun removeItem(position: Int): Skill? {
+        val skill = items.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, items.size)
+        dbHandler.deleteSkill(skill)
+        return skill
+    }
+
+    fun restoreItem(skill: Skill, position: Int) {
+        items.add(position, skill)
+        notifyItemInserted(position)
+        dbHandler.restoreSkill(skill)
+    }
 }
