@@ -21,11 +21,17 @@ data class Task(
     val createdAt: String = Date().toString(),
     val duration: Int,
     val difficulty: Difficulty = Difficulty.REGULAR,
-    val iconId: Int
+    val iconId: Int,
+    val skills: ArrayList<Skill> = arrayListOf()
 ) : Parcelable {
 
     val xpGain: Int
         get() {
             return difficulty.factor.times(duration).toInt()
+        }
+
+    val skillNames: List<String>
+        get() {
+            return skills.map { skill -> skill.name }
         }
 }

@@ -76,7 +76,7 @@ class SkillCreateFragment : SkillFragment() {
         val dbHandler = DatabaseHandler(mContext)
         val categories = dbHandler.findAllCategories()
 
-        val adapter = ArrayAdapter<String>(
+        val adapter = ArrayAdapter(
             mContext,
             R.layout.support_simple_spinner_dropdown_item, categories
         )

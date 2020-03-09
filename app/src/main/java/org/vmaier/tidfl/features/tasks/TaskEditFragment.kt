@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -11,6 +12,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
+import com.hootsuite.nachos.ChipConfiguration
+import com.hootsuite.nachos.chip.ChipInfo
+import com.hootsuite.nachos.chip.ChipSpan
+import com.hootsuite.nachos.chip.ChipSpanChipCreator
+import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.App
@@ -37,6 +43,7 @@ class TaskEditFragment : TaskFragment() {
 
         lateinit var binding: FragmentEditTaskBinding
         lateinit var task: Task
+        lateinit var skillNames: List<String>
 
         fun setIcon(context: Context, icon: Icon) {
 
@@ -63,9 +70,9 @@ class TaskEditFragment : TaskFragment() {
         val args = TaskEditFragmentArgs.fromBundle(this.arguments!!)
         task = args.task
         itemPosition = args.itemPosition
-        binding.goal.setText(if (saved != null) saved.getString(KEY_GOAL) else task.goal)
-        binding.details.setText(if (saved != null) saved.getString(KEY_DETAILS) else task.details)
-        val iconId = if (saved != null) saved.getInt(KEY_ICON_ID) else task.iconId
+        binding.goal.setText(saved?.getString(KEY_GOAL) ?: task.goal)
+        binding.details.setText(saved?.getString(KEY_DETAILS) ?: task.details)
+        val iconId = saved?.getInt(KEY_ICON_ID) ?: task.iconId
         binding.editIconButton.background = App.iconPack.getIconDrawable(
             iconId, IconDrawableLoader(this.context!!)
         )
@@ -103,10 +110,49 @@ class TaskEditFragment : TaskFragment() {
         binding.durationUnit.setSelection(unitPos)
         binding.difficulty.setSelection(difficultyPos)
 
-        binding.goal.onFocusChangeListener =
-            KeyBoardHider()
-        binding.details.onFocusChangeListener =
-            KeyBoardHider()
+        val dbHandler = DatabaseHandler(mContext)
+        skillNames = dbHandler.findAllSkillNames()
+
+        val adapter = ArrayAdapter(
+            mContext,
+            R.layout.support_simple_spinner_dropdown_item, skillNames
+        )
+        binding.skills.setAdapter(adapter)
+        binding.skills.onFocusChangeListener = OnFocusChangeListener { view, b ->
+            val allChips = binding.skills.allChips
+            val chipList: MutableList<ChipInfo> = arrayListOf()
+            for (chip in allChips) {
+                if (skillNames.contains(chip.text) &&
+                    chipList.find { it.text == chip.text } == null) {
+                    chipList.add(ChipInfo(chip.text, chip.data))
+                }
+            }
+            binding.skills.setTextWithChips(chipList)
+        }
+
+        binding.skills.chipTokenizer = SpanChipTokenizer(mContext, object : ChipSpanChipCreator() {
+            override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan {
+                val findAllSkills = dbHandler.findAllSkills()
+                val skill = findAllSkills.find { it.name == text }!!
+                val skillIcon = App.iconPack.getIconDrawable(
+                    skill.iconId, IconDrawableLoader(mContext))!!
+                DrawableCompat.setTint(
+                    skillIcon, ContextCompat.getColor(
+                        mContext, R.color.colorWhite
+                    )
+                )
+                return ChipSpan(context, text, skillIcon, data)
+            }
+            override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
+                super.configureChip(chip, chipConfiguration)
+                chip.setShowIconOnLeft(true)
+            }
+        }, ChipSpan::class.java)
+
+        binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: task.skillNames)
+
+        binding.goal.onFocusChangeListener = KeyBoardHider()
+        binding.details.onFocusChangeListener = KeyBoardHider()
 
         binding.header.isFocusable = true
 
@@ -128,6 +174,7 @@ class TaskEditFragment : TaskFragment() {
         out.putInt(KEY_DIFFICULTY, binding.difficulty.selectedItemPosition)
         out.putInt(KEY_DURATION_UNIT, binding.durationUnit.selectedItemPosition)
         out.putInt(KEY_DURATION_VALUE, binding.durationValue.selectedItemPosition)
+        out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.editIconButton.tag.toString()))
 
         saveChangesOnTask()
@@ -147,19 +194,16 @@ class TaskEditFragment : TaskFragment() {
             binding.difficulty.selectedItem.toString().toUpperCase(Locale.getDefault())
         )
         val iconId: Int = Integer.parseInt(binding.editIconButton.tag.toString())
+        val skills = binding.skills.chipAndTokenValues.toTypedArray()
         if (dbHandler.checkForChangesWithinTask(
-                task.id,
-                goal,
-                details,
-                finalDuration,
-                difficulty,
-                iconId
+                task.id, goal, details, finalDuration,
+                difficulty, iconId, skills
             )
         ) {
             val updatedTask = dbHandler.updateTask(
-                task.id, goal, details, finalDuration, difficulty, iconId
+                task.id, goal, details, finalDuration, difficulty, iconId, skills
             )
-            TaskListFragment.taskAdapter.items.set(itemPosition, updatedTask!!)
+            TaskListFragment.taskAdapter.items[itemPosition] = updatedTask!!
             TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
             Toast.makeText(
                 context, "Task updated",

@@ -16,6 +16,7 @@ open class TaskFragment : Fragment() {
     val KEY_DIFFICULTY = "difficulty"
     val KEY_DURATION_UNIT = "duration_unit"
     val KEY_DURATION_VALUE = "duration_value"
+    val KEY_SKILLS = "skills"
     val KEY_ICON_ID = "icon_id"
 
     override fun onAttach(context: Context) {
