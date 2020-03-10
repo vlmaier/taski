@@ -31,7 +31,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
                         "$DURATION INTEGER, " +
                         "$DIFFICULTY TEXT, " +
                         "$ICON_ID INTEGER, " +
-                        "$XP_GAIN TEXT" +
+                        "$XP INTEGER" +
                         ")"
 
         val CREATE_TABLE_SKILLS =
@@ -63,7 +63,20 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
 
     fun calculateOverallXp(): Long {
 
-        val query = "SELECT SUM($XP_GAIN) FROM $TASKS WHERE $STATUS = 'DONE'"
+        val query = "SELECT SUM($XP) FROM $TASKS WHERE $STATUS = 'DONE'"
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(query, null)
+        val xpCounter = if (cursor.moveToFirst()) cursor.getLong(0) else 0
+        cursor.close()
+        db.close()
+        return xpCounter
+    }
+
+    fun calculateSkillXp(skillId: Long): Long {
+
+        val query = "SELECT SUM($XP) FROM $TASKS " +
+                "INNER JOIN $TASK_SKILLS ON $TASK_ID = $ID " +
+                "WHERE $SKILL_ID = $skillId AND $STATUS = 'DONE'"
         val db = this.readableDatabase
         val cursor = db.rawQuery(query, null)
         val xpCounter = if (cursor.moveToFirst()) cursor.getLong(0) else 0
@@ -90,7 +103,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
                 val iconId = cursor.getInt(7)
                 val skills = findTaskAssociatedSkills(id)
                 tasks.add(
-                        Task(id, goal, details, status, createdAt, duration, difficulty, iconId, skills)
+                    Task(id, goal, details, status, createdAt, duration, difficulty, iconId, skills)
                 )
                 cursor.moveToNext()
             }
@@ -113,12 +126,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
                 val category = cursor.getString(2)
                 val iconId = cursor.getInt(3)
                 skills.add(
-                        Skill(
-                                id,
-                                name,
-                                category,
-                                iconId
-                        )
+                    Skill(id, name, category, iconId)
                 )
                 cursor.moveToNext()
             }
@@ -223,7 +231,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
             values.put(DURATION, duration)
             values.put(DIFFICULTY, difficulty.name)
             values.put(ICON_ID, iconId)
-            values.put(XP_GAIN, difficulty.factor.times(duration).toInt())
+            values.put(XP, difficulty.factor.times(duration).toInt())
             val success = db.insert(TASKS, null, values)
             if (skills.isNotEmpty()) addSkills(success, skills)
             db.setTransactionSuccessful()
@@ -316,7 +324,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
             values.put(DURATION, duration)
             values.put(DIFFICULTY, difficulty.name)
             values.put(ICON_ID, iconId)
-            values.put(XP_GAIN, difficulty.factor.times(duration).toInt())
+            values.put(XP, difficulty.factor.times(duration).toInt())
             db.update(TASKS, values, "$ID = ?", arrayOf(id.toString()))
             updateTaskSkills(id, skills)
             db.setTransactionSuccessful()
@@ -391,7 +399,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         private const val DURATION = "duration"
         private const val DIFFICULTY = "difficulty"
         private const val ICON_ID = "icon_id"
-        private const val XP_GAIN = "xp_gain"
+        private const val XP = "xp"
         private const val NAME = "name";
         private const val CATEGORY = "category"
         private const val TASK_ID = "task_id"

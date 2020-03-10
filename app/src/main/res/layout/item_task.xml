@@ -28,7 +28,7 @@
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 app:layout_constraintBottom_toBottomOf="@+id/task_goal"
-                app:layout_constraintEnd_toEndOf="@+id/task_xp_gain"
+                app:layout_constraintEnd_toEndOf="@+id/task_xp"
                 app:layout_constraintTop_toTopOf="@+id/task_goal"
                 app:srcCompat="@drawable/ic_baseline_access_time_24" />
 
@@ -37,7 +37,7 @@
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 app:layout_constraintBottom_toBottomOf="@+id/task_details"
-                app:layout_constraintEnd_toEndOf="@+id/task_xp_gain"
+                app:layout_constraintEnd_toEndOf="@+id/task_xp"
                 app:layout_constraintStart_toStartOf="@+id/time_icon"
                 app:layout_constraintTop_toBottomOf="@+id/task_goal"
                 app:srcCompat="@drawable/ic_baseline_style_24" />
@@ -98,7 +98,7 @@
                 tools:text="Details" />
 
             <TextView
-                android:id="@+id/task_xp_gain"
+                android:id="@+id/task_xp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"

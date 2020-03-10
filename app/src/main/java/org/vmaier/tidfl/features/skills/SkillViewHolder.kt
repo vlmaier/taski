@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
+import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.entity.Skill
 
 
@@ -44,8 +45,10 @@ class SkillViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerVie
             )
         )
         iconView?.background = App.iconPack.getIcon(skill.iconId)?.drawable
-        xpView?.text = "${skill.xpGain}XP"
-        levelView?.text = "Level ${skill.level}"
+        val dbHandler = DatabaseHandler(context)
+        val skillXp = dbHandler.calculateSkillXp(skill.id)
+        xpView?.text = "${skillXp}XP"
+        levelView?.text = "Level ${skillXp.div(1000) + 1}"
 
         itemView.setOnClickListener {
             it.findNavController().navigate(

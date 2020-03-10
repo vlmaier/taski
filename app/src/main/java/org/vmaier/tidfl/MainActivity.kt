@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         private const val ICON_DIALOG_TAG = "icon_dialog"
         lateinit var drawerLayout: DrawerLayout
         lateinit var xpCounter: TextView
+        lateinit var levelCounter: TextView
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +68,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         val headerView = navView.getHeaderView(0)
         xpCounter = headerView.findViewById<View>(R.id.xp_counter) as TextView
-        xpCounter.text = "${DatabaseHandler(this).calculateOverallXp()}XP"
+        levelCounter = headerView.findViewById<View>(R.id.level_counter) as TextView
+        val xp = DatabaseHandler(this).calculateOverallXp()
+        xpCounter.text = "${xp}XP"
+        levelCounter.text = "Level ${xp.div(10000) + 1}"
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())

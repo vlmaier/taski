@@ -25,7 +25,7 @@ data class Task(
     val skills: ArrayList<Skill> = arrayListOf()
 ) : Parcelable {
 
-    val xpGain: Int
+    val xp: Int
         get() {
             return difficulty.factor.times(duration).toInt()
         }

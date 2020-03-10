@@ -55,7 +55,9 @@ class TaskAdapter(list: MutableList<Task>, private val context: Context) :
 
         val updateTask = dbHandler.updateTaskStatus(task, status)
         if (status != Status.FAILED) {
-            MainActivity.xpCounter.text = "${DatabaseHandler(context).calculateOverallXp()}XP"
+            val xp = DatabaseHandler(context).calculateOverallXp()
+            MainActivity.xpCounter.text = "${xp}XP"
+            MainActivity.levelCounter.text = "Level ${xp.div(10000) + 1}"
         }
         return updateTask
     }

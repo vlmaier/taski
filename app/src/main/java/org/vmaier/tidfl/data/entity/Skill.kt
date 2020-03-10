@@ -15,14 +15,4 @@ data class Skill(
     val name: String,
     val category: String,
     val iconId: Int
-) : Parcelable {
-    val xpGain: Int
-        get() {
-            return 0
-        }
-
-    val level: Int
-        get() {
-            return 1
-        }
-}
+) : Parcelable

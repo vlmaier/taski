@@ -32,7 +32,7 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
     private var goal: TextView? = itemView.findViewById(R.id.task_goal)
     private var details: TextView? = itemView.findViewById(R.id.task_details)
     private var taskIcon: ImageView? = itemView.findViewById(R.id.task_icon)
-    private var xpGain: TextView? = itemView.findViewById(R.id.task_xp_gain)
+    private var xp: TextView? = itemView.findViewById(R.id.task_xp)
     private var duration: TextView? = itemView.findViewById(R.id.task_duration)
     private var skillIcon: ImageView? = itemView.findViewById(R.id.skill_icon)
     private var skillText: TextView? = itemView.findViewById(R.id.skill_amount)
@@ -49,7 +49,7 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
             )
         )
         taskIcon?.background = App.iconPack.getIcon(task.iconId)?.drawable
-        xpGain?.text = "${task.xpGain}XP"
+        xp?.text = "${task.xp}XP"
         duration?.text = "${task.getHumanReadableValue()}"
         val skillsAmount = task.skills.size
         if (task.skills.isNotEmpty()) {
