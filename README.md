@@ -3,18 +3,18 @@
 #### TODO:
 
 ##### Skill Management
-- [ ] create skill
-- [ ] edit skill
-- [ ] delete skill
-- [ ] view skill(s)
-- [ ] assign (multiple) skills to tasks
-- [ ] track xp gained on skill(s) after task completion
-- [ ] track skill level
+- [x] create skill
+- [x] edit skill
+- [x] delete skill
+- [x] view skill(s)
+- [x] assign (multiple) skills to tasks
+- [x] track xp gained on skill(s) after task completion
+- [x] track skill level
 - [ ] track cumulative xp gained on category
 
 ##### Profile Management
-- [ ] track overall xp gained
-- [ ] track overall level
+- [x] track overall xp gained
+- [x] track overall level
 
 ##### Statistics
 - [ ] xp gained daily / weekly / monthly (bar graph)
@@ -35,3 +35,4 @@
 - [ ] app icon
 - [ ] landscape layout
 - [ ] clean spinner design
+- [ ] implement difficulty design with chips
