@@ -2,6 +2,7 @@ package org.vmaier.tidfl.features.tasks
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -28,25 +29,37 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
 ) {
 
     private var id: Long = 0
-    private var goalView: TextView? = itemView.findViewById(R.id.task_goal)
-    private var detailsView: TextView? = itemView.findViewById(R.id.task_details)
-    private var iconView: ImageView? = itemView.findViewById(R.id.task_icon)
-    private var xpView: TextView? = itemView.findViewById(R.id.task_xp_gain)
-    private var durationView: TextView? = itemView.findViewById(R.id.task_duration)
+    private var goal: TextView? = itemView.findViewById(R.id.task_goal)
+    private var details: TextView? = itemView.findViewById(R.id.task_details)
+    private var taskIcon: ImageView? = itemView.findViewById(R.id.task_icon)
+    private var xpGain: TextView? = itemView.findViewById(R.id.task_xp_gain)
+    private var duration: TextView? = itemView.findViewById(R.id.task_duration)
+    private var skillIcon: ImageView? = itemView.findViewById(R.id.skill_icon)
+    private var skillText: TextView? = itemView.findViewById(R.id.skill_amount)
 
     fun bind(context: Context, task: Task) {
+
         id = task.id
-        goalView?.text = task.goal
-        detailsView?.text = task.details
+        goal?.text = task.goal
+        details?.text = task.details
         val drawable = App.iconPack.getIcon(task.iconId)?.drawable!!
         DrawableCompat.setTint(
             drawable, ContextCompat.getColor(
                 context, R.color.colorSecondary
             )
         )
-        iconView?.background = App.iconPack.getIcon(task.iconId)?.drawable
-        xpView?.text = "${task.xpGain}XP"
-        durationView?.text = "${task.getHumanReadableValue()}"
+        taskIcon?.background = App.iconPack.getIcon(task.iconId)?.drawable
+        xpGain?.text = "${task.xpGain}XP"
+        duration?.text = "${task.getHumanReadableValue()}"
+        val skillsAmount = task.skills.size
+        if (task.skills.isNotEmpty()) {
+            skillIcon?.visibility = View.VISIBLE
+            skillText?.text = "$skillsAmount " + if (skillsAmount == 1) "skill" else "skills"
+            skillText?.visibility = View.VISIBLE
+        } else {
+            skillIcon?.visibility = View.INVISIBLE
+            skillText?.visibility = View.INVISIBLE
+        }
 
         itemView.setOnClickListener {
             it.findNavController().navigate(

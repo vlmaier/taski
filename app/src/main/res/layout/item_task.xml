@@ -33,18 +33,19 @@
                 app:srcCompat="@drawable/ic_baseline_access_time_24" />
 
             <ImageView
-                android:id="@+id/task_skill_group_color"
-                android:layout_width="8dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@android:color/holo_red_dark" />
+                android:id="@+id/skill_icon"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                app:layout_constraintBottom_toBottomOf="@+id/task_details"
+                app:layout_constraintEnd_toEndOf="@+id/task_xp_gain"
+                app:layout_constraintStart_toStartOf="@+id/time_icon"
+                app:layout_constraintTop_toBottomOf="@+id/task_goal"
+                app:srcCompat="@drawable/ic_baseline_style_24" />
 
             <ImageView
                 android:id="@+id/task_icon"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="2dp"
@@ -60,9 +61,8 @@
                 android:id="@+id/task_goal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:lines="1"
@@ -101,13 +101,25 @@
                 android:id="@+id/task_xp_gain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="4dp"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/task_skill_group_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/task_details"
                 tools:text="250 XP" />
+
+            <TextView
+                android:id="@+id/skill_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:layout_marginRight="3dp"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/skill_icon"
+                app:layout_constraintTop_toTopOf="@+id/skill_icon"
+                tools:text="2 skills" />
 
             <TextView
                 android:id="@+id/task_duration"
