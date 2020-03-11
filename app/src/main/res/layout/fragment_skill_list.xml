@@ -30,11 +30,13 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_medium"
             android:clickable="true"
             android:focusable="true"
+            app:tint="@color/colorTextOnSecondary"
             app:fabSize="auto"
             app:layout_anchor="@id/rv"
             app:layout_anchorGravity="bottom|right|end"

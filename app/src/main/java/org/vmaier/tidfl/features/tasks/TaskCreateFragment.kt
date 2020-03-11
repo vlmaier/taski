@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import com.google.android.material.chip.Chip
 import com.hootsuite.nachos.ChipConfiguration
 import com.hootsuite.nachos.chip.ChipInfo
 import com.hootsuite.nachos.chip.ChipSpan
@@ -20,6 +21,7 @@ import com.hootsuite.nachos.chip.ChipSpanChipCreator
 import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
+import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DatabaseHandler
@@ -46,6 +48,7 @@ class TaskCreateFragment : TaskFragment() {
 
         lateinit var binding: FragmentCreateTaskBinding
         lateinit var skillNames: List<String>
+        lateinit var difficulty: String
 
         fun setIcon(context: Context, icon: Icon) {
 
@@ -86,7 +89,6 @@ class TaskCreateFragment : TaskFragment() {
 
         binding.goal.setText(saved?.getString(KEY_GOAL) ?: "")
         binding.details.setText(saved?.getString(KEY_DETAILS) ?: "")
-        binding.difficulty.setSelection(saved?.getInt(KEY_DIFFICULTY) ?: 1)
 
         binding.createTaskButton.setOnClickListener {
             createTaskButtonClicked(it)
@@ -152,6 +154,7 @@ class TaskCreateFragment : TaskFragment() {
                 )
                 return ChipSpan(context, text, skillIcon, data)
             }
+
             override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
                 super.configureChip(chip, chipConfiguration)
                 chip.setShowIconOnLeft(true)
@@ -159,6 +162,18 @@ class TaskCreateFragment : TaskFragment() {
         }, ChipSpan::class.java)
 
         binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS))
+
+        binding.difficulty.setOnCheckedChangeListener { chipGroup, i ->
+            val chip: Chip = chipGroup.findViewById(i)
+            difficulty = chip.text.toString().toUpperCase(Locale.getDefault())
+        }
+        val selectedDifficulty = Difficulty.valueOf(
+            saved?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
+        )
+        binding.difficulty.trivial.isChecked = selectedDifficulty == Difficulty.TRIVIAL
+        binding.difficulty.regular.isChecked = selectedDifficulty == Difficulty.REGULAR
+        binding.difficulty.hard.isChecked = selectedDifficulty == Difficulty.HARD
+        binding.difficulty.insane.isChecked = selectedDifficulty == Difficulty.INSANE
 
         binding.goal.onFocusChangeListener = KeyBoardHider()
         binding.details.onFocusChangeListener = KeyBoardHider()
@@ -181,7 +196,7 @@ class TaskCreateFragment : TaskFragment() {
 
         out.putString(KEY_GOAL, binding.goal.text.toString())
         out.putString(KEY_DETAILS, binding.goal.text.toString())
-        out.putInt(KEY_DIFFICULTY, binding.difficulty.selectedItemPosition)
+        out.putString(KEY_DIFFICULTY, difficulty)
         out.putInt(KEY_DURATION_UNIT, binding.durationUnit.selectedItemPosition)
         out.putInt(KEY_DURATION_VALUE, binding.durationValue.selectedItemPosition)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
@@ -198,12 +213,17 @@ class TaskCreateFragment : TaskFragment() {
             binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
         )
         val finalDuration = duration.convert(durationUnit)
-        val difficulty = Difficulty.valueOf(
-            binding.difficulty.selectedItem.toString().toUpperCase(Locale.getDefault())
-        )
         val iconId: Int = Integer.parseInt(binding.selectIconButton.tag.toString())
         val skills = binding.skills.chipAndTokenValues.toTypedArray()
-        dbHandler.addTask(goal, details, Status.OPEN, finalDuration, difficulty, iconId, skills)
+        dbHandler.addTask(
+            goal,
+            details,
+            Status.OPEN,
+            finalDuration,
+            Difficulty.valueOf(difficulty),
+            iconId,
+            skills
+        )
         return true;
     }
 }

@@ -106,23 +106,53 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/duration_text" />
 
-            <Spinner
+            <com.google.android.material.chip.ChipGroup
                 android:id="@+id/difficulty"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
-                android:entries="@array/difficulty"
-                android:spinnerMode="dropdown"
-                app:layout_constraintEnd_toEndOf="@+id/duration_value"
-                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/difficulty_text" />
+                app:layout_constraintTop_toBottomOf="@+id/difficulty_text"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/trivial"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="trivial" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/regular"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="regular" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/hard"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="hard" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/insane"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="insane" />
+
+            </com.google.android.material.chip.ChipGroup>
 
             <Button
                 android:id="@+id/create_task_button"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -171,8 +201,6 @@
                 android:layout_marginTop="24dp"
                 android:text="Difficulty"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/difficulty"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/duration_value" />
 
@@ -206,7 +234,7 @@
 
             <Button
                 android:id="@+id/cancel_button"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
