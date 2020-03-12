@@ -2,19 +2,30 @@
 
 #### TODO:
 
+#### Task Management
+- [ ] show task xp in details view
+- [ ] show done tasks
+- [ ] show failed tasks
+- [ ] show tasks grouped by tags
+- [ ] show tasks grouped by skills
+
+##### Tag Management
+- [ ] create tags
+- [ ] show tags
+- [ ] edit tags
+- [ ] delete tags
+- [ ] assign (multiple) tags to tasks
+
 ##### Skill Management
-- [x] create skill
-- [x] edit skill
-- [x] delete skill
-- [x] view skill(s)
-- [x] assign (multiple) skills to tasks
-- [x] track xp gained on skill(s) after task completion
-- [x] track skill level
-- [ ] track cumulative xp gained on category
+- [ ] show skill xp in details view
+- [ ] show skill level in details view
+- [ ] show active tasks with the skill in details view
+- [ ] count all (done) tasks with the skill in details view
 
 ##### Profile Management
-- [x] track overall xp gained
-- [x] track overall level
+- [ ] change profile avatar
+- [ ] set user name
+- [ ] remove profile menu item
 
 ##### Statistics
 - [ ] xp gained daily / weekly / monthly (bar graph)
@@ -34,5 +45,11 @@
 ##### UI
 - [ ] app icon
 - [ ] landscape layout
-- [ ] clean spinner design
-- [ ] implement difficulty design with chips
+- [ ] layout for smaller phone screens
+- [ ] tablet layout
+- [ ] implement duration design with duration picker 
+- [ ] implement themes
+- [ ] improve skill item card design
+
+##### Improvements
+- [ ] input validation
