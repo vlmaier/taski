@@ -106,23 +106,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/duration_text" />
 
-            <Spinner
-                android:id="@+id/difficulty"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:entries="@array/difficulty"
-                android:spinnerMode="dropdown"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/duration_value"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/difficulty_text"
-                app:layout_constraintVertical_bias="0.0" />
-
             <ImageButton
                 android:id="@+id/edit_icon_button"
                 android:layout_width="100dp"
@@ -150,32 +133,75 @@
                 app:layout_constraintTop_toBottomOf="@+id/details" />
 
             <TextView
-                android:id="@+id/difficulty_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="24dp"
-                android:text="Difficulty"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/difficulty"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/duration_value" />
+                    android:id="@+id/difficulty_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Difficulty"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/duration_value" />
+
+            <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/difficulty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/difficulty_text"
+                    app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                        android:id="@+id/trivial"
+                        style="@style/CustomChipChoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="trivial" />
+
+                <com.google.android.material.chip.Chip
+                        android:id="@+id/regular"
+                        style="@style/CustomChipChoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:checked="true"
+                        android:text="regular" />
+
+                <com.google.android.material.chip.Chip
+                        android:id="@+id/hard"
+                        style="@style/CustomChipChoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="hard" />
+
+                <com.google.android.material.chip.Chip
+                        android:id="@+id/insane"
+                        style="@style/CustomChipChoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="insane" />
+
+            </com.google.android.material.chip.ChipGroup>
 
             <TextView
-                android:id="@+id/skills_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="24dp"
-                android:text="Skills"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/skills"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/difficulty" />
+                    android:id="@+id/skills_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="24dp"
+                    android:text="Skills"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/skills"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/difficulty" />
 
             <com.hootsuite.nachos.NachoTextView
                 android:id="@+id/skills"

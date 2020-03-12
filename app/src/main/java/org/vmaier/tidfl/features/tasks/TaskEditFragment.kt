@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.chip.Chip
 import com.hootsuite.nachos.ChipConfiguration
 import com.hootsuite.nachos.chip.ChipInfo
 import com.hootsuite.nachos.chip.ChipSpan
@@ -19,6 +20,7 @@ import com.hootsuite.nachos.chip.ChipSpanChipCreator
 import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
+import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DatabaseHandler
@@ -44,6 +46,7 @@ class TaskEditFragment : TaskFragment() {
         lateinit var binding: FragmentEditTaskBinding
         lateinit var task: Task
         lateinit var skillNames: List<String>
+        lateinit var difficulty: String
 
         fun setIcon(context: Context, icon: Icon) {
 
@@ -80,7 +83,6 @@ class TaskEditFragment : TaskFragment() {
 
         val unitPos = saved?.getInt(KEY_DURATION_UNIT) ?: task.getPosForUnitSpinner()
         val valuePos = saved?.getInt(KEY_DURATION_VALUE) ?: task.getPosForValueSpinner()
-        val difficultyPos = saved?.getInt(KEY_DIFFICULTY) ?: task.getPosForDifficultySpinner()
 
         binding.durationUnit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             var firstTimeCalled = true
@@ -108,7 +110,6 @@ class TaskEditFragment : TaskFragment() {
             }
         }
         binding.durationUnit.setSelection(unitPos)
-        binding.difficulty.setSelection(difficultyPos)
 
         val dbHandler = DatabaseHandler(mContext)
         skillNames = dbHandler.findAllSkillNames()
@@ -151,6 +152,18 @@ class TaskEditFragment : TaskFragment() {
 
         binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: task.skillNames)
 
+        binding.difficulty.setOnCheckedChangeListener { chipGroup, i ->
+            val chip: Chip = chipGroup.findViewById(i)
+            difficulty = chip.text.toString().toUpperCase(Locale.getDefault())
+        }
+        val selectedDifficulty = Difficulty.valueOf(
+            saved?.getString(KEY_DIFFICULTY) ?: task.difficulty.name
+        )
+        binding.difficulty.trivial.isChecked = selectedDifficulty == Difficulty.TRIVIAL
+        binding.difficulty.regular.isChecked = selectedDifficulty == Difficulty.REGULAR
+        binding.difficulty.hard.isChecked = selectedDifficulty == Difficulty.HARD
+        binding.difficulty.insane.isChecked = selectedDifficulty == Difficulty.INSANE
+
         binding.goal.onFocusChangeListener = KeyBoardHider()
         binding.details.onFocusChangeListener = KeyBoardHider()
 
@@ -171,7 +184,7 @@ class TaskEditFragment : TaskFragment() {
 
         out.putString(KEY_GOAL, binding.goal.text.toString())
         out.putString(KEY_DETAILS, binding.goal.text.toString())
-        out.putInt(KEY_DIFFICULTY, binding.difficulty.selectedItemPosition)
+        out.putString(KEY_DIFFICULTY, difficulty)
         out.putInt(KEY_DURATION_UNIT, binding.durationUnit.selectedItemPosition)
         out.putInt(KEY_DURATION_VALUE, binding.durationValue.selectedItemPosition)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
@@ -190,18 +203,15 @@ class TaskEditFragment : TaskFragment() {
             binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
         )
         val finalDuration = duration.convert(durationUnit)
-        val difficulty = Difficulty.valueOf(
-            binding.difficulty.selectedItem.toString().toUpperCase(Locale.getDefault())
-        )
         val iconId: Int = Integer.parseInt(binding.editIconButton.tag.toString())
         val skills = binding.skills.chipAndTokenValues.toTypedArray()
         if (dbHandler.checkForChangesWithinTask(
                 task.id, goal, details, finalDuration,
-                difficulty, iconId, skills
+                Difficulty.valueOf(difficulty), iconId, skills
             )
         ) {
             val updatedTask = dbHandler.updateTask(
-                task.id, goal, details, finalDuration, difficulty, iconId, skills
+                task.id, goal, details, finalDuration, Difficulty.valueOf(difficulty), iconId, skills
             )
             TaskListFragment.taskAdapter.items[itemPosition] = updatedTask!!
             TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
