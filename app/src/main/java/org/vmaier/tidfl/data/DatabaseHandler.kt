@@ -221,7 +221,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     ): Task? {
 
         val db = this.writableDatabase
-        db.beginTransaction();
+        db.beginTransaction()
         try {
             val values = ContentValues()
             values.put(GOAL, goal)
@@ -315,7 +315,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     ): Task? {
 
         val db = this.writableDatabase
-        db.beginTransaction();
+        db.beginTransaction()
         try {
             val values = ContentValues()
             values.put(GOAL, goal)
@@ -400,7 +400,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         private const val DIFFICULTY = "difficulty"
         private const val ICON_ID = "icon_id"
         private const val XP = "xp"
-        private const val NAME = "name";
+        private const val NAME = "name"
         private const val CATEGORY = "category"
         private const val TASK_ID = "task_id"
         private const val SKILL_ID = "skill_id"

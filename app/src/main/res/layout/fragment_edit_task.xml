@@ -32,7 +32,7 @@
                 android:text="Task information"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/edit_icon_button"
+                app:layout_constraintEnd_toStartOf="@+id/icon_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 />
@@ -54,7 +54,7 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/edit_icon_button"
+                app:layout_constraintEnd_toStartOf="@+id/icon_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/header"
                 />
@@ -74,7 +74,7 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/edit_icon_button"
+                app:layout_constraintEnd_toEndOf="@+id/icon_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/goal"
                 />
@@ -96,27 +96,8 @@
                 app:layout_constraintTop_toTopOf="@+id/duration_value"
                 />
 
-            <Spinner
-                android:id="@+id/duration_value"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:entries="@array/duration_minutes"
-                android:isScrollContainer="true"
-                android:spinnerMode="dropdown"
-                app:layout_constraintEnd_toStartOf="@+id/duration_unit"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/duration_text"
-                />
-
             <ImageButton
-                android:id="@+id/edit_icon_button"
+                android:id="@+id/icon_button"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginEnd="16dp"
@@ -138,9 +119,35 @@
                 android:layout_marginTop="24dp"
                 android:text="Duration"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="@+id/duration_value"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/details"
+                />
+
+            <TextView
+                android:id="@+id/duration_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/duration_text"
+                app:layout_constraintEnd_toEndOf="@+id/duration_bar"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/duration_text"
+                app:layout_constraintTop_toTopOf="@+id/duration_text"
+                tools:text="15 minutes"
+                />
+
+            <SeekBar
+                android:id="@+id/duration_bar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:max="20"
+                tools:progress="3"
+                app:layout_constraintEnd_toEndOf="@+id/details"
+                app:layout_constraintStart_toStartOf="@+id/details"
+                app:layout_constraintTop_toBottomOf="@+id/duration_text"
                 />
 
             <TextView
@@ -153,8 +160,7 @@
                 android:text="Difficulty"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/duration_value"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/duration_bar" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/difficulty"

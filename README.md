@@ -8,6 +8,7 @@
 - [ ] show failed tasks
 - [ ] show tasks grouped by tags
 - [ ] show tasks grouped by skills
+- [ ] show xp calculated while creating/editing a task
 
 ##### Tag Management
 - [ ] create tags

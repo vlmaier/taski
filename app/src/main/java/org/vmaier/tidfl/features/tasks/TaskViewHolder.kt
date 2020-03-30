@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.entity.Task
-import org.vmaier.tidfl.util.getHumanReadableValue
+import org.vmaier.tidfl.util.getHumanReadableDurationValue
 
 
 /**
@@ -50,7 +50,7 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
         )
         taskIcon?.background = App.iconPack.getIcon(task.iconId)?.drawable
         xp?.text = "${task.xp}XP"
-        duration?.text = "${task.getHumanReadableValue()}"
+        duration?.text = "${task.getHumanReadableDurationValue()}"
         val skillsAmount = task.skills.size
         if (task.skills.isNotEmpty()) {
             skillIcon?.visibility = View.VISIBLE

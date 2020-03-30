@@ -6,7 +6,8 @@ package org.vmaier.tidfl.data
  * at 13:41
  */
 enum class DurationUnit(val value: String) {
-    MINUTES("minutes"),
-    HOURS("hours"),
-    DAYS("days")
+    MINUTE("minute"),
+    HOUR("hour"),
+    DAY("day"),
+    WEEK("week"),
 }

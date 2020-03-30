@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -18,14 +18,12 @@ import com.hootsuite.nachos.chip.ChipInfo
 import com.hootsuite.nachos.chip.ChipSpan
 import com.hootsuite.nachos.chip.ChipSpanChipCreator
 import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
-import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.Difficulty
-import org.vmaier.tidfl.data.DurationUnit
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.databinding.FragmentEditTaskBinding
 import org.vmaier.tidfl.util.*
@@ -42,24 +40,10 @@ class TaskEditFragment : TaskFragment() {
     var itemPosition: Int = 0
 
     companion object {
-
         lateinit var binding: FragmentEditTaskBinding
         lateinit var task: Task
         lateinit var skillNames: List<String>
         lateinit var difficulty: String
-
-        fun setIcon(context: Context, icon: Icon) {
-
-            val drawable = IconDrawableLoader(context).loadDrawable(icon)!!
-            drawable.clearColorFilter()
-            DrawableCompat.setTint(
-                drawable, ContextCompat.getColor(
-                    context, R.color.colorSecondary
-                )
-            )
-            binding.editIconButton.background = drawable
-            binding.editIconButton.tag = icon.id
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?)
@@ -73,49 +57,32 @@ class TaskEditFragment : TaskFragment() {
         val args = TaskEditFragmentArgs.fromBundle(this.arguments!!)
         task = args.task
         itemPosition = args.itemPosition
-        binding.goal.setText(saved?.getString(KEY_GOAL) ?: task.goal)
+        binding.goal.setText(saved?.getString(TaskFragment.KEY_GOAL) ?: task.goal)
         binding.details.setText(saved?.getString(KEY_DETAILS) ?: task.details)
-        val iconId = saved?.getInt(KEY_ICON_ID) ?: task.iconId
-        binding.editIconButton.background = App.iconPack.getIconDrawable(
-            iconId, IconDrawableLoader(this.context!!)
-        )
-        binding.editIconButton.tag = iconId
 
-        val unitPos = saved?.getInt(KEY_DURATION_UNIT) ?: task.getPosForUnitSpinner()
-        val valuePos = saved?.getInt(KEY_DURATION_VALUE) ?: task.getPosForValueSpinner()
+        setTaskIcon(saved, binding.iconButton)
 
-        binding.durationUnit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            var firstTimeCalled = true
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                if (pos < 0) return
-                val unit = DurationUnit.valueOf(
-                    binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
-                )
-                val values = resources.getStringArray(unit.getResourceArrayId())
-                val adapter: ArrayAdapter<String> = ArrayAdapter(
-                    mContext,
-                    android.R.layout.simple_spinner_dropdown_item, values
-                )
-                binding.durationValue.adapter = adapter
-                if (firstTimeCalled) {
-                    binding.durationValue.setSelection(valuePos)
-                    firstTimeCalled = false
-                } else if (saved != null) {
-                    binding.durationValue.setSelection(saved.getInt(KEY_DURATION_VALUE))
+        // default 3 (=15 min)
+        binding.durationBar.progress = saved?.getInt(KEY_DURATION) ?: task.getSeekBarValue()
+        binding.durationValue.text = binding.durationBar.getHumanReadableValue()
+        binding.durationBar.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
+                binding.durationValue.text = seek.getHumanReadableValue()
+                // set minimum to 1 (=5 min)
+                if (progress <= 1) {
+                    binding.durationBar.progress = 1
                 }
             }
+            override fun onStartTrackingTouch(seek: SeekBar) = Unit
+            override fun onStopTrackingTouch(seek: SeekBar) = Unit
+        })
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // do nothing
-            }
-        }
-        binding.durationUnit.setSelection(unitPos)
-
-        val dbHandler = DatabaseHandler(mContext)
+        val dbHandler = DatabaseHandler(cntxt)
         skillNames = dbHandler.findAllSkillNames()
 
         val adapter = ArrayAdapter(
-            mContext,
+            cntxt,
             R.layout.support_simple_spinner_dropdown_item, skillNames
         )
         binding.skills.setAdapter(adapter)
@@ -132,16 +99,16 @@ class TaskEditFragment : TaskFragment() {
             binding.skills.setTextWithChips(chipList)
         }
 
-        binding.skills.chipTokenizer = SpanChipTokenizer(mContext, object : ChipSpanChipCreator() {
+        binding.skills.chipTokenizer = SpanChipTokenizer(cntxt, object : ChipSpanChipCreator() {
             override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan {
                 val findAllSkills = dbHandler.findAllSkills()
                 val skill = findAllSkills.find { it.name == text }!!
                 val skillIcon = App.iconPack.getIconDrawable(
-                    skill.iconId, IconDrawableLoader(mContext)
+                    skill.iconId, IconDrawableLoader(cntxt)
                 )!!
                 DrawableCompat.setTint(
                     skillIcon, ContextCompat.getColor(
-                        mContext, R.color.colorWhite
+                        cntxt, R.color.colorWhite
                     )
                 )
                 return ChipSpan(context, text, skillIcon, data)
@@ -172,7 +139,7 @@ class TaskEditFragment : TaskFragment() {
 
         binding.header.isFocusable = true
 
-        return binding.root;
+        return binding.root
     }
 
     override fun onPause() {
@@ -185,31 +152,26 @@ class TaskEditFragment : TaskFragment() {
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
 
-        out.putString(KEY_GOAL, binding.goal.text.toString())
+        out.putString(TaskFragment.KEY_GOAL, binding.goal.text.toString())
         out.putString(KEY_DETAILS, binding.goal.text.toString())
         out.putString(KEY_DIFFICULTY, difficulty)
-        out.putInt(KEY_DURATION_UNIT, binding.durationUnit.selectedItemPosition)
-        out.putInt(KEY_DURATION_VALUE, binding.durationValue.selectedItemPosition)
+        out.putInt(KEY_DURATION, binding.durationBar.progress)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
-        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.editIconButton.tag.toString()))
+        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
 
         saveChangesOnTask()
     }
 
     private fun saveChangesOnTask() {
 
-        val dbHandler = DatabaseHandler(mContext)
+        val dbHandler = DatabaseHandler(cntxt)
         val goal = binding.goal.text.toString()
         val details = binding.details.text.toString()
-        val duration = binding.durationValue.selectedItem.toString().toInt()
-        val durationUnit = DurationUnit.valueOf(
-            binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
-        )
-        val finalDuration = duration.convert(durationUnit)
-        val iconId: Int = Integer.parseInt(binding.editIconButton.tag.toString())
+        val duration = binding.durationBar.getDurationInMinutes()
+        val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skills = binding.skills.chipAndTokenValues.toTypedArray()
         if (dbHandler.checkForChangesWithinTask(
-                task.id, goal, details, finalDuration,
+                task.id, goal, details, duration,
                 Difficulty.valueOf(difficulty), iconId, skills
             )
         ) {
@@ -217,7 +179,7 @@ class TaskEditFragment : TaskFragment() {
                 task.id,
                 goal,
                 details,
-                finalDuration,
+                duration,
                 Difficulty.valueOf(difficulty),
                 iconId,
                 skills

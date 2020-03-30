@@ -24,6 +24,7 @@ import org.vmaier.tidfl.features.skills.SkillCreateFragment
 import org.vmaier.tidfl.features.skills.SkillEditFragment
 import org.vmaier.tidfl.features.tasks.TaskCreateFragment
 import org.vmaier.tidfl.features.tasks.TaskEditFragment
+import org.vmaier.tidfl.features.tasks.TaskFragment
 
 
 /**
@@ -92,10 +93,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             fragments.forEach {
                 when (it) {
                     is TaskCreateFragment -> {
-                        TaskCreateFragment.setIcon(this, selectedIcon)
+                        TaskFragment.setIcon(
+                            this, selectedIcon, TaskCreateFragment.binding.iconButton)
                     }
                     is TaskEditFragment -> {
-                        TaskEditFragment.setIcon(this, selectedIcon)
+                        TaskFragment.setIcon(
+                            this, selectedIcon, TaskEditFragment.binding.iconButton)
                     }
                     is SkillCreateFragment -> {
                         SkillCreateFragment.setIcon(this, selectedIcon)
