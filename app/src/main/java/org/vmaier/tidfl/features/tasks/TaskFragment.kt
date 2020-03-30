@@ -1,12 +1,29 @@
 package org.vmaier.tidfl.features.tasks
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.SeekBar
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
+import com.hootsuite.nachos.ChipConfiguration
+import com.hootsuite.nachos.NachoTextView
+import com.hootsuite.nachos.chip.ChipInfo
+import com.hootsuite.nachos.chip.ChipSpan
+import com.hootsuite.nachos.chip.ChipSpanChipCreator
+import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.App
+import org.vmaier.tidfl.R
+import org.vmaier.tidfl.data.DatabaseHandler
+import org.vmaier.tidfl.util.getHumanReadableValue
 import org.vmaier.tidfl.util.setThemeTint
 import kotlin.random.Random
 
@@ -20,6 +37,8 @@ open class TaskFragment : Fragment() {
 
     companion object {
         lateinit var cntxt: Context
+        lateinit var dbHandler: DatabaseHandler
+        lateinit var skillNames: List<String>
 
         const val KEY_GOAL = "goal"
         const val KEY_DETAILS = "details"
@@ -39,22 +58,72 @@ open class TaskFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         cntxt = context
+        dbHandler = DatabaseHandler(cntxt)
     }
 
-    fun setTaskIcon(saved: Bundle?, button: ImageButton) {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
+    ): View? {
+        super.onCreateView(inflater, container, saved)
+        skillNames = dbHandler.findAllSkillNames()
+        return this.view
+    }
 
-        // if the icon is not saved / available choose a random one
-        val iconId =
-            saved?.getInt(KEY_ICON_ID)
-                ?:
-                Random.nextInt(App.iconPack.allIcons.size)
+    fun setTaskIcon(saved: Bundle?, button: ImageButton,
+                    fallback: Int = Random.nextInt(App.iconPack.allIcons.size)) {
 
-        val iconDrawable =
-            App.iconPack.getIconDrawable(iconId, IconDrawableLoader(cntxt))
-
-        iconDrawable.setThemeTint(cntxt)
-
-        button.background = iconDrawable
+        val iconId = saved?.getInt(KEY_ICON_ID) ?: fallback
+        val icon = App.iconPack.getIconDrawable(iconId, IconDrawableLoader(cntxt))
+        icon.setThemeTint(cntxt)
+        button.background = icon
         button.tag = iconId
+    }
+
+    fun getSkillsTokenizer(): SpanChipTokenizer<ChipSpan> {
+        return SpanChipTokenizer(cntxt, object : ChipSpanChipCreator() {
+            override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan {
+                val skills = dbHandler.findAllSkills()
+                val skill = skills.find { it.name == text }
+                var icon: Drawable? = null
+                if (skill != null) {
+                    icon = App.iconPack.getIconDrawable(skill.iconId, IconDrawableLoader(cntxt))
+                }
+                if (icon != null) {
+                    DrawableCompat.setTint(icon, ContextCompat.getColor(cntxt, R.color.colorWhite))
+                }
+                return ChipSpan(context, text, icon, data)
+            }
+            override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
+                super.configureChip(chip, chipConfiguration)
+                chip.setShowIconOnLeft(true)
+            }
+        }, ChipSpan::class.java)
+    }
+
+    fun getSkillsRestrictor(skills: NachoTextView): View.OnFocusChangeListener {
+        return View.OnFocusChangeListener { view, b ->
+            val allChips = skills.allChips
+            val chipList: MutableList<ChipInfo> = arrayListOf()
+            for (chip in allChips) {
+                if (skillNames.contains(chip.text) &&
+                    chipList.find { it.text == chip.text } == null
+                ) {
+                    chipList.add(ChipInfo(chip.text, chip.data))
+                }
+            }
+            skills.setTextWithChips(chipList)
+        }
+    }
+
+    fun getDurationBarListener(value: TextView): SeekBar.OnSeekBarChangeListener {
+        return object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
+                value.text = seek.getHumanReadableValue()
+                if (progress <= 1) {
+                    seek.progress = 1
+                }
+            }
+            override fun onStartTrackingTouch(seek: SeekBar) = Unit
+            override fun onStopTrackingTouch(seek: SeekBar) = Unit
+        }
     }
 }

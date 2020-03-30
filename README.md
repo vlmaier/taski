@@ -9,6 +9,7 @@
 - [ ] show tasks grouped by tags
 - [ ] show tasks grouped by skills
 - [ ] show xp calculated while creating/editing a task
+- [ ] sorting
 
 ##### Tag Management
 - [ ] create tags
@@ -22,6 +23,7 @@
 - [ ] show skill level in details view
 - [ ] show active tasks with the skill in details view
 - [ ] count all (done) tasks with the skill in details view
+- [ ] sorting
 
 ##### Profile Management
 - [ ] change profile avatar

@@ -88,7 +88,7 @@ class SkillEditFragment : SkillFragment() {
             it.hideKeyboard()
         }
 
-        return binding.root;
+        return binding.root
     }
 
     override fun onPause() {
