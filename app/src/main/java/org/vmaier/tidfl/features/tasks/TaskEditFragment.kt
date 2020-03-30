@@ -124,7 +124,8 @@ class TaskEditFragment : TaskFragment() {
             val chipList: MutableList<ChipInfo> = arrayListOf()
             for (chip in allChips) {
                 if (skillNames.contains(chip.text) &&
-                    chipList.find { it.text == chip.text } == null) {
+                    chipList.find { it.text == chip.text } == null
+                ) {
                     chipList.add(ChipInfo(chip.text, chip.data))
                 }
             }
@@ -136,7 +137,8 @@ class TaskEditFragment : TaskFragment() {
                 val findAllSkills = dbHandler.findAllSkills()
                 val skill = findAllSkills.find { it.name == text }!!
                 val skillIcon = App.iconPack.getIconDrawable(
-                    skill.iconId, IconDrawableLoader(mContext))!!
+                    skill.iconId, IconDrawableLoader(mContext)
+                )!!
                 DrawableCompat.setTint(
                     skillIcon, ContextCompat.getColor(
                         mContext, R.color.colorWhite
@@ -144,6 +146,7 @@ class TaskEditFragment : TaskFragment() {
                 )
                 return ChipSpan(context, text, skillIcon, data)
             }
+
             override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
                 super.configureChip(chip, chipConfiguration)
                 chip.setShowIconOnLeft(true)
@@ -211,7 +214,13 @@ class TaskEditFragment : TaskFragment() {
             )
         ) {
             val updatedTask = dbHandler.updateTask(
-                task.id, goal, details, finalDuration, Difficulty.valueOf(difficulty), iconId, skills
+                task.id,
+                goal,
+                details,
+                finalDuration,
+                Difficulty.valueOf(difficulty),
+                iconId,
+                skills
             )
             TaskListFragment.taskAdapter.items[itemPosition] = updatedTask!!
             TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)

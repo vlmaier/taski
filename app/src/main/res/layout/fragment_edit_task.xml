@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".features.tasks.TaskCreateFragment">
+            tools:context=".features.tasks.TaskCreateFragment"
+            >
 
             <TextView
                 android:id="@+id/header"
@@ -30,7 +34,8 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/edit_icon_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <EditText
                 android:id="@+id/goal"
@@ -51,7 +56,8 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/edit_icon_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header" />
+                app:layout_constraintTop_toBottomOf="@+id/header"
+                />
 
             <EditText
                 android:id="@+id/details"
@@ -70,7 +76,8 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/edit_icon_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/goal" />
+                app:layout_constraintTop_toBottomOf="@+id/goal"
+                />
 
             <Spinner
                 android:id="@+id/duration_unit"
@@ -86,7 +93,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/duration_value"
-                app:layout_constraintTop_toTopOf="@+id/duration_value" />
+                app:layout_constraintTop_toTopOf="@+id/duration_value"
+                />
 
             <Spinner
                 android:id="@+id/duration_value"
@@ -104,7 +112,8 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/duration_text" />
+                app:layout_constraintTop_toBottomOf="@+id/duration_text"
+                />
 
             <ImageButton
                 android:id="@+id/edit_icon_button"
@@ -117,7 +126,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/header"
                 tools:background="@drawable/ic_baseline_assignment_24"
-                tools:backgroundTint="@color/colorSecondary" />
+                tools:backgroundTint="@color/colorSecondary"
+                />
 
             <TextView
                 android:id="@+id/duration_text"
@@ -130,78 +140,86 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/duration_value"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details" />
+                app:layout_constraintTop_toBottomOf="@+id/details"
+                />
 
             <TextView
-                    android:id="@+id/difficulty_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Difficulty"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/duration_value" />
+                android:id="@+id/difficulty_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="24dp"
+                android:text="Difficulty"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/duration_value"
+                />
 
             <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/difficulty"
-                    android:layout_width="match_parent"
+                android:id="@+id/difficulty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/difficulty_text"
+                app:singleSelection="true"
+                >
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/trivial"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/difficulty_text"
-                    app:singleSelection="true">
+                    android:text="trivial"
+                    />
 
                 <com.google.android.material.chip.Chip
-                        android:id="@+id/trivial"
-                        style="@style/CustomChipChoice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="trivial" />
+                    android:id="@+id/regular"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="regular"
+                    tools:checked="true"
+                    />
 
                 <com.google.android.material.chip.Chip
-                        android:id="@+id/regular"
-                        style="@style/CustomChipChoice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:checked="true"
-                        android:text="regular" />
+                    android:id="@+id/hard"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="hard"
+                    />
 
                 <com.google.android.material.chip.Chip
-                        android:id="@+id/hard"
-                        style="@style/CustomChipChoice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="hard" />
-
-                <com.google.android.material.chip.Chip
-                        android:id="@+id/insane"
-                        style="@style/CustomChipChoice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="insane" />
+                    android:id="@+id/insane"
+                    style="@style/CustomChipChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="insane"
+                    />
 
             </com.google.android.material.chip.ChipGroup>
 
             <TextView
-                    android:id="@+id/skills_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Skills"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="@+id/skills"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/difficulty" />
+                android:id="@+id/skills_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="24dp"
+                android:text="Skills"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/skills"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/difficulty"
+                />
 
             <com.hootsuite.nachos.NachoTextView
                 android:id="@+id/skills"
@@ -215,7 +233,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/skills_text" />
+                app:layout_constraintTop_toBottomOf="@+id/skills_text"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

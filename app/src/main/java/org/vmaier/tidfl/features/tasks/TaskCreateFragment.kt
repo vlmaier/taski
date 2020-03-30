@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
@@ -30,7 +32,6 @@ import org.vmaier.tidfl.data.DurationUnit
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.databinding.FragmentCreateTaskBinding
 import org.vmaier.tidfl.util.KeyBoardHider
-import org.vmaier.tidfl.util.convert
 import org.vmaier.tidfl.util.getResourceArrayId
 import org.vmaier.tidfl.util.hideKeyboard
 import java.util.*
@@ -101,25 +102,43 @@ class TaskCreateFragment : TaskFragment() {
             it.hideKeyboard()
         }
 
-        binding.durationUnit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                if (pos < 0) return
-                val unit = DurationUnit.valueOf(
-                    binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
-                )
-                val values = resources.getStringArray(unit.getResourceArrayId())
-                val adapter: ArrayAdapter<String> = ArrayAdapter(
-                    mContext,
-                    android.R.layout.simple_spinner_dropdown_item, values
-                )
-                binding.durationValue.adapter = adapter
-                binding.durationValue.setSelection(saved?.getInt(KEY_DURATION_VALUE) ?: 0)
+//        binding.durationUnit.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+//                if (pos < 0) return
+//                val unit = DurationUnit.valueOf(
+//                    binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
+//                )
+//                val values = resources.getStringArray(unit.getResourceArrayId())
+//                val adapter: ArrayAdapter<String> = ArrayAdapter(
+//                    mContext,
+//                    android.R.layout.simple_spinner_dropdown_item, values
+//                )
+//                binding.durationValue.adapter = adapter
+//                binding.durationValue.setSelection(saved?.getInt(KEY_DURATION_VALUE) ?: 0)
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>) {
+//                // do nothing
+//            }
+//        }
+
+        binding.durationBar.progress = 3;
+        binding.durationBar.setOnSeekBarChangeListener(object :
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
+                binding.durationValue.text = progress.toString()
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // do nothing
+            override fun onStartTrackingTouch(seek: SeekBar) {
+                // write custom code for progress is started
             }
-        }
+
+            override fun onStopTrackingTouch(seek: SeekBar) {
+                // write custom code for progress is stopped
+                Toast.makeText(mContext, "Progress is: ${seek.progress}", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
 
         val dbHandler = DatabaseHandler(mContext)
         skillNames = dbHandler.findAllSkillNames()
@@ -134,7 +153,8 @@ class TaskCreateFragment : TaskFragment() {
             val chipList: MutableList<ChipInfo> = arrayListOf()
             for (chip in allChips) {
                 if (skillNames.contains(chip.text) &&
-                    chipList.find { it.text == chip.text } == null) {
+                    chipList.find { it.text == chip.text } == null
+                ) {
                     chipList.add(ChipInfo(chip.text, chip.data))
                 }
             }
@@ -146,7 +166,8 @@ class TaskCreateFragment : TaskFragment() {
                 val findAllSkills = dbHandler.findAllSkills()
                 val skill = findAllSkills.find { it.name == text }!!
                 val skillIcon = App.iconPack.getIconDrawable(
-                    skill.iconId, IconDrawableLoader(mContext))!!
+                    skill.iconId, IconDrawableLoader(mContext)
+                )!!
                 DrawableCompat.setTint(
                     skillIcon, ContextCompat.getColor(
                         mContext, R.color.colorWhite
@@ -197,8 +218,8 @@ class TaskCreateFragment : TaskFragment() {
         out.putString(KEY_GOAL, binding.goal.text.toString())
         out.putString(KEY_DETAILS, binding.goal.text.toString())
         out.putString(KEY_DIFFICULTY, difficulty)
-        out.putInt(KEY_DURATION_UNIT, binding.durationUnit.selectedItemPosition)
-        out.putInt(KEY_DURATION_VALUE, binding.durationValue.selectedItemPosition)
+//        out.putInt(KEY_DURATION_UNIT, binding.durationUnit.selectedItemPosition)
+//        out.putInt(KEY_DURATION_VALUE, binding.durationValue.selectedItemPosition)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.selectIconButton.tag.toString()))
     }
@@ -208,18 +229,18 @@ class TaskCreateFragment : TaskFragment() {
         val dbHandler = DatabaseHandler(mContext)
         val goal = binding.goal.text.toString()
         val details = binding.details.text.toString()
-        val duration = binding.durationValue.selectedItem.toString().toInt()
-        val durationUnit = DurationUnit.valueOf(
-            binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
-        )
-        val finalDuration = duration.convert(durationUnit)
+//        val duration = binding.durationValue.selectedItem.toString().toInt()
+//        val durationUnit = DurationUnit.valueOf(
+//            binding.durationUnit.selectedItem.toString().toUpperCase(Locale.getDefault())
+//        )
+//        val finalDuration = duration.convert(durationUnit)
         val iconId: Int = Integer.parseInt(binding.selectIconButton.tag.toString())
         val skills = binding.skills.chipAndTokenValues.toTypedArray()
         dbHandler.addTask(
             goal,
             details,
             Status.OPEN,
-            finalDuration,
+            0,
             Difficulty.valueOf(difficulty),
             iconId,
             skills

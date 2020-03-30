@@ -50,6 +50,7 @@
 - [ ] implement duration design with duration picker 
 - [ ] implement themes
 - [ ] improve skill item card design
+- [ ] if no skills are available show hint when creating or editing a task
 
 ##### Improvements
 - [ ] input validation
