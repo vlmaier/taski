@@ -79,23 +79,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/goal"
                 />
 
-            <Spinner
-                android:id="@+id/duration_unit"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:entries="@array/duration_units"
-                android:spinnerMode="dropdown"
-                app:layout_constraintBottom_toBottomOf="@+id/duration_value"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/duration_value"
-                app:layout_constraintTop_toTopOf="@+id/duration_value"
-                />
-
             <ImageButton
                 android:id="@+id/icon_button"
                 android:layout_width="100dp"
