@@ -17,6 +17,7 @@ import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DatabaseHandler
+import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentEditSkillBinding
 import org.vmaier.tidfl.util.KeyBoardHider
@@ -64,7 +65,13 @@ class SkillEditFragment : SkillFragment() {
         itemPosition = args.itemPosition
         binding.name.setText(if (saved != null) saved.getString(KEY_NAME) else skill.name)
         binding.category.setText(if (saved != null) saved.getString(KEY_CATEGORY) else skill.category)
-        binding.skillXpValue.text = "${dbHandler.calculateSkillXp(skill.id)} XP"
+        val skillXp = dbHandler.calculateSkillXp(skill.id)
+        val openTasksAmount = dbHandler.findAmountOfTasksForSkill(skill.id, Status.OPEN)
+        val doneTasksAmount = dbHandler.findAmountOfTasksForSkill(skill.id, Status.DONE)
+        binding.skillLevelValue.text = "${skillXp.div(1000) + 1}"
+        binding.skillXpValue.text = "$skillXp XP"
+        binding.skillOpenTasksValue.text = "$openTasksAmount"
+        binding.skillDoneTasksValue.text = "$doneTasksAmount"
         val iconId = if (saved != null) saved.getInt(KEY_ICON_ID) else skill.iconId
         binding.editIconButton.background = App.iconPack.getIconDrawable(
             iconId, IconDrawableLoader(this.context!!)

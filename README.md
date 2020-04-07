@@ -19,10 +19,6 @@
 - [ ] assign (multiple) tags to tasks
 
 ##### Skill Management
-- [ ] show skill xp in details view
-- [ ] show skill level in details view
-- [ ] show active tasks with the skill in details view
-- [ ] count all (done) tasks with the skill in details view
 - [ ] sorting
 
 ##### Profile Management

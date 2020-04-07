@@ -157,6 +157,20 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         return skills
     }
 
+    fun findAmountOfTasksForSkill(skillId: Long, status: Status): Int {
+
+        val query = "SELECT COUNT(*) FROM $TASK_SKILLS " +
+                "INNER JOIN $TASKS ON $TASK_ID = $ID " +
+                "WHERE $SKILL_ID = $skillId " +
+                "AND $STATUS = '${status.name}'"
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(query, null)
+        val taskCounter = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        db.close()
+        return taskCounter
+    }
+
     fun findAllSkillNames(): ArrayList<String> {
 
         val query = "SELECT $NAME FROM $SKILLS"
