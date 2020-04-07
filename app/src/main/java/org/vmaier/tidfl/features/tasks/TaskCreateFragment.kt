@@ -26,7 +26,6 @@ class TaskCreateFragment : TaskFragment() {
 
     companion object {
         lateinit var binding: FragmentCreateTaskBinding
-        lateinit var difficulty: String
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
@@ -53,13 +52,14 @@ class TaskCreateFragment : TaskFragment() {
         binding.durationBar.progress = saved?.getInt(KEY_DURATION) ?: 3
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
         binding.durationBar.setOnSeekBarChangeListener(
-            getDurationBarListener(binding.durationValue)
+            getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
         )
 
         // --- Difficulty settings
         binding.difficulty.setOnCheckedChangeListener { chipGroup, i ->
             val chip: Chip = chipGroup.findViewById(i)
             difficulty = chip.text.toString().toUpperCase(Locale.getDefault())
+            updateXpGained(binding.xpGainValue, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
             saved?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
@@ -101,7 +101,7 @@ class TaskCreateFragment : TaskFragment() {
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
 
-        out.putString(TaskFragment.KEY_GOAL, binding.goal.text.toString())
+        out.putString(KEY_GOAL, binding.goal.text.toString())
         out.putString(KEY_DETAILS, binding.goal.text.toString())
         out.putString(KEY_DIFFICULTY, difficulty)
         out.putInt(KEY_DURATION, binding.durationBar.progress)

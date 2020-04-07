@@ -3,12 +3,10 @@
 #### TODO:
 
 #### Task Management
-- [ ] show task xp in details view
 - [ ] show done tasks
 - [ ] show failed tasks
 - [ ] show tasks grouped by tags
 - [ ] show tasks grouped by skills
-- [ ] show xp calculated while creating/editing a task
 - [ ] sorting
 - [ ] recurring tasks
 - [ ] synchronization with Google Calendar

@@ -29,7 +29,6 @@ class TaskEditFragment : TaskFragment() {
     companion object {
         lateinit var binding: FragmentEditTaskBinding
         lateinit var task: Task
-        lateinit var difficulty: String
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
@@ -62,12 +61,15 @@ class TaskEditFragment : TaskFragment() {
         // --- Duration settings
         binding.durationBar.progress = saved?.getInt(KEY_DURATION) ?: task.getSeekBarValue()
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
-        binding.durationBar.setOnSeekBarChangeListener(getDurationBarListener(binding.durationValue))
+        binding.durationBar.setOnSeekBarChangeListener(
+            getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
+        )
 
         // --- Difficulty settings
         binding.difficulty.setOnCheckedChangeListener { chipGroup, i ->
             val chip: Chip = chipGroup.findViewById(i)
             difficulty = chip.text.toString().toUpperCase(Locale.getDefault())
+            updateXpGained(binding.xpGainValue, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
             saved?.getString(KEY_DIFFICULTY) ?: task.difficulty.name

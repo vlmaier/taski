@@ -188,6 +188,18 @@
                 tools:text="15 minutes"
                 />
 
+            <TextView
+                android:id="@+id/xp_gain_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/xp_gain_text"
+                app:layout_constraintEnd_toEndOf="@+id/skills"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/xp_gain_text"
+                app:layout_constraintTop_toTopOf="@+id/xp_gain_text"
+                tools:text="+1500 XP" />
+
             <SeekBar
                 android:id="@+id/duration_bar"
                 android:layout_width="0dp"
@@ -215,7 +227,7 @@
 
             <TextView
                 android:id="@+id/skills_text"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
@@ -223,10 +235,21 @@
                 android:text="Skills"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/skills"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/difficulty"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/difficulty" />
+
+            <TextView
+                android:id="@+id/xp_gain_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="24dp"
+                android:text="Experience gained"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/skills" />
 
             <com.hootsuite.nachos.NachoTextView
                 android:id="@+id/skills"
@@ -240,8 +263,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/skills_text"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/skills_text" />
 
             <Button
                 android:id="@+id/cancel_button"

@@ -23,6 +23,8 @@ import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DatabaseHandler
+import org.vmaier.tidfl.data.Difficulty
+import org.vmaier.tidfl.util.getDurationInMinutes
 import org.vmaier.tidfl.util.getHumanReadableValue
 import org.vmaier.tidfl.util.setThemeTint
 import kotlin.random.Random
@@ -39,6 +41,7 @@ open class TaskFragment : Fragment() {
         lateinit var cntxt: Context
         lateinit var dbHandler: DatabaseHandler
         lateinit var skillNames: List<String>
+        lateinit var difficulty: String
 
         const val KEY_GOAL = "goal"
         const val KEY_DETAILS = "details"
@@ -114,16 +117,23 @@ open class TaskFragment : Fragment() {
         }
     }
 
-    fun getDurationBarListener(value: TextView): SeekBar.OnSeekBarChangeListener {
+    fun getDurationBarListener(durationValue: TextView, xpGainValue: TextView, durationBar: SeekBar
+    ): SeekBar.OnSeekBarChangeListener {
         return object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
-                value.text = seek.getHumanReadableValue()
+                durationValue.text = seek.getHumanReadableValue()
                 if (progress <= 1) {
                     seek.progress = 1
                 }
+                updateXpGained(xpGainValue, durationBar)
             }
             override fun onStartTrackingTouch(seek: SeekBar) = Unit
             override fun onStopTrackingTouch(seek: SeekBar) = Unit
         }
+    }
+
+    fun updateXpGained(xpGainValue: TextView, durationBar: SeekBar) {
+        xpGainValue.text = "+${Difficulty.valueOf(difficulty).factor.times(
+            durationBar.getDurationInMinutes()).toInt()} XP"
     }
 }
