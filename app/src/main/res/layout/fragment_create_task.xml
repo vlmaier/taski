@@ -164,14 +164,13 @@
                 android:id="@+id/duration_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="24dp"
                 android:text="Duration"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details"
-                />
+                app:layout_constraintStart_toStartOf="@+id/duration_bar"
+                app:layout_constraintTop_toBottomOf="@+id/details" />
 
             <TextView
                 android:id="@+id/duration_value"
@@ -198,7 +197,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/xp_gain_text"
                 app:layout_constraintTop_toTopOf="@+id/xp_gain_text"
-                tools:text="+1500 XP" />
+                tools:text="1500 XP" />
 
             <SeekBar
                 android:id="@+id/duration_bar"
@@ -216,39 +215,38 @@
                 android:id="@+id/difficulty_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="24dp"
                 android:text="Difficulty"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/duration_bar"
-                />
+                app:layout_constraintStart_toStartOf="@+id/difficulty"
+                app:layout_constraintTop_toBottomOf="@+id/duration_bar" />
 
             <TextView
                 android:id="@+id/skills_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="24dp"
                 android:text="Skills"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="@+id/skills"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/skills"
                 app:layout_constraintTop_toBottomOf="@+id/difficulty" />
 
             <TextView
                 android:id="@+id/xp_gain_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_marginTop="24dp"
                 android:text="Experience gained"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/skills"
                 app:layout_constraintTop_toBottomOf="@+id/skills" />
 
             <com.hootsuite.nachos.NachoTextView

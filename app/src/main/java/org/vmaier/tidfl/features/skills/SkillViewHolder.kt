@@ -47,7 +47,7 @@ class SkillViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerVie
         iconView?.background = App.iconPack.getIcon(skill.iconId)?.drawable
         val dbHandler = DatabaseHandler(context)
         val skillXp = dbHandler.calculateSkillXp(skill.id)
-        xpView?.text = "${skillXp}XP"
+        xpView?.text = "${skillXp} XP"
         levelView?.text = "Level ${skillXp.div(1000) + 1}"
 
         itemView.setOnClickListener {

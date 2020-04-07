@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         xpCounter = headerView.findViewById<View>(R.id.xp_counter) as TextView
         levelCounter = headerView.findViewById<View>(R.id.level_counter) as TextView
         val xp = DatabaseHandler(this).calculateOverallXp()
-        xpCounter.text = "${xp}XP"
+        xpCounter.text = "${xp} XP"
         levelCounter.text = "Level ${xp.div(10000) + 1}"
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?

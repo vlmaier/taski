@@ -58,11 +58,13 @@ class SkillEditFragment : SkillFragment() {
             false
         )
 
+        val dbHandler = DatabaseHandler(mContext)
         val args = SkillEditFragmentArgs.fromBundle(this.arguments!!)
         skill = args.skill
         itemPosition = args.itemPosition
         binding.name.setText(if (saved != null) saved.getString(KEY_NAME) else skill.name)
         binding.category.setText(if (saved != null) saved.getString(KEY_CATEGORY) else skill.category)
+        binding.skillXpValue.text = "${dbHandler.calculateSkillXp(skill.id)} XP"
         val iconId = if (saved != null) saved.getInt(KEY_ICON_ID) else skill.iconId
         binding.editIconButton.background = App.iconPack.getIconDrawable(
             iconId, IconDrawableLoader(this.context!!)

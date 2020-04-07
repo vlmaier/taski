@@ -133,7 +133,7 @@ open class TaskFragment : Fragment() {
     }
 
     fun updateXpGained(xpGainValue: TextView, durationBar: SeekBar) {
-        xpGainValue.text = "+${Difficulty.valueOf(difficulty).factor.times(
+        xpGainValue.text = "${Difficulty.valueOf(difficulty).factor.times(
             durationBar.getDurationInMinutes()).toInt()} XP"
     }
 }

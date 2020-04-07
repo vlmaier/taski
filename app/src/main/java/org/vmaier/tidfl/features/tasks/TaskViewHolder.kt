@@ -49,7 +49,7 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
             )
         )
         taskIcon?.background = App.iconPack.getIcon(task.iconId)?.drawable
-        xp?.text = "${task.xp}XP"
+        xp?.text = "${task.xp} XP"
         duration?.text = "${task.getHumanReadableDurationValue()}"
         val skillsAmount = task.skills.size
         if (task.skills.isNotEmpty()) {
