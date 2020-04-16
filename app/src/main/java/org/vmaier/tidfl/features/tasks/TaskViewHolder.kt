@@ -36,6 +36,8 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
     private var duration: TextView? = itemView.findViewById(R.id.task_duration)
     private var skillIcon: ImageView? = itemView.findViewById(R.id.skill_icon)
     private var skillText: TextView? = itemView.findViewById(R.id.skill_amount)
+    private var skillTagIcon: ImageView? = itemView.findViewById(R.id.skill_tag_icon)
+    private var skillTags: TextView? = itemView.findViewById(R.id.skill_tags)
 
     fun bind(context: Context, task: Task) {
 
@@ -60,6 +62,8 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
             skillIcon?.visibility = View.INVISIBLE
             skillText?.visibility = View.INVISIBLE
         }
+        skillTagIcon?.visibility = View.INVISIBLE
+        skillTags?.visibility = View.INVISIBLE
 
         itemView.setOnClickListener {
             it.findNavController().navigate(

@@ -49,9 +49,19 @@
                 />
 
             <ImageView
+                android:id="@+id/skill_tag_icon"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/task_icon"
+                app:layout_constraintStart_toStartOf="@+id/task_details"
+                app:layout_constraintTop_toBottomOf="@+id/task_details"
+                app:srcCompat="@drawable/ic_baseline_label_24" />
+
+            <ImageView
                 android:id="@+id/task_icon"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="78dp"
+                android:layout_height="78dp"
                 android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="2dp"
@@ -61,8 +71,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@drawable/ic_baseline_assignment_24"
-                tools:tint="@color/colorSecondary"
-                />
+                tools:tint="@color/colorSecondary" />
 
             <TextView
                 android:id="@+id/task_goal"
@@ -127,10 +136,29 @@
                 android:layout_marginEnd="3dp"
                 android:layout_marginRight="3dp"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/skill_icon"
                 app:layout_constraintEnd_toStartOf="@+id/skill_icon"
                 app:layout_constraintTop_toTopOf="@+id/skill_icon"
-                tools:text="2 skills"
-                />
+                tools:text="2 skills" />
+
+            <TextView
+                android:id="@+id/skill_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginLeft="3dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="14sp"
+                app:autoSizeMaxTextSize="14sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="@+id/skill_tag_icon"
+                app:layout_constraintStart_toEndOf="@+id/skill_tag_icon"
+                app:layout_constraintTop_toTopOf="@+id/skill_tag_icon"
+                tools:text="Work, Important" />
 
             <TextView
                 android:id="@+id/task_duration"
@@ -139,10 +167,10 @@
                 android:layout_marginEnd="3dp"
                 android:layout_marginRight="3dp"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/time_icon"
                 app:layout_constraintEnd_toStartOf="@+id/time_icon"
                 app:layout_constraintTop_toTopOf="@+id/time_icon"
-                tools:text="15 min"
-                />
+                tools:text="15 min" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -23,6 +23,7 @@ import org.vmaier.tidfl.databinding.FragmentEditSkillBinding
 import org.vmaier.tidfl.util.KeyBoardHider
 import org.vmaier.tidfl.util.hideKeyboard
 
+
 /**
  * Created by Vladas Maier
  * on 03/03/2020.
