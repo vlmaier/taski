@@ -43,9 +43,9 @@ class SkillEditFragment : SkillFragment() {
             val drawable = IconDrawableLoader(context).loadDrawable(icon)!!
             drawable.clearColorFilter()
             DrawableCompat.setTint(
-                drawable, ContextCompat.getColor(
+                    drawable, ContextCompat.getColor(
                     context, R.color.colorSecondary
-                )
+            )
             )
             binding.editIconButton.background = drawable
             binding.editIconButton.tag = icon.id
@@ -56,8 +56,8 @@ class SkillEditFragment : SkillFragment() {
             : View? {
 
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_edit_skill, container,
-            false
+                inflater, R.layout.fragment_edit_skill, container,
+                false
         )
 
         val dbHandler = DatabaseHandler(mContext)
@@ -75,7 +75,7 @@ class SkillEditFragment : SkillFragment() {
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
         val iconId = if (saved != null) saved.getInt(KEY_ICON_ID) else skill.iconId
         binding.editIconButton.background = App.iconPack.getIconDrawable(
-            iconId, IconDrawableLoader(this.context!!)
+                iconId, IconDrawableLoader(this.context!!)
         )
         binding.editIconButton.tag = iconId
 
@@ -87,9 +87,9 @@ class SkillEditFragment : SkillFragment() {
         binding.deleteButton.setOnClickListener {
             val removedSkill = SkillListFragment.skillAdapter.removeItem(itemPosition)
             Snackbar.make(
-                it,
-                "Skill deleted",
-                Snackbar.LENGTH_LONG
+                    it,
+                    "Skill deleted",
+                    Snackbar.LENGTH_LONG
             ).setAction("UNDO") {
                 // undo is selected, restore the deleted item
                 SkillListFragment.skillAdapter.restoreItem(removedSkill!!, itemPosition)
@@ -129,8 +129,8 @@ class SkillEditFragment : SkillFragment() {
             SkillListFragment.skillAdapter.items.set(itemPosition, updatedSkill!!)
             SkillListFragment.skillAdapter.notifyItemChanged(itemPosition)
             Toast.makeText(
-                context, "Skill updated",
-                Toast.LENGTH_SHORT
+                    context, "Skill updated",
+                    Toast.LENGTH_SHORT
             ).show()
         }
     }

@@ -60,8 +60,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         navView = findViewById(R.id.nav_view)
 
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar,
-            0, 0
+                this, drawerLayout, toolbar,
+                0, 0
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         levelCounter.text = "Level ${xp.div(10000) + 1}"
 
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
-            ?: IconDialog.newInstance(IconDialogSettings())
+                ?: IconDialog.newInstance(IconDialogSettings())
     }
 
     fun selectIconButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -94,11 +94,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 when (it) {
                     is TaskCreateFragment -> {
                         TaskFragment.setIcon(
-                            this, selectedIcon, TaskCreateFragment.binding.iconButton)
+                                this, selectedIcon, TaskCreateFragment.binding.iconButton)
                     }
                     is TaskEditFragment -> {
                         TaskFragment.setIcon(
-                            this, selectedIcon, TaskEditFragment.binding.iconButton)
+                                this, selectedIcon, TaskEditFragment.binding.iconButton)
                     }
                     is SkillCreateFragment -> {
                         SkillCreateFragment.setIcon(this, selectedIcon)

@@ -5,6 +5,8 @@ import android.content.Context
 import com.maltaisn.icondialog.pack.IconPack
 import com.maltaisn.icondialog.pack.IconPackLoader
 import com.maltaisn.iconpack.defaultpack.createDefaultIconPack
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -16,6 +18,7 @@ class App : Application() {
 
     companion object {
         lateinit var iconPack: IconPack
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMAN)
 
         fun loadIconPack(context: Context) {
             val loader = IconPackLoader(context)

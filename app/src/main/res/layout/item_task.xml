@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv"
@@ -18,14 +16,12 @@
         app:cardElevation="2dp"
         app:cardMaxElevation="2dp"
         app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
-        >
+        app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            >
+            android:layout_gravity="center_horizontal">
 
             <ImageView
                 android:id="@+id/time_icon"
@@ -34,8 +30,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/task_goal"
                 app:layout_constraintEnd_toEndOf="@+id/task_xp"
                 app:layout_constraintTop_toTopOf="@+id/task_goal"
-                app:srcCompat="@drawable/ic_baseline_access_time_24"
-                />
+                app:srcCompat="@drawable/ic_baseline_access_time_24" />
 
             <ImageView
                 android:id="@+id/skill_icon"
@@ -45,8 +40,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/task_xp"
                 app:layout_constraintStart_toStartOf="@+id/time_icon"
                 app:layout_constraintTop_toBottomOf="@+id/task_goal"
-                app:srcCompat="@drawable/ic_baseline_style_24"
-                />
+                app:srcCompat="@drawable/ic_baseline_style_24" />
 
             <ImageView
                 android:id="@+id/skill_tag_icon"
@@ -93,8 +87,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/task_duration"
                 app:layout_constraintStart_toEndOf="@+id/task_icon"
                 app:layout_constraintTop_toTopOf="@+id/task_icon"
-                tools:text="Goal"
-                />
+                tools:text="Goal" />
 
             <TextView
                 android:id="@+id/task_details"
@@ -112,8 +105,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/task_goal"
                 app:layout_constraintStart_toStartOf="@+id/task_goal"
                 app:layout_constraintTop_toBottomOf="@+id/task_goal"
-                tools:text="Details"
-                />
+                tools:text="Details" />
 
             <TextView
                 android:id="@+id/task_xp"
@@ -126,8 +118,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/task_details"
-                tools:text="250 XP"
-                />
+                tools:text="250 XP" />
 
             <TextView
                 android:id="@+id/skill_amount"

@@ -14,7 +14,7 @@ import org.vmaier.tidfl.data.entity.Skill
  * at 19:27
  */
 class SkillAdapter(list: MutableList<Skill>, private val context: Context) :
-    RecyclerView.Adapter<SkillViewHolder>() {
+        RecyclerView.Adapter<SkillViewHolder>() {
 
     private val dbHandler = DatabaseHandler(context)
 

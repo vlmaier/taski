@@ -36,7 +36,7 @@ class TaskEditFragment : TaskFragment() {
         super.onCreateView(inflater, container, saved)
 
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_edit_task, container, false
+                inflater, R.layout.fragment_edit_task, container, false
         )
 
         // Focus header, so it's not one of the edit texts
@@ -62,7 +62,7 @@ class TaskEditFragment : TaskFragment() {
         binding.durationBar.progress = saved?.getInt(KEY_DURATION) ?: task.getSeekBarValue()
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
         binding.durationBar.setOnSeekBarChangeListener(
-            getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
+                getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
         )
 
         // --- Difficulty settings
@@ -72,7 +72,7 @@ class TaskEditFragment : TaskFragment() {
             updateXpGained(binding.xpGainValue, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
-            saved?.getString(KEY_DIFFICULTY) ?: task.difficulty.name
+                saved?.getString(KEY_DIFFICULTY) ?: task.difficulty.name
         )
         binding.difficulty.trivial.isChecked = selectedDifficulty == Difficulty.TRIVIAL
         binding.difficulty.regular.isChecked = selectedDifficulty == Difficulty.REGULAR
@@ -81,12 +81,21 @@ class TaskEditFragment : TaskFragment() {
 
         // --- Skills settings
         val adapter = ArrayAdapter(
-            cntxt, R.layout.support_simple_spinner_dropdown_item, skillNames
+                cntxt, R.layout.support_simple_spinner_dropdown_item, skillNames
         )
         binding.skills.setAdapter(adapter)
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
         binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: task.skillNames)
+
+        // --- Deadline settings
+        val dueAt = task.dueAt.split(" ")
+        binding.deadlineDate.setText(saved?.getString(KEY_DEADLINE_DATE)
+                ?: if (task.dueAt.isNotEmpty()) dueAt[0] else "")
+        binding.deadlineTime.setText(saved?.getString(KEY_DEADLINE_TIME)
+                ?: if (task.dueAt.isNotEmpty()) dueAt[1] else "")
+        setDeadlineDateOnClickListener(binding.deadlineDate)
+        setDeadlineTimeOnClickListener(binding.deadlineTime)
 
         return binding.root
     }
@@ -107,6 +116,8 @@ class TaskEditFragment : TaskFragment() {
         out.putInt(KEY_DURATION, binding.durationBar.progress)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
+        out.putString(KEY_DEADLINE_DATE, binding.deadlineDate.text.toString())
+        out.putString(KEY_DEADLINE_TIME, binding.deadlineTime.text.toString())
 
         saveChangesOnTask()
     }
@@ -118,18 +129,29 @@ class TaskEditFragment : TaskFragment() {
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skills = binding.skills.chipAndTokenValues.toTypedArray()
+        var dueAt = ""
+        if (binding.deadlineDate.text.isNotEmpty()) {
+            dueAt = binding.deadlineDate.text.toString()
+            dueAt += if (binding.deadlineTime.text.isNotEmpty()) {
+                " ${binding.deadlineTime.text}"
+            } else {
+                " 08:00"
+            }
+        }
         val updateRequired = dbHandler.checkForChangesWithinTask(
-            task.id, goal, details, duration, Difficulty.valueOf(difficulty), iconId, skills
+                task.id, goal, details, duration, Difficulty.valueOf(difficulty),
+                iconId, skills, dueAt
         )
         if (updateRequired) {
             val updatedTask = dbHandler.updateTask(
-                task.id, goal, details, duration, Difficulty.valueOf(difficulty), iconId, skills
+                    task.id, goal, details, duration, Difficulty.valueOf(difficulty),
+                    iconId, skills, dueAt
             )
             TaskListFragment.taskAdapter.items[itemPosition] = updatedTask!!
             TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
             Toast.makeText(
-                context, "Task updated",
-                Toast.LENGTH_SHORT
+                    context, "Task updated",
+                    Toast.LENGTH_SHORT
             ).show()
         }
     }

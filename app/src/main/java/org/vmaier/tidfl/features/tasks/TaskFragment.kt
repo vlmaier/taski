@@ -1,11 +1,14 @@
 package org.vmaier.tidfl.features.tasks
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.TextView
@@ -26,7 +29,10 @@ import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.util.getDurationInMinutes
 import org.vmaier.tidfl.util.getHumanReadableValue
+import org.vmaier.tidfl.util.hideKeyboard
 import org.vmaier.tidfl.util.setThemeTint
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.random.Random
 
 
@@ -49,6 +55,8 @@ open class TaskFragment : Fragment() {
         const val KEY_DURATION = "duration"
         const val KEY_SKILLS = "skills"
         const val KEY_ICON_ID = "icon_id"
+        const val KEY_DEADLINE_DATE = "deadline_date"
+        const val KEY_DEADLINE_TIME = "deadline_time"
 
         fun setIcon(context: Context, icon: Icon, button: ImageButton) {
             val drawable = IconDrawableLoader(context).loadDrawable(icon)
@@ -95,6 +103,7 @@ open class TaskFragment : Fragment() {
                 }
                 return ChipSpan(context, text, icon, data)
             }
+
             override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
                 super.configureChip(chip, chipConfiguration)
                 chip.setShowIconOnLeft(true)
@@ -108,7 +117,7 @@ open class TaskFragment : Fragment() {
             val chipList: MutableList<ChipInfo> = arrayListOf()
             for (chip in allChips) {
                 if (skillNames.contains(chip.text) &&
-                    chipList.find { it.text == chip.text } == null
+                        chipList.find { it.text == chip.text } == null
                 ) {
                     chipList.add(ChipInfo(chip.text, chip.data))
                 }
@@ -127,6 +136,7 @@ open class TaskFragment : Fragment() {
                 }
                 updateXpGained(xpGainValue, durationBar)
             }
+
             override fun onStartTrackingTouch(seek: SeekBar) = Unit
             override fun onStopTrackingTouch(seek: SeekBar) = Unit
         }
@@ -134,6 +144,46 @@ open class TaskFragment : Fragment() {
 
     fun updateXpGained(xpGainValue: TextView, durationBar: SeekBar) {
         xpGainValue.text = "${Difficulty.valueOf(difficulty).factor.times(
-            durationBar.getDurationInMinutes()).toInt()} XP"
+                durationBar.getDurationInMinutes()).toInt()} XP"
+    }
+
+    fun setDeadlineDateOnClickListener(view: EditText) {
+        view.setOnClickListener {
+            view.hideKeyboard()
+            val cal = Calendar.getInstance()
+            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                cal.set(Calendar.YEAR, year)
+                cal.set(Calendar.MONTH, month)
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                view.setText(SimpleDateFormat(
+                        App.dateFormat.toPattern().split(" ")[0],
+                        Locale.GERMAN).format(cal.time))
+            }
+            DatePickerDialog(cntxt, dateSetListener,
+                    cal[Calendar.YEAR],
+                    cal[Calendar.MONTH],
+                    cal[Calendar.DAY_OF_MONTH])
+                    .show()
+        }
+    }
+
+    fun setDeadlineTimeOnClickListener(view: EditText) {
+        view.setOnClickListener {
+            it.hideKeyboard()
+            val cal = Calendar.getInstance()
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
+                cal.set(Calendar.HOUR_OF_DAY, hour)
+                cal.set(Calendar.MINUTE, minute)
+                view.setText(SimpleDateFormat(
+                        App.dateFormat.toPattern().split(" ")[1],
+                        Locale.GERMAN).format(cal.time))
+            }
+            TimePickerDialog(cntxt, timeSetListener,
+                    cal.get(Calendar.HOUR_OF_DAY),
+                    cal.get(Calendar.MINUTE),
+                    true)
+                    .show()
+        }
+
     }
 }

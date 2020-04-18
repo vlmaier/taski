@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import org.vmaier.tidfl.App
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.data.entity.Task
 import java.util.*
@@ -15,42 +16,43 @@ import java.util.*
  * at 19:13
  */
 class DatabaseHandler(context: Context) : SQLiteOpenHelper(
-    context, DB_NAME, null,
-    DB_VERSION
+        context, DB_NAME, null,
+        DB_VERSION
 ) {
 
     override fun onCreate(db: SQLiteDatabase?) {
 
         val CREATE_TABLE_TASKS =
-            "CREATE TABLE $TASKS (" +
-                    "$ID INTEGER PRIMARY KEY, " +
-                    "$GOAL TEXT, " +
-                    "$DETAILS TEXT, " +
-                    "$STATUS TEXT, " +
-                    "$CREATED_AT TEXT, " +
-                    "$DURATION INTEGER, " +
-                    "$DIFFICULTY TEXT, " +
-                    "$ICON_ID INTEGER, " +
-                    "$XP INTEGER" +
-                    ")"
+                "CREATE TABLE $TASKS (" +
+                        "$ID INTEGER PRIMARY KEY, " +
+                        "$GOAL TEXT, " +
+                        "$DETAILS TEXT, " +
+                        "$STATUS TEXT, " +
+                        "$CREATED_AT TEXT, " +
+                        "$DUE_AT TEXT, " +
+                        "$DURATION INTEGER, " +
+                        "$DIFFICULTY TEXT, " +
+                        "$ICON_ID INTEGER, " +
+                        "$XP INTEGER" +
+                        ")"
 
         val CREATE_TABLE_SKILLS =
-            "CREATE TABLE $SKILLS (" +
-                    "$ID INTEGER PRIMARY KEY, " +
-                    "$NAME TEXT, " +
-                    "$CATEGORY TEXT, " +
-                    "$ICON_ID INTEGER, " +
-                    "FOREIGN KEY($CATEGORY) REFERENCES $CATEGORIES($ID)" +
-                    ")"
+                "CREATE TABLE $SKILLS (" +
+                        "$ID INTEGER PRIMARY KEY, " +
+                        "$NAME TEXT, " +
+                        "$CATEGORY TEXT, " +
+                        "$ICON_ID INTEGER, " +
+                        "FOREIGN KEY($CATEGORY) REFERENCES $CATEGORIES($ID)" +
+                        ")"
 
         val CREATE_TABLE_TASK_SKILLS =
-            "CREATE TABLE $TASK_SKILLS (" +
-                    "$TASK_ID INTEGER, " +
-                    "$SKILL_ID INTEGER, " +
-                    "PRIMARY KEY($TASK_ID, $SKILL_ID), " +
-                    "FOREIGN KEY($TASK_ID) REFERENCES $TASKS($ID), " +
-                    "FOREIGN KEY($SKILL_ID) REFERENCES $SKILLS($ID)" +
-                    ")"
+                "CREATE TABLE $TASK_SKILLS (" +
+                        "$TASK_ID INTEGER, " +
+                        "$SKILL_ID INTEGER, " +
+                        "PRIMARY KEY($TASK_ID, $SKILL_ID), " +
+                        "FOREIGN KEY($TASK_ID) REFERENCES $TASKS($ID), " +
+                        "FOREIGN KEY($SKILL_ID) REFERENCES $SKILLS($ID)" +
+                        ")"
 
         db?.execSQL(CREATE_TABLE_TASKS)
         db?.execSQL(CREATE_TABLE_SKILLS)
@@ -98,12 +100,14 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
                 val details = cursor.getString(2)
                 val status = Status.valueOf(cursor.getString(3))
                 val createdAt = cursor.getString(4)
-                val duration = cursor.getInt(5)
-                val difficulty = Difficulty.valueOf(cursor.getString(6))
-                val iconId = cursor.getInt(7)
+                val dueAt = cursor.getString(5)
+                val duration = cursor.getInt(6)
+                val difficulty = Difficulty.valueOf(cursor.getString(7))
+                val iconId = cursor.getInt(8)
                 val skills = findTaskAssociatedSkills(id)
                 tasks.add(
-                    Task(id, goal, details, status, createdAt, duration, difficulty, iconId, skills)
+                        Task(id, goal, details, status,
+                                createdAt, dueAt, duration, difficulty, iconId, skills)
                 )
                 cursor.moveToNext()
             }
@@ -126,7 +130,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
                 val category = cursor.getString(2)
                 val iconId = cursor.getInt(3)
                 skills.add(
-                    Skill(id, name, category, iconId)
+                        Skill(id, name, category, iconId)
                 )
                 cursor.moveToNext()
             }
@@ -219,19 +223,22 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
             val details = cursor.getString(2)
             val status = Status.valueOf(cursor.getString(3))
             val createdAt = cursor.getString(4)
-            val duration = cursor.getInt(5)
-            val difficulty = Difficulty.valueOf(cursor.getString(6))
-            val iconId = cursor.getInt(7)
+            val dueAt = cursor.getString(5)
+            val duration = cursor.getInt(6)
+            val difficulty = Difficulty.valueOf(cursor.getString(7))
+            val iconId = cursor.getInt(8)
             val skills = findTaskAssociatedSkills(id)
-            task = Task(id, goal, details, status, createdAt, duration, difficulty, iconId, skills)
+            task = Task(id, goal, details, status,
+                    createdAt, dueAt, duration, difficulty, iconId, skills)
         }
         cursor.close()
         return task
     }
 
     fun addTask(
-        goal: String, details: String, status: Status, duration: Int,
-        difficulty: Difficulty, iconId: Int, skills: Array<String> = arrayOf()
+            goal: String, details: String, status: Status, duration: Int,
+            difficulty: Difficulty, iconId: Int, skills: Array<String> = arrayOf(),
+            dueAt: String
     ): Task? {
 
         val db = this.writableDatabase
@@ -241,7 +248,8 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
             values.put(GOAL, goal)
             values.put(DETAILS, details)
             values.put(STATUS, status.name)
-            values.put(CREATED_AT, Date().toString())
+            values.put(CREATED_AT, App.dateFormat.format(Date()))
+            values.put(DUE_AT, dueAt)
             values.put(DURATION, duration)
             values.put(DIFFICULTY, difficulty.name)
             values.put(ICON_ID, iconId)
@@ -287,7 +295,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     }
 
     fun addSkill(
-        name: String, category: String, iconId: Int
+            name: String, category: String, iconId: Int
     ): Skill? {
 
         val db = this.writableDatabase
@@ -300,8 +308,8 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     }
 
     fun checkForChangesWithinTask(
-        id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
-        iconId: Int, skills: Array<String>
+            id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
+            iconId: Int, skills: Array<String>, dueAt: String
     ): Boolean {
 
         val task = findTask(id) ?: return false
@@ -310,11 +318,12 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
                 task.duration == duration &&
                 task.difficulty == difficulty &&
                 task.iconId == iconId &&
-                task.skillNames == skills.toList())
+                task.skillNames == skills.toList() &&
+                task.dueAt == dueAt)
     }
 
     fun checkForChangesWithinSkill(
-        id: Long, name: String, category: String, iconId: Int
+            id: Long, name: String, category: String, iconId: Int
     ): Boolean {
 
         val skill = findSkill(id) ?: return false
@@ -324,8 +333,8 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     }
 
     fun updateTask(
-        id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
-        iconId: Int, skills: Array<String>
+            id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
+            iconId: Int, skills: Array<String>, dueAt: String
     ): Task? {
 
         val db = this.writableDatabase
@@ -334,7 +343,8 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
             val values = ContentValues()
             values.put(GOAL, goal)
             values.put(DETAILS, details)
-            values.put(CREATED_AT, Date().toString())
+            values.put(CREATED_AT, App.dateFormat.format(Date()))
+            values.put(DUE_AT, dueAt)
             values.put(DURATION, duration)
             values.put(DIFFICULTY, difficulty.name)
             values.put(ICON_ID, iconId)
@@ -350,7 +360,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
     }
 
     fun updateSkill(
-        id: Long, name: String, category: String, iconId: Int
+            id: Long, name: String, category: String, iconId: Int
     ): Skill? {
 
         val db = this.writableDatabase
@@ -410,6 +420,7 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         private const val DETAILS = "details"
         private const val STATUS = "status"
         private const val CREATED_AT = "created_at"
+        private const val DUE_AT = "due_at"
         private const val DURATION = "duration"
         private const val DIFFICULTY = "difficulty"
         private const val ICON_ID = "icon_id"

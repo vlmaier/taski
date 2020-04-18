@@ -16,7 +16,7 @@ import org.vmaier.tidfl.data.entity.Task
  * at 19:24
  */
 class TaskAdapter(list: MutableList<Task>, private val context: Context) :
-    RecyclerView.Adapter<TaskViewHolder>() {
+        RecyclerView.Adapter<TaskViewHolder>() {
 
     private val dbHandler = DatabaseHandler(context)
 

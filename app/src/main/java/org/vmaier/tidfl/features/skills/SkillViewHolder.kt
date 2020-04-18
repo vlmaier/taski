@@ -21,10 +21,10 @@ import org.vmaier.tidfl.data.entity.Skill
  * at 19:40
  */
 class SkillViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView.ViewHolder(
-    inflater.inflate(
-        R.layout.item_skill, parent,
-        false
-    )
+        inflater.inflate(
+                R.layout.item_skill, parent,
+                false
+        )
 ) {
 
     private var id: Long = 0
@@ -40,9 +40,9 @@ class SkillViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerVie
         categoryView?.text = "${skill.category}"
         val drawable = App.iconPack.getIcon(skill.iconId)?.drawable!!
         DrawableCompat.setTint(
-            drawable, ContextCompat.getColor(
+                drawable, ContextCompat.getColor(
                 context, R.color.colorSecondary
-            )
+        )
         )
         iconView?.background = App.iconPack.getIcon(skill.iconId)?.drawable
         val dbHandler = DatabaseHandler(context)
@@ -52,10 +52,10 @@ class SkillViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerVie
 
         itemView.setOnClickListener {
             it.findNavController().navigate(
-                SkillListFragmentDirections.actionSkillListFragmentToSkillEditFragment(
-                    skill,
-                    this.adapterPosition
-                )
+                    SkillListFragmentDirections.actionSkillListFragmentToSkillEditFragment(
+                            skill,
+                            this.adapterPosition
+                    )
             )
         }
     }

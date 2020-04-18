@@ -22,10 +22,10 @@ import org.vmaier.tidfl.util.getHumanReadableDurationValue
  * at 19:25
  */
 class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView.ViewHolder(
-    inflater.inflate(
-        R.layout.item_task, parent,
-        false
-    )
+        inflater.inflate(
+                R.layout.item_task, parent,
+                false
+        )
 ) {
 
     private var id: Long = 0
@@ -46,9 +46,9 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
         details?.text = task.details
         val drawable = App.iconPack.getIcon(task.iconId)?.drawable!!
         DrawableCompat.setTint(
-            drawable, ContextCompat.getColor(
+                drawable, ContextCompat.getColor(
                 context, R.color.colorSecondary
-            )
+        )
         )
         taskIcon?.background = App.iconPack.getIcon(task.iconId)?.drawable
         xp?.text = "${task.xp} XP"
@@ -67,10 +67,10 @@ class TaskViewHolder(inflater: LayoutInflater, parent: ViewGroup) : RecyclerView
 
         itemView.setOnClickListener {
             it.findNavController().navigate(
-                TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(
-                    task,
-                    this.adapterPosition
-                )
+                    TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(
+                            task,
+                            this.adapterPosition
+                    )
             )
         }
     }

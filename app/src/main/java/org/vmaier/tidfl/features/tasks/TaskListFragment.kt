@@ -36,19 +36,19 @@ class TaskListFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         val binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
-            inflater, R.layout.fragment_task_list, container, false
+                inflater, R.layout.fragment_task_list, container, false
         )
 
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
         binding.fab.setOnClickListener {
             it.findNavController().navigate(
-                TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment()
+                    TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment()
             )
         }
         return binding.root

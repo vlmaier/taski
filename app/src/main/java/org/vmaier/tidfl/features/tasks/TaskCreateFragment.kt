@@ -13,7 +13,10 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.databinding.FragmentCreateTaskBinding
-import org.vmaier.tidfl.util.*
+import org.vmaier.tidfl.util.KeyBoardHider
+import org.vmaier.tidfl.util.getDurationInMinutes
+import org.vmaier.tidfl.util.getHumanReadableValue
+import org.vmaier.tidfl.util.hideKeyboard
 import java.util.*
 
 
@@ -33,7 +36,7 @@ class TaskCreateFragment : TaskFragment() {
         super.onCreateView(inflater, container, saved)
 
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_create_task, container, false
+                inflater, R.layout.fragment_create_task, container, false
         )
 
         // --- Goal settings
@@ -52,7 +55,7 @@ class TaskCreateFragment : TaskFragment() {
         binding.durationBar.progress = saved?.getInt(KEY_DURATION) ?: 3
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
         binding.durationBar.setOnSeekBarChangeListener(
-            getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
+                getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
         )
 
         // --- Difficulty settings
@@ -62,7 +65,7 @@ class TaskCreateFragment : TaskFragment() {
             updateXpGained(binding.xpGainValue, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
-            saved?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
+                saved?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
         )
         binding.difficulty.trivial.isChecked = selectedDifficulty == Difficulty.TRIVIAL
         binding.difficulty.regular.isChecked = selectedDifficulty == Difficulty.REGULAR
@@ -71,7 +74,7 @@ class TaskCreateFragment : TaskFragment() {
 
         // --- Skills settings
         val adapter = ArrayAdapter(
-            cntxt, R.layout.support_simple_spinner_dropdown_item, skillNames
+                cntxt, R.layout.support_simple_spinner_dropdown_item, skillNames
         )
         binding.skills.setAdapter(adapter)
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
@@ -88,6 +91,12 @@ class TaskCreateFragment : TaskFragment() {
             it.findNavController().popBackStack()
             it.hideKeyboard()
         }
+
+        // --- Deadline settings
+        binding.deadlineDate.setText(saved?.getString(KEY_DEADLINE_DATE) ?: "")
+        binding.deadlineTime.setText(saved?.getString(KEY_DEADLINE_TIME) ?: "")
+        setDeadlineDateOnClickListener(binding.deadlineDate)
+        setDeadlineTimeOnClickListener(binding.deadlineTime)
 
         return binding.root
     }
@@ -107,6 +116,8 @@ class TaskCreateFragment : TaskFragment() {
         out.putInt(KEY_DURATION, binding.durationBar.progress)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
+        out.putString(KEY_DEADLINE_DATE, binding.deadlineDate.text.toString())
+        out.putString(KEY_DEADLINE_TIME, binding.deadlineTime.text.toString())
     }
 
     private fun createTaskButtonClicked(@Suppress("UNUSED_PARAMETER") view: View): Boolean {
@@ -116,8 +127,18 @@ class TaskCreateFragment : TaskFragment() {
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skills = binding.skills.chipAndTokenValues.toTypedArray()
+        var dueAt = ""
+        if (binding.deadlineDate.text.isNotEmpty()) {
+            dueAt = binding.deadlineDate.text.toString()
+            dueAt += if (binding.deadlineTime.text.isNotEmpty()) {
+                " ${binding.deadlineTime.text}"
+            } else {
+                " 08:00"
+            }
+        }
         dbHandler.addTask(
-            goal, details, Status.OPEN, duration, Difficulty.valueOf(difficulty), iconId, skills
+                goal, details, Status.OPEN, duration, Difficulty.valueOf(difficulty),
+                iconId, skills, dueAt
         )
         return true
     }

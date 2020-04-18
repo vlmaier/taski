@@ -11,8 +11,8 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class Skill(
-    val id: Long,
-    val name: String,
-    val category: String,
-    val iconId: Int
+        val id: Long,
+        val name: String,
+        val category: String,
+        val iconId: Int
 ) : Parcelable

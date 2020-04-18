@@ -38,9 +38,9 @@ class SkillCreateFragment : SkillFragment() {
             val drawable = IconDrawableLoader(context).loadDrawable(icon)!!
             drawable.clearColorFilter()
             DrawableCompat.setTint(
-                drawable, ContextCompat.getColor(
+                    drawable, ContextCompat.getColor(
                     context, R.color.colorSecondary
-                )
+            )
             )
             binding.selectIconButton.background = drawable
             binding.selectIconButton.tag = icon.id
@@ -48,23 +48,23 @@ class SkillCreateFragment : SkillFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        saved: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            saved: Bundle?
     ): View? {
 
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_create_skill, container, false
+                inflater, R.layout.fragment_create_skill, container, false
         )
 
         val iconId = saved?.getInt(KEY_ICON_ID) ?: Random.nextInt(App.iconPack.allIcons.size)
         val iconDrawable = App.iconPack.getIconDrawable(
-            iconId, IconDrawableLoader(mContext)
+                iconId, IconDrawableLoader(mContext)
         )!!
 
         DrawableCompat.setTint(
-            iconDrawable, ContextCompat.getColor(
+                iconDrawable, ContextCompat.getColor(
                 mContext, R.color.colorSecondary
-            )
+        )
         )
 
         binding.selectIconButton.background = iconDrawable
@@ -77,8 +77,8 @@ class SkillCreateFragment : SkillFragment() {
         val categories = dbHandler.findAllCategories()
 
         val adapter = ArrayAdapter(
-            mContext,
-            R.layout.support_simple_spinner_dropdown_item, categories
+                mContext,
+                R.layout.support_simple_spinner_dropdown_item, categories
         )
         binding.category.setAdapter(adapter)
 
