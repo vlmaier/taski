@@ -1,9 +1,13 @@
 package org.vmaier.tidfl.data
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.provider.CalendarContract.Calendars
+import androidx.core.content.ContextCompat
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.data.entity.Task
@@ -33,7 +37,8 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
                         "$DURATION INTEGER, " +
                         "$DIFFICULTY TEXT, " +
                         "$ICON_ID INTEGER, " +
-                        "$XP INTEGER" +
+                        "$XP INTEGER, " +
+                        "$EVENT_ID TEXT" +
                         ")"
 
         val CREATE_TABLE_SKILLS =
@@ -104,10 +109,11 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
                 val duration = cursor.getInt(6)
                 val difficulty = Difficulty.valueOf(cursor.getString(7))
                 val iconId = cursor.getInt(8)
+                val eventId = cursor?.getString(10) ?: ""
                 val skills = findTaskAssociatedSkills(id)
                 tasks.add(
                         Task(id, goal, details, status,
-                                createdAt, dueAt, duration, difficulty, iconId, skills)
+                                createdAt, dueAt, duration, difficulty, iconId, skills, eventId)
                 )
                 cursor.moveToNext()
             }
@@ -227,9 +233,10 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
             val duration = cursor.getInt(6)
             val difficulty = Difficulty.valueOf(cursor.getString(7))
             val iconId = cursor.getInt(8)
+            val eventId = cursor?.getString(10) ?: ""
             val skills = findTaskAssociatedSkills(id)
             task = Task(id, goal, details, status,
-                    createdAt, dueAt, duration, difficulty, iconId, skills)
+                    createdAt, dueAt, duration, difficulty, iconId, skills, eventId)
         }
         cursor.close()
         return task
@@ -307,31 +314,6 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         return findSkill(success)
     }
 
-    fun checkForChangesWithinTask(
-            id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
-            iconId: Int, skills: Array<String>, dueAt: String
-    ): Boolean {
-
-        val task = findTask(id) ?: return false
-        return !(task.goal == goal &&
-                task.details == details &&
-                task.duration == duration &&
-                task.difficulty == difficulty &&
-                task.iconId == iconId &&
-                task.skillNames == skills.toList() &&
-                task.dueAt == dueAt)
-    }
-
-    fun checkForChangesWithinSkill(
-            id: Long, name: String, category: String, iconId: Int
-    ): Boolean {
-
-        val skill = findSkill(id) ?: return false
-        return !(skill.name == name &&
-                skill.category == category &&
-                skill.iconId == iconId)
-    }
-
     fun updateTask(
             id: Long, goal: String, details: String, duration: Int, difficulty: Difficulty,
             iconId: Int, skills: Array<String>, dueAt: String
@@ -405,6 +387,59 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         return findTask(task.id)
     }
 
+    fun updateTaskEventId(task: Task, eventId: String?): Task? {
+
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(EVENT_ID, eventId)
+        db.update(TASKS, values, "$ID = ?", arrayOf(task.id.toString()))
+        db.close()
+        return findTask(task.id)
+    }
+
+    fun getCalendarId(context: Context) : Long? {
+
+        val projection = arrayOf(
+                Calendars._ID,
+                Calendars.CALENDAR_DISPLAY_NAME)
+
+        // check permission
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
+                != PackageManager.PERMISSION_GRANTED) {
+            return null
+        }
+        // granted
+
+        var cursor = context.contentResolver.query(
+                Calendars.CONTENT_URI,
+                projection,
+                Calendars.VISIBLE + " = 1 AND " + Calendars.IS_PRIMARY + " = 1",
+                null,
+                Calendars._ID + " ASC"
+        )
+
+        if (cursor != null && cursor.count <= 0) {
+            cursor = context.contentResolver.query(
+                    Calendars.CONTENT_URI,
+                    projection,
+                    Calendars.VISIBLE + " = 1",
+                    null,
+                    Calendars._ID + " ASC"
+            )
+        }
+
+        if (cursor != null && cursor.moveToFirst()) {
+            val calId: String
+            val idCol = cursor.getColumnIndex(projection[0])
+            calId = cursor.getString(idCol)
+
+            cursor.close()
+            return calId.toLong()
+        }
+
+        return null
+    }
+
     companion object {
 
         private const val DB_NAME = "tidfl"
@@ -429,5 +464,6 @@ class DatabaseHandler(context: Context) : SQLiteOpenHelper(
         private const val CATEGORY = "category"
         private const val TASK_ID = "task_id"
         private const val SKILL_ID = "skill_id"
+        private const val EVENT_ID = "event_id"
     }
 }

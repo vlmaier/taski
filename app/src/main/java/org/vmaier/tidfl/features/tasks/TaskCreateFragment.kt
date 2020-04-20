@@ -136,10 +136,11 @@ class TaskCreateFragment : TaskFragment() {
                 " 08:00"
             }
         }
-        dbHandler.addTask(
+        val createdTask = dbHandler.addTask(
                 goal, details, Status.OPEN, duration, Difficulty.valueOf(difficulty),
                 iconId, skills, dueAt
         )
+        addToCalendar(createdTask)
         return true
     }
 }

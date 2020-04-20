@@ -7,7 +7,7 @@
 - [ ] show failed tasks
 - [ ] show tasks grouped by tags
 - [ ] show tasks grouped by skills
-- [ ] sorting
+- [ ] sorting tasks in list view by due date
 - [ ] recurring tasks
 - [ ] synchronization with Google Calendar
 

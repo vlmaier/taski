@@ -124,7 +124,11 @@ class SkillEditFragment : SkillFragment() {
         val name = binding.name.text.toString()
         val category = binding.category.text.toString()
         val iconId: Int = Integer.parseInt(binding.editIconButton.tag.toString())
-        if (dbHandler.checkForChangesWithinSkill(skill.id, name, category, iconId)) {
+        val isUpdateRequired = !(
+                skill.name == name &&
+                skill.category == category &&
+                skill.iconId == iconId)
+        if (isUpdateRequired) {
             val updatedSkill = dbHandler.updateSkill(skill.id, name, category, iconId)
             SkillListFragment.skillAdapter.items.set(itemPosition, updatedSkill!!)
             SkillListFragment.skillAdapter.notifyItemChanged(itemPosition)

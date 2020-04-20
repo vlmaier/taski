@@ -2,9 +2,12 @@ package org.vmaier.tidfl.features.tasks
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.ContentValues
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +30,7 @@ import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.Difficulty
+import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.util.getDurationInMinutes
 import org.vmaier.tidfl.util.getHumanReadableValue
 import org.vmaier.tidfl.util.hideKeyboard
@@ -184,6 +188,32 @@ open class TaskFragment : Fragment() {
                     true)
                     .show()
         }
+    }
 
+    fun addToCalendar(task: Task?) {
+
+        if (task == null) return
+        val calendarId = dbHandler.getCalendarId(cntxt) ?: return
+        val eventId: Uri?
+
+        val startTimeMs = if (task.dueAt.isNotEmpty()) {
+            App.dateFormat.parse(task.dueAt).time
+        } else {
+            null
+        }
+
+        val event = ContentValues()
+        event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
+        event.put(CalendarContract.Events.TITLE, task.goal)
+        event.put(CalendarContract.Events.DESCRIPTION, task.details)
+        if (startTimeMs != null) {
+            event.put(CalendarContract.Events.DTSTART, startTimeMs)
+            event.put(CalendarContract.Events.DTEND, startTimeMs + task.duration * 60 * 1000)
+        }
+        val timeZone = TimeZone.getDefault().id
+        event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
+        val baseUri = Uri.parse("content://com.android.calendar/events")
+        eventId = context!!.contentResolver.insert(baseUri, event)
+        dbHandler.updateTaskEventId(task, eventId.toString())
     }
 }

@@ -24,7 +24,8 @@ data class Task(
         val duration: Int,
         val difficulty: Difficulty = Difficulty.REGULAR,
         val iconId: Int,
-        val skills: ArrayList<Skill> = arrayListOf()
+        val skills: ArrayList<Skill> = arrayListOf(),
+        val eventId: String = ""
 ) : Parcelable {
 
     val xp: Int
