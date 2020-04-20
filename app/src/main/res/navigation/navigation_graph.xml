@@ -89,4 +89,9 @@
             app:argType="integer" />
     </fragment>
 
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="org.vmaier.tidfl.SettingsFragment"
+        android:label="SettingsFragment" />
+
 </navigation>

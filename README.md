@@ -26,6 +26,9 @@
 - [ ] set user name
 - [ ] remove profile menu item
 
+#### Settings Management
+- [ ] calendar sync on/off
+
 ##### Statistics
 - [ ] xp gained daily / weekly / monthly (bar graph)
 - [ ] tasks completed daily / weekly / monthly (bar graph)
@@ -53,3 +56,4 @@
 
 ##### Improvements
 - [ ] input validation
+- [ ] permissions check (handle deny)
