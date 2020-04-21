@@ -9,7 +9,6 @@
 - [ ] show tasks grouped by skills
 - [ ] sorting tasks in list view by due date
 - [ ] recurring tasks
-- [ ] synchronization with Google Calendar
 
 ##### Tag Management
 - [ ] create tags
@@ -45,7 +44,6 @@
 - [ ] Russian
 
 ##### UI
-- [ ] app icon
 - [ ] landscape layout
 - [ ] layout for smaller phone screens
 - [ ] tablet layout
@@ -56,4 +54,3 @@
 
 ##### Improvements
 - [ ] input validation
-- [ ] permissions check (handle deny)
