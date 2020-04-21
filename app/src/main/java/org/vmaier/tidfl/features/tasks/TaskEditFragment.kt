@@ -1,9 +1,6 @@
 package org.vmaier.tidfl.features.tasks
 
-import android.content.ContentValues
-import android.net.Uri
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +9,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
-import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Task
@@ -28,7 +24,7 @@ import java.util.*
  */
 class TaskEditFragment : TaskFragment() {
 
-    var itemPosition: Int = 0
+    private var itemPosition: Int = 0
 
     companion object {
         lateinit var binding: FragmentEditTaskBinding
@@ -162,42 +158,6 @@ class TaskEditFragment : TaskFragment() {
                     context, "Task updated",
                     Toast.LENGTH_SHORT
             ).show()
-        }
-    }
-
-    private fun updateInCalendar(before: Task, after: Task?) {
-
-        if (after == null) return
-        val eventId: Uri? = Uri.parse(after.eventId)
-        if (eventId == null) {
-            addToCalendar(after)
-        } else {
-            val calendarId = dbHandler.getCalendarId(cntxt) ?: return
-            val event = ContentValues()
-            event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
-            if (before.goal != after.goal) {
-                event.put(CalendarContract.Events.TITLE, after.goal)
-            }
-            if (before.details != after.details) {
-                event.put(CalendarContract.Events.DESCRIPTION, after.details)
-            }
-            if (before.duration != after.duration ||
-                before.dueAt != after.dueAt) {
-                val startTimeMs = if (after.dueAt.isNotEmpty()) {
-                    App.dateFormat.parse(after.dueAt).time
-                } else {
-                    null
-                }
-                if (startTimeMs != null) {
-                    event.put(CalendarContract.Events.DTSTART, startTimeMs)
-                    event.put(CalendarContract.Events.DTEND, startTimeMs + before.duration * 60 * 1000)
-                }
-                val timeZone = TimeZone.getDefault().id
-                event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
-            }
-
-            context!!.contentResolver.update(eventId, event, null, null)
-            dbHandler.updateTaskEventId(before, eventId.toString())
         }
     }
 }

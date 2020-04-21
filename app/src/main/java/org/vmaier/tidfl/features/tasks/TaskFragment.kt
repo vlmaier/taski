@@ -18,6 +18,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager.*
 import com.hootsuite.nachos.ChipConfiguration
 import com.hootsuite.nachos.NachoTextView
 import com.hootsuite.nachos.chip.ChipInfo
@@ -192,6 +193,10 @@ open class TaskFragment : Fragment() {
 
     fun addToCalendar(task: Task?) {
 
+        val sharedPreferences = getDefaultSharedPreferences(context)
+        val isCalendarSyncOn = sharedPreferences.getBoolean("calendar_sync", false)
+        if (!isCalendarSyncOn) return
+        sharedPreferences.edit().putBoolean("calendar_sync", false).apply()
         if (task == null) return
         val calendarId = dbHandler.getCalendarId(cntxt) ?: return
         val eventId: Uri?
@@ -213,7 +218,45 @@ open class TaskFragment : Fragment() {
         val timeZone = TimeZone.getDefault().id
         event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
         val baseUri = Uri.parse("content://com.android.calendar/events")
-        eventId = context!!.contentResolver.insert(baseUri, event)
+        eventId = requireContext().contentResolver.insert(baseUri, event)
         dbHandler.updateTaskEventId(task, eventId.toString())
+    }
+
+    fun updateInCalendar(before: Task, after: Task?) {
+
+        if (after == null) return
+        val sharedPreferences = getDefaultSharedPreferences(context)
+        val isCalendarSyncOn = sharedPreferences.getBoolean("calendar_sync", false)
+        if (!isCalendarSyncOn) return
+        val eventId: Uri? = Uri.parse(after.eventId)
+        if (eventId == null) {
+            addToCalendar(after)
+        } else {
+            val calendarId = dbHandler.getCalendarId(cntxt) ?: return
+            val event = ContentValues()
+            event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
+            if (before.goal != after.goal) {
+                event.put(CalendarContract.Events.TITLE, after.goal)
+            }
+            if (before.details != after.details) {
+                event.put(CalendarContract.Events.DESCRIPTION, after.details)
+            }
+            if (before.duration != after.duration ||
+                before.dueAt != after.dueAt) {
+                val startTimeMs = if (after.dueAt.isNotEmpty()) {
+                    App.dateFormat.parse(after.dueAt).time
+                } else {
+                    null
+                }
+                if (startTimeMs != null) {
+                    event.put(CalendarContract.Events.DTSTART, startTimeMs)
+                    event.put(CalendarContract.Events.DTEND, startTimeMs + before.duration * 60 * 1000)
+                }
+                val timeZone = TimeZone.getDefault().id
+                event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
+            }
+            requireContext().contentResolver.update(eventId, event, null, null)
+            dbHandler.updateTaskEventId(before, eventId.toString())
+        }
     }
 }

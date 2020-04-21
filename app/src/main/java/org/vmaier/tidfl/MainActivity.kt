@@ -1,6 +1,5 @@
 package org.vmaier.tidfl
 
-import android.Manifest
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -27,7 +26,6 @@ import org.vmaier.tidfl.features.skills.SkillEditFragment
 import org.vmaier.tidfl.features.tasks.TaskCreateFragment
 import org.vmaier.tidfl.features.tasks.TaskEditFragment
 import org.vmaier.tidfl.features.tasks.TaskFragment
-import org.vmaier.tidfl.util.PermissionManager
 
 
 /**
@@ -37,13 +35,11 @@ import org.vmaier.tidfl.util.PermissionManager
  */
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, IconDialog.Callback {
 
-    lateinit var navController: NavController
-    lateinit var iconDialog: IconDialog
+    private lateinit var navController: NavController
+    private lateinit var iconDialog: IconDialog
+    private lateinit var toolbar: Toolbar
+    private lateinit var navView: NavigationView
     lateinit var binding: ActivityMainBinding
-    lateinit var toolbar: Toolbar
-    lateinit var navView: NavigationView
-    lateinit var permissionManager: PermissionManager
-    private val permRequestCode = 0
 
     companion object {
         private const val ICON_DIALOG_TAG = "icon_dialog"
@@ -54,14 +50,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // initialize a list of required permissions to request runtime
-        val permissions = listOf(
-                Manifest.permission.READ_CALENDAR,
-                Manifest.permission.WRITE_CALENDAR
-        )
-        permissionManager = PermissionManager(this, permissions, permRequestCode)
-        permissionManager.checkPermissions()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         navController = this.findNavController(R.id.nav_host_fragment)

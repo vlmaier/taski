@@ -16,38 +16,21 @@ class PermissionManager(private val activity: Activity,
                         private val code: Int) {
 
     fun checkPermissions() {
-        if (isPermissionsGranted() != PackageManager.PERMISSION_GRANTED) {
+        if (!arePermissionsGranted(permissions)) {
             requestPermissions()
         }
         // already granted
     }
 
-    private fun isPermissionsGranted(): Int {
-
+    private fun arePermissionsGranted(permissions: List<String>): Boolean {
         var counter = 0
         for (permission in permissions) {
             counter += ContextCompat.checkSelfPermission(activity, permission)
         }
-        return counter
-    }
-
-    private fun deniedPermission(): String {
-
-        for (permission in permissions) {
-            if (ContextCompat.checkSelfPermission(activity, permission)
-                    == PackageManager.PERMISSION_DENIED)
-                return permission
-        }
-        return ""
+        return counter == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestPermissions() {
-
-        val permission = deniedPermission()
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-            // TODO: explanation dialog
-        } else {
-            ActivityCompat.requestPermissions(activity, permissions.toTypedArray(), code)
-        }
+        ActivityCompat.requestPermissions(activity, permissions.toTypedArray(), code)
     }
 }
