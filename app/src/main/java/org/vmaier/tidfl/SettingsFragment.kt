@@ -23,8 +23,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
         key: String
     ) {
         if (key == "calendar_sync") {
-            val pref: CheckBoxPreference = findPreference(key) as CheckBoxPreference
-            sharedPreferences.edit().putBoolean("calendar_sync", pref.isChecked).apply()
+            val pref: CheckBoxPreference? = findPreference(key)
+            sharedPreferences.edit().putBoolean("calendar_sync", pref?.isChecked ?: false).apply()
         }
     }
 
