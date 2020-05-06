@@ -26,7 +26,8 @@
 - [ ] remove profile menu item
 
 #### Settings Management
-- [ ] calendar sync on/off
+- [ ] set user nickname
+- [ ] set user avatar
 
 ##### Statistics
 - [ ] xp gained daily / weekly / monthly (bar graph)
@@ -47,10 +48,11 @@
 - [ ] landscape layout
 - [ ] layout for smaller phone screens
 - [ ] tablet layout
-- [ ] implement duration design with duration picker 
 - [ ] implement themes
 - [ ] improve skill item card design
 - [ ] if no skills are available show hint when creating or editing a task
+- [ ] settings fragment animations
 
 ##### Improvements
 - [ ] input validation
+- [ ] migrate from plain SQLite to Room

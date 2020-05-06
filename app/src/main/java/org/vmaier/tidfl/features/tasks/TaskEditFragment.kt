@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Task
@@ -43,7 +45,7 @@ class TaskEditFragment : TaskFragment() {
         binding.header.isFocusable = true
 
         // Get arguments from bundle
-        val args = TaskEditFragmentArgs.fromBundle(this.arguments!!)
+        val args = TaskEditFragmentArgs.fromBundle(this.requireArguments())
         task = args.task
         itemPosition = args.itemPosition
 
@@ -81,21 +83,28 @@ class TaskEditFragment : TaskFragment() {
 
         // --- Skills settings
         val adapter = ArrayAdapter(
-                cntxt, R.layout.support_simple_spinner_dropdown_item, skillNames
+                requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
         )
         binding.skills.setAdapter(adapter)
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
-        binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: task.skillNames)
+        // binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: task.skillNames)
 
         // --- Deadline settings
-        val dueAt = task.dueAt.split(" ")
-        binding.deadlineDate.setText(saved?.getString(KEY_DEADLINE_DATE)
-                ?: if (task.dueAt.isNotEmpty()) dueAt[0] else "")
-        binding.deadlineTime.setText(saved?.getString(KEY_DEADLINE_TIME)
-                ?: if (task.dueAt.isNotEmpty()) dueAt[1] else "")
-        setDeadlineDateOnClickListener(binding.deadlineDate)
-        setDeadlineTimeOnClickListener(binding.deadlineTime)
+        val dueAt = task.dueAt
+        if (dueAt != null) {
+            val dueAtParts = dueAt.split(" ")
+            binding.deadlineDate.setText(
+                saved?.getString(KEY_DEADLINE_DATE)
+                    ?: if (dueAtParts.isNotEmpty()) dueAtParts[0] else ""
+            )
+            binding.deadlineTime.setText(
+                saved?.getString(KEY_DEADLINE_TIME)
+                    ?: if (dueAtParts.isNotEmpty()) dueAtParts[1] else ""
+            )
+            setDeadlineDateOnClickListener(binding.deadlineDate)
+            setDeadlineTimeOnClickListener(binding.deadlineTime)
+        }
 
         return binding.root
     }
@@ -144,20 +153,20 @@ class TaskEditFragment : TaskFragment() {
                 task.duration == duration &&
                 task.difficulty == Difficulty.valueOf(difficulty) &&
                 task.iconId == iconId &&
-                task.skillNames == skills.toList() &&
+                // task.skillNames == skills.toList() &&
                 task.dueAt == dueAt)
         if (updateRequired) {
-            val updatedTask = dbHandler.updateTask(
-                    task.id, goal, details, duration, Difficulty.valueOf(difficulty),
-                    iconId, skills, dueAt
-            )
-            updateInCalendar(task, updatedTask)
-            TaskListFragment.taskAdapter.items[itemPosition] = updatedTask!!
-            TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
-            Toast.makeText(
+            GlobalScope.launch {
+                val task = Task(goal = goal, details = details, duration = duration, iconId = iconId, dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty))
+                db.taskDao().update(task)
+                updateInCalendar(Companion.task, task)
+                TaskListFragment.taskAdapter.tasks[itemPosition] = task
+                TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
+                Toast.makeText(
                     context, "Task updated",
                     Toast.LENGTH_SHORT
-            ).show()
+                ).show()
+            }
         }
     }
 }

@@ -1,9 +1,11 @@
 package org.vmaier.tidfl.features.tasks
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -27,8 +29,11 @@ import com.hootsuite.nachos.chip.ChipSpanChipCreator
 import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
+import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Task
@@ -49,10 +54,9 @@ import kotlin.random.Random
 open class TaskFragment : Fragment() {
 
     companion object {
-        lateinit var cntxt: Context
-        lateinit var dbHandler: DatabaseHandler
         lateinit var skillNames: List<String>
         lateinit var difficulty: String
+        lateinit var db: AppDatabase
 
         const val KEY_GOAL = "goal"
         const val KEY_DETAILS = "details"
@@ -73,14 +77,14 @@ open class TaskFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        cntxt = context
-        dbHandler = DatabaseHandler(cntxt)
+        db = AppDatabase(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
-        skillNames = dbHandler.findAllSkillNames()
+        val skills = db.skillDao().findAll()
+        skillNames = skills.map { it.name }
         return this.view
     }
 
@@ -88,23 +92,24 @@ open class TaskFragment : Fragment() {
                     fallback: Int = Random.nextInt(App.iconPack.allIcons.size)) {
 
         val iconId = saved?.getInt(KEY_ICON_ID) ?: fallback
-        val icon = App.iconPack.getIconDrawable(iconId, IconDrawableLoader(cntxt))
-        icon.setThemeTint(cntxt)
+        val icon = App.iconPack.getIconDrawable(iconId, IconDrawableLoader(requireContext()))
+        icon.setThemeTint(requireContext())
         button.background = icon
         button.tag = iconId
     }
 
     fun getSkillsTokenizer(): SpanChipTokenizer<ChipSpan> {
-        return SpanChipTokenizer(cntxt, object : ChipSpanChipCreator() {
+        return SpanChipTokenizer(requireContext(), object : ChipSpanChipCreator() {
             override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan {
-                val skills = dbHandler.findAllSkills()
+                val db = AppDatabase(requireContext())
+                val skills = db.skillDao().findAll()
                 val skill = skills.find { it.name == text }
                 var icon: Drawable? = null
                 if (skill != null) {
-                    icon = App.iconPack.getIconDrawable(skill.iconId, IconDrawableLoader(cntxt))
+                    icon = App.iconPack.getIconDrawable(skill.iconId, IconDrawableLoader(requireContext()))
                 }
                 if (icon != null) {
-                    DrawableCompat.setTint(icon, ContextCompat.getColor(cntxt, R.color.colorWhite))
+                    DrawableCompat.setTint(icon, ContextCompat.getColor(requireContext(), R.color.colorWhite))
                 }
                 return ChipSpan(context, text, icon, data)
             }
@@ -164,7 +169,7 @@ open class TaskFragment : Fragment() {
                         App.dateFormat.toPattern().split(" ")[0],
                         Locale.GERMAN).format(cal.time))
             }
-            DatePickerDialog(cntxt, dateSetListener,
+            DatePickerDialog(requireContext(), dateSetListener,
                     cal[Calendar.YEAR],
                     cal[Calendar.MONTH],
                     cal[Calendar.DAY_OF_MONTH])
@@ -183,7 +188,7 @@ open class TaskFragment : Fragment() {
                         App.dateFormat.toPattern().split(" ")[1],
                         Locale.GERMAN).format(cal.time))
             }
-            TimePickerDialog(cntxt, timeSetListener,
+            TimePickerDialog(requireContext(), timeSetListener,
                     cal.get(Calendar.HOUR_OF_DAY),
                     cal.get(Calendar.MINUTE),
                     true)
@@ -198,10 +203,10 @@ open class TaskFragment : Fragment() {
         if (!isCalendarSyncOn) return
         sharedPreferences.edit().putBoolean("calendar_sync", false).apply()
         if (task == null) return
-        val calendarId = dbHandler.getCalendarId(cntxt) ?: return
+        val calendarId = getCalendarId(requireContext()) ?: return
         val eventId: Uri?
 
-        val startTimeMs = if (task.dueAt.isNotEmpty()) {
+        val startTimeMs = if (task.dueAt != null) {
             App.dateFormat.parse(task.dueAt).time
         } else {
             null
@@ -219,7 +224,9 @@ open class TaskFragment : Fragment() {
         event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
         val baseUri = Uri.parse("content://com.android.calendar/events")
         eventId = requireContext().contentResolver.insert(baseUri, event)
-        dbHandler.updateTaskEventId(task, eventId.toString())
+        GlobalScope.launch {
+            db.taskDao().updateEventId(task.id, eventId.toString())
+        }
     }
 
     fun updateInCalendar(before: Task, after: Task?) {
@@ -232,7 +239,7 @@ open class TaskFragment : Fragment() {
         if (eventId == null) {
             addToCalendar(after)
         } else {
-            val calendarId = dbHandler.getCalendarId(cntxt) ?: return
+            val calendarId = getCalendarId(requireContext()) ?: return
             val event = ContentValues()
             event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
             if (before.goal != after.goal) {
@@ -243,7 +250,7 @@ open class TaskFragment : Fragment() {
             }
             if (before.duration != after.duration ||
                 before.dueAt != after.dueAt) {
-                val startTimeMs = if (after.dueAt.isNotEmpty()) {
+                val startTimeMs = if (after.dueAt != null) {
                     App.dateFormat.parse(after.dueAt).time
                 } else {
                     null
@@ -256,7 +263,52 @@ open class TaskFragment : Fragment() {
                 event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
             }
             requireContext().contentResolver.update(eventId, event, null, null)
-            dbHandler.updateTaskEventId(before, eventId.toString())
+            GlobalScope.launch {
+                db.taskDao().updateEventId(before.id, eventId.toString())
+            }
         }
+    }
+
+    private fun getCalendarId(context: Context) : Long? {
+
+        val projection = arrayOf(
+            CalendarContract.Calendars._ID,
+            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)
+
+        // check permission
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
+            != PackageManager.PERMISSION_GRANTED) {
+            return null
+        }
+        // granted
+
+        var cursor = context.contentResolver.query(
+            CalendarContract.Calendars.CONTENT_URI,
+            projection,
+            CalendarContract.Calendars.VISIBLE + " = 1 AND " + CalendarContract.Calendars.IS_PRIMARY + " = 1",
+            null,
+            CalendarContract.Calendars._ID + " ASC"
+        )
+
+        if (cursor != null && cursor.count <= 0) {
+            cursor = context.contentResolver.query(
+                CalendarContract.Calendars.CONTENT_URI,
+                projection,
+                CalendarContract.Calendars.VISIBLE + " = 1",
+                null,
+                CalendarContract.Calendars._ID + " ASC"
+            )
+        }
+
+        if (cursor != null && cursor.moveToFirst()) {
+            val calId: String
+            val idCol = cursor.getColumnIndex(projection[0])
+            calId = cursor.getString(idCol)
+
+            cursor.close()
+            return calId.toLong()
+        }
+
+        return null
     }
 }

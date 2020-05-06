@@ -36,11 +36,11 @@ class SwipeCallbackHandler :
             // showing snack bar with undo option
             Snackbar.make(
                     viewHolder.itemView,
-                    "Task completed (+${doneTask?.xp} XP)",
+                    "Task completed (+${doneTask.xp} XP)",
                     Snackbar.LENGTH_LONG
             ).setAction("UNDO") {
                 // undo is selected, restore the deleted item
-                TaskListFragment.taskAdapter.restoreItem(doneTask!!, position)
+                TaskListFragment.taskAdapter.restoreItem(doneTask, position)
             }.setActionTextColor(Color.YELLOW).show()
         } else {
             val failedTask = TaskListFragment.taskAdapter.removeItem(position, Status.FAILED)
@@ -51,7 +51,7 @@ class SwipeCallbackHandler :
                     Snackbar.LENGTH_LONG
             ).setAction("UNDO") {
                 // undo is selected, restore the deleted item
-                TaskListFragment.taskAdapter.restoreItem(failedTask!!, position)
+                TaskListFragment.taskAdapter.restoreItem(failedTask, position)
             }.setActionTextColor(Color.YELLOW).show()
         }
     }
@@ -76,7 +76,7 @@ class SwipeCallbackHandler :
 
             // swipe to the right
             if (dX > 0) {
-                p.color = ContextCompat.getColor(TaskListFragment.mContext, R.color.colorRedCancel)
+                p.color = ContextCompat.getColor(itemView.context, R.color.colorRedCancel)
                 val background =
                         RectF(
                                 itemView.left.toFloat(),
@@ -86,7 +86,7 @@ class SwipeCallbackHandler :
                         )
                 c.drawRect(background, p)
                 icon = AppCompatResources.getDrawable(
-                        TaskListFragment.mContext,
+                        itemView.context,
                         R.drawable.ic_outline_cancel_24
                 )?.toBitmap()!!
                 val destination = RectF(
@@ -99,7 +99,7 @@ class SwipeCallbackHandler :
 
                 // swipe to the left
             } else {
-                p.color = ContextCompat.getColor(TaskListFragment.mContext, R.color.colorGreenDone)
+                p.color = ContextCompat.getColor(itemView.context, R.color.colorGreenDone)
                 val background = RectF(
                         itemView.right.toFloat() + dX,
                         itemView.top.toFloat(),
@@ -109,7 +109,7 @@ class SwipeCallbackHandler :
                 c.drawRect(background, p)
                 icon =
                         AppCompatResources.getDrawable(
-                                TaskListFragment.mContext,
+                                itemView.context,
                                 R.drawable.ic_baseline_done_24
                         )?.toBitmap()!!
                 val destination = RectF(

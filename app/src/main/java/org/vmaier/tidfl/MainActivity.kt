@@ -19,7 +19,10 @@ import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
-import org.vmaier.tidfl.data.DatabaseHandler
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.vmaier.tidfl.data.AppDatabase
+import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.databinding.ActivityMainBinding
 import org.vmaier.tidfl.features.skills.SkillCreateFragment
 import org.vmaier.tidfl.features.skills.SkillEditFragment
@@ -67,16 +70,21 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
-
-        val headerView = navView.getHeaderView(0)
-        xpCounter = headerView.findViewById<View>(R.id.xp_counter) as TextView
-        levelCounter = headerView.findViewById<View>(R.id.level_counter) as TextView
-        val xp = DatabaseHandler(this).calculateOverallXp()
-        xpCounter.text = "${xp} XP"
-        levelCounter.text = "Level ${xp.div(10000) + 1}"
-
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
                 ?: IconDialog.newInstance(IconDialogSettings())
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val db = AppDatabase(this)
+        GlobalScope.launch {
+            val headerView = navView.getHeaderView(0)
+            xpCounter = headerView.findViewById<View>(R.id.xp_counter) as TextView
+            levelCounter = headerView.findViewById<View>(R.id.level_counter) as TextView
+            val xp = db.taskDao().calculateOverallXp(Status.DONE)
+            xpCounter.text = "${xp} XP"
+            levelCounter.text = "Level ${xp.div(10000) + 1}"
+        }
     }
 
     fun selectIconButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {

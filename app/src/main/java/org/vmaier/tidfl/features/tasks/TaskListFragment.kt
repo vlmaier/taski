@@ -1,6 +1,5 @@
 package org.vmaier.tidfl.features.tasks
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +11,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_task_list.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
-import org.vmaier.tidfl.data.DatabaseHandler
+import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.databinding.FragmentTaskListBinding
 
 
@@ -26,13 +27,7 @@ import org.vmaier.tidfl.databinding.FragmentTaskListBinding
 class TaskListFragment : Fragment() {
 
     companion object {
-        lateinit var mContext: Context
         lateinit var taskAdapter: TaskAdapter
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
     }
 
     override fun onCreateView(
@@ -57,10 +52,12 @@ class TaskListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dbHandler = DatabaseHandler(mContext)
-        val tasks = dbHandler.findAllTasks()
+        taskAdapter = TaskAdapter(this.requireContext())
 
-        taskAdapter = TaskAdapter(tasks, mContext)
+        val db = AppDatabase(this.requireContext())
+        val tasks = db.taskDao().findAll()
+        taskAdapter.setTasks(tasks)
+
         rv.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = taskAdapter

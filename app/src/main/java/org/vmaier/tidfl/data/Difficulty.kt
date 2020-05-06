@@ -1,6 +1,5 @@
 package org.vmaier.tidfl.data
 
-
 /**
  * Created by Vladas Maier
  * on 09.05.2019

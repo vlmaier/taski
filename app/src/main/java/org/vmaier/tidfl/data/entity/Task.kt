@@ -1,10 +1,11 @@
 package org.vmaier.tidfl.data.entity
 
 import android.os.Parcelable
+import androidx.room.*
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import org.vmaier.tidfl.App
-import org.vmaier.tidfl.data.Difficulty
-import org.vmaier.tidfl.data.Status
+import org.vmaier.tidfl.data.*
 import java.util.*
 
 
@@ -14,28 +15,17 @@ import java.util.*
  * at 21:00
  */
 @Parcelize
+@Entity(tableName = "tasks")
 data class Task(
-        val id: Long,
-        val goal: String,
-        val details: String = "",
-        val status: Status = Status.OPEN,
-        val createdAt: String = App.dateFormat.format(Date()),
-        val dueAt: String = "",
-        val duration: Int,
-        val difficulty: Difficulty = Difficulty.REGULAR,
-        val iconId: Int,
-        val skills: ArrayList<Skill> = arrayListOf(),
-        val eventId: String = ""
-) : Parcelable {
-
-    val xp: Int
-        get() {
-            return difficulty.factor.times(duration).toInt()
-        }
-
-    val skillNames: List<String>
-        get() {
-            if (skills.isEmpty()) return listOf()
-            return skills.map { skill -> skill.name }
-        }
-}
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
+    @ColumnInfo(name = "goal") val goal: String,
+    @ColumnInfo(name = "details") val details: String? = null,
+    @ColumnInfo(name = "status") @TypeConverters(Converters::class) val status: Status = Status.OPEN,
+    @ColumnInfo(name = "created_at") val createdAt: String = App.dateFormat.format(Date()),
+    @ColumnInfo(name = "due_at") val dueAt: String? = null,
+    @ColumnInfo(name = "duration") val duration: Int,
+    @ColumnInfo(name = "difficulty") @TypeConverters(Converters::class) val difficulty: Difficulty = Difficulty.REGULAR,
+    @ColumnInfo(name = "xp") val xp: Int = difficulty.factor.times(duration).toInt(),
+    @ColumnInfo(name = "icon_id") val iconId: Int,
+    @ColumnInfo(name = "event_id") val eventId: String? = null
+) : Parcelable

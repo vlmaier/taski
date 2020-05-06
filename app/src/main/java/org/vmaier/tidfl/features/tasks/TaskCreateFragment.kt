@@ -9,9 +9,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.vmaier.tidfl.R
+import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.Difficulty
-import org.vmaier.tidfl.data.Status
+import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.databinding.FragmentCreateTaskBinding
 import org.vmaier.tidfl.util.KeyBoardHider
 import org.vmaier.tidfl.util.getDurationInMinutes
@@ -74,7 +77,7 @@ class TaskCreateFragment : TaskFragment() {
 
         // --- Skills settings
         val adapter = ArrayAdapter(
-                cntxt, R.layout.support_simple_spinner_dropdown_item, skillNames
+                requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
         )
         binding.skills.setAdapter(adapter)
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
@@ -136,11 +139,13 @@ class TaskCreateFragment : TaskFragment() {
                 " 08:00"
             }
         }
-        val createdTask = dbHandler.addTask(
-                goal, details, Status.OPEN, duration, Difficulty.valueOf(difficulty),
-                iconId, skills, dueAt
-        )
-        addToCalendar(createdTask)
+        val task = Task(goal = goal, details = details, duration = duration, iconId = iconId, dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty))
+        val db = AppDatabase(this.requireContext())
+        GlobalScope.launch {
+            db.taskDao().insert(task)
+            TaskListFragment.taskAdapter.notifyDataSetChanged()
+        }
+        addToCalendar(task)
         return true
     }
 }
