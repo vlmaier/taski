@@ -14,13 +14,4 @@ open class SkillFragment : Fragment() {
     val KEY_NAME = "name"
     val KEY_CATEGORY = "category"
     val KEY_ICON_ID = "icon_id"
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
-    }
-
-    companion object {
-        lateinit var mContext: Context
-    }
 }

@@ -11,11 +11,10 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_task_list.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
+import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.databinding.FragmentTaskListBinding
 
 
@@ -36,14 +35,14 @@ class TaskListFragment : Fragment() {
     ): View? {
 
         val binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
-                inflater, R.layout.fragment_task_list, container, false
+            inflater, R.layout.fragment_task_list, container, false
         )
 
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
         binding.fab.setOnClickListener {
             it.findNavController().navigate(
-                    TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment()
+                TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment()
             )
         }
         return binding.root
@@ -52,10 +51,10 @@ class TaskListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        taskAdapter = TaskAdapter(this.requireContext())
+        taskAdapter = TaskAdapter(requireContext())
 
-        val db = AppDatabase(this.requireContext())
-        val tasks = db.taskDao().findAll()
+        val db = AppDatabase(requireContext())
+        val tasks = db.taskDao().findAllTasksWithStatus(Status.OPEN)
         taskAdapter.setTasks(tasks)
 
         rv.apply {

@@ -55,4 +55,4 @@
 
 ##### Improvements
 - [ ] input validation
-- [ ] migrate from plain SQLite to Room
+- [ ] rework the database scheme

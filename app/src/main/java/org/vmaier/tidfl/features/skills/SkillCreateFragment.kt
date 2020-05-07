@@ -13,9 +13,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
-import org.vmaier.tidfl.data.DatabaseHandler
+import org.vmaier.tidfl.data.AppDatabase
+import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentCreateSkillBinding
 import org.vmaier.tidfl.util.KeyBoardHider
 import org.vmaier.tidfl.util.hideKeyboard
@@ -38,9 +41,9 @@ class SkillCreateFragment : SkillFragment() {
             val drawable = IconDrawableLoader(context).loadDrawable(icon)!!
             drawable.clearColorFilter()
             DrawableCompat.setTint(
-                    drawable, ContextCompat.getColor(
+                drawable, ContextCompat.getColor(
                     context, R.color.colorSecondary
-            )
+                )
             )
             binding.selectIconButton.background = drawable
             binding.selectIconButton.tag = icon.id
@@ -58,13 +61,13 @@ class SkillCreateFragment : SkillFragment() {
 
         val iconId = saved?.getInt(KEY_ICON_ID) ?: Random.nextInt(App.iconPack.allIcons.size)
         val iconDrawable = App.iconPack.getIconDrawable(
-                iconId, IconDrawableLoader(mContext)
+                iconId, IconDrawableLoader(requireContext())
         )!!
 
         DrawableCompat.setTint(
-                iconDrawable, ContextCompat.getColor(
-                mContext, R.color.colorSecondary
-        )
+            iconDrawable, ContextCompat.getColor(
+                requireContext(), R.color.colorSecondary
+            )
         )
 
         binding.selectIconButton.background = iconDrawable
@@ -73,12 +76,12 @@ class SkillCreateFragment : SkillFragment() {
         binding.name.setText(saved?.getString(KEY_NAME) ?: "")
         binding.category.setText(saved?.getString(KEY_CATEGORY) ?: "")
 
-        val dbHandler = DatabaseHandler(mContext)
-        val categories = dbHandler.findAllCategories()
+        val db = AppDatabase(requireContext())
+        val categories = db.skillDao().findAllCategories()
 
         val adapter = ArrayAdapter(
-                mContext,
-                R.layout.support_simple_spinner_dropdown_item, categories
+            requireContext(),
+            R.layout.support_simple_spinner_dropdown_item, categories
         )
         binding.category.setAdapter(adapter)
 
@@ -119,10 +122,18 @@ class SkillCreateFragment : SkillFragment() {
 
     private fun createSkillButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
 
-        val dbHandler = DatabaseHandler(mContext)
         val name = binding.name.text.toString()
         val category = binding.category.text.toString()
         val iconId: Int = Integer.parseInt(binding.selectIconButton.tag.toString())
-        dbHandler.addSkill(name, category, iconId)
+        val skill = Skill(
+            name = name,
+            category = category,
+            iconId = iconId
+        )
+        val db = AppDatabase(requireContext())
+        GlobalScope.launch {
+            db.skillDao().insertSkill(skill)
+            SkillListFragment.skillAdapter.notifyDataSetChanged()
+        }
     }
 }

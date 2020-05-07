@@ -13,7 +13,8 @@ data class TaskWithSkills(
     @Embedded val task: Task,
     @Relation(
         parentColumn = "id",
-        entityColumn = "id"
+        entityColumn = "id",
+        entity = Skill::class
     )
     val skills: List<Skill>
 )

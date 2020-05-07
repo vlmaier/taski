@@ -97,7 +97,7 @@ class SwipeCallbackHandler :
                 )
                 c.drawBitmap(icon, null, destination, p)
 
-                // swipe to the left
+            // swipe to the left
             } else {
                 p.color = ContextCompat.getColor(itemView.context, R.color.colorGreenDone)
                 val background = RectF(

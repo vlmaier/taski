@@ -14,9 +14,11 @@ import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
-import org.vmaier.tidfl.data.DatabaseHandler
+import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentEditSkillBinding
@@ -56,21 +58,19 @@ class SkillEditFragment : SkillFragment() {
             : View? {
 
         binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_edit_skill, container,
-                false
+                inflater, R.layout.fragment_edit_skill, container, false
         )
 
-        val dbHandler = DatabaseHandler(mContext)
         val args = SkillEditFragmentArgs.fromBundle(this.arguments!!)
         skill = args.skill
         itemPosition = args.itemPosition
         binding.name.setText(if (saved != null) saved.getString(KEY_NAME) else skill.name)
         binding.category.setText(if (saved != null) saved.getString(KEY_CATEGORY) else skill.category)
-        val skillXp = dbHandler.calculateSkillXp(skill.id)
-        val openTasksAmount = dbHandler.findAmountOfTasksForSkill(skill.id, Status.OPEN)
-        val doneTasksAmount = dbHandler.findAmountOfTasksForSkill(skill.id, Status.DONE)
-        binding.skillLevelValue.text = "${skillXp.div(1000) + 1}"
-        binding.skillXpValue.text = "$skillXp XP"
+        val db = AppDatabase(requireContext())
+        val openTasksAmount = db.skillDao().findAmountOfTasks(skill.name, Status.OPEN)
+        val doneTasksAmount = db.skillDao().findAmountOfTasks(skill.name, Status.DONE)
+        binding.skillLevelValue.text = skill.level.toString()
+        binding.skillXpValue.text = "${skill.xp} XP"
         binding.skillOpenTasksValue.text = "$openTasksAmount"
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
         val iconId = if (saved != null) saved.getInt(KEY_ICON_ID) else skill.iconId
@@ -92,7 +92,7 @@ class SkillEditFragment : SkillFragment() {
                     Snackbar.LENGTH_LONG
             ).setAction("UNDO") {
                 // undo is selected, restore the deleted item
-                SkillListFragment.skillAdapter.restoreItem(removedSkill!!, itemPosition)
+                SkillListFragment.skillAdapter.restoreItem(removedSkill, itemPosition)
             }.setActionTextColor(Color.YELLOW).show()
             it.findNavController().popBackStack()
             it.hideKeyboard()
@@ -120,7 +120,6 @@ class SkillEditFragment : SkillFragment() {
 
     private fun saveChangesOnSkill() {
 
-        val dbHandler = DatabaseHandler(mContext)
         val name = binding.name.text.toString()
         val category = binding.category.text.toString()
         val iconId: Int = Integer.parseInt(binding.editIconButton.tag.toString())
@@ -129,12 +128,20 @@ class SkillEditFragment : SkillFragment() {
                 skill.category == category &&
                 skill.iconId == iconId)
         if (isUpdateRequired) {
-            val updatedSkill = dbHandler.updateSkill(skill.id, name, category, iconId)
-            SkillListFragment.skillAdapter.items.set(itemPosition, updatedSkill!!)
-            SkillListFragment.skillAdapter.notifyItemChanged(itemPosition)
+            val db = AppDatabase(requireContext())
+            GlobalScope.launch {
+                val toUpdate = Skill(
+                    name = name,
+                    category = category,
+                    iconId = iconId
+                )
+                val updatedSkill = db.skillDao().updateSkill(skill.name, toUpdate)
+                SkillListFragment.skillAdapter.skills.set(itemPosition, updatedSkill)
+                SkillListFragment.skillAdapter.notifyItemChanged(itemPosition)
+            }
             Toast.makeText(
-                    context, "Skill updated",
-                    Toast.LENGTH_SHORT
+                context, "Skill updated",
+                Toast.LENGTH_SHORT
             ).show()
         }
     }

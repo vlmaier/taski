@@ -2,7 +2,6 @@ package org.vmaier.tidfl.data.entity
 
 import android.os.Parcelable
 import androidx.room.*
-import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.data.*
@@ -28,4 +27,7 @@ data class Task(
     @ColumnInfo(name = "xp") val xp: Int = difficulty.factor.times(duration).toInt(),
     @ColumnInfo(name = "icon_id") val iconId: Int,
     @ColumnInfo(name = "event_id") val eventId: String? = null
-) : Parcelable
+) : Parcelable {
+
+    @Ignore var skills: List<Skill> = listOf()
+}

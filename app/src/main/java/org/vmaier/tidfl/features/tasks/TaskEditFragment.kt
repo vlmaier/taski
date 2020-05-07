@@ -88,11 +88,11 @@ class TaskEditFragment : TaskFragment() {
         binding.skills.setAdapter(adapter)
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
-        // binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: task.skillNames)
+        binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: task.skills.map { it.name })
 
         // --- Deadline settings
         val dueAt = task.dueAt
-        if (dueAt != null) {
+        if (dueAt != null && dueAt.isNotBlank()) {
             val dueAtParts = dueAt.split(" ")
             binding.deadlineDate.setText(
                 saved?.getString(KEY_DEADLINE_DATE)
@@ -102,9 +102,9 @@ class TaskEditFragment : TaskFragment() {
                 saved?.getString(KEY_DEADLINE_TIME)
                     ?: if (dueAtParts.isNotEmpty()) dueAtParts[1] else ""
             )
-            setDeadlineDateOnClickListener(binding.deadlineDate)
-            setDeadlineTimeOnClickListener(binding.deadlineTime)
         }
+        setDeadlineDateOnClickListener(binding.deadlineDate)
+        setDeadlineTimeOnClickListener(binding.deadlineTime)
 
         return binding.root
     }
@@ -137,7 +137,8 @@ class TaskEditFragment : TaskFragment() {
         val details = binding.details.text.toString()
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        val skills = binding.skills.chipAndTokenValues.toTypedArray()
+        val skillNames = binding.skills.chipAndTokenValues.toTypedArray()
+        val skills = db.skillDao().findSkills(skillNames.toList())
         var dueAt = ""
         if (binding.deadlineDate.text.isNotEmpty()) {
             dueAt = binding.deadlineDate.text.toString()
@@ -153,20 +154,26 @@ class TaskEditFragment : TaskFragment() {
                 task.duration == duration &&
                 task.difficulty == Difficulty.valueOf(difficulty) &&
                 task.iconId == iconId &&
-                // task.skillNames == skills.toList() &&
+                task.skills == skills &&
                 task.dueAt == dueAt)
         if (updateRequired) {
-            GlobalScope.launch {
-                val task = Task(goal = goal, details = details, duration = duration, iconId = iconId, dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty))
-                db.taskDao().update(task)
-                updateInCalendar(Companion.task, task)
-                TaskListFragment.taskAdapter.tasks[itemPosition] = task
-                TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
-                Toast.makeText(
-                    context, "Task updated",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            val toUpdate = Task(
+                id = task.id,
+                goal = goal,
+                details = details,
+                duration = duration,
+                iconId = iconId,
+                dueAt = dueAt,
+                difficulty = Difficulty.valueOf(difficulty))
+            toUpdate.skills = skills
+            val updatedTask = db.taskDao().updateTaskWithSkills(toUpdate)
+            updateInCalendar(task, toUpdate)
+            TaskListFragment.taskAdapter.tasks[itemPosition] = updatedTask
+            TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
+            Toast.makeText(
+                context, "Task updated",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

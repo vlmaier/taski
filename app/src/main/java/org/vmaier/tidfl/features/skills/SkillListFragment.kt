@@ -1,6 +1,5 @@
 package org.vmaier.tidfl.features.skills
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_task_list.*
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
-import org.vmaier.tidfl.data.DatabaseHandler
+import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.databinding.FragmentSkillListBinding
 
 
@@ -25,13 +24,7 @@ import org.vmaier.tidfl.databinding.FragmentSkillListBinding
 class SkillListFragment : Fragment() {
 
     companion object {
-        lateinit var mContext: Context
         lateinit var skillAdapter: SkillAdapter
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mContext = context
     }
 
     override fun onCreateView(
@@ -40,14 +33,14 @@ class SkillListFragment : Fragment() {
     ): View? {
 
         val binding = DataBindingUtil.inflate<FragmentSkillListBinding>(
-                inflater, R.layout.fragment_skill_list, container, false
+            inflater, R.layout.fragment_skill_list, container, false
         )
 
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
         binding.fab.setOnClickListener {
             it.findNavController().navigate(
-                    SkillListFragmentDirections.actionSkillListFragmentToCreateSkillFragment()
+                SkillListFragmentDirections.actionSkillListFragmentToCreateSkillFragment()
             )
         }
         return binding.root
@@ -56,10 +49,12 @@ class SkillListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dbHandler = DatabaseHandler(mContext)
-        val skills = dbHandler.findAllSkills()
+        skillAdapter = SkillAdapter(requireContext())
 
-        skillAdapter = SkillAdapter(skills, mContext)
+        val db = AppDatabase(requireContext())
+        val skills = db.skillDao().findAllSkills()
+        skillAdapter.setSkills(skills)
+
         rv.apply {
             layoutManager = GridLayoutManager(activity, 2)
             adapter = skillAdapter

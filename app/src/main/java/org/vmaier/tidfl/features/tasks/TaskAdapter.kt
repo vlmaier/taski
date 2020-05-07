@@ -61,7 +61,7 @@ class TaskAdapter internal constructor(
         holder.xpView.text = "${task.xp} XP"
 
         // skills
-        val amountOfSkills = 0 // TODO: fix
+        val amountOfSkills = task.skills.size
         if (amountOfSkills > 0) {
             holder.skillsView.text = "$amountOfSkills ${if (amountOfSkills == 1) "skill" else "skills"}"
             holder.skillIconView.visibility = View.VISIBLE
@@ -119,7 +119,7 @@ class TaskAdapter internal constructor(
         val db = AppDatabase(this.inflater.context)
 
         GlobalScope.launch {
-            db.taskDao().updateStatus(task.id, status)
+            db.taskDao().updateTaskStatus(task.id, status)
             if (status != Status.FAILED) {
                 val xp = db.taskDao().calculateOverallXp(Status.DONE)
                 MainActivity.xpCounter.text = "${xp} XP"
@@ -127,6 +127,6 @@ class TaskAdapter internal constructor(
             }
         }
 
-        return db.taskDao().findOne(task.id)
+        return db.taskDao().findTask(task.id)
     }
 }

@@ -34,7 +34,6 @@ import kotlinx.coroutines.launch
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
-import org.vmaier.tidfl.data.DatabaseHandler
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.util.getDurationInMinutes
@@ -83,7 +82,7 @@ open class TaskFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
-        val skills = db.skillDao().findAll()
+        val skills = db.skillDao().findAllSkills()
         skillNames = skills.map { it.name }
         return this.view
     }
@@ -101,15 +100,14 @@ open class TaskFragment : Fragment() {
     fun getSkillsTokenizer(): SpanChipTokenizer<ChipSpan> {
         return SpanChipTokenizer(requireContext(), object : ChipSpanChipCreator() {
             override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan {
-                val db = AppDatabase(requireContext())
-                val skills = db.skillDao().findAll()
+                val skills = db.skillDao().findAllSkills()
                 val skill = skills.find { it.name == text }
                 var icon: Drawable? = null
                 if (skill != null) {
-                    icon = App.iconPack.getIconDrawable(skill.iconId, IconDrawableLoader(requireContext()))
+                    icon = App.iconPack.getIconDrawable(skill.iconId, IconDrawableLoader(context))
                 }
                 if (icon != null) {
-                    DrawableCompat.setTint(icon, ContextCompat.getColor(requireContext(), R.color.colorWhite))
+                    DrawableCompat.setTint(icon, ContextCompat.getColor(context, R.color.colorWhite))
                 }
                 return ChipSpan(context, text, icon, data)
             }
@@ -122,7 +120,7 @@ open class TaskFragment : Fragment() {
     }
 
     fun getSkillsRestrictor(skills: NachoTextView): View.OnFocusChangeListener {
-        return View.OnFocusChangeListener { view, b ->
+        return View.OnFocusChangeListener { _, b ->
             val allChips = skills.allChips
             val chipList: MutableList<ChipInfo> = arrayListOf()
             for (chip in allChips) {
@@ -198,7 +196,7 @@ open class TaskFragment : Fragment() {
 
     fun addToCalendar(task: Task?) {
 
-        val sharedPreferences = getDefaultSharedPreferences(context)
+        val sharedPreferences = getDefaultSharedPreferences(requireContext())
         val isCalendarSyncOn = sharedPreferences.getBoolean("calendar_sync", false)
         if (!isCalendarSyncOn) return
         sharedPreferences.edit().putBoolean("calendar_sync", false).apply()
@@ -225,14 +223,14 @@ open class TaskFragment : Fragment() {
         val baseUri = Uri.parse("content://com.android.calendar/events")
         eventId = requireContext().contentResolver.insert(baseUri, event)
         GlobalScope.launch {
-            db.taskDao().updateEventId(task.id, eventId.toString())
+            db.taskDao().updateTaskEventId(task.id, eventId.toString())
         }
     }
 
     fun updateInCalendar(before: Task, after: Task?) {
 
         if (after == null) return
-        val sharedPreferences = getDefaultSharedPreferences(context)
+        val sharedPreferences = getDefaultSharedPreferences(requireContext())
         val isCalendarSyncOn = sharedPreferences.getBoolean("calendar_sync", false)
         if (!isCalendarSyncOn) return
         val eventId: Uri? = Uri.parse(after.eventId)
@@ -264,7 +262,7 @@ open class TaskFragment : Fragment() {
             }
             requireContext().contentResolver.update(eventId, event, null, null)
             GlobalScope.launch {
-                db.taskDao().updateEventId(before.id, eventId.toString())
+                db.taskDao().updateTaskEventId(before.id, eventId.toString())
             }
         }
     }

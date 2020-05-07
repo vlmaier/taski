@@ -129,7 +129,8 @@ class TaskCreateFragment : TaskFragment() {
         val details = binding.details.text.toString()
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        val skills = binding.skills.chipAndTokenValues.toTypedArray()
+        val skillNames = binding.skills.chipAndTokenValues.toTypedArray()
+        val skills = db.skillDao().findSkills(skillNames.toList())
         var dueAt = ""
         if (binding.deadlineDate.text.isNotEmpty()) {
             dueAt = binding.deadlineDate.text.toString()
@@ -139,10 +140,17 @@ class TaskCreateFragment : TaskFragment() {
                 " 08:00"
             }
         }
-        val task = Task(goal = goal, details = details, duration = duration, iconId = iconId, dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty))
-        val db = AppDatabase(this.requireContext())
+        val task = Task(
+            goal = goal,
+            details = details,
+            duration = duration,
+            iconId = iconId,
+            dueAt = dueAt,
+            difficulty = Difficulty.valueOf(difficulty))
+        task.skills = skills
+        val db = AppDatabase(requireContext())
         GlobalScope.launch {
-            db.taskDao().insert(task)
+            db.taskDao().insertTaskWithSkills(task)
             TaskListFragment.taskAdapter.notifyDataSetChanged()
         }
         addToCalendar(task)
