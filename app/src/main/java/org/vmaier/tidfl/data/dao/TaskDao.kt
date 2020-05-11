@@ -2,9 +2,9 @@ package org.vmaier.tidfl.data.dao
 
 import androidx.room.*
 import org.vmaier.tidfl.data.Status
+import org.vmaier.tidfl.data.entity.AssignedSkill
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.data.entity.Task
-import org.vmaier.tidfl.data.entity.TaskWithSkills
 
 
 /**
@@ -15,98 +15,82 @@ import org.vmaier.tidfl.data.entity.TaskWithSkills
 @Dao
 interface TaskDao {
 
-    // --- CREATE
+    // ------------------------------------- CREATE QUERIES ------------------------------------- //
 
-    @Transaction
-    suspend fun insertTaskWithSkills(task: Task) {
+    @Insert(entity = Task::class, onConflict = OnConflictStrategy.REPLACE)
+    fun create(task: Task) : Long
 
-        val id = insertTask(task)
-        for (skill in task.skills) {
-            skill.taskId = id
+    @Insert(entity = AssignedSkill::class, onConflict = OnConflictStrategy.IGNORE)
+    fun assignSkill(assignedSkill: AssignedSkill)
+
+    fun createTask(task: Task, skills: List<Skill>) {
+        val id = create(task)
+        for (skill in skills) {
+            assignSkill(AssignedSkill(skillId = skill.id, taskId = id))
         }
-        insertSkills(task.skills)
     }
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertSkills(skills: List<Skill>)
+    // -------------------------------------  READ QUERIES  ------------------------------------- //
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTask(task: Task): Long
+    @Query("""
+        SELECT *
+        FROM tasks
+        WHERE id = :taskId
+    """)
+    fun findTaskById(taskId: Long) : Task
 
-    // --- READ
+    @Query("""
+        SELECT *
+        FROM tasks
+        WHERE status = :status
+    """)
+    fun findTasksWithStatus(status: Status) : List<Task>
 
-    fun findTask(id: Long): Task {
-        val taskWithSkills = findTaskWithSkills(id)
-        val task = taskWithSkills.task
-        task.skills = taskWithSkills.skills
-        return task
-    }
+    @Query("""
+        SELECT SUM(xp_value)
+        FROM tasks
+        WHERE status = 'done'        
+    """)
+    fun countOverallXpValue() : Long
 
-    fun findAllTasks(): List<Task> {
-        val allTasksWithSkills = findAllTasksWithSkills()
-        val tasks: MutableList<Task> = mutableListOf()
-        for (taskWithSkills in allTasksWithSkills) {
-            val task = taskWithSkills.task
-            task.skills = taskWithSkills.skills
-            tasks.add(task)
+    // ------------------------------------- UPDATE QUERIES ------------------------------------- //
+
+    @Query("""
+        UPDATE tasks
+        SET status = :status
+        WHERE id = :taskId
+    """)
+    fun changeTaskStatus(taskId: Long, status: Status)
+
+    @Query("""
+        UPDATE tasks
+        SET event_id = :eventId
+        WHERE id = :taskId
+    """)
+    fun updateTaskEventId(taskId: Long, eventId: String)
+
+    @Update(entity = Task::class, onConflict = OnConflictStrategy.REPLACE)
+    fun update(task: Task)
+
+    @Transaction
+    fun reassignSkills(taskId: Long, skills: List<Skill>) {
+        removeAssignedSkills(taskId)
+        for (skill in skills) {
+            assignSkill(AssignedSkill(skillId = skill.id, taskId = taskId))
         }
-        return tasks
-    }
-
-    fun findAllTasksWithStatus(status: Status): List<Task> {
-        val allTasksWithSkills = findAllTasksWithSkillsWithStatus(status)
-        val tasks: MutableList<Task> = mutableListOf()
-        for (taskWithSkills in allTasksWithSkills) {
-            val task = taskWithSkills.task
-            task.skills = taskWithSkills.skills
-            tasks.add(task)
-        }
-        return tasks
     }
 
     @Transaction
-    @Query("SELECT * FROM tasks WHERE id = :id")
-    fun findTaskWithSkills(id: Long): TaskWithSkills
-
-    @Transaction
-    @Query("SELECT * FROM tasks")
-    fun findAllTasksWithSkills(): List<TaskWithSkills>
-
-    @Transaction
-    @Query("SELECT * FROM tasks WHERE status = :status")
-    fun findAllTasksWithSkillsWithStatus(status: Status): List<TaskWithSkills>
-
-    @Query("SELECT COALESCE(SUM(COALESCE(xp, 0)), 0) FROM tasks WHERE status = :status")
-    suspend fun calculateOverallXp(status: Status): Long
-
-    // --- UPDATE
-
-    @Transaction
-    fun updateTaskWithSkills(task: Task): Task {
-
-        val taskId = task.id
-        updateTask(task)
-        for (skill in task.skills) {
-            skill.taskId = taskId
-        }
-        insertSkills(task.skills)
-        return findTask(taskId)
+    fun updateTask(task: Task, skills: List<Skill>) {
+        update(task)
+        reassignSkills(task.id, skills)
     }
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateTask(task: Task)
+    // ------------------------------------- DELETE QUERIES ------------------------------------- //
 
-    @Query("UPDATE tasks SET status = :status WHERE id = :id")
-    suspend fun updateTaskStatus(id: Long, status: Status): Int
-
-    @Query("UPDATE tasks SET event_id = :eventId WHERE id = :id")
-    suspend fun updateTaskEventId(id: Long, eventId: String): Int
-
-    // --- DELETE
-
-    @Delete
-    suspend fun deleteTask(task: Task)
-
-    @Query("DELETE FROM tasks")
-    suspend fun deleteAllTasks()
+    @Query("""
+        DELETE FROM assigned_skills
+        WHERE task_id = :taskId
+    """)
+    fun removeAssignedSkills(taskId: Long)
 }

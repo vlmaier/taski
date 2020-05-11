@@ -45,6 +45,7 @@ class TaskListFragment : Fragment() {
                 TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment()
             )
         }
+
         return binding.root
     }
 
@@ -54,7 +55,7 @@ class TaskListFragment : Fragment() {
         taskAdapter = TaskAdapter(requireContext())
 
         val db = AppDatabase(requireContext())
-        val tasks = db.taskDao().findAllTasksWithStatus(Status.OPEN)
+        val tasks = db.taskDao().findTasksWithStatus(Status.OPEN)
         taskAdapter.setTasks(tasks)
 
         rv.apply {

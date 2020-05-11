@@ -14,12 +14,11 @@ import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.Status
+import org.vmaier.tidfl.data.entity.Category
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentEditSkillBinding
 import org.vmaier.tidfl.util.KeyBoardHider
@@ -61,19 +60,28 @@ class SkillEditFragment : SkillFragment() {
                 inflater, R.layout.fragment_edit_skill, container, false
         )
 
+        val db = AppDatabase(requireContext())
         val args = SkillEditFragmentArgs.fromBundle(this.arguments!!)
+
         skill = args.skill
         itemPosition = args.itemPosition
         binding.name.setText(if (saved != null) saved.getString(KEY_NAME) else skill.name)
-        binding.category.setText(if (saved != null) saved.getString(KEY_CATEGORY) else skill.category)
-        val db = AppDatabase(requireContext())
-        val openTasksAmount = db.skillDao().findAmountOfTasks(skill.name, Status.OPEN)
-        val doneTasksAmount = db.skillDao().findAmountOfTasks(skill.name, Status.DONE)
-        binding.skillLevelValue.text = skill.level.toString()
-        binding.skillXpValue.text = "${skill.xp} XP"
+        val categoryId = skill.categoryId
+        val categoryName = if (categoryId != null) {
+            db.categoryDao().findNameById(categoryId)
+        } else {
+            null
+        }
+        binding.category.setText(if (saved != null) saved.getString(KEY_CATEGORY) else categoryName)
+        val openTasksAmount = db.skillDao().countTasksWithSkillByStatus(skill.id, Status.OPEN)
+        val doneTasksAmount = db.skillDao().countTasksWithSkillByStatus(skill.id, Status.DONE)
+        val xp = db.skillDao().countSkillXpValue(skill.id)
+        val level = xp.div(1000) + 1
+        binding.skillLevelValue.text = level.toString()
+        binding.skillXpValue.text = "$xp XP"
         binding.skillOpenTasksValue.text = "$openTasksAmount"
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
-        val iconId = if (saved != null) saved.getInt(KEY_ICON_ID) else skill.iconId
+        val iconId = saved?.getInt(KEY_ICON_ID) ?: skill.iconId
         binding.editIconButton.background = App.iconPack.getIconDrawable(
                 iconId, IconDrawableLoader(this.context!!)
         )
@@ -121,24 +129,25 @@ class SkillEditFragment : SkillFragment() {
     private fun saveChangesOnSkill() {
 
         val name = binding.name.text.toString()
-        val category = binding.category.text.toString()
+        val categoryName = binding.category.text.toString()
         val iconId: Int = Integer.parseInt(binding.editIconButton.tag.toString())
-        val isUpdateRequired = !(
-                skill.name == name &&
-                skill.category == category &&
-                skill.iconId == iconId)
-        if (isUpdateRequired) {
-            val db = AppDatabase(requireContext())
-            GlobalScope.launch {
-                val toUpdate = Skill(
-                    name = name,
-                    category = category,
-                    iconId = iconId
-                )
-                val updatedSkill = db.skillDao().updateSkill(skill.name, toUpdate)
-                SkillListFragment.skillAdapter.skills.set(itemPosition, updatedSkill)
-                SkillListFragment.skillAdapter.notifyItemChanged(itemPosition)
+        val db = AppDatabase(requireContext())
+        var categoryId: Long? = skill.categoryId
+        if (categoryName.isNotBlank()) {
+            val foundCategory = db.categoryDao().findByName(categoryName)
+            if (foundCategory == null) {
+                categoryId = db.categoryDao().create(Category(name = categoryName))
             }
+        } else {
+            categoryId = null
+        }
+        val toUpdate = Skill(
+            id = skill.id, name = name, categoryId = categoryId, iconId = iconId
+        )
+        if (skill != toUpdate) {
+            db.skillDao().update(toUpdate)
+            SkillListFragment.skillAdapter.skills[itemPosition] = toUpdate
+            SkillListFragment.skillAdapter.notifyItemChanged(itemPosition)
             Toast.makeText(
                 context, "Skill updated",
                 Toast.LENGTH_SHORT

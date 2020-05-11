@@ -1,10 +1,8 @@
 package org.vmaier.tidfl.data.entity
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import androidx.room.*
+import androidx.room.ForeignKey.SET_NULL
 import kotlinx.android.parcel.Parcelize
 
 
@@ -14,15 +12,38 @@ import kotlinx.android.parcel.Parcelize
  * at 21:00
  */
 @Parcelize
-@Entity(tableName = "skills")
+@Entity(
+    tableName = "skills",
+    foreignKeys = [
+        ForeignKey(
+            entity = Category::class,
+            parentColumns = [ "id" ],
+            childColumns = [ "category_id" ],
+            onDelete = SET_NULL
+        )
+    ],
+    indices = [
+        Index(
+            value = [ "id" ],
+            unique = true
+        ),
+        Index(
+            value = [ "name" ],
+            unique = true
+        )
+    ]
+)
 data class Skill(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long = 0,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "category") val category: String,
-    @ColumnInfo(name = "icon_id") val iconId: Int,
-    @ColumnInfo(name = "task_id") var taskId: Long? = null
-) : Parcelable {
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    val id: Long = 0,
 
-    @Ignore var xp: Long = 0
-    @Ignore var level: Long = 0
-}
+    @ColumnInfo(name = "name")
+    val name: String,
+
+    @ColumnInfo(name = "category_id")
+    val categoryId: Long? = null,
+
+    @ColumnInfo(name = "icon_id")
+    val iconId: Int
+) : Parcelable

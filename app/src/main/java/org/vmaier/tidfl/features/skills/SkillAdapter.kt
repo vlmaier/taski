@@ -17,7 +17,6 @@ import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.entity.Skill
-import org.vmaier.tidfl.data.entity.Task
 
 
 /**
@@ -26,7 +25,7 @@ import org.vmaier.tidfl.data.entity.Task
  * at 19:27
  */
 class SkillAdapter internal constructor(
-    context: Context
+    private val context: Context
 ) : RecyclerView.Adapter<SkillAdapter.SkillViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -47,9 +46,15 @@ class SkillAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: SkillViewHolder, position: Int) {
+        val db = AppDatabase(context)
         val skill: Skill = skills[position]
         holder.nameView.text = skill.name
-        holder.categoryView.text = "${skill.category}"
+        val categoryName = if (skill.categoryId == null) {
+            ""
+        } else {
+            db.categoryDao().findNameById(skill.categoryId)
+        }
+        holder.categoryView.text = "$categoryName"
 
         // skill icon
         val drawable: Drawable? = App.iconPack.getIcon(skill.iconId)?.drawable
@@ -62,8 +67,10 @@ class SkillAdapter internal constructor(
             holder.iconView.background = drawable
         }
 
-        holder.xpView.text = "${skill.xp} XP"
-        holder.levelView.text = "Level ${skill.level}"
+        val xp = db.skillDao().countSkillXpValue(skill.id)
+        val level = xp.div(1000) + 1
+        holder.xpView.text = "$xp XP"
+        holder.levelView.text = "Level $level"
 
         holder.itemView.setOnClickListener {
             it.findNavController().navigate(
@@ -85,9 +92,7 @@ class SkillAdapter internal constructor(
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, skills.size)
         val db = AppDatabase(this.inflater.context)
-        GlobalScope.launch {
-            db.skillDao().deleteSkill(skill.name)
-        }
+        db.skillDao().delete(skill)
         return skill
     }
 
@@ -95,8 +100,6 @@ class SkillAdapter internal constructor(
         skills.add(position, skill)
         notifyItemInserted(position)
         val db = AppDatabase(this.inflater.context)
-        GlobalScope.launch {
-            db.skillDao().insertSkill(skill)
-        }
+        db.skillDao().create(skill)
     }
 }

@@ -28,7 +28,7 @@ import org.vmaier.tidfl.util.getHumanReadableDurationValue
  * at 19:24
  */
 class TaskAdapter internal constructor(
-    context: Context
+    private val context: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -54,14 +54,15 @@ class TaskAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        val db = AppDatabase(context)
         val task: Task = tasks[position]
         holder.goalView.text = task.goal
         holder.detailsView.text = task.details
         holder.durationView.text = task.getHumanReadableDurationValue()
-        holder.xpView.text = "${task.xp} XP"
+        holder.xpView.text = "${task.xpValue} XP"
 
         // skills
-        val amountOfSkills = task.skills.size
+        val amountOfSkills = db.skillDao().countAssignedSkills(task.id)
         if (amountOfSkills > 0) {
             holder.skillsView.text = "$amountOfSkills ${if (amountOfSkills == 1) "skill" else "skills"}"
             holder.skillIconView.visibility = View.VISIBLE
@@ -79,9 +80,7 @@ class TaskAdapter internal constructor(
         val drawable: Drawable? = App.iconPack.getIcon(task.iconId)?.drawable
         if (drawable != null) {
             DrawableCompat.setTint(
-                drawable, ContextCompat.getColor(
-                    holder.taskIconView.context, R.color.colorSecondary
-                )
+                drawable, ContextCompat.getColor(context, R.color.colorSecondary)
             )
             holder.taskIconView.background = drawable
         }
@@ -117,16 +116,13 @@ class TaskAdapter internal constructor(
     private fun updateTaskStatus(task: Task, status: Status): Task {
 
         val db = AppDatabase(this.inflater.context)
-
-        GlobalScope.launch {
-            db.taskDao().updateTaskStatus(task.id, status)
-            if (status != Status.FAILED) {
-                val xp = db.taskDao().calculateOverallXp(Status.DONE)
-                MainActivity.xpCounter.text = "${xp} XP"
-                MainActivity.levelCounter.text = "Level ${xp.div(10000) + 1}"
-            }
+        db.taskDao().changeTaskStatus(task.id, status)
+        if (status != Status.FAILED) {
+            val xp = db.taskDao().countOverallXpValue()
+            val level = xp.div(10000) + 1
+            MainActivity.xpCounter.text = "$xp XP"
+            MainActivity.levelCounter.text = "Level $level"
         }
-
-        return db.taskDao().findTask(task.id)
+        return db.taskDao().findTaskById(task.id)
     }
 }

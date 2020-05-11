@@ -29,8 +29,6 @@ import com.hootsuite.nachos.chip.ChipSpanChipCreator
 import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
@@ -40,6 +38,7 @@ import org.vmaier.tidfl.util.getDurationInMinutes
 import org.vmaier.tidfl.util.getHumanReadableValue
 import org.vmaier.tidfl.util.hideKeyboard
 import org.vmaier.tidfl.util.setThemeTint
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
@@ -82,7 +81,7 @@ open class TaskFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
-        val skills = db.skillDao().findAllSkills()
+        val skills = db.skillDao().findAll()
         skillNames = skills.map { it.name }
         return this.view
     }
@@ -100,7 +99,7 @@ open class TaskFragment : Fragment() {
     fun getSkillsTokenizer(): SpanChipTokenizer<ChipSpan> {
         return SpanChipTokenizer(requireContext(), object : ChipSpanChipCreator() {
             override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan {
-                val skills = db.skillDao().findAllSkills()
+                val skills = db.skillDao().findAll()
                 val skill = skills.find { it.name == text }
                 var icon: Drawable? = null
                 if (skill != null) {
@@ -120,7 +119,7 @@ open class TaskFragment : Fragment() {
     }
 
     fun getSkillsRestrictor(skills: NachoTextView): View.OnFocusChangeListener {
-        return View.OnFocusChangeListener { _, b ->
+        return View.OnFocusChangeListener { _, _ ->
             val allChips = skills.allChips
             val chipList: MutableList<ChipInfo> = arrayListOf()
             for (chip in allChips) {
@@ -199,13 +198,16 @@ open class TaskFragment : Fragment() {
         val sharedPreferences = getDefaultSharedPreferences(requireContext())
         val isCalendarSyncOn = sharedPreferences.getBoolean("calendar_sync", false)
         if (!isCalendarSyncOn) return
-        sharedPreferences.edit().putBoolean("calendar_sync", false).apply()
         if (task == null) return
         val calendarId = getCalendarId(requireContext()) ?: return
         val eventId: Uri?
 
         val startTimeMs = if (task.dueAt != null) {
-            App.dateFormat.parse(task.dueAt).time
+            try {
+                App.dateFormat.parse(task.dueAt)?.time
+            } catch (e: ParseException) {
+                null
+            }
         } else {
             null
         }
@@ -222,9 +224,7 @@ open class TaskFragment : Fragment() {
         event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
         val baseUri = Uri.parse("content://com.android.calendar/events")
         eventId = requireContext().contentResolver.insert(baseUri, event)
-        GlobalScope.launch {
-            db.taskDao().updateTaskEventId(task.id, eventId.toString())
-        }
+        db.taskDao().updateTaskEventId(task.id, eventId.toString())
     }
 
     fun updateInCalendar(before: Task, after: Task?) {
@@ -233,10 +233,12 @@ open class TaskFragment : Fragment() {
         val sharedPreferences = getDefaultSharedPreferences(requireContext())
         val isCalendarSyncOn = sharedPreferences.getBoolean("calendar_sync", false)
         if (!isCalendarSyncOn) return
-        val eventId: Uri? = Uri.parse(after.eventId)
-        if (eventId == null) {
+        if (after.eventId == null) {
             addToCalendar(after)
-        } else {
+            return
+        }
+        val eventId: Uri? = Uri.parse(after.eventId)
+        if (eventId != null) {
             val calendarId = getCalendarId(requireContext()) ?: return
             val event = ContentValues()
             event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
@@ -249,7 +251,11 @@ open class TaskFragment : Fragment() {
             if (before.duration != after.duration ||
                 before.dueAt != after.dueAt) {
                 val startTimeMs = if (after.dueAt != null) {
-                    App.dateFormat.parse(after.dueAt).time
+                    try {
+                        App.dateFormat.parse(after.dueAt)?.time
+                    } catch (e: ParseException) {
+                        null
+                    }
                 } else {
                     null
                 }
@@ -261,9 +267,7 @@ open class TaskFragment : Fragment() {
                 event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
             }
             requireContext().contentResolver.update(eventId, event, null, null)
-            GlobalScope.launch {
-                db.taskDao().updateTaskEventId(before.id, eventId.toString())
-            }
+            db.taskDao().updateTaskEventId(before.id, eventId.toString())
         }
     }
 

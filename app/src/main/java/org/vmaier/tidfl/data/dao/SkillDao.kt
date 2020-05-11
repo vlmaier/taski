@@ -13,67 +13,69 @@ import org.vmaier.tidfl.data.entity.Skill
 @Dao
 interface SkillDao {
 
-    // --- CREATE
+    // ------------------------------------- CREATE QUERIES ------------------------------------- //
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertSkill(skill: Skill)
+    @Insert(entity = Skill::class, onConflict = OnConflictStrategy.REPLACE)
+    fun create(skill: Skill) : Long
 
-    // --- READ
+    // -------------------------------------  READ QUERIES  ------------------------------------- //
 
-    @Transaction
-    fun findSkill(name: String): Skill {
-        val skill = _findSkill(name)
-        skill.xp = calculateSkillXp(name, Status.DONE)
-        skill.level = skill.xp.div(1000) + 1
-        return skill
-    }
+    @Query("""
+        SELECT *
+        FROM skills
+    """)
+    fun findAll() : List<Skill>
 
-    @Query("SELECT * FROM skills WHERE name = :name")
-    fun _findSkill(name: String): Skill
+    @Query("""
+        SELECT *
+        FROM skills
+        WHERE name IN (:names)
+    """)
+    fun findByName(names: List<String>) : List<Skill>
 
-    @Query("SELECT * FROM skills WHERE name IN (:names)")
-    fun findSkills(names: List<String>): List<Skill>
+    @Query("""
+        SELECT skills.*
+        FROM assigned_skills 
+        INNER JOIN skills
+          ON skill_id = skills.id
+        WHERE task_id = :taskId 
+    """)
+    fun findAssignedSkills(taskId: Long) : List<Skill>
 
-    @Transaction
-    fun findAllSkills(): List<Skill> {
-        val allSkills = _findAllSkills()
-        val skills: MutableList<Skill> = mutableListOf()
-        for (skill in allSkills) {
-            skill.xp = calculateSkillXp(skill.name, Status.DONE)
-            skill.level = skill.xp.div(1000) + 1
-            skills.add(skill)
-        }
-        return skills
-    }
+    @Query("""
+        SELECT COUNT(*)
+        FROM assigned_skills 
+        INNER JOIN tasks
+          ON task_id = tasks.id
+        WHERE skill_id = :skillId 
+          AND status = :status 
+    """)
+    fun countTasksWithSkillByStatus(skillId: Long, status: Status) : Long
 
-    @Query("SELECT * FROM skills GROUP BY name")
-    fun _findAllSkills(): List<Skill>
+    @Query("""
+        SELECT COUNT(*)
+        FROM assigned_skills
+        WHERE task_id = :taskId 
+    """)
+    fun countAssignedSkills(taskId: Long) : Int
 
-    @Query("SELECT SUM(xp) FROM tasks INNER JOIN skills ON tasks.id = skills.task_id WHERE skills.name = :name AND tasks.status = :status")
-    fun calculateSkillXp(name: String, status: Status): Long
+    @Query("""
+        SELECT SUM(xp_value)
+        FROM assigned_skills 
+        INNER JOIN tasks
+          ON task_id = tasks.id
+        WHERE skill_id = :skillId 
+          AND status = 'done'
+    """)
+    fun countSkillXpValue(skillId: Long) : Long
 
-    @Query("SELECT COUNT(*) FROM tasks INNER JOIN skills ON tasks.id = skills.task_id WHERE skills.name = :name AND tasks.status = :status")
-    fun findAmountOfTasks(name: String, status: Status): Long
+    // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 
-    @Query("SELECT DISTINCT(category) FROM skills")
-    fun findAllCategories(): List<String>
+    @Update(entity = Skill::class, onConflict = OnConflictStrategy.REPLACE)
+    fun update(skill: Skill)
 
-    // --- UPDATE
+    // ------------------------------------- DELETE QUERIES ------------------------------------- //
 
-    @Transaction
-    suspend fun updateSkill(name: String, skill: Skill): Skill {
-        updateSkill(name, skill.name, skill.category, skill.iconId)
-        return findSkill(skill.name)
-    }
-
-    @Query("UPDATE skills SET name = :newName, category = :category, icon_id = :iconId WHERE name = :oldName")
-    suspend fun updateSkill(oldName: String, newName: String, category: String, iconId: Int)
-
-    // --- DELETE
-
-    @Query("DELETE FROM skills WHERE name = :name")
-    suspend fun deleteSkill(name: String)
-
-    @Query("DELETE FROM skills")
-    suspend fun deleteAllSkills()
+    @Delete
+    fun delete(skill: Skill)
 }

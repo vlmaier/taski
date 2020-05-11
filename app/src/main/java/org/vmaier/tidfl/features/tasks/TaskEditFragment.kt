@@ -9,10 +9,9 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Difficulty
+import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.databinding.FragmentEditTaskBinding
 import org.vmaier.tidfl.util.*
@@ -31,6 +30,7 @@ class TaskEditFragment : TaskFragment() {
     companion object {
         lateinit var binding: FragmentEditTaskBinding
         lateinit var task: Task
+        lateinit var assignedSkills: List<Skill>
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
@@ -85,10 +85,11 @@ class TaskEditFragment : TaskFragment() {
         val adapter = ArrayAdapter(
                 requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
         )
+        assignedSkills = db.skillDao().findAssignedSkills(task.id)
         binding.skills.setAdapter(adapter)
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
-        binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: task.skills.map { it.name })
+        binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: assignedSkills.map { it.name })
 
         // --- Deadline settings
         val dueAt = task.dueAt
@@ -134,42 +135,30 @@ class TaskEditFragment : TaskFragment() {
     private fun saveChangesOnTask() {
 
         val goal = binding.goal.text.toString()
-        val details = binding.details.text.toString()
+        val detailsValue = binding.details.text.toString()
+        val details = if (detailsValue.isNotBlank()) detailsValue  else null
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        val skillNames = binding.skills.chipAndTokenValues.toTypedArray()
-        val skills = db.skillDao().findSkills(skillNames.toList())
-        var dueAt = ""
-        if (binding.deadlineDate.text.isNotEmpty()) {
+        val skillNames = binding.skills.chipAndTokenValues.toList()
+        val skillsToAssign = db.skillDao().findByName(skillNames)
+        var dueAt: String? = null
+        if (binding.deadlineDate.text.isNotBlank()) {
             dueAt = binding.deadlineDate.text.toString()
-            dueAt += if (binding.deadlineTime.text.isNotEmpty()) {
+            dueAt += if (binding.deadlineTime.text.isNotBlank()) {
                 " ${binding.deadlineTime.text}"
             } else {
                 " 08:00"
             }
         }
-        val updateRequired = !(
-                task.goal == goal &&
-                task.details == details &&
-                task.duration == duration &&
-                task.difficulty == Difficulty.valueOf(difficulty) &&
-                task.iconId == iconId &&
-                task.skills == skills &&
-                task.dueAt == dueAt)
-        if (updateRequired) {
-            val toUpdate = Task(
-                id = task.id,
-                goal = goal,
-                details = details,
-                duration = duration,
-                iconId = iconId,
-                dueAt = dueAt,
-                difficulty = Difficulty.valueOf(difficulty))
-            toUpdate.skills = skills
-            val updatedTask = db.taskDao().updateTaskWithSkills(toUpdate)
-            updateInCalendar(task, toUpdate)
-            TaskListFragment.taskAdapter.tasks[itemPosition] = updatedTask
+        val toUpdate = Task(
+            id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,
+            createdAt = task.createdAt, dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty)
+        )
+        if (task != toUpdate) {
+            db.taskDao().updateTask(toUpdate, skillsToAssign)
+            TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
             TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
+            updateInCalendar(task, toUpdate)
             Toast.makeText(
                 context, "Task updated",
                 Toast.LENGTH_SHORT

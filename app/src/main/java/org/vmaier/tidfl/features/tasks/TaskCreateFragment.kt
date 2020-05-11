@@ -9,10 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.vmaier.tidfl.R
-import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.databinding.FragmentCreateTaskBinding
@@ -86,7 +83,7 @@ class TaskCreateFragment : TaskFragment() {
 
         // --- Action buttons settings
         binding.createTaskButton.setOnClickListener {
-            createTaskButtonClicked(it)
+            createTaskButtonClicked()
             it.findNavController().popBackStack()
             it.hideKeyboard()
         }
@@ -123,37 +120,30 @@ class TaskCreateFragment : TaskFragment() {
         out.putString(KEY_DEADLINE_TIME, binding.deadlineTime.text.toString())
     }
 
-    private fun createTaskButtonClicked(@Suppress("UNUSED_PARAMETER") view: View): Boolean {
+    private fun createTaskButtonClicked() {
 
         val goal = binding.goal.text.toString()
-        val details = binding.details.text.toString()
+        val detailsValue = binding.details.text.toString()
+        val details = if (detailsValue.isNotBlank()) detailsValue  else null
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        val skillNames = binding.skills.chipAndTokenValues.toTypedArray()
-        val skills = db.skillDao().findSkills(skillNames.toList())
-        var dueAt = ""
-        if (binding.deadlineDate.text.isNotEmpty()) {
+        val skillNames = binding.skills.chipAndTokenValues.toList()
+        val skillsToAssign = db.skillDao().findByName(skillNames)
+        var dueAt: String? = null
+        if (binding.deadlineDate.text.isNotBlank()) {
             dueAt = binding.deadlineDate.text.toString()
-            dueAt += if (binding.deadlineTime.text.isNotEmpty()) {
+            dueAt += if (binding.deadlineTime.text.isNotBlank()) {
                 " ${binding.deadlineTime.text}"
             } else {
                 " 08:00"
             }
         }
         val task = Task(
-            goal = goal,
-            details = details,
-            duration = duration,
-            iconId = iconId,
-            dueAt = dueAt,
-            difficulty = Difficulty.valueOf(difficulty))
-        task.skills = skills
-        val db = AppDatabase(requireContext())
-        GlobalScope.launch {
-            db.taskDao().insertTaskWithSkills(task)
-            TaskListFragment.taskAdapter.notifyDataSetChanged()
-        }
+            goal = goal, details = details, duration = duration, iconId = iconId,
+            dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty)
+        )
+        db.taskDao().createTask(task, skillsToAssign)
+        TaskListFragment.taskAdapter.notifyDataSetChanged()
         addToCalendar(task)
-        return true
     }
 }

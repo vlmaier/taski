@@ -52,7 +52,7 @@ class SkillListFragment : Fragment() {
         skillAdapter = SkillAdapter(requireContext())
 
         val db = AppDatabase(requireContext())
-        val skills = db.skillDao().findAllSkills()
+        val skills = db.skillDao().findAll()
         skillAdapter.setSkills(skills)
 
         rv.apply {

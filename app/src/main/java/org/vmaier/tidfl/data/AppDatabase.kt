@@ -5,8 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import org.vmaier.tidfl.data.dao.CategoryDao
 import org.vmaier.tidfl.data.dao.SkillDao
 import org.vmaier.tidfl.data.dao.TaskDao
+import org.vmaier.tidfl.data.entity.AssignedSkill
+import org.vmaier.tidfl.data.entity.Category
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.data.entity.Task
 
@@ -16,12 +19,17 @@ import org.vmaier.tidfl.data.entity.Task
  * on 22/04/2020.
  * at 16:45
  */
-@Database(entities = [Task::class, Skill::class], version = 1, exportSchema = false)
+@Database(
+    entities = [ Task::class, Skill::class, Category::class, AssignedSkill::class ],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun taskDao(): TaskDao
     abstract fun skillDao(): SkillDao
+    abstract fun categoryDao(): CategoryDao
 
     companion object {
 

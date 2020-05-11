@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
+import org.vmaier.tidfl.data.entity.Category
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentCreateSkillBinding
 import org.vmaier.tidfl.util.KeyBoardHider
@@ -77,11 +78,11 @@ class SkillCreateFragment : SkillFragment() {
         binding.category.setText(saved?.getString(KEY_CATEGORY) ?: "")
 
         val db = AppDatabase(requireContext())
-        val categories = db.skillDao().findAllCategories()
+        val categories = db.categoryDao().findAll()
 
         val adapter = ArrayAdapter(
             requireContext(),
-            R.layout.support_simple_spinner_dropdown_item, categories
+            R.layout.support_simple_spinner_dropdown_item, categories.map { it.name }
         )
         binding.category.setAdapter(adapter)
 
@@ -123,17 +124,16 @@ class SkillCreateFragment : SkillFragment() {
     private fun createSkillButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
 
         val name = binding.name.text.toString()
-        val category = binding.category.text.toString()
+        val categoryName = binding.category.text.toString()
         val iconId: Int = Integer.parseInt(binding.selectIconButton.tag.toString())
-        val skill = Skill(
-            name = name,
-            category = category,
-            iconId = iconId
-        )
         val db = AppDatabase(requireContext())
-        GlobalScope.launch {
-            db.skillDao().insertSkill(skill)
-            SkillListFragment.skillAdapter.notifyDataSetChanged()
+        var categoryId: Long? = null
+        if (categoryName.isNotBlank()) {
+            val foundCategory = db.categoryDao().findByName(categoryName)
+            categoryId = foundCategory?.id ?: db.categoryDao().create(Category(name = categoryName))
         }
+        val skill = Skill(name = name, categoryId = categoryId, iconId = iconId)
+        db.skillDao().create(skill)
+        SkillListFragment.skillAdapter.notifyDataSetChanged()
     }
 }

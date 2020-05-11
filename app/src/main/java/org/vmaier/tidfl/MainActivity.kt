@@ -19,10 +19,7 @@ import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.vmaier.tidfl.data.AppDatabase
-import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.databinding.ActivityMainBinding
 import org.vmaier.tidfl.features.skills.SkillCreateFragment
 import org.vmaier.tidfl.features.skills.SkillEditFragment
@@ -77,14 +74,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     override fun onStart() {
         super.onStart()
         val db = AppDatabase(this)
-        GlobalScope.launch {
-            val headerView = navView.getHeaderView(0)
-            xpCounter = headerView.findViewById<View>(R.id.xp_counter) as TextView
-            levelCounter = headerView.findViewById<View>(R.id.level_counter) as TextView
-            val xp = db.taskDao().calculateOverallXp(Status.DONE)
-            xpCounter.text = "${xp} XP"
-            levelCounter.text = "Level ${xp.div(10000) + 1}"
-        }
+        val headerView = navView.getHeaderView(0)
+        xpCounter = headerView.findViewById<View>(R.id.xp_counter) as TextView
+        levelCounter = headerView.findViewById<View>(R.id.level_counter) as TextView
+        val xp = db.taskDao().countOverallXpValue()
+        val level = xp.div(10000) + 1
+        xpCounter.text = "$xp XP"
+        levelCounter.text = "Level $level"
     }
 
     fun selectIconButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
@@ -97,23 +93,25 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     override fun onIconDialogIconsSelected(dialog: IconDialog, icons: List<Icon>) {
         val selectedIcon = icons[0]
         if (icons.isNotEmpty()) {
-            val fragment = supportFragmentManager.primaryNavigationFragment!!
-            val fragments = fragment.childFragmentManager.fragments
-            fragments.forEach {
-                when (it) {
-                    is TaskCreateFragment -> {
-                        TaskFragment.setIcon(
+            val fragment = supportFragmentManager.primaryNavigationFragment
+            if (fragment != null) {
+                val fragments = fragment.childFragmentManager.fragments
+                fragments.forEach {
+                    when (it) {
+                        is TaskCreateFragment -> {
+                            TaskFragment.setIcon(
                                 this, selectedIcon, TaskCreateFragment.binding.iconButton)
-                    }
-                    is TaskEditFragment -> {
-                        TaskFragment.setIcon(
+                        }
+                        is TaskEditFragment -> {
+                            TaskFragment.setIcon(
                                 this, selectedIcon, TaskEditFragment.binding.iconButton)
-                    }
-                    is SkillCreateFragment -> {
-                        SkillCreateFragment.setIcon(this, selectedIcon)
-                    }
-                    is SkillEditFragment -> {
-                        SkillEditFragment.setIcon(this, selectedIcon)
+                        }
+                        is SkillCreateFragment -> {
+                            SkillCreateFragment.setIcon(this, selectedIcon)
+                        }
+                        is SkillEditFragment -> {
+                            SkillEditFragment.setIcon(this, selectedIcon)
+                        }
                     }
                 }
             }
