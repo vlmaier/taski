@@ -40,7 +40,12 @@ android {
     }
 
     packagingOptions {
+        exclude 'LICENSE.txt'
         exclude 'META-INF/atomicfu.kotlin_module'
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -67,6 +72,7 @@ dependencies {
 
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0-beta01'
 
     kapt 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
     kapt 'androidx.room:room-compiler:2.2.5'
@@ -74,5 +80,9 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test:runner:0.5'
+    androidTestImplementation 'androidx.test:rules:0.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-web:3.2.0'
     androidTestImplementation 'androidx.room:room-testing:2.2.5'
 }
