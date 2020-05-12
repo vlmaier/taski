@@ -65,6 +65,7 @@ class SkillAdapter internal constructor(
                 )
             )
             holder.iconView.background = drawable
+            holder.iconView.tag = skill.iconId
         }
 
         val xp = db.skillDao().countSkillXpValue(skill.id)

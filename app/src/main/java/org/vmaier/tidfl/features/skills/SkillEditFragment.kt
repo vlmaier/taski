@@ -92,7 +92,7 @@ class SkillEditFragment : SkillFragment() {
 
         binding.header.isFocusable = true
 
-        binding.deleteButton.setOnClickListener {
+        binding.deleteSkillButton.setOnClickListener {
             val removedSkill = SkillListFragment.skillAdapter.removeItem(itemPosition)
             Snackbar.make(
                     it,
