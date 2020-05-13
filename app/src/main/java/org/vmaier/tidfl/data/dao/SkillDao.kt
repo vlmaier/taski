@@ -29,6 +29,13 @@ interface SkillDao {
     @Query("""
         SELECT *
         FROM skills
+        WHERE id = :skillId
+    """)
+    fun findById(skillId: Long) : Skill?
+
+    @Query("""
+        SELECT *
+        FROM skills
         WHERE name IN (:names)
     """)
     fun findByName(names: List<String>) : List<Skill>

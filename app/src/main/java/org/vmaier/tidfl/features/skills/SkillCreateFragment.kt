@@ -1,29 +1,18 @@
 package org.vmaier.tidfl.features.skills
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
-import com.maltaisn.icondialog.data.Icon
-import com.maltaisn.icondialog.pack.IconDrawableLoader
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
-import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.entity.Category
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentCreateSkillBinding
 import org.vmaier.tidfl.util.KeyBoardHider
 import org.vmaier.tidfl.util.hideKeyboard
-import kotlin.random.Random
 
 
 /**
@@ -62,9 +51,10 @@ class SkillCreateFragment : SkillFragment() {
 
         // --- Action buttons settings
         binding.createSkillButton.setOnClickListener {
-            createSkillButtonClicked(it)
-            it.findNavController().popBackStack()
-            it.hideKeyboard()
+            if (createSkillButtonClicked()) {
+                it.findNavController().popBackStack()
+                it.hideKeyboard()
+            }
         }
         binding.cancelButton.setOnClickListener {
             it.findNavController().popBackStack()
@@ -76,6 +66,7 @@ class SkillCreateFragment : SkillFragment() {
 
     override fun onPause() {
         super.onPause()
+
         binding.name.hideKeyboard()
         binding.category.hideKeyboard()
     }
@@ -88,12 +79,16 @@ class SkillCreateFragment : SkillFragment() {
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
     }
 
-    private fun createSkillButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
+    private fun createSkillButtonClicked(): Boolean {
 
         val name = binding.name.text.toString()
+        if (name.isBlank()) {
+            binding.name.requestFocus()
+            binding.name.error = "Name cannot be empty"
+            return false
+        }
         val categoryName = binding.category.text.toString()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        val db = AppDatabase(requireContext())
         var categoryId: Long? = null
         if (categoryName.isNotBlank()) {
             val foundCategory = db.categoryDao().findByName(categoryName)
@@ -102,5 +97,6 @@ class SkillCreateFragment : SkillFragment() {
         val skill = Skill(name = name, categoryId = categoryId, iconId = iconId)
         db.skillDao().create(skill)
         SkillListFragment.skillAdapter.notifyDataSetChanged()
+        return true
     }
 }

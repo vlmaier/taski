@@ -91,6 +91,35 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     override val iconDialogIconPack: IconPack?
         get() = App.iconPack
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_tasks -> {
+                navController.navigate(R.id.taskListFragment)
+            }
+            R.id.nav_skills -> {
+                navController.navigate(R.id.skillListFragment)
+            }
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.options_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.settings -> {
+            navController.navigate(R.id.settingsFragment)
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onIconDialogIconsSelected(dialog: IconDialog, icons: List<Icon>) {
         val selectedIcon = icons[0]
         if (icons.isNotEmpty()) {
@@ -121,32 +150,31 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_tasks -> {
-                navController.navigate(R.id.taskListFragment)
+    override fun onBackPressed() {
+        val count = supportFragmentManager.backStackEntryCount
+        if (count == 0) {
+            val fragment = supportFragmentManager.primaryNavigationFragment
+            if (fragment != null) {
+                val fragments = fragment.childFragmentManager.fragments
+                fragments.forEach {
+                    when (it) {
+                        is SkillEditFragment -> {
+                            val name = SkillEditFragment.binding.name.text.toString()
+                            if (name.isBlank()) {
+                                SkillEditFragment.binding.name.requestFocus()
+                                SkillEditFragment.binding.name.error = "Name cannot be empty"
+                            } else {
+                                super.onBackPressed()
+                            }
+                        }
+                        else -> {
+                            super.onBackPressed()
+                        }
+                    }
+                }
             }
-            R.id.nav_skills -> {
-                navController.navigate(R.id.skillListFragment)
-            }
-        }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.options_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.settings -> {
-            navController.navigate(R.id.settingsFragment)
-            true
-        }
-        else -> {
-            super.onOptionsItemSelected(item)
+        } else {
+            supportFragmentManager.popBackStack()
         }
     }
 }

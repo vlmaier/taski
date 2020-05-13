@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import org.vmaier.tidfl.R
@@ -153,4 +154,8 @@ fun Task.getHumanReadableDurationValue(): String {
         DurationUnit.DAY -> "d"
         DurationUnit.WEEK -> "w"
     }
+}
+
+fun String.toast(context: Context, length: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(context, this, length).show()
 }

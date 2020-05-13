@@ -159,10 +159,7 @@ class TaskEditFragment : TaskFragment() {
             TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
             TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
             updateInCalendar(task, toUpdate)
-            Toast.makeText(
-                context, "Task updated",
-                Toast.LENGTH_SHORT
-            ).show()
+            "Task updated".toast(requireContext())
         }
     }
 }

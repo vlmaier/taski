@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
@@ -14,6 +13,7 @@ import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentEditSkillBinding
 import org.vmaier.tidfl.util.KeyBoardHider
 import org.vmaier.tidfl.util.hideKeyboard
+import org.vmaier.tidfl.util.toast
 
 
 /**
@@ -82,7 +82,11 @@ class SkillEditFragment : SkillFragment() {
 
     override fun onPause() {
         super.onPause()
-        saveChangesOnSkill()
+
+        // check if the skill was not deleted
+        if (db.skillDao().findById(skill.id) != null) {
+            saveChangesOnSkill()
+        }
         binding.name.hideKeyboard()
         binding.category.hideKeyboard()
     }
@@ -93,7 +97,6 @@ class SkillEditFragment : SkillFragment() {
         out.putString(KEY_NAME, binding.name.text.toString())
         out.putString(KEY_CATEGORY, binding.category.text.toString())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
-
         saveChangesOnSkill()
     }
 
@@ -103,14 +106,11 @@ class SkillEditFragment : SkillFragment() {
         val categoryName = binding.category.text.toString()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val db = AppDatabase(requireContext())
-        var categoryId: Long? = skill.categoryId
-        if (categoryName.isNotBlank()) {
+        val categoryId: Long? = if (categoryName.isNotBlank()) {
             val foundCategory = db.categoryDao().findByName(categoryName)
-            if (foundCategory == null) {
-                categoryId = db.categoryDao().create(Category(name = categoryName))
-            }
+            foundCategory?.id ?: db.categoryDao().create(Category(name = categoryName))
         } else {
-            categoryId = null
+            null
         }
         val toUpdate = Skill(
             id = skill.id, name = name, categoryId = categoryId, iconId = iconId
@@ -119,10 +119,7 @@ class SkillEditFragment : SkillFragment() {
             db.skillDao().update(toUpdate)
             SkillListFragment.skillAdapter.skills[itemPosition] = toUpdate
             SkillListFragment.skillAdapter.notifyItemChanged(itemPosition)
-            Toast.makeText(
-                context, "Skill updated",
-                Toast.LENGTH_SHORT
-            ).show()
+            "Skill updated".toast(requireContext())
         }
     }
 }
