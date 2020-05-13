@@ -34,75 +34,42 @@ import kotlin.random.Random
 class SkillCreateFragment : SkillFragment() {
 
     companion object {
-
         lateinit var binding: FragmentCreateSkillBinding
-
-        fun setIcon(context: Context, icon: Icon) {
-
-            val drawable = IconDrawableLoader(context).loadDrawable(icon)!!
-            drawable.clearColorFilter()
-            DrawableCompat.setTint(
-                drawable, ContextCompat.getColor(
-                    context, R.color.colorSecondary
-                )
-            )
-            binding.selectIconButton.background = drawable
-            binding.selectIconButton.tag = icon.id
-        }
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            saved: Bundle?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, saved)
 
         binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_create_skill, container, false
+            inflater, R.layout.fragment_create_skill, container, false
         )
 
-        val iconId = saved?.getInt(KEY_ICON_ID) ?: Random.nextInt(App.iconPack.allIcons.size)
-        val iconDrawable = App.iconPack.getIconDrawable(
-                iconId, IconDrawableLoader(requireContext())
-        )!!
-
-        DrawableCompat.setTint(
-            iconDrawable, ContextCompat.getColor(
-                requireContext(), R.color.colorSecondary
-            )
-        )
-
-        binding.selectIconButton.background = iconDrawable
-        binding.selectIconButton.tag = iconId
-
+        // --- Name settings
         binding.name.setText(saved?.getString(KEY_NAME) ?: "")
-        binding.category.setText(saved?.getString(KEY_CATEGORY) ?: "")
+        binding.name.onFocusChangeListener = KeyBoardHider()
 
-        val db = AppDatabase(requireContext())
-        val categories = db.categoryDao().findAll()
-
+        // --- Category settings
         val adapter = ArrayAdapter(
-            requireContext(),
-            R.layout.support_simple_spinner_dropdown_item, categories.map { it.name }
+            requireContext(), R.layout.support_simple_spinner_dropdown_item, categoryNames
         )
         binding.category.setAdapter(adapter)
+        binding.category.onFocusChangeListener = KeyBoardHider()
+        binding.category.setText(saved?.getString(KEY_CATEGORY) ?: "")
 
+        // -- Icon settings
+        setSkillIcon(saved, binding.iconButton)
+
+        // --- Action buttons settings
         binding.createSkillButton.setOnClickListener {
             createSkillButtonClicked(it)
             it.findNavController().popBackStack()
             it.hideKeyboard()
         }
-
         binding.cancelButton.setOnClickListener {
             it.findNavController().popBackStack()
             it.hideKeyboard()
         }
-
-        binding.name.onFocusChangeListener = KeyBoardHider()
-        binding.category.onFocusChangeListener = KeyBoardHider()
-
-        binding.name.requestFocus()
-        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
 
         return binding.root
     }
@@ -118,14 +85,14 @@ class SkillCreateFragment : SkillFragment() {
 
         out.putString(KEY_NAME, binding.name.text.toString())
         out.putString(KEY_CATEGORY, binding.category.text.toString())
-        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.selectIconButton.tag.toString()))
+        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
     }
 
     private fun createSkillButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
 
         val name = binding.name.text.toString()
         val categoryName = binding.category.text.toString()
-        val iconId: Int = Integer.parseInt(binding.selectIconButton.tag.toString())
+        val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val db = AppDatabase(requireContext())
         var categoryId: Long? = null
         if (categoryName.isNotBlank()) {

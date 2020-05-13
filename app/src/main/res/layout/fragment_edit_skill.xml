@@ -28,7 +28,7 @@
                 android:text="Skill information"
                 android:textSize="28sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/edit_icon_button"
+                app:layout_constraintEnd_toStartOf="@+id/icon_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,12 +49,12 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/edit_icon_button"
+                app:layout_constraintEnd_toStartOf="@+id/icon_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/header" />
 
             <ImageButton
-                android:id="@+id/edit_icon_button"
+                android:id="@+id/icon_button"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginEnd="16dp"
@@ -94,7 +94,7 @@
                 android:maxLength="100"
                 android:maxLines="1"
                 android:singleLine="true"
-                app:layout_constraintEnd_toEndOf="@+id/edit_icon_button"
+                app:layout_constraintEnd_toEndOf="@+id/icon_button"
                 app:layout_constraintStart_toStartOf="@+id/name"
                 app:layout_constraintTop_toBottomOf="@+id/name" />
 

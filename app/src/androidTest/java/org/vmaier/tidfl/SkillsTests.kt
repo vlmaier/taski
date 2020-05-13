@@ -72,7 +72,7 @@ class SkillsTests {
 
         // click on button to open the select icons dialog
         onView(
-            withId(R.id.select_icon_button))
+            withId(R.id.icon_button))
             .perform(click())
 
         // type in the search field
@@ -180,7 +180,7 @@ class SkillsTests {
 
         // click on button to open the select icons dialog
         onView(
-            withId(R.id.select_icon_button))
+            withId(R.id.icon_button))
             .perform(click())
 
         // type in the search field
@@ -236,7 +236,7 @@ class SkillsTests {
 
         // validate skill icon
         onView(allOf(
-            withId(R.id.edit_icon_button),
+            withId(R.id.icon_button),
             // validate icon ID
             withTagValue(`is`(896))))
             .check(matches(isDisplayed()))
@@ -306,7 +306,7 @@ class SkillsTests {
 
         // click on button to open the select icons dialog
         onView(
-            withId(R.id.select_icon_button))
+            withId(R.id.icon_button))
             .perform(click())
 
         // type in the search field
@@ -370,7 +370,7 @@ class SkillsTests {
 
         // click on button to open the select icons dialog
         onView(
-            withId(R.id.edit_icon_button))
+            withId(R.id.icon_button))
             .perform(scrollTo(), click())
 
         // type in the search field
@@ -483,7 +483,7 @@ class SkillsTests {
 
         // click on button to open the select icons dialog
         onView(
-            withId(R.id.select_icon_button))
+            withId(R.id.icon_button))
             .perform(click())
 
         // type in the search field
@@ -578,7 +578,7 @@ class SkillsTests {
 
         // click on button to open the select icons dialog
         onView(
-            withId(R.id.select_icon_button))
+            withId(R.id.icon_button))
             .perform(click())
 
         // type in the search field

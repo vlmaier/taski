@@ -23,6 +23,7 @@ import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.databinding.ActivityMainBinding
 import org.vmaier.tidfl.features.skills.SkillCreateFragment
 import org.vmaier.tidfl.features.skills.SkillEditFragment
+import org.vmaier.tidfl.features.skills.SkillFragment
 import org.vmaier.tidfl.features.tasks.TaskCreateFragment
 import org.vmaier.tidfl.features.tasks.TaskEditFragment
 import org.vmaier.tidfl.features.tasks.TaskFragment
@@ -107,10 +108,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                                 this, selectedIcon, TaskEditFragment.binding.iconButton)
                         }
                         is SkillCreateFragment -> {
-                            SkillCreateFragment.setIcon(this, selectedIcon)
+                            SkillFragment.setIcon(
+                                this, selectedIcon, SkillCreateFragment.binding.iconButton)
                         }
                         is SkillEditFragment -> {
-                            SkillEditFragment.setIcon(this, selectedIcon)
+                            SkillFragment.setIcon(
+                                this, selectedIcon, SkillEditFragment.binding.iconButton)
                         }
                     }
                 }

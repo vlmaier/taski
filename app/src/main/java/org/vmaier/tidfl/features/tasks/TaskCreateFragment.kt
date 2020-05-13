@@ -36,7 +36,7 @@ class TaskCreateFragment : TaskFragment() {
         super.onCreateView(inflater, container, saved)
 
         binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_create_task, container, false
+            inflater, R.layout.fragment_create_task, container, false
         )
 
         // --- Goal settings
@@ -55,7 +55,7 @@ class TaskCreateFragment : TaskFragment() {
         binding.durationBar.progress = saved?.getInt(KEY_DURATION) ?: 3
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
         binding.durationBar.setOnSeekBarChangeListener(
-                getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
+            getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
         )
 
         // --- Difficulty settings
@@ -65,7 +65,7 @@ class TaskCreateFragment : TaskFragment() {
             updateXpGained(binding.xpGainValue, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
-                saved?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
+            saved?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
         )
         binding.difficulty.trivial.isChecked = selectedDifficulty == Difficulty.TRIVIAL
         binding.difficulty.regular.isChecked = selectedDifficulty == Difficulty.REGULAR
@@ -74,7 +74,7 @@ class TaskCreateFragment : TaskFragment() {
 
         // --- Skills settings
         val adapter = ArrayAdapter(
-                requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
+            requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
         )
         binding.skills.setAdapter(adapter)
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)

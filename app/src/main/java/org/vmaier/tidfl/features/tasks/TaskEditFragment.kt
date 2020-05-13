@@ -38,7 +38,7 @@ class TaskEditFragment : TaskFragment() {
         super.onCreateView(inflater, container, saved)
 
         binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_edit_task, container, false
+            inflater, R.layout.fragment_edit_task, container, false
         )
 
         // Focus header, so it's not one of the edit texts
@@ -50,7 +50,7 @@ class TaskEditFragment : TaskFragment() {
         itemPosition = args.itemPosition
 
         // --- Goal settings
-        binding.goal.setText(saved?.getString(TaskFragment.KEY_GOAL) ?: task.goal)
+        binding.goal.setText(saved?.getString(KEY_GOAL) ?: task.goal)
         binding.goal.onFocusChangeListener = KeyBoardHider()
 
         // --- Details settings
