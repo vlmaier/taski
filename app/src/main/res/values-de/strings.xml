@@ -1,3 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string name="app_name">Things I Do For Loot</string><string name="unit_minute_short">Min</string><string name="unit_hour_short">S</string><string name="unit_day_short">T</string><string name="unit_week_short">W</string><string name="term_xp_value">%1$d XP</string><string name="term_level_value">Level %1$d</string><string name="error_name_cannot_be_empty">Name kann nicht leer sein</string><string name="event_skill_updated">Skill aktualisiert</string><string name="event_skill_deleted">Skill gelöscht</string><string name="event_task_complete">Task abgeschlossen (+%1$d XP)</string><string name="event_task_failed">Task fehlgeschlagen</string><string name="action_undo">Rückgängig machen</string><string name="event_task_updated">Task aktualisiert</string></resources>
+
+    <string name="app_name">Things I Do For Loot</string>
+
+    <!-- Duration values -->
+    <plurals name="duration_minute">
+        <item quantity="one">%d Minute</item>
+        <item quantity="other">%d Minuten</item>
+    </plurals>
+    <plurals name="duration_hour">
+        <item quantity="one">%d Stunde</item>
+        <item quantity="other">%d Stunden</item>
+    </plurals>
+    <plurals name="duration_day">
+        <item quantity="one">%d Tag</item>
+        <item quantity="other">%d Tage</item>
+    </plurals>
+    <plurals name="duration_week">
+        <item quantity="one">%d Woche</item>
+        <item quantity="other">%d Wochen</item>
+    </plurals>
+
+    <!-- Difficulty values -->
+    <string name="difficulty_trivial_value">leicht</string>
+    <string name="difficulty_regular_value">normal</string>
+    <string name="difficulty_hard_value">schwer</string>
+    <string name="difficulty_insane_value">irre</string>
+
+    <!-- Units -->
+    <string name="unit_minute_short">Min</string>
+    <string name="unit_hour_short">S</string>
+    <string name="unit_day_short">T</string>
+    <string name="unit_week_short">W</string>
+
+    <!-- Terms -->
+    <string name="term_xp_value">%1$d XP</string>
+    <string name="term_level_value">Level %1$d</string>
+    <plurals name="term_skill">
+        <item quantity="one">%d Skill</item>
+        <item quantity="other">%d Skills</item>
+    </plurals>
+
+    <!-- Error messages -->
+    <string name="error_name_cannot_be_empty">Name kann nicht leer sein</string>
+
+    <!-- Event messages -->
+    <string name="event_skill_updated">Skill aktualisiert</string>
+    <string name="event_skill_deleted">Skill gelöscht</string>
+    <string name="event_task_complete">Task abgeschlossen (+%1$d XP)</string>
+    <string name="event_task_failed">Task fehlgeschlagen</string>
+    <string name="event_task_updated">Task aktualisiert</string>
+
+    <!-- Buttons -->
+    <string name="action_undo">Rückgängig</string>
+    <string name="action_create">Erstellen</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_delete">Löschen</string>
+
+    <!-- Headings -->
+    <string name="heading_create_skill">Neuen Skill erstellen</string>
+    <string name="heading_create_task">Neuen Task erstellen</string>
+    <string name="heading_duration">Dauer</string>
+    <string name="heading_difficulty">Schwierigkeit</string>
+    <string name="heading_due_on">Fällig am</string>
+    <string name="heading_due_at">um</string>
+    <string name="heading_tasks">Tasks</string>
+    <string name="heading_skills">Skills</string>
+    <string name="heading_settings">Einstellungen</string>
+    <string name="heading_xp_gain">Erfahrungsgewinn</string>
+    <string name="heading_task_info">Task Details</string>
+    <string name="heading_skill_info">Skill Details</string>
+    <string name="heading_skill_level">Skill Level</string>
+    <string name="heading_skill_xp">Skill Erfahrung</string>
+    <string name="heading_open_tasks">Anzahl offener Tasks</string>
+    <string name="heading_done_tasks">Anzahl abgeschlossener Tasks</string>
+    <string name="heading_calendar_sync">Kalender Synchronisation</string>
+
+    <!-- Hint messages -->
+    <string name="hint_skill_name">Name des Skills</string>
+    <string name="hint_skill_category">Skill Kategorie</string>
+    <string name="hint_task_goal">Aufgabe</string>
+    <string name="hint_task_details">Details</string>
+    <string name="hint_task_due_date">Datum</string>
+    <string name="hint_task_due_time">Uhrzeit</string>
+
+    <!-- Description messages -->
+    <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Tasks zu dem Standardkalender.</string>
+
+</resources>

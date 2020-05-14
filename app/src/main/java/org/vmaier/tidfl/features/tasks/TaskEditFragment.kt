@@ -69,8 +69,8 @@ class TaskEditFragment : TaskFragment() {
         // --- Difficulty settings
         binding.difficulty.setOnCheckedChangeListener { chipGroup, i ->
             val chip: Chip = chipGroup.findViewById(i)
-            difficulty = chip.text.toString().toUpperCase(Locale.getDefault())
-            updateXpGained(binding.xpGainValue, binding.durationBar)
+            difficulty = chip.tag.toString().toUpperCase(Locale.getDefault())
+            updateXpGain(binding.xpGainValue, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
             saved?.getString(KEY_DIFFICULTY) ?: task.difficulty.name

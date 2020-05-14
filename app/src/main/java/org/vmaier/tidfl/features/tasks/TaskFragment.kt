@@ -141,14 +141,14 @@ open class TaskFragment : Fragment() {
                 durationValue.text = seek.getHumanReadableValue()
                 // do not allow the seek bar going beyond 1
                 if (progress <= 1) seek.progress = 1
-                updateXpGained(xpGainValue, durationBar)
+                updateXpGain(xpGainValue, durationBar)
             }
             override fun onStartTrackingTouch(seek: SeekBar) = Unit
             override fun onStopTrackingTouch(seek: SeekBar) = Unit
         }
     }
 
-    fun updateXpGained(xpGainValue: TextView, durationBar: SeekBar) {
+    fun updateXpGain(xpGainValue: TextView, durationBar: SeekBar) {
         val xpValue = Difficulty.valueOf(difficulty)
             .factor.times(durationBar.getDurationInMinutes()).toInt()
         xpGainValue.text = resources.getString(R.string.term_xp_value, xpValue)

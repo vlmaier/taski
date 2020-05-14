@@ -167,6 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/difficulty_trivial_value"
+                    android:tag="trivial"
                     />
 
                 <com.google.android.material.chip.Chip
@@ -175,6 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/difficulty_regular_value"
+                    android:tag="regular"
                     tools:checked="true"
                     />
 
@@ -184,6 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/difficulty_hard_value"
+                    android:tag="hard"
                     />
 
                 <com.google.android.material.chip.Chip
@@ -192,6 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/difficulty_insane_value"
+                    android:tag="insane"
                     />
 
             </com.google.android.material.chip.ChipGroup>
@@ -317,7 +321,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/heading_xp_gained"
+                android:text="@string/heading_xp_gain"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/skills"
                 app:layout_constraintTop_toBottomOf="@+id/skills"

@@ -30,15 +30,12 @@
 - [ ] set user avatar
 
 ##### Statistics
-- [ ] xp gained daily / weekly / monthly (bar graph)
+- [ ] xp gain daily / weekly / monthly (bar graph)
 - [ ] tasks completed daily / weekly / monthly (bar graph)
-- [ ] skill levels / xp gained overview (pie chart)
-- [ ] cumulative xp gained on category (pie chart) 
+- [ ] skill levels / xp gain overview (pie chart)
+- [ ] cumulative xp gain on category (pie chart) 
 
 ##### Localization
-- [ ] outsource all hardcoded and relevant strings to strings.xml
-- [ ] German
-- [ ] English
 - [ ] French
 - [ ] Italian
 - [ ] Spanish
