@@ -31,10 +31,10 @@ class TaskCreateFragment : TaskFragment() {
         lateinit var binding: FragmentCreateTaskBinding
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
-
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_create_task, container, false
         )
@@ -109,7 +109,6 @@ class TaskCreateFragment : TaskFragment() {
 
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-
         out.putString(KEY_GOAL, binding.goal.text.toString())
         out.putString(KEY_DETAILS, binding.goal.text.toString())
         out.putString(KEY_DIFFICULTY, difficulty)
@@ -124,7 +123,7 @@ class TaskCreateFragment : TaskFragment() {
 
         val goal = binding.goal.text.toString()
         val detailsValue = binding.details.text.toString()
-        val details = if (detailsValue.isNotBlank()) detailsValue  else null
+        val details = if (detailsValue.isNotBlank()) detailsValue else null
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()

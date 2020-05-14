@@ -11,9 +11,11 @@ import androidx.core.content.ContextCompat
  * on 19/04/2020.
  * at 12:09
  */
-class PermissionManager(private val activity: Activity,
-                        private val permissions: List<String>,
-                        private val code: Int) {
+class PermissionManager(
+    private val activity: Activity,
+    private val permissions: List<String>,
+    private val code: Int
+) {
 
     fun checkPermissions() {
         if (!arePermissionsGranted(permissions)) {

@@ -20,7 +20,7 @@ import org.vmaier.tidfl.data.entity.Task
  * at 16:45
  */
 @Database(
-    entities = [ Task::class, Skill::class, Category::class, AssignedSkill::class ],
+    entities = [Task::class, Skill::class, Category::class, AssignedSkill::class],
     version = 1,
     exportSchema = false
 )
@@ -41,10 +41,11 @@ abstract class AppDatabase : RoomDatabase() {
             instance ?: buildDatabase(context).also { instance = it }
         }
 
-        private fun buildDatabase(context: Context) = Room.databaseBuilder(context,
-            AppDatabase::class.java,
-            "tidfl.db")
-            .allowMainThreadQueries()
-            .build()
+        private fun buildDatabase(context: Context) =
+            Room.databaseBuilder(
+                context,
+                AppDatabase::class.java,
+                "tidfl.db"
+            ).allowMainThreadQueries().build()
     }
 }

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:background="@color/colorPrimary"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        >
 
         <ImageView
             android:id="@+id/imageView"
@@ -18,7 +22,8 @@
             android:layout_marginTop="96dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            app:srcCompat="@mipmap/ic_launcher_round"
+            />
 
         <TextView
             android:id="@+id/textView"
@@ -30,29 +35,31 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            />
 
         <TextView
             android:id="@+id/xp_counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:text="0XP"
+            android:layout_marginStart="16dp"
             android:textColor="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="@+id/level_counter"
             app:layout_constraintStart_toEndOf="@+id/level_counter"
-            app:layout_constraintTop_toTopOf="@+id/level_counter" />
+            app:layout_constraintTop_toTopOf="@+id/level_counter"
+            tools:text="0 XP"
+            />
 
         <TextView
             android:id="@+id/level_counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Level 1"
             android:textColor="#FFFFFF"
             app:layout_constraintStart_toStartOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:text="Level 1"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

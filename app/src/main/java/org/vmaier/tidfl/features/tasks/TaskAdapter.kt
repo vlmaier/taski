@@ -1,25 +1,20 @@
 package org.vmaier.tidfl.features.tasks
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.vmaier.tidfl.App
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.util.getHumanReadableDurationValue
+import org.vmaier.tidfl.util.setIcon
 
 
 /**
@@ -35,14 +30,12 @@ class TaskAdapter internal constructor(
     var tasks: MutableList<Task> = mutableListOf()
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // text views
         var goalView: TextView = itemView.findViewById(R.id.task_goal)
         var detailsView: TextView = itemView.findViewById(R.id.task_details)
         var durationView: TextView = itemView.findViewById(R.id.task_duration)
         var xpView: TextView = itemView.findViewById(R.id.task_xp)
         var skillsView: TextView = itemView.findViewById(R.id.skill_amount)
         var tagsView: TextView = itemView.findViewById(R.id.skill_tags)
-        // icon views
         var taskIconView: ImageView = itemView.findViewById(R.id.task_icon)
         var skillIconView: ImageView = itemView.findViewById(R.id.skill_icon)
         var tagIconView: ImageView = itemView.findViewById(R.id.skill_tag_icon)
@@ -58,13 +51,14 @@ class TaskAdapter internal constructor(
         val task: Task = tasks[position]
         holder.goalView.text = task.goal
         holder.detailsView.text = task.details
-        holder.durationView.text = task.getHumanReadableDurationValue()
-        holder.xpView.text = "${task.xpValue} XP"
+        holder.durationView.text = task.getHumanReadableDurationValue(context)
+        holder.xpView.text = context.getString(R.string.term_xp_value, task.xpValue)
 
         // skills
-        val amountOfSkills = db.skillDao().countAssignedSkills(task.id)
-        if (amountOfSkills > 0) {
-            holder.skillsView.text = "$amountOfSkills ${if (amountOfSkills == 1) "skill" else "skills"}"
+        val skillsCount = db.skillDao().countAssignedSkills(task.id)
+        if (skillsCount > 0) {
+            holder.skillsView.text = context.resources.getQuantityString(
+                R.plurals.term_skill, skillsCount, skillsCount)
             holder.skillIconView.visibility = View.VISIBLE
             holder.skillsView.visibility = View.VISIBLE
         } else {
@@ -76,14 +70,7 @@ class TaskAdapter internal constructor(
         holder.tagIconView.visibility = View.INVISIBLE
         holder.tagsView.visibility = View.INVISIBLE
 
-        // task icon
-        val drawable: Drawable? = App.iconPack.getIcon(task.iconId)?.drawable
-        if (drawable != null) {
-            DrawableCompat.setTint(
-                drawable, ContextCompat.getColor(context, R.color.colorSecondary)
-            )
-            holder.taskIconView.background = drawable
-        }
+        holder.taskIconView.setIcon(task.iconId)
 
         holder.itemView.setOnClickListener {
             it.findNavController().navigate(
@@ -100,7 +87,7 @@ class TaskAdapter internal constructor(
 
     override fun getItemCount(): Int = tasks.size
 
-    fun removeItem(position: Int, status: Status) : Task {
+    fun removeItem(position: Int, status: Status): Task {
         val task = tasks.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, tasks.size)
@@ -115,13 +102,13 @@ class TaskAdapter internal constructor(
 
     private fun updateTaskStatus(task: Task, status: Status): Task {
 
-        val db = AppDatabase(this.inflater.context)
+        val db = AppDatabase(context)
         db.taskDao().changeTaskStatus(task.id, status)
         if (status != Status.FAILED) {
-            val xp = db.taskDao().countOverallXpValue()
-            val level = xp.div(10000) + 1
-            MainActivity.xpCounter.text = "$xp XP"
-            MainActivity.levelCounter.text = "Level $level"
+            val xpValue = db.taskDao().countOverallXpValue()
+            val levelValue = xpValue.div(10000) + 1
+            MainActivity.xpCounter.text = context.getString(R.string.term_xp_value, xpValue)
+            MainActivity.levelCounter.text = context.getString(R.string.term_level_value, levelValue)
         }
         return db.taskDao().findTaskById(task.id)
     }

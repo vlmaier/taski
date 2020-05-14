@@ -17,18 +17,18 @@ import kotlinx.android.parcel.Parcelize
     foreignKeys = [
         ForeignKey(
             entity = Category::class,
-            parentColumns = [ "id" ],
-            childColumns = [ "category_id" ],
+            parentColumns = ["id"],
+            childColumns = ["category_id"],
             onDelete = SET_NULL
         )
     ],
     indices = [
         Index(
-            value = [ "id" ],
+            value = ["id"],
             unique = true
         ),
         Index(
-            value = [ "name" ],
+            value = ["name"],
             unique = true
         )
     ]

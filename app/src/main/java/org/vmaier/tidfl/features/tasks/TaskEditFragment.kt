@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
@@ -33,10 +32,10 @@ class TaskEditFragment : TaskFragment() {
         lateinit var assignedSkills: List<Skill>
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
-
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_edit_task, container, false
         )
@@ -64,7 +63,7 @@ class TaskEditFragment : TaskFragment() {
         binding.durationBar.progress = saved?.getInt(KEY_DURATION) ?: task.getSeekBarValue()
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
         binding.durationBar.setOnSeekBarChangeListener(
-                getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
+            getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
         )
 
         // --- Difficulty settings
@@ -74,7 +73,7 @@ class TaskEditFragment : TaskFragment() {
             updateXpGained(binding.xpGainValue, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
-                saved?.getString(KEY_DIFFICULTY) ?: task.difficulty.name
+            saved?.getString(KEY_DIFFICULTY) ?: task.difficulty.name
         )
         binding.difficulty.trivial.isChecked = selectedDifficulty == Difficulty.TRIVIAL
         binding.difficulty.regular.isChecked = selectedDifficulty == Difficulty.REGULAR
@@ -83,13 +82,14 @@ class TaskEditFragment : TaskFragment() {
 
         // --- Skills settings
         val adapter = ArrayAdapter(
-                requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
+            requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
         )
         assignedSkills = db.skillDao().findAssignedSkills(task.id)
         binding.skills.setAdapter(adapter)
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
-        binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: assignedSkills.map { it.name })
+        binding.skills.setText(
+            saved?.getStringArrayList(KEY_SKILLS) ?: assignedSkills.map { it.name })
 
         // --- Deadline settings
         val dueAt = task.dueAt
@@ -136,7 +136,7 @@ class TaskEditFragment : TaskFragment() {
 
         val goal = binding.goal.text.toString()
         val detailsValue = binding.details.text.toString()
-        val details = if (detailsValue.isNotBlank()) detailsValue  else null
+        val details = if (detailsValue.isNotBlank()) detailsValue else null
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()
@@ -159,7 +159,7 @@ class TaskEditFragment : TaskFragment() {
             TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
             TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
             updateInCalendar(task, toUpdate)
-            "Task updated".toast(requireContext())
+            getString(R.string.event_task_updated).toast(requireContext())
         }
     }
 }

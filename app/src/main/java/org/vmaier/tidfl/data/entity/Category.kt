@@ -18,11 +18,11 @@ import kotlinx.android.parcel.Parcelize
     tableName = "categories",
     indices = [
         Index(
-            value = [ "id" ],
+            value = ["id"],
             unique = true
         ),
         Index(
-            value = [ "name" ],
+            value = ["name"],
             unique = true
         )
     ]

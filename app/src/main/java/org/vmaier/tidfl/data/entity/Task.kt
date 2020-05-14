@@ -4,7 +4,9 @@ import android.os.Parcelable
 import androidx.room.*
 import kotlinx.android.parcel.Parcelize
 import org.vmaier.tidfl.App
-import org.vmaier.tidfl.data.*
+import org.vmaier.tidfl.data.Converters
+import org.vmaier.tidfl.data.Difficulty
+import org.vmaier.tidfl.data.Status
 import java.util.*
 
 
@@ -18,11 +20,11 @@ import java.util.*
     tableName = "tasks",
     indices = [
         Index(
-            value = [ "id" ],
+            value = ["id"],
             unique = true
         ),
         Index(
-            value = [ "event_id" ],
+            value = ["event_id"],
             unique = true
         )
     ]

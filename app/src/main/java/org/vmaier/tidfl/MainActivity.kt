@@ -62,14 +62,14 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         navView = findViewById(R.id.nav_view)
 
         val toggle = ActionBarDrawerToggle(
-                this, drawerLayout, toolbar,
-                0, 0
+            this, drawerLayout, toolbar,
+            0, 0
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
         iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
-                ?: IconDialog.newInstance(IconDialogSettings())
+            ?: IconDialog.newInstance(IconDialogSettings())
     }
 
     override fun onStart() {
@@ -130,19 +130,23 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                     when (it) {
                         is TaskCreateFragment -> {
                             TaskFragment.setIcon(
-                                this, selectedIcon, TaskCreateFragment.binding.iconButton)
+                                this, selectedIcon, TaskCreateFragment.binding.iconButton
+                            )
                         }
                         is TaskEditFragment -> {
                             TaskFragment.setIcon(
-                                this, selectedIcon, TaskEditFragment.binding.iconButton)
+                                this, selectedIcon, TaskEditFragment.binding.iconButton
+                            )
                         }
                         is SkillCreateFragment -> {
                             SkillFragment.setIcon(
-                                this, selectedIcon, SkillCreateFragment.binding.iconButton)
+                                this, selectedIcon, SkillCreateFragment.binding.iconButton
+                            )
                         }
                         is SkillEditFragment -> {
                             SkillFragment.setIcon(
-                                this, selectedIcon, SkillEditFragment.binding.iconButton)
+                                this, selectedIcon, SkillEditFragment.binding.iconButton
+                            )
                         }
                     }
                 }

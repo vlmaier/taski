@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.App
+import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.util.hideKeyboard
 import org.vmaier.tidfl.util.setThemeTint
@@ -48,7 +49,8 @@ open class SkillFragment : Fragment() {
         db = AppDatabase(context)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
         val categories = db.categoryDao().findAll()
@@ -56,9 +58,10 @@ open class SkillFragment : Fragment() {
         return this.view
     }
 
-    fun setSkillIcon(saved: Bundle?, button: ImageButton,
-                    fallback: Int = Random.nextInt(App.iconPack.allIcons.size)) {
-
+    fun setSkillIcon(
+        saved: Bundle?, button: ImageButton,
+        fallback: Int = Random.nextInt(App.iconPack.allIcons.size)
+    ) {
         val iconId = saved?.getInt(KEY_ICON_ID) ?: fallback
         val icon = App.iconPack.getIconDrawable(iconId, IconDrawableLoader(requireContext()))
         icon.setThemeTint(requireContext())
@@ -71,9 +74,9 @@ open class SkillFragment : Fragment() {
             val removedSkill = SkillListFragment.skillAdapter.removeItem(position)
             Snackbar.make(
                 it,
-                "Skill deleted",
+                getString(R.string.event_skill_deleted),
                 Snackbar.LENGTH_LONG
-            ).setAction("UNDO") {
+            ).setAction(getString(R.string.action_undo)) {
                 // undo is selected, restore the deleted item
                 SkillListFragment.skillAdapter.restoreItem(removedSkill, position)
             }.setActionTextColor(Color.YELLOW).show()

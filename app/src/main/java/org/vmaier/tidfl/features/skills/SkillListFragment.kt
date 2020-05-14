@@ -28,16 +28,14 @@ class SkillListFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        saved: Bundle?
     ): View? {
-
+        super.onCreateView(inflater, container, saved)
         val binding = DataBindingUtil.inflate<FragmentSkillListBinding>(
             inflater, R.layout.fragment_skill_list, container, false
         )
-
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-
         binding.fab.setOnClickListener {
             it.findNavController().navigate(
                 SkillListFragmentDirections.actionSkillListFragmentToCreateSkillFragment()
@@ -48,13 +46,10 @@ class SkillListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         skillAdapter = SkillAdapter(requireContext())
-
         val db = AppDatabase(requireContext())
         val skills = db.skillDao().findAll()
         skillAdapter.setSkills(skills)
-
         rv.apply {
             layoutManager = GridLayoutManager(activity, 2)
             adapter = skillAdapter

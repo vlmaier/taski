@@ -18,7 +18,7 @@ interface TaskDao {
     // ------------------------------------- CREATE QUERIES ------------------------------------- //
 
     @Insert(entity = Task::class, onConflict = OnConflictStrategy.REPLACE)
-    fun create(task: Task) : Long
+    fun create(task: Task): Long
 
     @Insert(entity = AssignedSkill::class, onConflict = OnConflictStrategy.IGNORE)
     fun assignSkill(assignedSkill: AssignedSkill)
@@ -32,41 +32,51 @@ interface TaskDao {
 
     // -------------------------------------  READ QUERIES  ------------------------------------- //
 
-    @Query("""
+    @Query(
+        """
         SELECT *
         FROM tasks
         WHERE id = :taskId
-    """)
-    fun findTaskById(taskId: Long) : Task
+    """
+    )
+    fun findTaskById(taskId: Long): Task
 
-    @Query("""
+    @Query(
+        """
         SELECT *
         FROM tasks
         WHERE status = :status
-    """)
-    fun findTasksWithStatus(status: Status) : List<Task>
+    """
+    )
+    fun findTasksWithStatus(status: Status): List<Task>
 
-    @Query("""
+    @Query(
+        """
         SELECT SUM(xp_value)
         FROM tasks
         WHERE status = 'done'        
-    """)
-    fun countOverallXpValue() : Long
+    """
+    )
+    fun countOverallXpValue(): Long
 
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 
-    @Query("""
+    @Query(
+        """
         UPDATE tasks
         SET status = :status
         WHERE id = :taskId
-    """)
+    """
+    )
     fun changeTaskStatus(taskId: Long, status: Status)
 
-    @Query("""
+    @Query(
+        """
         UPDATE tasks
         SET event_id = :eventId
         WHERE id = :taskId
-    """)
+    """
+    )
     fun updateTaskEventId(taskId: Long, eventId: String)
 
     @Update(entity = Task::class, onConflict = OnConflictStrategy.REPLACE)
@@ -88,9 +98,11 @@ interface TaskDao {
 
     // ------------------------------------- DELETE QUERIES ------------------------------------- //
 
-    @Query("""
+    @Query(
+        """
         DELETE FROM assigned_skills
         WHERE task_id = :taskId
-    """)
+    """
+    )
     fun removeAssignedSkills(taskId: Long)
 }

@@ -26,10 +26,10 @@ class SkillCreateFragment : SkillFragment() {
         lateinit var binding: FragmentCreateSkillBinding
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
-
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_create_skill, container, false
         )
@@ -60,31 +60,27 @@ class SkillCreateFragment : SkillFragment() {
             it.findNavController().popBackStack()
             it.hideKeyboard()
         }
-
         return binding.root
     }
 
     override fun onPause() {
         super.onPause()
-
         binding.name.hideKeyboard()
         binding.category.hideKeyboard()
     }
 
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-
         out.putString(KEY_NAME, binding.name.text.toString())
         out.putString(KEY_CATEGORY, binding.category.text.toString())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
     }
 
     private fun createSkillButtonClicked(): Boolean {
-
         val name = binding.name.text.toString()
         if (name.isBlank()) {
             binding.name.requestFocus()
-            binding.name.error = "Name cannot be empty"
+            binding.name.error = getString(R.string.error_name_cannot_be_empty)
             return false
         }
         val categoryName = binding.category.text.toString()

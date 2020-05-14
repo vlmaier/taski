@@ -18,29 +18,35 @@ interface CategoryDao {
     // ------------------------------------- CREATE QUERIES ------------------------------------- //
 
     @Insert(entity = Category::class, onConflict = OnConflictStrategy.IGNORE)
-    fun create(category: Category) : Long
+    fun create(category: Category): Long
 
     // -------------------------------------  READ QUERIES  ------------------------------------- //
 
-    @Query("""
+    @Query(
+        """
         SELECT name
         FROM categories
         WHERE id = :categoryId
-    """)
-    fun findNameById(categoryId: Long) : String
+    """
+    )
+    fun findNameById(categoryId: Long): String
 
-    @Query("""
+    @Query(
+        """
         SELECT *
         FROM categories
         WHERE name = :name
-    """)
-    fun findByName(name: String) : Category?
+    """
+    )
+    fun findByName(name: String): Category?
 
-    @Query("""
+    @Query(
+        """
         SELECT *
         FROM categories
-    """)
-    fun findAll() : List<Category>
+    """
+    )
+    fun findAll(): List<Category>
 
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 

@@ -16,65 +16,79 @@ interface SkillDao {
     // ------------------------------------- CREATE QUERIES ------------------------------------- //
 
     @Insert(entity = Skill::class, onConflict = OnConflictStrategy.REPLACE)
-    fun create(skill: Skill) : Long
+    fun create(skill: Skill): Long
 
     // -------------------------------------  READ QUERIES  ------------------------------------- //
 
-    @Query("""
+    @Query(
+        """
         SELECT *
         FROM skills
-    """)
-    fun findAll() : List<Skill>
+    """
+    )
+    fun findAll(): List<Skill>
 
-    @Query("""
+    @Query(
+        """
         SELECT *
         FROM skills
         WHERE id = :skillId
-    """)
-    fun findById(skillId: Long) : Skill?
+    """
+    )
+    fun findById(skillId: Long): Skill?
 
-    @Query("""
+    @Query(
+        """
         SELECT *
         FROM skills
         WHERE name IN (:names)
-    """)
-    fun findByName(names: List<String>) : List<Skill>
+    """
+    )
+    fun findByName(names: List<String>): List<Skill>
 
-    @Query("""
+    @Query(
+        """
         SELECT skills.*
         FROM assigned_skills 
         INNER JOIN skills
           ON skill_id = skills.id
         WHERE task_id = :taskId 
-    """)
-    fun findAssignedSkills(taskId: Long) : List<Skill>
+    """
+    )
+    fun findAssignedSkills(taskId: Long): List<Skill>
 
-    @Query("""
+    @Query(
+        """
         SELECT COUNT(*)
         FROM assigned_skills 
         INNER JOIN tasks
           ON task_id = tasks.id
         WHERE skill_id = :skillId 
           AND status = :status 
-    """)
-    fun countTasksWithSkillByStatus(skillId: Long, status: Status) : Long
+    """
+    )
+    fun countTasksWithSkillByStatus(skillId: Long, status: Status): Long
 
-    @Query("""
+    @Query(
+        """
         SELECT COUNT(*)
         FROM assigned_skills
         WHERE task_id = :taskId 
-    """)
-    fun countAssignedSkills(taskId: Long) : Int
+    """
+    )
+    fun countAssignedSkills(taskId: Long): Int
 
-    @Query("""
+    @Query(
+        """
         SELECT SUM(xp_value)
         FROM assigned_skills 
         INNER JOIN tasks
           ON task_id = tasks.id
         WHERE skill_id = :skillId 
           AND status = 'done'
-    """)
-    fun countSkillXpValue(skillId: Long) : Long
+    """
+    )
+    fun countSkillXpValue(skillId: Long): Long
 
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 

@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
     app:defaultNavHost="true"
-    app:startDestination="@id/taskListFragment">
+    app:startDestination="@id/taskListFragment"
+    >
 
     <fragment
         android:id="@+id/taskListFragment"
         android:name="org.vmaier.tidfl.features.tasks.TaskListFragment"
         android:label="TaskListFragment"
-        tools:layout="@layout/fragment_task_list">
+        tools:layout="@layout/fragment_task_list"
+        >
 
         <action
             android:id="@+id/action_taskListFragment_to_createTaskFragment"
@@ -18,7 +21,8 @@
             app:enterAnim="@anim/enter_from_right"
             app:exitAnim="@anim/exit_to_left"
             app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right" />
+            app:popExitAnim="@anim/exit_to_right"
+            />
 
         <action
             android:id="@+id/action_taskListFragment_to_editTaskFragment"
@@ -26,7 +30,8 @@
             app:enterAnim="@anim/enter_from_right"
             app:exitAnim="@anim/exit_to_left"
             app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right" />
+            app:popExitAnim="@anim/exit_to_right"
+            />
 
     </fragment>
 
@@ -34,64 +39,76 @@
         android:id="@+id/createTaskFragment"
         android:name="org.vmaier.tidfl.features.tasks.TaskCreateFragment"
         android:label="CreateTaskFragment"
-        tools:layout="@layout/fragment_create_task" />
+        tools:layout="@layout/fragment_create_task"
+        />
 
     <fragment
         android:id="@+id/editTaskFragment"
         android:name="org.vmaier.tidfl.features.tasks.TaskEditFragment"
         android:label="EditTaskFragment"
-        tools:layout="@layout/fragment_edit_task">
+        tools:layout="@layout/fragment_edit_task"
+        >
         <argument
             android:name="task"
-            app:argType="org.vmaier.tidfl.data.entity.Task" />
+            app:argType="org.vmaier.tidfl.data.entity.Task"
+            />
         <argument
             android:name="itemPosition"
-            app:argType="integer" />
+            app:argType="integer"
+            />
     </fragment>
 
     <fragment
         android:id="@+id/skillListFragment"
         android:name="org.vmaier.tidfl.features.skills.SkillListFragment"
         android:label="SkillListFragment"
-        tools:layout="@layout/fragment_skill_list">
+        tools:layout="@layout/fragment_skill_list"
+        >
         <action
             android:id="@+id/action_skillListFragment_to_createSkillFragment"
             app:destination="@id/createSkillFragment"
             app:enterAnim="@anim/enter_from_right"
             app:exitAnim="@anim/exit_to_left"
             app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right" />
+            app:popExitAnim="@anim/exit_to_right"
+            />
         <action
             android:id="@+id/action_skillListFragment_to_skillEditFragment"
             app:destination="@id/skillEditFragment"
             app:enterAnim="@anim/enter_from_right"
             app:exitAnim="@anim/exit_to_left"
             app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right" />
+            app:popExitAnim="@anim/exit_to_right"
+            />
     </fragment>
 
     <fragment
         android:id="@+id/createSkillFragment"
         android:name="org.vmaier.tidfl.features.skills.SkillCreateFragment"
         android:label="CreateSkillFragment"
-        tools:layout="@layout/fragment_create_skill" />
+        tools:layout="@layout/fragment_create_skill"
+        />
 
     <fragment
         android:id="@+id/skillEditFragment"
         android:name="org.vmaier.tidfl.features.skills.SkillEditFragment"
         android:label="SkillEditFragment"
-        tools:layout="@layout/fragment_edit_skill">
+        tools:layout="@layout/fragment_edit_skill"
+        >
         <argument
             android:name="skill"
-            app:argType="org.vmaier.tidfl.data.entity.Skill" />
+            app:argType="org.vmaier.tidfl.data.entity.Skill"
+            />
         <argument
             android:name="itemPosition"
-            app:argType="integer" />
+            app:argType="integer"
+            />
     </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="org.vmaier.tidfl.features.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="SettingsFragment"
+        />
 
 </navigation>

@@ -30,39 +30,32 @@ class TaskListFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        saved: Bundle?
     ): View? {
-
+        super.onCreateView(inflater, container, saved)
         val binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
             inflater, R.layout.fragment_task_list, container, false
         )
-
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-
         binding.fab.setOnClickListener {
             it.findNavController().navigate(
                 TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment()
             )
         }
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         taskAdapter = TaskAdapter(requireContext())
-
         val db = AppDatabase(requireContext())
         val tasks = db.taskDao().findTasksWithStatus(Status.OPEN)
         taskAdapter.setTasks(tasks)
-
         rv.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = taskAdapter
         }
-
         val simpleItemTouchCallback = SwipeCallbackHandler()
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(rv)

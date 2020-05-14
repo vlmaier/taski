@@ -12,8 +12,6 @@ import android.view.View.OnFocusChangeListener
 class KeyBoardHider : OnFocusChangeListener {
 
     override fun onFocusChange(v: View, hasFocus: Boolean) {
-        if (!hasFocus) {
-            v.hideKeyboard()
-        }
+        if (!hasFocus) v.hideKeyboard()
     }
 }

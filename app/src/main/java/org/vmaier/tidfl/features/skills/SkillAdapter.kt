@@ -1,22 +1,17 @@
 package org.vmaier.tidfl.features.skills
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.entity.Skill
+import org.vmaier.tidfl.util.setIcon
 
 
 /**
@@ -32,7 +27,6 @@ class SkillAdapter internal constructor(
     var skills: MutableList<Skill> = mutableListOf()
 
     inner class SkillViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // text views
         var nameView: TextView = itemView.findViewById(R.id.skill_name)
         var categoryView: TextView = itemView.findViewById(R.id.skill_category)
         var levelView: TextView = itemView.findViewById(R.id.skill_level)
@@ -46,32 +40,31 @@ class SkillAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: SkillViewHolder, position: Int) {
+
         val db = AppDatabase(context)
         val skill: Skill = skills[position]
+
+        // --- Name settings
         holder.nameView.text = skill.name
+
+        // --- Category settings
         val categoryName = if (skill.categoryId == null) {
             ""
         } else {
             db.categoryDao().findNameById(skill.categoryId)
         }
-        holder.categoryView.text = "$categoryName"
+        holder.categoryView.text = categoryName
 
-        // skill icon
-        val drawable: Drawable? = App.iconPack.getIcon(skill.iconId)?.drawable
-        if (drawable != null) {
-            DrawableCompat.setTint(
-                drawable, ContextCompat.getColor(
-                    holder.iconView.context, R.color.colorSecondary
-                )
-            )
-            holder.iconView.background = drawable
-            holder.iconView.tag = skill.iconId
-        }
+        // --- Icon settings
+        holder.iconView.setIcon(skill.iconId)
 
-        val xp = db.skillDao().countSkillXpValue(skill.id)
-        val level = xp.div(1000) + 1
-        holder.xpView.text = "$xp XP"
-        holder.levelView.text = "Level $level"
+        // --- XP value settings
+        val xpValue = db.skillDao().countSkillXpValue(skill.id)
+        holder.xpView.text = context.getString(R.string.term_xp_value, xpValue)
+
+        // --- Level settings
+        val levelValue = xpValue.div(1000) + 1
+        holder.levelView.text = context.getString(R.string.term_level_value, levelValue)
 
         holder.itemView.setOnClickListener {
             it.findNavController().navigate(

@@ -30,9 +30,10 @@ class SkillEditFragment : SkillFragment() {
         lateinit var skill: Skill
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
-
+        super.onCreateView(inflater, container, saved)
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_edit_skill, container, false
         )
@@ -51,7 +52,8 @@ class SkillEditFragment : SkillFragment() {
 
         // --- Category settings
         val categoryId = skill.categoryId
-        val categoryName = if (categoryId != null) db.categoryDao().findNameById(categoryId) else null
+        val categoryName =
+            if (categoryId != null) db.categoryDao().findNameById(categoryId) else null
         binding.category.setText(saved?.getString(KEY_CATEGORY) ?: categoryName)
         binding.category.onFocusChangeListener = KeyBoardHider()
 
@@ -64,11 +66,11 @@ class SkillEditFragment : SkillFragment() {
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
 
         // --- XP settings
-        val xp = db.skillDao().countSkillXpValue(skill.id)
-        binding.skillXpValue.text = "$xp XP"
+        val xpValue = db.skillDao().countSkillXpValue(skill.id)
+        binding.skillXpValue.text = getString(R.string.term_xp_value, xpValue)
 
         // --- Level settings
-        val level = xp.div(1000) + 1
+        val level = xpValue.div(1000) + 1
         binding.skillLevelValue.text = level.toString()
 
         // --- Icon settings
@@ -93,7 +95,6 @@ class SkillEditFragment : SkillFragment() {
 
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-
         out.putString(KEY_NAME, binding.name.text.toString())
         out.putString(KEY_CATEGORY, binding.category.text.toString())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
@@ -101,7 +102,6 @@ class SkillEditFragment : SkillFragment() {
     }
 
     private fun saveChangesOnSkill() {
-
         val name = binding.name.text.toString()
         val categoryName = binding.category.text.toString()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
@@ -119,7 +119,7 @@ class SkillEditFragment : SkillFragment() {
             db.skillDao().update(toUpdate)
             SkillListFragment.skillAdapter.skills[itemPosition] = toUpdate
             SkillListFragment.skillAdapter.notifyItemChanged(itemPosition)
-            "Skill updated".toast(requireContext())
+            getString(R.string.event_skill_updated).toast(requireContext())
         }
     }
 }

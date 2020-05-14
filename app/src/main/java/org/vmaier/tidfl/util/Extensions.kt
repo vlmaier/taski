@@ -7,10 +7,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DurationUnit
 import org.vmaier.tidfl.data.entity.Task
@@ -23,9 +25,21 @@ import org.vmaier.tidfl.data.entity.Task
  */
 
 fun View.hideKeyboard() {
-    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE)
-            as InputMethodManager
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(windowToken, 0)
+}
+
+fun ImageView.setIcon(iconId: Int) {
+    val drawable = App.iconPack.getIcon(iconId)?.drawable
+    if (drawable != null) {
+        DrawableCompat.setTint(
+            drawable, ContextCompat.getColor(
+                this.context, R.color.colorSecondary
+            )
+        )
+        this.background = drawable
+        this.tag = iconId
+    }
 }
 
 fun Drawable.toBitmap(): Bitmap {
@@ -33,9 +47,9 @@ fun Drawable.toBitmap(): Bitmap {
         return this.bitmap
     }
     val bitmap = Bitmap.createBitmap(
-            this.intrinsicWidth,
-            this.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
+        this.intrinsicWidth,
+        this.intrinsicHeight,
+        Bitmap.Config.ARGB_8888
     )
     val canvas = Canvas(bitmap)
     this.setBounds(0, 0, canvas.width, canvas.height)
@@ -44,7 +58,6 @@ fun Drawable.toBitmap(): Bitmap {
 }
 
 fun Drawable?.setThemeTint(context: Context) {
-
     if (this == null) return
     this.clearColorFilter()
     DrawableCompat.setTint(this, ContextCompat.getColor(context, R.color.colorSecondary))
@@ -52,26 +65,26 @@ fun Drawable?.setThemeTint(context: Context) {
 
 fun SeekBar.getHumanReadableValue(): String {
     return when (this.progress) {
-        1 -> "5 minutes"
-        2 -> "10 minutes"
-        3 -> "15 minutes"
-        4 -> "30 minutes"
-        5 -> "45 minutes"
-        6 -> "1 hour"
-        7 -> "2 hours"
-        8 -> "3 hours"
-        9 -> "4 hours"
-        10 -> "6 hours"
-        11 -> "8 hours"
-        12 -> "12 hours"
-        13 -> "16 hours"
-        14 -> "1 day"
-        15 -> "2 days"
-        16 -> "3 days"
-        17 -> "4 days"
-        18 -> "5 days"
-        19 -> "6 days"
-        20 -> "1 week"
+        1 -> resources.getQuantityString(R.plurals.duration_minute, 5, 5)
+        2 -> resources.getQuantityString(R.plurals.duration_minute, 10, 10)
+        3 -> resources.getQuantityString(R.plurals.duration_minute, 15, 15)
+        4 -> resources.getQuantityString(R.plurals.duration_minute, 30, 30)
+        5 -> resources.getQuantityString(R.plurals.duration_minute, 45, 45)
+        6 -> resources.getQuantityString(R.plurals.duration_hour, 1, 1)
+        7 -> resources.getQuantityString(R.plurals.duration_hour, 2, 2)
+        8 -> resources.getQuantityString(R.plurals.duration_hour, 3, 3)
+        9 -> resources.getQuantityString(R.plurals.duration_hour, 4, 4)
+        10 -> resources.getQuantityString(R.plurals.duration_hour, 6, 6)
+        11 -> resources.getQuantityString(R.plurals.duration_hour, 8, 8)
+        12 -> resources.getQuantityString(R.plurals.duration_hour, 12, 12)
+        13 -> resources.getQuantityString(R.plurals.duration_hour, 16, 16)
+        14 -> resources.getQuantityString(R.plurals.duration_day, 1, 1)
+        15 -> resources.getQuantityString(R.plurals.duration_day, 2, 2)
+        16 -> resources.getQuantityString(R.plurals.duration_day, 3, 3)
+        17 -> resources.getQuantityString(R.plurals.duration_day, 4, 4)
+        18 -> resources.getQuantityString(R.plurals.duration_day, 5, 5)
+        19 -> resources.getQuantityString(R.plurals.duration_day, 6, 6)
+        20 -> resources.getQuantityString(R.plurals.duration_week, 1, 1)
         else -> ""
     }
 }
@@ -146,13 +159,13 @@ fun Task.convertDurationToMinutes(unit: DurationUnit): Int {
     }
 }
 
-fun Task.getHumanReadableDurationValue(): String {
+fun Task.getHumanReadableDurationValue(context: Context): String {
     val unit = this.getDurationUnit()
     return "${this.convertDurationToMinutes(unit)} " + when (unit) {
-        DurationUnit.MINUTE -> "min"
-        DurationUnit.HOUR -> "h"
-        DurationUnit.DAY -> "d"
-        DurationUnit.WEEK -> "w"
+        DurationUnit.MINUTE -> context.getString(R.string.unit_minute_short)
+        DurationUnit.HOUR -> context.getString(R.string.unit_hour_short)
+        DurationUnit.DAY -> context.getString(R.string.unit_day_short)
+        DurationUnit.WEEK -> context.getString(R.string.unit_week_short)
     }
 }
 
