@@ -28,6 +28,7 @@ class TaskEditFragment : TaskFragment() {
 
     companion object {
         lateinit var binding: FragmentEditTaskBinding
+        lateinit var difficultyChip: Chip
         lateinit var task: Task
         lateinit var assignedSkills: List<Skill>
     }
@@ -67,9 +68,14 @@ class TaskEditFragment : TaskFragment() {
         )
 
         // --- Difficulty settings
-        binding.difficulty.setOnCheckedChangeListener { chipGroup, i ->
-            val chip: Chip = chipGroup.findViewById(i)
-            difficulty = chip.tag.toString().toUpperCase(Locale.getDefault())
+        binding.difficulty.setOnCheckedChangeListener { chipGroup, chipId ->
+            if (chipId == View.NO_ID) {
+                // do not allow to unselect a chip
+                difficultyChip.isChecked = true
+                return@setOnCheckedChangeListener
+            }
+            difficultyChip = chipGroup.findViewById(chipId)
+            difficulty = difficultyChip.tag.toString().toUpperCase(Locale.getDefault())
             updateXpGain(binding.xpGainValue, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
@@ -86,6 +92,7 @@ class TaskEditFragment : TaskFragment() {
         )
         assignedSkills = db.skillDao().findAssignedSkills(task.id)
         binding.skills.setAdapter(adapter)
+        binding.skills.hint = if (skillNames.isEmpty()) getString(R.string.hint_no_skills) else ""
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
         binding.skills.setText(
@@ -154,7 +161,7 @@ class TaskEditFragment : TaskFragment() {
             id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,
             createdAt = task.createdAt, dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty)
         )
-        if (task != toUpdate) {
+        if (task != toUpdate || assignedSkills != skillsToAssign) {
             db.taskDao().updateTask(toUpdate, skillsToAssign)
             TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
             TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)

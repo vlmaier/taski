@@ -28,10 +28,10 @@
     <string name="difficulty_insane_value">irre</string>
 
     <!-- Units -->
-    <string name="unit_minute_short">Min</string>
-    <string name="unit_hour_short">S</string>
-    <string name="unit_day_short">T</string>
-    <string name="unit_week_short">W</string>
+    <string name="unit_minute_short">%1$d Min</string>
+    <string name="unit_hour_short">%1$d S</string>
+    <string name="unit_day_short">%1$d T</string>
+    <string name="unit_week_short">%1$d W</string>
 
     <!-- Terms -->
     <string name="term_xp_value">%1$d XP</string>
@@ -43,6 +43,7 @@
 
     <!-- Error messages -->
     <string name="error_name_cannot_be_empty">Name kann nicht leer sein</string>
+    <string name="error_goal_cannot_be_empty">Ziel kann nicht leer sein</string>
 
     <!-- Event messages -->
     <string name="event_skill_updated">Skill aktualisiert</string>
@@ -79,10 +80,11 @@
     <!-- Hint messages -->
     <string name="hint_skill_name">Name des Skills</string>
     <string name="hint_skill_category">Skill Kategorie</string>
-    <string name="hint_task_goal">Aufgabe</string>
+    <string name="hint_task_goal">Ziel</string>
     <string name="hint_task_details">Details</string>
     <string name="hint_task_due_date">Datum</string>
     <string name="hint_task_due_time">Uhrzeit</string>
+    <string name="hint_no_skills">No skills were created yet</string>
 
     <!-- Description messages -->
     <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Tasks zu dem Standardkalender.</string>

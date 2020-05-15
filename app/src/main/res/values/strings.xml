@@ -27,10 +27,10 @@
     <string name="difficulty_insane_value">insane</string>
 
     <!-- Units -->
-    <string name="unit_minute_short">min</string>
-    <string name="unit_hour_short">h</string>
-    <string name="unit_day_short">d</string>
-    <string name="unit_week_short">w</string>
+    <string name="unit_minute_short">%1$d min</string>
+    <string name="unit_hour_short">%1$d h</string>
+    <string name="unit_day_short">%1$d d</string>
+    <string name="unit_week_short">%1$d w</string>
 
     <!-- Terms -->
     <string name="term_xp_value">%1$d XP</string>
@@ -42,6 +42,7 @@
 
     <!-- Error messages -->
     <string name="error_name_cannot_be_empty">Name cannot be empty</string>
+    <string name="error_goal_cannot_be_empty">Goal cannot be empty</string>
 
     <!-- Event messages -->
     <string name="event_skill_updated">Skill updated</string>
@@ -82,6 +83,7 @@
     <string name="hint_task_details">Details</string>
     <string name="hint_task_due_date">date</string>
     <string name="hint_task_due_time">time</string>
+    <string name="hint_no_skills">No skills were created yet</string>
 
     <!-- Description messages -->
     <string name="description_calendar_sync">If selected the application will synchronize all tasks to default calendar.</string>

@@ -23,7 +23,6 @@
 ##### Profile Management
 - [ ] change profile avatar
 - [ ] set user name
-- [ ] remove profile menu item
 
 #### Settings Management
 - [ ] set user nickname
@@ -48,8 +47,6 @@
 - [ ] implement themes
 - [ ] improve skill item card design
 - [ ] if no skills are available show hint when creating or editing a task
-- [ ] settings fragment animations
 
 ##### Improvements
 - [ ] input validation
-- [ ] rework the database scheme

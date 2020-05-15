@@ -160,12 +160,15 @@ fun Task.convertDurationToMinutes(unit: DurationUnit): Int {
 }
 
 fun Task.getHumanReadableDurationValue(context: Context): String {
-    val unit = this.getDurationUnit()
-    return "${this.convertDurationToMinutes(unit)} " + when (unit) {
-        DurationUnit.MINUTE -> context.getString(R.string.unit_minute_short)
-        DurationUnit.HOUR -> context.getString(R.string.unit_hour_short)
-        DurationUnit.DAY -> context.getString(R.string.unit_day_short)
-        DurationUnit.WEEK -> context.getString(R.string.unit_week_short)
+    return when (val unit = this.getDurationUnit()) {
+        DurationUnit.MINUTE -> context
+            .getString(R.string.unit_minute_short, this.convertDurationToMinutes(unit))
+        DurationUnit.HOUR -> context
+            .getString(R.string.unit_hour_short, this.convertDurationToMinutes(unit))
+        DurationUnit.DAY -> context
+            .getString(R.string.unit_day_short, this.convertDurationToMinutes(unit))
+        DurationUnit.WEEK -> context
+            .getString(R.string.unit_week_short, this.convertDurationToMinutes(unit))
     }
 }
 

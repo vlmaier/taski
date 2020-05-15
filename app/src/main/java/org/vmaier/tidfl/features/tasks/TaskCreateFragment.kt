@@ -3,6 +3,7 @@ package org.vmaier.tidfl.features.tasks
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.NO_ID
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
@@ -13,6 +14,7 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.databinding.FragmentCreateTaskBinding
+import org.vmaier.tidfl.features.skills.SkillCreateFragment
 import org.vmaier.tidfl.util.KeyBoardHider
 import org.vmaier.tidfl.util.getDurationInMinutes
 import org.vmaier.tidfl.util.getHumanReadableValue
@@ -29,6 +31,7 @@ class TaskCreateFragment : TaskFragment() {
 
     companion object {
         lateinit var binding: FragmentCreateTaskBinding
+        lateinit var difficultyChip: Chip
     }
 
     override fun onCreateView(
@@ -59,9 +62,14 @@ class TaskCreateFragment : TaskFragment() {
         )
 
         // --- Difficulty settings
-        binding.difficulty.setOnCheckedChangeListener { chipGroup, i ->
-            val chip: Chip = chipGroup.findViewById(i)
-            difficulty = chip.tag.toString().toUpperCase(Locale.getDefault())
+        binding.difficulty.setOnCheckedChangeListener { chipGroup, chipId ->
+            if (chipId == NO_ID) {
+                // do not allow to unselect a chip
+                difficultyChip.isChecked = true
+                return@setOnCheckedChangeListener
+            }
+            difficultyChip = chipGroup.findViewById(chipId)
+            difficulty = difficultyChip.tag.toString().toUpperCase(Locale.getDefault())
             updateXpGain(binding.xpGainValue, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
@@ -77,15 +85,17 @@ class TaskCreateFragment : TaskFragment() {
             requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
         )
         binding.skills.setAdapter(adapter)
+        binding.skills.hint = if (skillNames.isEmpty()) getString(R.string.hint_no_skills) else ""
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
         binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS))
 
         // --- Action buttons settings
         binding.createTaskButton.setOnClickListener {
-            createTaskButtonClicked()
-            it.findNavController().popBackStack()
-            it.hideKeyboard()
+            if (createTaskButtonClicked()) {
+                it.findNavController().popBackStack()
+                it.hideKeyboard()
+            }
         }
         binding.cancelButton.setOnClickListener {
             it.findNavController().popBackStack()
@@ -119,9 +129,14 @@ class TaskCreateFragment : TaskFragment() {
         out.putString(KEY_DEADLINE_TIME, binding.deadlineTime.text.toString())
     }
 
-    private fun createTaskButtonClicked() {
+    private fun createTaskButtonClicked(): Boolean {
 
         val goal = binding.goal.text.toString()
+        if (goal.isBlank()) {
+            binding.goal.requestFocus()
+            binding.goal.error = getString(R.string.error_goal_cannot_be_empty)
+            return false
+        }
         val detailsValue = binding.details.text.toString()
         val details = if (detailsValue.isNotBlank()) detailsValue else null
         val duration = binding.durationBar.getDurationInMinutes()
@@ -144,5 +159,6 @@ class TaskCreateFragment : TaskFragment() {
         db.taskDao().createTask(task, skillsToAssign)
         TaskListFragment.taskAdapter.notifyDataSetChanged()
         addToCalendar(task)
+        return true
     }
 }

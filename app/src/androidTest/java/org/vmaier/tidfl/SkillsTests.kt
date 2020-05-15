@@ -53,7 +53,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -61,14 +61,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -80,7 +80,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -124,13 +124,15 @@ class SkillsTests {
         // validate initial skill level
         onView(allOf(
             withId(R.id.skill_level),
-            withText("Level 1")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_level_value, 1))))
             .check(matches(isDisplayed()))
 
         // validate initial skill xp value
         onView(allOf(
             withId(R.id.skill_xp_gain),
-            withText("0 XP")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_xp_value, 0))))
             .check(matches(isDisplayed()))
 
         // validate skill icon
@@ -161,7 +163,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -169,14 +171,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -188,7 +190,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -220,7 +222,7 @@ class SkillsTests {
         // click on skill item
         onView(allOf(
             withId(R.id.rv),
-            childAtPosition(withId(R.id.task_list_layout), 0)))
+            childAtPosition(withId(R.id.skill_list_layout), 0)))
             .perform(actionOnItemAtPosition<ViewHolder>(0, click()))
 
         // validate skill name
@@ -251,7 +253,8 @@ class SkillsTests {
         // validate initial skill xp value
         onView(allOf(
             withId(R.id.skill_xp_value),
-            withText("0 XP")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_xp_value, 0))))
             .check(matches(isDisplayed()))
 
         // validate initial open tasks value
@@ -287,7 +290,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -295,14 +298,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -314,7 +317,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -346,7 +349,7 @@ class SkillsTests {
         // click on skill item
         onView(allOf(
             withId(R.id.rv),
-            childAtPosition(withId(R.id.task_list_layout), 0)))
+            childAtPosition(withId(R.id.skill_list_layout), 0)))
             .perform(actionOnItemAtPosition<ViewHolder>(0, click()))
 
         // change skill name
@@ -378,7 +381,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -408,7 +411,7 @@ class SkillsTests {
             .check(matches(isDisplayed()))
 
         // validate toast message was shown
-        onView(withText("Skill updated"))
+        onView(withText(R.string.event_skill_updated))
             .inRoot(withDecorView(not(mActivityTestRule.activity.window.decorView)))
             .check(matches(isDisplayed()))
 
@@ -427,13 +430,15 @@ class SkillsTests {
         // validate initial skill level
         onView(allOf(
             withId(R.id.skill_level),
-            withText("Level 1")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_level_value, 1))))
             .check(matches(isDisplayed()))
 
         // validate initial skill xp value
         onView(allOf(
             withId(R.id.skill_xp_gain),
-            withText("0 XP")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_xp_value, 0))))
             .check(matches(isDisplayed()))
 
         // validate skill icon
@@ -464,7 +469,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -472,14 +477,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -491,7 +496,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -523,7 +528,7 @@ class SkillsTests {
         // click on skill item
         onView(allOf(
             withId(R.id.rv),
-            childAtPosition(withId(R.id.task_list_layout), 0)))
+            childAtPosition(withId(R.id.skill_list_layout), 0)))
             .perform(actionOnItemAtPosition<ViewHolder>(0, click()))
 
         // click on button to delete skill
@@ -559,7 +564,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -567,14 +572,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -586,7 +591,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -618,7 +623,7 @@ class SkillsTests {
         // click on skill item
         onView(allOf(
             withId(R.id.rv),
-            childAtPosition(withId(R.id.task_list_layout), 0)))
+            childAtPosition(withId(R.id.skill_list_layout), 0)))
             .perform(actionOnItemAtPosition<ViewHolder>(0, click()))
 
         // click on button to delete skill
@@ -636,7 +641,7 @@ class SkillsTests {
         // click on undo button to restore skill
         onView(allOf(
             withId(R.id.snackbar_action),
-            withText("UNDO")))
+            withText(R.string.action_undo)))
             .perform(click())
 
         // validate that skill was restored and skill item is displayed in the recycler view
@@ -667,7 +672,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -675,14 +680,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -694,7 +699,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -726,7 +731,7 @@ class SkillsTests {
         // click on skill item
         onView(allOf(
             withId(R.id.rv),
-            childAtPosition(withId(R.id.task_list_layout), 0)))
+            childAtPosition(withId(R.id.skill_list_layout), 0)))
             .perform(actionOnItemAtPosition<ViewHolder>(0, click()))
 
         // change skill name
@@ -758,7 +763,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -808,7 +813,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -816,14 +821,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -835,7 +840,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -885,7 +890,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -893,14 +898,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText(""),
+                clearText(),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -912,7 +917,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -937,7 +942,8 @@ class SkillsTests {
         // validate error message
         onView(
             withId(R.id.name))
-            .check(matches(hasErrorText("Name cannot be empty")))
+            .check(matches(hasErrorText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.error_name_cannot_be_empty))))
     }
 
     @Test
@@ -960,7 +966,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -968,14 +974,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText(""),
+                typeText(""),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -987,7 +993,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -1025,13 +1031,15 @@ class SkillsTests {
         // validate initial skill level
         onView(allOf(
             withId(R.id.skill_level),
-            withText("Level 1")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_level_value, 1))))
             .check(matches(isDisplayed()))
 
         // validate initial skill xp value
         onView(allOf(
             withId(R.id.skill_xp_gain),
-            withText("0 XP")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_xp_value, 0))))
             .check(matches(isDisplayed()))
 
         // validate skill icon
@@ -1062,7 +1070,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -1070,14 +1078,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -1089,7 +1097,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -1121,7 +1129,7 @@ class SkillsTests {
         // click on skill item
         onView(allOf(
             withId(R.id.rv),
-            childAtPosition(withId(R.id.task_list_layout), 0)))
+            childAtPosition(withId(R.id.skill_list_layout), 0)))
             .perform(actionOnItemAtPosition<ViewHolder>(0, click()))
 
         // change skill name
@@ -1153,7 +1161,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -1178,7 +1186,8 @@ class SkillsTests {
         // validate error message
         onView(
             withId(R.id.name))
-            .check(matches(hasErrorText("Name cannot be empty")))
+            .check(matches(hasErrorText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.error_name_cannot_be_empty))))
     }
 
     @Test
@@ -1201,7 +1210,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -1209,14 +1218,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -1228,7 +1237,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -1260,7 +1269,7 @@ class SkillsTests {
         // click on skill item
         onView(allOf(
             withId(R.id.rv),
-            childAtPosition(withId(R.id.task_list_layout), 0)))
+            childAtPosition(withId(R.id.skill_list_layout), 0)))
             .perform(actionOnItemAtPosition<ViewHolder>(0, click()))
 
         // change skill name
@@ -1291,7 +1300,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -1321,7 +1330,7 @@ class SkillsTests {
             .check(matches(isDisplayed()))
 
         // validate toast message was shown
-        onView(withText("Skill updated"))
+        onView(withText(R.string.event_skill_updated))
             .inRoot(withDecorView(not(mActivityTestRule.activity.window.decorView)))
             .check(matches(isDisplayed()))
 
@@ -1334,13 +1343,15 @@ class SkillsTests {
         // validate initial skill level
         onView(allOf(
             withId(R.id.skill_level),
-            withText("Level 1")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_level_value, 1))))
             .check(matches(isDisplayed()))
 
         // validate initial skill xp value
         onView(allOf(
             withId(R.id.skill_xp_gain),
-            withText("0 XP")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_xp_value, 0))))
             .check(matches(isDisplayed()))
 
         // validate skill icon
@@ -1371,7 +1382,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -1379,14 +1390,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -1398,7 +1409,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -1447,13 +1458,15 @@ class SkillsTests {
         // validate initial skill level
         onView(allOf(
             withId(R.id.skill_level),
-            withText("Level 1")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_level_value, 1))))
             .check(matches(isDisplayed()))
 
         // validate initial skill xp value
         onView(allOf(
             withId(R.id.skill_xp_gain),
-            withText("0 XP")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_xp_value, 0))))
             .check(matches(isDisplayed()))
 
         // validate skill icon
@@ -1484,7 +1497,7 @@ class SkillsTests {
         // click on fab buttom
         onView(allOf(
             withId(R.id.fab),
-            childAtPosition(allOf(withId(R.id.task_list_layout)), 1),
+            childAtPosition(allOf(withId(R.id.skill_list_layout)), 1),
             isDisplayed()))
             .perform(click())
 
@@ -1492,14 +1505,14 @@ class SkillsTests {
         onView(
             withId(R.id.name))
             .perform(
-                replaceText("Coding"),
+                typeText("Coding"),
                 closeSoftKeyboard())
 
         // type in the category field
         onView(
             withId(R.id.category))
             .perform(
-                replaceText("Intellect"),
+                typeText("Intellect"),
                 closeSoftKeyboard())
 
         // click on button to open the select icons dialog
@@ -1511,7 +1524,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -1543,7 +1556,7 @@ class SkillsTests {
         // click on skill item
         onView(allOf(
             withId(R.id.rv),
-            childAtPosition(withId(R.id.task_list_layout), 0)))
+            childAtPosition(withId(R.id.skill_list_layout), 0)))
             .perform(actionOnItemAtPosition<ViewHolder>(0, click()))
 
         // change skill name
@@ -1575,7 +1588,7 @@ class SkillsTests {
         onView(
             withId(R.id.icd_edt_search))
             .perform(
-                replaceText("braces"),
+                typeText("braces"),
                 closeSoftKeyboard())
 
         // wait a bit for search results to load
@@ -1610,7 +1623,7 @@ class SkillsTests {
             .check(matches(isDisplayed()))
 
         // validate toast message was shown
-        onView(withText("Skill updated"))
+        onView(withText(R.string.event_skill_updated))
             .inRoot(withDecorView(not(mActivityTestRule.activity.window.decorView)))
             .check(matches(isDisplayed()))
 
@@ -1629,13 +1642,15 @@ class SkillsTests {
         // validate initial skill level
         onView(allOf(
             withId(R.id.skill_level),
-            withText("Level 1")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_level_value, 1))))
             .check(matches(isDisplayed()))
 
         // validate initial skill xp value
         onView(allOf(
             withId(R.id.skill_xp_gain),
-            withText("0 XP")))
+            withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.term_xp_value, 0))))
             .check(matches(isDisplayed()))
 
         // validate skill icon
@@ -1646,16 +1661,12 @@ class SkillsTests {
             .check(matches(isDisplayed()))
     }
 
-    private fun childAtPosition(
-        parentMatcher: Matcher<View>, position: Int
-    ): Matcher<View> {
-
+    private fun childAtPosition(parentMatcher: Matcher<View>, position: Int): Matcher<View> {
         return object : TypeSafeMatcher<View>() {
             override fun describeTo(description: Description) {
                 description.appendText("Child at position $position in parent ")
                 parentMatcher.describeTo(description)
             }
-
             public override fun matchesSafely(view: View): Boolean {
                 val parent = view.parent
                 return parent is ViewGroup && parentMatcher.matches(parent)
