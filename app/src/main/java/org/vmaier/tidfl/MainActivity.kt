@@ -27,6 +27,7 @@ import org.vmaier.tidfl.features.skills.SkillFragment
 import org.vmaier.tidfl.features.tasks.TaskCreateFragment
 import org.vmaier.tidfl.features.tasks.TaskEditFragment
 import org.vmaier.tidfl.features.tasks.TaskFragment
+import org.vmaier.tidfl.util.Const
 
 
 /**
@@ -43,7 +44,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     lateinit var binding: ActivityMainBinding
 
     companion object {
-        private const val ICON_DIALOG_TAG = "icon_dialog"
         lateinit var drawerLayout: DrawerLayout
         lateinit var xpCounter: TextView
         lateinit var levelCounter: TextView
@@ -68,24 +68,29 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         navView.setNavigationItemSelectedListener(this)
-        iconDialog = supportFragmentManager.findFragmentByTag(ICON_DIALOG_TAG) as IconDialog?
+        iconDialog = supportFragmentManager
+            .findFragmentByTag(Const.Tag.ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())
     }
 
     override fun onStart() {
         super.onStart()
-        val db = AppDatabase(this)
         val headerView = navView.getHeaderView(0)
+
+        // --- XP value settings
         xpCounter = headerView.findViewById<View>(R.id.xp_counter) as TextView
+        val db = AppDatabase(this)
+        val xpValue = db.taskDao().countOverallXpValue()
+        xpCounter.text = getString(R.string.term_xp_value, xpValue)
+
+        // --- Level settings
         levelCounter = headerView.findViewById<View>(R.id.level_counter) as TextView
-        val xp = db.taskDao().countOverallXpValue()
-        val level = xp.div(10000) + 1
-        xpCounter.text = "$xp XP"
-        levelCounter.text = "Level $level"
+        val level = xpValue.div(10000) + 1
+        levelCounter.text = getString(R.string.term_level_value, level)
     }
 
     fun selectIconButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
-        iconDialog.show(supportFragmentManager, ICON_DIALOG_TAG)
+        iconDialog.show(supportFragmentManager, Const.Tag.ICON_DIALOG_TAG)
     }
 
     override val iconDialogIconPack: IconPack?
@@ -166,10 +171,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                             val name = SkillEditFragment.binding.name.text.toString()
                             if (name.isBlank()) {
                                 SkillEditFragment.binding.name.requestFocus()
-                                SkillEditFragment.binding.name.error = "Name cannot be empty"
-                            } else {
-                                super.onBackPressed()
-                            }
+                                SkillEditFragment.binding.name.error =
+                                    getString(R.string.error_name_cannot_be_empty)
+                            } else super.onBackPressed()
+                        }
+                        is TaskEditFragment -> {
+                            val goal = TaskEditFragment.binding.goal.text.toString()
+                            if (goal.isBlank()) {
+                                TaskEditFragment.binding.goal.requestFocus()
+                                TaskEditFragment.binding.goal.error =
+                                    getString(R.string.error_goal_cannot_be_empty)
+                            } else super.onBackPressed()
                         }
                         else -> {
                             super.onBackPressed()

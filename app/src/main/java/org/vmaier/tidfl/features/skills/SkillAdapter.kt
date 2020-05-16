@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
+import org.vmaier.tidfl.data.entity.AssignedSkill
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.util.setIcon
 
@@ -31,7 +32,6 @@ class SkillAdapter internal constructor(
         var categoryView: TextView = itemView.findViewById(R.id.skill_category)
         var levelView: TextView = itemView.findViewById(R.id.skill_level)
         var iconView: ImageView = itemView.findViewById(R.id.skill_icon)
-        var xpView: TextView = itemView.findViewById(R.id.skill_xp_gain)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SkillViewHolder {
@@ -58,11 +58,8 @@ class SkillAdapter internal constructor(
         // --- Icon settings
         holder.iconView.setIcon(skill.iconId)
 
-        // --- XP value settings
-        val xpValue = db.skillDao().countSkillXpValue(skill.id)
-        holder.xpView.text = context.getString(R.string.term_xp_value, xpValue)
-
         // --- Level settings
+        val xpValue = db.skillDao().countSkillXpValue(skill.id)
         val levelValue = xpValue.div(1000) + 1
         holder.levelView.text = context.getString(R.string.term_level_value, levelValue)
 
@@ -81,19 +78,23 @@ class SkillAdapter internal constructor(
 
     override fun getItemCount(): Int = skills.size
 
-    fun removeItem(position: Int): Skill {
+    fun removeItem(position: Int): Pair<Skill, List<AssignedSkill>> {
         val skill = skills.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, skills.size)
         val db = AppDatabase(this.inflater.context)
+        val foundAssignments = db.skillDao().findAssignments(skill.id)
         db.skillDao().delete(skill)
-        return skill
+        return Pair(skill, foundAssignments)
     }
 
-    fun restoreItem(skill: Skill, position: Int) {
-        skills.add(position, skill)
+    fun restoreItem(toRestore: Pair<Skill, List<AssignedSkill>>, position: Int) {
+        skills.add(position, toRestore.first)
         notifyItemInserted(position)
         val db = AppDatabase(this.inflater.context)
-        db.skillDao().create(skill)
+        db.skillDao().create(toRestore.first)
+        toRestore.second.forEach {
+            db.taskDao().assignSkill(it)
+        }
     }
 }

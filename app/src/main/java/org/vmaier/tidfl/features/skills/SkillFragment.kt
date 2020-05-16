@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +17,7 @@ import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
+import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.util.hideKeyboard
 import org.vmaier.tidfl.util.setThemeTint
 import kotlin.random.Random
@@ -69,19 +71,40 @@ open class SkillFragment : Fragment() {
         button.tag = iconId
     }
 
-    fun setDeleteButtonOnClickListener(view: Button, position: Int) {
+    fun setDeleteButtonOnClickListener(view: Button, position: Int, skill: Skill) {
         view.setOnClickListener {
-            val removedSkill = SkillListFragment.skillAdapter.removeItem(position)
-            Snackbar.make(
-                it,
-                getString(R.string.event_skill_deleted),
-                Snackbar.LENGTH_LONG
-            ).setAction(getString(R.string.action_undo)) {
-                // undo is selected, restore the deleted item
-                SkillListFragment.skillAdapter.restoreItem(removedSkill, position)
-            }.setActionTextColor(Color.YELLOW).show()
-            it.findNavController().popBackStack()
-            it.hideKeyboard()
+            val countTasks = db.skillDao().countTasksWithSkillByStatus(skill.id)
+            if (countTasks > 0) {
+                val dialogBuilder = AlertDialog.Builder(requireContext())
+                dialogBuilder.setMessage(resources.getQuantityString(
+                        R.plurals.alert_assigned_task, countTasks, countTasks, skill.name))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.action_proceed)) { _, _ ->
+                        deleteSkill(it, position)
+                    }
+                    .setNegativeButton(getString(R.string.action_cancel)) { dialog, _ ->
+                        dialog.cancel()
+                    }
+                val alert = dialogBuilder.create()
+                alert.setTitle(getString(R.string.alert_skill_delete))
+                alert.show()
+            } else {
+                deleteSkill(it, position)
+            }
         }
+    }
+
+    private fun deleteSkill(view: View, position: Int) {
+        val toRestore = SkillListFragment.skillAdapter.removeItem(position)
+        Snackbar.make(
+            view,
+            getString(R.string.event_skill_deleted),
+            Snackbar.LENGTH_LONG
+        ).setAction(getString(R.string.action_undo)) {
+            // undo is selected, restore the deleted item
+            SkillListFragment.skillAdapter.restoreItem(toRestore, position)
+        }.setActionTextColor(Color.YELLOW).show()
+        view.findNavController().popBackStack()
+        view.hideKeyboard()
     }
 }

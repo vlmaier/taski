@@ -27,14 +27,14 @@
     <string name="difficulty_insane_value">insane</string>
 
     <!-- Units -->
-    <string name="unit_minute_short">%1$d min</string>
-    <string name="unit_hour_short">%1$d h</string>
-    <string name="unit_day_short">%1$d d</string>
-    <string name="unit_week_short">%1$d w</string>
+    <string name="unit_minute_short">%d min</string>
+    <string name="unit_hour_short">%d h</string>
+    <string name="unit_day_short">%d d</string>
+    <string name="unit_week_short">%d w</string>
 
     <!-- Terms -->
-    <string name="term_xp_value">%1$d XP</string>
-    <string name="term_level_value">Level %1$d</string>
+    <string name="term_xp_value">%d XP</string>
+    <string name="term_level_value">Level %d</string>
     <plurals name="term_skill">
         <item quantity="one">%d skill</item>
         <item quantity="other">%d skills</item>
@@ -47,7 +47,7 @@
     <!-- Event messages -->
     <string name="event_skill_updated">Skill updated</string>
     <string name="event_skill_deleted">Skill deleted</string>
-    <string name="event_task_complete">Task completed (+%1$d XP)</string>
+    <string name="event_task_complete">Task completed (+%d XP)</string>
     <string name="event_task_failed">Task failed</string>
     <string name="event_task_updated">Task updated</string>
 
@@ -56,6 +56,7 @@
     <string name="action_create">Create</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
+    <string name="action_proceed">Proceed</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Create new skill</string>
@@ -79,7 +80,7 @@
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
     <string name="hint_skill_category">Skill category</string>
-    <string name="hint_task_goal">Goal to achieve</string>
+    <string name="hint_task_goal">Pursued goal</string>
     <string name="hint_task_details">Details</string>
     <string name="hint_task_due_date">date</string>
     <string name="hint_task_due_time">time</string>
@@ -87,5 +88,12 @@
 
     <!-- Description messages -->
     <string name="description_calendar_sync">If selected the application will synchronize all tasks to default calendar.</string>
+
+    <!-- Dialog messages -->
+    <string name="alert_skill_delete">Delete skill?</string>
+    <plurals name="alert_assigned_task">
+        <item quantity="one">%1$d task is assigned to %2$s skill</item>
+        <item quantity="other">%1$d tasks are assigned to %2$s skill</item>
+    </plurals>
 
 </resources>

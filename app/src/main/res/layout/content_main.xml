@@ -37,6 +37,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/app_name"
                         android:textColor="#FFFFFF"
+                        android:singleLine="true"
+                        android:autoSizeTextType="uniform"
                         />
 
                 </LinearLayout>

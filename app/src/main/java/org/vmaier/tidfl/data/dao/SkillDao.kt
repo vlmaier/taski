@@ -2,6 +2,7 @@ package org.vmaier.tidfl.data.dao
 
 import androidx.room.*
 import org.vmaier.tidfl.data.Status
+import org.vmaier.tidfl.data.entity.AssignedSkill
 import org.vmaier.tidfl.data.entity.Skill
 
 
@@ -59,6 +60,15 @@ interface SkillDao {
 
     @Query(
         """
+        SELECT *
+        FROM assigned_skills
+        WHERE skill_id = :skillId
+    """
+    )
+    fun findAssignments(skillId: Long): List<AssignedSkill>
+
+    @Query(
+        """
         SELECT COUNT(*)
         FROM assigned_skills 
         INNER JOIN tasks
@@ -68,6 +78,17 @@ interface SkillDao {
     """
     )
     fun countTasksWithSkillByStatus(skillId: Long, status: Status): Long
+
+    @Query(
+        """
+        SELECT COUNT(*)
+        FROM assigned_skills 
+        INNER JOIN tasks
+          ON task_id = tasks.id
+        WHERE skill_id = :skillId
+    """
+    )
+    fun countTasksWithSkillByStatus(skillId: Long): Int
 
     @Query(
         """

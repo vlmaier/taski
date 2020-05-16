@@ -77,7 +77,7 @@ class SkillEditFragment : SkillFragment() {
         setSkillIcon(saved, binding.iconButton, skill.iconId)
 
         // --- Action buttons settings
-        setDeleteButtonOnClickListener(binding.deleteSkillButton, itemPosition)
+        setDeleteButtonOnClickListener(binding.deleteSkillButton, itemPosition, skill)
 
         return binding.root
     }
