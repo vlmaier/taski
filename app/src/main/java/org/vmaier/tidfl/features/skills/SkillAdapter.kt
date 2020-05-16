@@ -46,6 +46,7 @@ class SkillAdapter internal constructor(
 
         // --- Name settings
         holder.nameView.text = skill.name
+        holder.nameView.isSelected = true
 
         // --- Category settings
         val categoryName = if (skill.categoryId == null) {
@@ -54,6 +55,7 @@ class SkillAdapter internal constructor(
             db.categoryDao().findNameById(skill.categoryId)
         }
         holder.categoryView.text = categoryName
+        holder.categoryView.isSelected = true
 
         // --- Icon settings
         holder.iconView.setIcon(skill.iconId)

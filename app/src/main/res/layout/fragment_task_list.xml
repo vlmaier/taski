@@ -35,7 +35,7 @@
             style="@style/Widget.MaterialComponents.FloatingActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_medium"
+            android:layout_margin="16dp"
             android:clickable="true"
             android:focusable="true"
             app:fabSize="auto"

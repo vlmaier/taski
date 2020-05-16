@@ -171,17 +171,6 @@ class SkillsTests {
         )
             .check(matches(isDisplayed()))
 
-        // validate initial skill xp value
-        onView(
-            allOf(
-                withId(R.id.skill_xp_gain),
-                withText(
-                    mActivityTestRule.activity.applicationContext
-                        .getString(R.string.term_xp_value, 0)
-                )
-            )
-        )
-            .check(matches(isDisplayed()))
 
         // validate skill icon
         onView(
@@ -609,18 +598,6 @@ class SkillsTests {
                 withText(
                     mActivityTestRule.activity.applicationContext
                         .getString(R.string.term_level_value, 1)
-                )
-            )
-        )
-            .check(matches(isDisplayed()))
-
-        // validate initial skill xp value
-        onView(
-            allOf(
-                withId(R.id.skill_xp_gain),
-                withText(
-                    mActivityTestRule.activity.applicationContext
-                        .getString(R.string.term_xp_value, 0)
                 )
             )
         )
@@ -1470,18 +1447,6 @@ class SkillsTests {
         )
             .check(matches(isDisplayed()))
 
-        // validate initial skill xp value
-        onView(
-            allOf(
-                withId(R.id.skill_xp_gain),
-                withText(
-                    mActivityTestRule.activity.applicationContext
-                        .getString(R.string.term_xp_value, 0)
-                )
-            )
-        )
-            .check(matches(isDisplayed()))
-
         // validate skill icon
         onView(
             allOf(
@@ -1913,18 +1878,6 @@ class SkillsTests {
         )
             .check(matches(isDisplayed()))
 
-        // validate initial skill xp value
-        onView(
-            allOf(
-                withId(R.id.skill_xp_gain),
-                withText(
-                    mActivityTestRule.activity.applicationContext
-                        .getString(R.string.term_xp_value, 0)
-                )
-            )
-        )
-            .check(matches(isDisplayed()))
-
         // validate skill icon
         onView(
             allOf(
@@ -2074,18 +2027,6 @@ class SkillsTests {
                 withText(
                     mActivityTestRule.activity.applicationContext
                         .getString(R.string.term_level_value, 1)
-                )
-            )
-        )
-            .check(matches(isDisplayed()))
-
-        // validate initial skill xp value
-        onView(
-            allOf(
-                withId(R.id.skill_xp_gain),
-                withText(
-                    mActivityTestRule.activity.applicationContext
-                        .getString(R.string.term_xp_value, 0)
                 )
             )
         )
@@ -2337,18 +2278,6 @@ class SkillsTests {
                 withText(
                     mActivityTestRule.activity.applicationContext
                         .getString(R.string.term_level_value, 1)
-                )
-            )
-        )
-            .check(matches(isDisplayed()))
-
-        // validate initial skill xp value
-        onView(
-            allOf(
-                withId(R.id.skill_xp_gain),
-                withText(
-                    mActivityTestRule.activity.applicationContext
-                        .getString(R.string.term_xp_value, 0)
                 )
             )
         )

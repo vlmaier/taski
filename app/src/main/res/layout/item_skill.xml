@@ -25,32 +25,80 @@
             android:layout_gravity="center_horizontal"
             >
 
-            <TextView
-                android:id="@+id/skill_category"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linear_layout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:autoSizeTextType="uniform"
-                android:singleLine="true"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/skill_name"
-                app:layout_constraintTop_toBottomOf="@+id/skill_name"
-                tools:text="Intellect"
-                />
-
-            <TextView
-                android:id="@+id/skill_name"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:autoSizeTextType="uniform"
-                android:singleLine="true"
-                android:textSize="14sp"
-                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/skill_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/skill_icon"
                 app:layout_constraintTop_toTopOf="@+id/skill_icon"
-                tools:text="Reading"
-                />
+                >
+
+                <TextView
+                    android:id="@+id/skill_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="14dp"
+                    app:autoSizeMinTextSize="12dp"
+                    app:autoSizeStepGranularity="2dp"
+                    app:autoSizeTextType="uniform"
+                    tools:text="Reading"
+                    />
+
+                <TextView
+                    android:id="@+id/skill_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    app:autoSizeMaxTextSize="12dp"
+                    app:autoSizeMinTextSize="10dp"
+                    app:autoSizeStepGranularity="2dp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/skill_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                    tools:text="Intellect"
+                    />
+
+                <TextView
+                    android:id="@+id/skill_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:singleLine="true"
+                    android:textAlignment="textEnd"
+                    android:textSize="12sp"
+                    app:autoSizeMaxTextSize="12dp"
+                    app:autoSizeMinTextSize="10dp"
+                    app:autoSizeStepGranularity="1dp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="@+id/skill_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:text="Level 12"
+                    />
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/skill_icon"
@@ -65,20 +113,6 @@
                 tools:srcCompat="@drawable/ic_baseline_book_24"
                 />
 
-            <TextView
-                android:id="@+id/skill_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:autoSizeTextType="uniform"
-                android:singleLine="true"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/skill_icon"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/skill_category"
-                app:layout_constraintVertical_bias="1.0"
-                tools:text="Level 12"
-                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

@@ -13,47 +13,56 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:context=".features.tasks.TaskCreateFragment"
             >
 
-            <TextView
-                android:id="@+id/header"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/linear_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:autoSizeTextType="uniform"
-                android:singleLine="true"
-                android:text="@string/heading_create_skill"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/icon_button"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                />
+                >
+
+                <TextView
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autoSizeTextType="uniform"
+                    android:text="@string/heading_create_skill"
+                    android:singleLine="true"
+                    android:textSize="28dp"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="28dp"
+                    app:autoSizeMinTextSize="20dp"
+                    app:autoSizeStepGranularity="2dp"
+                    app:autoSizeTextType="uniform"
+                    />
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:ems="10"
+                android:autoSizeTextType="uniform"
                 android:hint="@string/hint_skill_name"
                 android:inputType="textCapSentences|textAutoCorrect"
-                android:lines="1"
-                android:maxLength="100"
-                android:maxLines="1"
+                android:maxLength="24"
                 android:singleLine="true"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 app:layout_constraintEnd_toStartOf="@+id/icon_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
                 />
 
             <AutoCompleteTextView
@@ -63,13 +72,14 @@
                 android:layout_marginTop="16dp"
                 android:autoSizeTextType="uniform"
                 android:hint="@string/hint_skill_category"
-                android:maxLength="100"
+                android:inputType="textCapSentences|textAutoCorrect"
+                android:maxLength="24"
                 android:singleLine="true"
+                android:textSize="18dp"
                 app:layout_constraintEnd_toEndOf="@+id/name"
                 app:layout_constraintStart_toStartOf="@+id/name"
                 app:layout_constraintTop_toBottomOf="@+id/name"
                 />
-
 
             <ImageButton
                 android:id="@+id/icon_button"
