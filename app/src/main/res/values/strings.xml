@@ -1,7 +1,6 @@
 <resources>
 
     <string name="app_name">Things I Do For Loot</string>
-
     <!-- Duration values -->
     <plurals name="duration_minute">
         <item quantity="one">%d minute</item>
@@ -19,19 +18,16 @@
         <item quantity="one">%d week</item>
         <item quantity="other">%d weeks</item>
     </plurals>
-
     <!-- Difficulty values -->
     <string name="difficulty_trivial_value">trivial</string>
     <string name="difficulty_regular_value">regular</string>
     <string name="difficulty_hard_value">hard</string>
     <string name="difficulty_insane_value">insane</string>
-
     <!-- Units -->
     <string name="unit_minute_short">%d min</string>
     <string name="unit_hour_short">%d h</string>
     <string name="unit_day_short">%d d</string>
     <string name="unit_week_short">%d w</string>
-
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
     <string name="term_level_value">Level %d</string>
@@ -39,25 +35,21 @@
         <item quantity="one">%d skill</item>
         <item quantity="other">%d skills</item>
     </plurals>
-
     <!-- Error messages -->
     <string name="error_name_cannot_be_empty">Name cannot be empty</string>
     <string name="error_goal_cannot_be_empty">Goal cannot be empty</string>
-
     <!-- Event messages -->
     <string name="event_skill_updated">Skill updated</string>
     <string name="event_skill_deleted">Skill deleted</string>
     <string name="event_task_complete">Task completed (+%d XP)</string>
     <string name="event_task_failed">Task failed</string>
     <string name="event_task_updated">Task updated</string>
-
     <!-- Buttons -->
     <string name="action_undo">Undo</string>
     <string name="action_create">Create</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_proceed">Proceed</string>
-
     <!-- Headings -->
     <string name="heading_create_skill">Create new skill</string>
     <string name="heading_create_task">Create new task</string>
@@ -76,7 +68,6 @@
     <string name="heading_open_tasks">Amount of open tasks</string>
     <string name="heading_done_tasks">Amount of done tasks</string>
     <string name="heading_calendar_sync">Calendar Synchronization</string>
-
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
     <string name="hint_skill_category">Skill category</string>
@@ -85,10 +76,8 @@
     <string name="hint_task_due_date">date</string>
     <string name="hint_task_due_time">time</string>
     <string name="hint_no_skills">No skills were created yet</string>
-
     <!-- Description messages -->
     <string name="description_calendar_sync">If selected the application will synchronize all tasks to default calendar.</string>
-
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Delete skill?</string>
     <plurals name="alert_assigned_task">

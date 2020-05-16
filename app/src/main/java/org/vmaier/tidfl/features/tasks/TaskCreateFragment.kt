@@ -14,7 +14,6 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.databinding.FragmentCreateTaskBinding
-import org.vmaier.tidfl.features.skills.SkillCreateFragment
 import org.vmaier.tidfl.util.KeyBoardHider
 import org.vmaier.tidfl.util.getDurationInMinutes
 import org.vmaier.tidfl.util.getHumanReadableValue

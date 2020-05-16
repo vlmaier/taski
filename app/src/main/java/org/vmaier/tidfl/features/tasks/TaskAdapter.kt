@@ -58,7 +58,8 @@ class TaskAdapter internal constructor(
         val skillsCount = db.skillDao().countAssignedSkills(task.id)
         if (skillsCount > 0) {
             holder.skillsView.text = context.resources.getQuantityString(
-                R.plurals.term_skill, skillsCount, skillsCount)
+                R.plurals.term_skill, skillsCount, skillsCount
+            )
             holder.skillIconView.visibility = View.VISIBLE
             holder.skillsView.visibility = View.VISIBLE
         } else {
@@ -108,7 +109,8 @@ class TaskAdapter internal constructor(
             val xpValue = db.taskDao().countOverallXpValue()
             val levelValue = xpValue.div(10000) + 1
             MainActivity.xpCounter.text = context.getString(R.string.term_xp_value, xpValue)
-            MainActivity.levelCounter.text = context.getString(R.string.term_level_value, levelValue)
+            MainActivity.levelCounter.text =
+                context.getString(R.string.term_level_value, levelValue)
         }
         return db.taskDao().findTaskById(task.id)
     }

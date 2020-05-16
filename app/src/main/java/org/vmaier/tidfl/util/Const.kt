@@ -13,6 +13,7 @@ class Const {
             const val CALENDAR_SYNC = "calendar_sync"
         }
     }
+
     class Tag {
         companion object {
             const val ICON_DIALOG_TAG = "icon_dialog"

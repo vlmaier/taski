@@ -111,6 +111,7 @@ open class TaskFragment : Fragment() {
                 }
                 return ChipSpan(context, text, icon, data)
             }
+
             override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
                 super.configureChip(chip, chipConfiguration)
                 chip.setShowIconOnLeft(true)
@@ -143,6 +144,7 @@ open class TaskFragment : Fragment() {
                 if (progress <= 1) seek.progress = 1
                 updateXpGain(xpGainValue, durationBar)
             }
+
             override fun onStartTrackingTouch(seek: SeekBar) = Unit
             override fun onStopTrackingTouch(seek: SeekBar) = Unit
         }
@@ -294,7 +296,8 @@ open class TaskFragment : Fragment() {
         ) {
             return null
         }
-        var cursor = context.contentResolver.query(CalendarContract.Calendars.CONTENT_URI,
+        var cursor = context.contentResolver.query(
+            CalendarContract.Calendars.CONTENT_URI,
             projection,
             CalendarContract.Calendars.VISIBLE + " = 1 AND " +
                     CalendarContract.Calendars.IS_PRIMARY + " = 1",
@@ -302,7 +305,8 @@ open class TaskFragment : Fragment() {
             CalendarContract.Calendars._ID + " ASC"
         )
         if (cursor != null && cursor.count <= 0) {
-            cursor = context.contentResolver.query(CalendarContract.Calendars.CONTENT_URI,
+            cursor = context.contentResolver.query(
+                CalendarContract.Calendars.CONTENT_URI,
                 projection,
                 CalendarContract.Calendars.VISIBLE + " = 1",
                 null,
