@@ -111,6 +111,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@drawable/ic_baseline_book_24"
+                android:contentDescription="@string/content_skill_icon"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

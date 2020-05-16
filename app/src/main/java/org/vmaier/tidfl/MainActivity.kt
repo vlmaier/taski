@@ -12,7 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.maltaisn.icondialog.IconDialog
@@ -53,8 +53,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        navController = this.findNavController(R.id.nav_host_fragment)
-
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 

@@ -13,7 +13,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:context=".features.tasks.TaskCreateFragment"
             >
 
@@ -34,15 +34,14 @@
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:autoSizeTextType="uniform"
+                    android:textSize="28sp"
                     android:text="@string/heading_create_skill"
                     android:singleLine="true"
-                    android:textSize="28dp"
+                    app:autoSizeTextType="uniform"
                     android:textStyle="bold"
                     app:autoSizeMaxTextSize="28dp"
                     app:autoSizeMinTextSize="20dp"
                     app:autoSizeStepGranularity="2dp"
-                    app:autoSizeTextType="uniform"
                     />
 
             </LinearLayout>
@@ -54,15 +53,16 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:autoSizeTextType="uniform"
+                android:importantForAutofill="no"
                 android:hint="@string/hint_skill_name"
                 android:inputType="textCapSentences|textAutoCorrect"
                 android:maxLength="24"
                 android:singleLine="true"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/icon_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                app:autoSizeTextType="uniform"
                 />
 
             <AutoCompleteTextView
@@ -70,12 +70,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:autoSizeTextType="uniform"
+                android:textSize="18sp"
                 android:hint="@string/hint_skill_category"
                 android:inputType="textCapSentences|textAutoCorrect"
                 android:maxLength="24"
                 android:singleLine="true"
-                android:textSize="18dp"
+                app:autoSizeTextType="uniform"
                 app:layout_constraintEnd_toEndOf="@+id/name"
                 app:layout_constraintStart_toStartOf="@+id/name"
                 app:layout_constraintTop_toBottomOf="@+id/name"
@@ -92,6 +92,7 @@
                 app:layout_constraintTop_toTopOf="@+id/name"
                 tools:background="@drawable/ic_baseline_assignment_24"
                 tools:backgroundTint="@color/colorSecondary"
+                android:contentDescription="@string/content_skill_icon"
                 />
 
             <Button
@@ -100,9 +101,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
                 android:text="@string/action_create"
                 app:layout_constraintBottom_toBottomOf="@+id/cancel_button"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,10 +116,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginBottom="16dp"
                 android:text="@string/action_cancel"
                 app:layout_constraintBottom_toBottomOf="parent"

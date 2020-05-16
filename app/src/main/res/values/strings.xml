@@ -84,5 +84,12 @@
         <item quantity="one">%1$d task is assigned to %2$s skill</item>
         <item quantity="other">%1$d tasks are assigned to %2$s skill</item>
     </plurals>
+    <!-- Content description -->
+    <string name="content_task_icon">task icon</string>
+    <string name="content_skill_icon">skill icon</string>
+    <string name="content_floating_button">floating button</string>
+    <string name="content_due_at_icon">due at icon</string>
+    <string name="content_skill_tags_icon">skill tags icon</string>
+    <string name="content_user_avatar">user avatar</string>
 
 </resources>

@@ -84,5 +84,12 @@
         <item quantity="one">%1$d Aufgabe ist der %2$s Fertigkeit zugewiesen</item>
         <item quantity="other">%1$d Aufgaben sind der %2$s Fertigkeit zugewiesen</item>
     </plurals><string name="action_proceed">Weiter</string>
+    <!-- Content description -->
+    <string name="content_task_icon">Aufgabensymbol</string>
+    <string name="content_skill_icon">Fertingskeitssymbol</string>
+    <string name="content_floating_button">floating action button</string>
+    <string name="content_due_at_icon">Fällig am Symbol</string>
+    <string name="content_skill_tags_icon">Tagssymbol</string>
+    <string name="content_user_avatar">Benutzeravatar</string>
 
 </resources>
