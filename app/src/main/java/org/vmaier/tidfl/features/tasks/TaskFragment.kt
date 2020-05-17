@@ -156,8 +156,8 @@ open class TaskFragment : Fragment() {
         xpGainValue.text = resources.getString(R.string.term_xp_value, xpValue)
     }
 
-    fun setDeadlineDateOnClickListener(view: EditText) {
-        view.setOnClickListener {
+    fun setDeadlineDateOnClickListener(view: EditText?) {
+        view?.setOnClickListener {
             view.hideKeyboard()
             val calendar = Calendar.getInstance()
             val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -180,8 +180,8 @@ open class TaskFragment : Fragment() {
         }
     }
 
-    fun setDeadlineTimeOnClickListener(view: EditText) {
-        view.setOnClickListener {
+    fun setDeadlineTimeOnClickListener(view: EditText?) {
+        view?.setOnClickListener {
             it.hideKeyboard()
             val cal = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
@@ -246,13 +246,13 @@ open class TaskFragment : Fragment() {
         val eventId: Uri? = Uri.parse(after.eventId)
         if (eventId != null) {
             val calendarId = getCalendarId(requireContext()) ?: return
-            val event = createEvent(calendarId, before, after)
+            val event = updateEvent(calendarId, before, after)
             requireContext().contentResolver.update(eventId, event, null, null)
             db.taskDao().updateTaskEventId(before.id, eventId.toString())
         }
     }
 
-    private fun createEvent(calendarId: Long, before: Task, after: Task): ContentValues {
+    private fun updateEvent(calendarId: Long, before: Task, after: Task): ContentValues {
         val event = ContentValues()
         event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
         if (before.goal != after.goal) {

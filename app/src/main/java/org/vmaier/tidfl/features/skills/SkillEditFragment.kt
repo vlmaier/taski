@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
@@ -47,15 +49,20 @@ class SkillEditFragment : SkillFragment() {
         itemPosition = args.itemPosition
 
         // --- Name settings
-        binding.name.setText(saved?.getString(KEY_NAME) ?: skill.name)
+        binding.name.editText?.setText(saved?.getString(KEY_NAME) ?: skill.name)
         binding.name.onFocusChangeListener = KeyBoardHider()
 
         // --- Category settings
         val categoryId = skill.categoryId
         val categoryName =
             if (categoryId != null) db.categoryDao().findNameById(categoryId) else null
-        binding.category.setText(saved?.getString(KEY_CATEGORY) ?: categoryName)
+        binding.category.editText?.setText(saved?.getString(KEY_CATEGORY) ?: categoryName)
         binding.category.onFocusChangeListener = KeyBoardHider()
+        val adapter = ArrayAdapter(
+            requireContext(), R.layout.support_simple_spinner_dropdown_item, categoryNames
+        )
+        val autoCompleteCategory = binding.category.editText as AppCompatAutoCompleteTextView
+        autoCompleteCategory.setAdapter(adapter)
 
         // --- Open tasks settings
         val openTasksAmount = db.skillDao().countTasksWithSkillByStatus(skill.id, Status.OPEN)
@@ -95,15 +102,15 @@ class SkillEditFragment : SkillFragment() {
 
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-        out.putString(KEY_NAME, binding.name.text.toString())
-        out.putString(KEY_CATEGORY, binding.category.text.toString())
+        out.putString(KEY_NAME, binding.name.editText?.text.toString())
+        out.putString(KEY_CATEGORY, binding.category.editText?.text.toString())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
         saveChangesOnSkill()
     }
 
     private fun saveChangesOnSkill() {
-        val name = binding.name.text.toString()
-        val categoryName = binding.category.text.toString()
+        val name = binding.name.editText?.text.toString()
+        val categoryName = binding.category.editText?.text.toString()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val db = AppDatabase(requireContext())
         val categoryId: Long? = if (categoryName.isNotBlank()) {

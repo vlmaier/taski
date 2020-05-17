@@ -34,8 +34,8 @@
                     android:id="@+id/header"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/heading_skill_info"
                     android:singleLine="true"
+                    android:text="@string/heading_skill_info"
                     android:textSize="28sp"
                     android:textStyle="bold"
                     app:autoSizeMaxTextSize="28dp"
@@ -46,53 +46,74 @@
 
             </LinearLayout>
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:importantForAutofill="no"
                 android:hint="@string/hint_skill_name"
-                android:inputType="textCapSentences|textAutoCorrect"
-                android:maxLength="24"
-                android:singleLine="true"
-                android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/icon_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linear_layout"
-                app:autoSizeTextType="uniform"
-                />
+                >
 
-            <AutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:inputType="textCapSentences|textAutoCorrect"
+                    android:maxLength="24"
+                    android:padding="12dp"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/category"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textSize="18sp"
                 android:hint="@string/hint_skill_category"
-                android:inputType="textCapSentences|textAutoCorrect"
-                android:maxLength="24"
-                android:singleLine="true"
-                app:autoSizeTextType="uniform"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="@+id/name"
-                app:layout_constraintStart_toStartOf="@+id/name"
+                app:layout_constraintStart_toStartOf="@id/name"
                 app:layout_constraintTop_toBottomOf="@+id/name"
-                />
+                >
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:inputType="textCapSentences|textAutoCorrect"
+                    android:maxLength="24"
+                    android:padding="0dp"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
                 android:id="@+id/icon_button"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginEnd="16dp"
+                android:contentDescription="@string/content_skill_icon"
                 android:onClick="selectIconButtonClicked"
                 app:layout_constraintBottom_toBottomOf="@+id/category"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/name"
                 tools:background="@drawable/ic_baseline_assignment_24"
                 tools:backgroundTint="@color/colorSecondary"
-                android:contentDescription="@string/content_skill_icon"
                 />
 
             <Button
@@ -119,9 +140,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
                 android:singleLine="true"
                 android:text="@string/heading_skill_xp"
+                android:textSize="16sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toStartOf="@+id/skill_level_text"
                 app:layout_constraintTop_toBottomOf="@+id/skill_level_text"
@@ -132,9 +153,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
                 android:singleLine="true"
                 android:text="@string/heading_open_tasks"
+                android:textSize="16sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toStartOf="@+id/skill_xp_text"
                 app:layout_constraintTop_toBottomOf="@+id/skill_xp_text"
@@ -145,9 +166,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
                 android:singleLine="true"
                 android:text="@string/heading_done_tasks"
+                android:textSize="16sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toStartOf="@+id/skill_open_tasks_text"
                 app:layout_constraintTop_toBottomOf="@+id/skill_open_tasks_text"
@@ -159,9 +180,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="32dp"
-                android:textSize="16sp"
                 android:singleLine="true"
                 android:text="@string/heading_skill_level"
+                android:textSize="16sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toStartOf="@+id/category"
                 app:layout_constraintTop_toBottomOf="@+id/category"
@@ -171,8 +192,8 @@
                 android:id="@+id/skill_xp_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:singleLine="true"
+                android:textSize="16sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="@+id/skill_xp_text"
                 app:layout_constraintEnd_toEndOf="@+id/icon_button"
@@ -186,8 +207,8 @@
                 android:id="@+id/skill_level_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:singleLine="true"
+                android:textSize="16sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="@+id/skill_level_text"
                 app:layout_constraintEnd_toEndOf="@+id/icon_button"
@@ -202,8 +223,8 @@
                 android:id="@+id/skill_done_tasks_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:singleLine="true"
+                android:textSize="16sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="@+id/skill_done_tasks_text"
                 app:layout_constraintEnd_toEndOf="@+id/icon_button"
@@ -217,8 +238,8 @@
                 android:id="@+id/skill_open_tasks_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:singleLine="true"
+                android:textSize="16sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="@+id/skill_open_tasks_text"
                 app:layout_constraintEnd_toEndOf="@+id/icon_button"

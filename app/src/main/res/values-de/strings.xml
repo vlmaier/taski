@@ -87,7 +87,7 @@
     <!-- Content description -->
     <string name="content_task_icon">Aufgabensymbol</string>
     <string name="content_skill_icon">Fertingskeitssymbol</string>
-    <string name="content_floating_button">floating action button</string>
+    <string name="content_fab">floating action button</string>
     <string name="content_due_at_icon">Fällig am Symbol</string>
     <string name="content_skill_tags_icon">Tagssymbol</string>
     <string name="content_user_avatar">Benutzeravatar</string>

@@ -42,12 +42,12 @@ class TaskCreateFragment : TaskFragment() {
         )
 
         // --- Goal settings
-        binding.goal.setText(saved?.getString(KEY_GOAL) ?: "")
+        binding.goal.editText?.setText(saved?.getString(KEY_GOAL) ?: "")
         binding.goal.onFocusChangeListener = KeyBoardHider()
         binding.goal.requestFocus()
 
         // --- Details settings
-        binding.details.setText(saved?.getString(KEY_DETAILS) ?: "")
+        binding.details.editText?.setText(saved?.getString(KEY_DETAILS) ?: "")
         binding.details.onFocusChangeListener = KeyBoardHider()
 
         // --- Icon settings
@@ -102,10 +102,10 @@ class TaskCreateFragment : TaskFragment() {
         }
 
         // --- Deadline settings
-        binding.deadlineDate.setText(saved?.getString(KEY_DEADLINE_DATE) ?: "")
-        binding.deadlineTime.setText(saved?.getString(KEY_DEADLINE_TIME) ?: "")
-        setDeadlineDateOnClickListener(binding.deadlineDate)
-        setDeadlineTimeOnClickListener(binding.deadlineTime)
+        binding.deadlineDate.editText?.setText(saved?.getString(KEY_DEADLINE_DATE) ?: "")
+        binding.deadlineTime.editText?.setText(saved?.getString(KEY_DEADLINE_TIME) ?: "")
+        setDeadlineDateOnClickListener(binding.deadlineDate.editText)
+        setDeadlineTimeOnClickListener(binding.deadlineTime.editText)
 
         return binding.root
     }
@@ -118,35 +118,37 @@ class TaskCreateFragment : TaskFragment() {
 
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-        out.putString(KEY_GOAL, binding.goal.text.toString())
-        out.putString(KEY_DETAILS, binding.goal.text.toString())
+        out.putString(KEY_GOAL, binding.goal.editText?.text.toString())
+        out.putString(KEY_DETAILS, binding.goal.editText?.text.toString())
         out.putString(KEY_DIFFICULTY, difficulty)
         out.putInt(KEY_DURATION, binding.durationBar.progress)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
-        out.putString(KEY_DEADLINE_DATE, binding.deadlineDate.text.toString())
-        out.putString(KEY_DEADLINE_TIME, binding.deadlineTime.text.toString())
+        out.putString(KEY_DEADLINE_DATE, binding.deadlineDate.editText?.text.toString())
+        out.putString(KEY_DEADLINE_TIME, binding.deadlineTime.editText?.text.toString())
     }
 
     private fun createTaskButtonClicked(): Boolean {
 
-        val goal = binding.goal.text.toString()
+        val goal = binding.goal.editText?.text.toString()
         if (goal.isBlank()) {
             binding.goal.requestFocus()
             binding.goal.error = getString(R.string.error_goal_cannot_be_empty)
             return false
         }
-        val detailsValue = binding.details.text.toString()
+        val detailsValue = binding.details.editText?.text.toString()
         val details = if (detailsValue.isNotBlank()) detailsValue else null
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()
         val skillsToAssign = db.skillDao().findByName(skillNames)
         var dueAt: String? = null
-        if (binding.deadlineDate.text.isNotBlank()) {
-            dueAt = binding.deadlineDate.text.toString()
-            dueAt += if (binding.deadlineTime.text.isNotBlank()) {
-                " ${binding.deadlineTime.text}"
+        val deadlineDate = binding.deadlineDate.editText?.text.toString()
+        val deadlineTime = binding.deadlineTime.editText?.text.toString()
+        if (deadlineDate.isNotBlank()) {
+            dueAt = deadlineDate
+            dueAt += if (deadlineTime.isNotBlank()) {
+                " $deadlineTime"
             } else {
                 " 08:00"
             }

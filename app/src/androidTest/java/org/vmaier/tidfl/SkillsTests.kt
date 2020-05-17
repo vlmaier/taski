@@ -20,6 +20,8 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
+import org.hamcrest.core.IsInstanceOf
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -71,7 +73,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -80,7 +88,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -221,7 +235,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -230,7 +250,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -301,7 +327,13 @@ class SkillsTests {
         // validate skill name
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("Coding")
             )
         )
@@ -310,8 +342,12 @@ class SkillsTests {
         // validate skill category
         onView(
             allOf(
-                withId(
-                    R.id.category
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.category),
+                        0
+                    ),
+                    0
                 ),
                 withText("Intellect")
             )
@@ -406,7 +442,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -415,7 +457,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -486,14 +534,26 @@ class SkillsTests {
         // change skill name
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("Coding")
             )
         )
             .perform(replaceText("Programming"))
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("Programming")
             )
         )
@@ -502,14 +562,26 @@ class SkillsTests {
         // change category name
         onView(
             allOf(
-                withId(R.id.category),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.category),
+                        0
+                    ),
+                    0
+                ),
                 withText("Intellect")
             )
         )
             .perform(replaceText("Computer Science"))
         onView(
             allOf(
-                withId(R.id.category),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.category),
+                        0
+                    ),
+                    0
+                ),
                 withText("Computer Science")
             )
         )
@@ -652,7 +724,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -661,7 +739,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -787,7 +871,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -796,7 +886,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -944,7 +1040,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -953,7 +1055,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -1024,14 +1132,26 @@ class SkillsTests {
         // change skill name
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("Coding")
             )
         )
             .perform(replaceText("Programming"))
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("Programming")
             )
         )
@@ -1040,14 +1160,26 @@ class SkillsTests {
         // change category name
         onView(
             allOf(
-                withId(R.id.category),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.category),
+                        0
+                    ),
+                    0
+                ),
                 withText("Intellect")
             )
         )
             .perform(replaceText("Computer Science"))
         onView(
             allOf(
-                withId(R.id.category),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.category),
+                        0
+                    ),
+                    0
+                ),
                 withText("Computer Science")
             )
         )
@@ -1144,7 +1276,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -1153,7 +1291,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -1251,7 +1395,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 clearText(),
@@ -1260,7 +1410,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -1308,16 +1464,20 @@ class SkillsTests {
 
         // validate error message
         onView(
-            withId(R.id.name)
-        )
-            .check(
-                matches(
-                    hasErrorText(
-                        mActivityTestRule.activity.applicationContext
-                            .getString(R.string.error_name_cannot_be_empty)
-                    )
-                )
+            allOf(
+                withId(R.id.textinput_error),
+                childAtPosition(
+                    childAtPosition(
+                        IsInstanceOf.instanceOf(android.widget.LinearLayout::class.java),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
             )
+        )
+            .check(matches(withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.error_name_cannot_be_empty))))
     }
 
     @Test
@@ -1358,7 +1518,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -1367,7 +1533,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText(""),
@@ -1496,7 +1668,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -1505,7 +1683,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -1576,14 +1760,26 @@ class SkillsTests {
         // change skill name
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("Coding")
             )
         )
             .perform(replaceText(""))
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("")
             )
         )
@@ -1592,14 +1788,26 @@ class SkillsTests {
         // change category name
         onView(
             allOf(
-                withId(R.id.category),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.category),
+                        0
+                    ),
+                    0
+                ),
                 withText("Intellect")
             )
         )
             .perform(replaceText("Computer Science"))
         onView(
             allOf(
-                withId(R.id.category),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.category),
+                        0
+                    ),
+                    0
+                ),
                 withText("Computer Science")
             )
         )
@@ -1645,16 +1853,20 @@ class SkillsTests {
 
         // validate error message
         onView(
-            withId(R.id.name)
-        )
-            .check(
-                matches(
-                    hasErrorText(
-                        mActivityTestRule.activity.applicationContext
-                            .getString(R.string.error_name_cannot_be_empty)
-                    )
-                )
+            allOf(
+                withId(R.id.textinput_error),
+                childAtPosition(
+                    childAtPosition(
+                        IsInstanceOf.instanceOf(android.widget.LinearLayout::class.java),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
             )
+        )
+            .check(matches(withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.error_name_cannot_be_empty))))
     }
 
     @Test
@@ -1695,7 +1907,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -1704,7 +1922,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -1775,14 +1999,26 @@ class SkillsTests {
         // change skill name
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("Coding")
             )
         )
             .perform(replaceText("Programming"))
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("Programming")
             )
         )
@@ -1791,13 +2027,25 @@ class SkillsTests {
         // change category name
         onView(
             allOf(
-                withId(R.id.category),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.category),
+                        0
+                    ),
+                    0
+                ),
                 withText("Intellect")
             )
         )
             .perform(replaceText(""))
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(closeSoftKeyboard())
 
@@ -1927,7 +2175,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -1936,7 +2190,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -2081,7 +2341,13 @@ class SkillsTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -2090,7 +2356,13 @@ class SkillsTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -2161,14 +2433,26 @@ class SkillsTests {
         // change skill name
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("Coding")
             )
         )
             .perform(replaceText("Programming"))
         onView(
             allOf(
-                withId(R.id.name),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.name),
+                        0
+                    ),
+                    0
+                ),
                 withText("Programming")
             )
         )
@@ -2177,14 +2461,26 @@ class SkillsTests {
         // change category name
         onView(
             allOf(
-                withId(R.id.category),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.category),
+                        0
+                    ),
+                    0
+                ),
                 withText("Intellect")
             )
         )
             .perform(replaceText("Computer Science"))
         onView(
             allOf(
-                withId(R.id.category),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.category),
+                        0
+                    ),
+                    0
+                ),
                 withText("Computer Science")
             )
         )
@@ -2292,6 +2588,30 @@ class SkillsTests {
             )
         )
             .check(matches(isDisplayed()))
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun clearCategoryWhileCreating() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun clearCategoryWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun deleteWithAssignedTasks() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun restoreWithAssignedTasks() {
+
     }
 
     private fun childAtPosition(parentMatcher: Matcher<View>, position: Int): Matcher<View> {

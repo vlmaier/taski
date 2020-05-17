@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import org.vmaier.tidfl.R
@@ -35,16 +36,17 @@ class SkillCreateFragment : SkillFragment() {
         )
 
         // --- Name settings
-        binding.name.setText(saved?.getString(KEY_NAME) ?: "")
+        binding.name.editText?.setText(saved?.getString(KEY_NAME) ?: "")
         binding.name.onFocusChangeListener = KeyBoardHider()
 
         // --- Category settings
+        binding.category.editText?.setText(saved?.getString(KEY_CATEGORY) ?: "")
         val adapter = ArrayAdapter(
             requireContext(), R.layout.support_simple_spinner_dropdown_item, categoryNames
         )
-        binding.category.setAdapter(adapter)
+        val autoCompleteCategory = binding.category.editText as AppCompatAutoCompleteTextView
+        autoCompleteCategory.setAdapter(adapter)
         binding.category.onFocusChangeListener = KeyBoardHider()
-        binding.category.setText(saved?.getString(KEY_CATEGORY) ?: "")
 
         // -- Icon settings
         setSkillIcon(saved, binding.iconButton)
@@ -71,19 +73,19 @@ class SkillCreateFragment : SkillFragment() {
 
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-        out.putString(KEY_NAME, binding.name.text.toString())
-        out.putString(KEY_CATEGORY, binding.category.text.toString())
+        out.putString(KEY_NAME, binding.name.editText?.text.toString())
+        out.putString(KEY_CATEGORY, binding.category.editText?.text.toString())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
     }
 
     private fun createSkillButtonClicked(): Boolean {
-        val name = binding.name.text.toString()
+        val name = binding.name.editText?.text.toString()
         if (name.isBlank()) {
             binding.name.requestFocus()
             binding.name.error = getString(R.string.error_name_cannot_be_empty)
             return false
         }
-        val categoryName = binding.category.text.toString()
+        val categoryName = binding.category.editText?.text.toString()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         var categoryId: Long? = null
         if (categoryName.isNotBlank()) {

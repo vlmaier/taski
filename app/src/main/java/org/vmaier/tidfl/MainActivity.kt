@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 fragments.forEach {
                     when (it) {
                         is SkillEditFragment -> {
-                            val name = SkillEditFragment.binding.name.text.toString()
+                            val name = SkillEditFragment.binding.name.editText?.text.toString()
                             if (name.isBlank()) {
                                 SkillEditFragment.binding.name.requestFocus()
                                 SkillEditFragment.binding.name.error =
@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                             } else super.onBackPressed()
                         }
                         is TaskEditFragment -> {
-                            val goal = TaskEditFragment.binding.goal.text.toString()
+                            val goal = TaskEditFragment.binding.goal.editText?.text.toString()
                             if (goal.isBlank()) {
                                 TaskEditFragment.binding.goal.requestFocus()
                                 TaskEditFragment.binding.goal.error =

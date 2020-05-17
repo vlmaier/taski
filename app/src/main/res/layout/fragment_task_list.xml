@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:clickable="true"
-            android:contentDescription="@string/content_floating_button"
+            android:contentDescription="@string/content_fab"
             android:focusable="true"
             android:src="@android:drawable/ic_input_add"
             app:fabSize="auto"

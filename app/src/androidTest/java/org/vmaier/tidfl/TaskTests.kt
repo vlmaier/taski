@@ -20,6 +20,8 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
+import org.hamcrest.core.IsInstanceOf
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -49,7 +51,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Work on App"),
@@ -58,7 +66,13 @@ class TaskTests {
 
         // type in the details field
         onView(
-            withId(R.id.details)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.details),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Things I Do For Loot"),
@@ -130,7 +144,13 @@ class TaskTests {
 
         // click on due date
         onView(
-            withId(R.id.deadline_date)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_date),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -145,7 +165,13 @@ class TaskTests {
 
         // click on due time
         onView(
-            withId(R.id.deadline_time)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_time),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -221,7 +247,7 @@ class TaskTests {
             allOf(
                 withId(R.id.task_icon),
                 // validate icon ID
-                withTagValue(Matchers.`is`(201))
+                withTagValue(`is`(201))
             )
         )
             .check(matches(isDisplayed()))
@@ -242,7 +268,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Work on App"),
@@ -251,7 +283,13 @@ class TaskTests {
 
         // type in the details field
         onView(
-            withId(R.id.details)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.details),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Things I Do For Loot"),
@@ -329,7 +367,13 @@ class TaskTests {
 
         // click on due date
         onView(
-            withId(R.id.deadline_date)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_date),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -344,7 +388,13 @@ class TaskTests {
 
         // click on due time
         onView(
-            withId(R.id.deadline_time)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_time),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -420,7 +470,7 @@ class TaskTests {
             allOf(
                 withId(R.id.task_icon),
                 // validate icon ID
-                withTagValue(Matchers.`is`(201))
+                withTagValue(`is`(201))
             )
         )
             .check(matches(isDisplayed()))
@@ -441,7 +491,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Work on App"),
@@ -450,7 +506,13 @@ class TaskTests {
 
         // type in the details field
         onView(
-            withId(R.id.details)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.details),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Things I Do For Loot"),
@@ -528,7 +590,13 @@ class TaskTests {
 
         // click on due date
         onView(
-            withId(R.id.deadline_date)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_date),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -543,7 +611,13 @@ class TaskTests {
 
         // click on due time
         onView(
-            withId(R.id.deadline_time)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_time),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -619,7 +693,7 @@ class TaskTests {
             allOf(
                 withId(R.id.task_icon),
                 // validate icon ID
-                withTagValue(Matchers.`is`(201))
+                withTagValue(`is`(201))
             )
         )
             .check(matches(isDisplayed()))
@@ -640,7 +714,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Work on App"),
@@ -649,7 +729,13 @@ class TaskTests {
 
         // type in the details field
         onView(
-            withId(R.id.details)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.details),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Things I Do For Loot"),
@@ -727,7 +813,13 @@ class TaskTests {
 
         // click on due date
         onView(
-            withId(R.id.deadline_date)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_date),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -742,7 +834,13 @@ class TaskTests {
 
         // click on due time
         onView(
-            withId(R.id.deadline_time)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_time),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -818,7 +916,7 @@ class TaskTests {
             allOf(
                 withId(R.id.task_icon),
                 // validate icon ID
-                withTagValue(Matchers.`is`(201))
+                withTagValue(`is`(201))
             )
         )
             .check(matches(isDisplayed()))
@@ -839,7 +937,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Work on App"),
@@ -848,7 +952,13 @@ class TaskTests {
 
         // type in the details field
         onView(
-            withId(R.id.details)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.details),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Things I Do For Loot"),
@@ -926,7 +1036,13 @@ class TaskTests {
 
         // click on due date
         onView(
-            withId(R.id.deadline_date)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_date),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -941,7 +1057,13 @@ class TaskTests {
 
         // click on due time
         onView(
-            withId(R.id.deadline_time)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_time),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -1017,7 +1139,7 @@ class TaskTests {
             allOf(
                 withId(R.id.task_icon),
                 // validate icon ID
-                withTagValue(Matchers.`is`(201))
+                withTagValue(`is`(201))
             )
         )
             .check(matches(isDisplayed()))
@@ -1038,7 +1160,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Work on App"),
@@ -1149,7 +1277,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 clearText(),
@@ -1164,16 +1298,20 @@ class TaskTests {
 
         // validate error message
         onView(
-            withId(R.id.goal)
-        )
-            .check(
-                matches(
-                    hasErrorText(
-                        mActivityTestRule.activity.applicationContext
-                            .getString(R.string.error_goal_cannot_be_empty)
-                    )
-                )
+            allOf(
+                withId(R.id.textinput_error),
+                childAtPosition(
+                    childAtPosition(
+                        IsInstanceOf.instanceOf(android.widget.LinearLayout::class.java),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
             )
+        )
+            .check(matches(withText(mActivityTestRule.activity.applicationContext
+                .getString(R.string.error_goal_cannot_be_empty))))
     }
 
     @Test
@@ -1191,7 +1329,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Work on App"),
@@ -1200,7 +1344,13 @@ class TaskTests {
 
         // type in the details field
         onView(
-            withId(R.id.details)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.details),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Things I Do For Loot"),
@@ -1272,7 +1422,13 @@ class TaskTests {
 
         // click on due date
         onView(
-            withId(R.id.deadline_date)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_date),
+                    0
+                ),
+                0
+            )
         )
             .perform(scrollTo(), click())
 
@@ -1348,7 +1504,7 @@ class TaskTests {
             allOf(
                 withId(R.id.task_icon),
                 // validate icon ID
-                withTagValue(Matchers.`is`(201))
+                withTagValue(`is`(201))
             )
         )
             .check(matches(isDisplayed()))
@@ -1364,13 +1520,25 @@ class TaskTests {
 
         // validate task due date
         onView(
-            withId(R.id.deadline_date)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_date),
+                    0
+                ),
+                0
+            )
         )
             .check(matches(withText(App.dateFormat.format(Date()).split(" ")[0])))
 
         // validate default task due time
         onView(
-            withId(R.id.deadline_time)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.deadline_time),
+                    0
+                ),
+                0
+            )
         )
             .check(matches(withText("08:00")))
     }
@@ -1413,7 +1581,13 @@ class TaskTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -1422,7 +1596,13 @@ class TaskTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -1516,7 +1696,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Work on App"),
@@ -1525,7 +1711,13 @@ class TaskTests {
 
         // type in the details field
         onView(
-            withId(R.id.details)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.details),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Things I Do For Loot"),
@@ -1748,7 +1940,13 @@ class TaskTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Coding"),
@@ -1757,7 +1955,13 @@ class TaskTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Intellect"),
@@ -1815,7 +2019,13 @@ class TaskTests {
 
         // type in the name field
         onView(
-            withId(R.id.name)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.name),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Kotlin"),
@@ -1824,7 +2034,13 @@ class TaskTests {
 
         // type in the category field
         onView(
-            withId(R.id.category)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.category),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Programming"),
@@ -1929,7 +2145,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Work on App"),
@@ -1938,7 +2160,13 @@ class TaskTests {
 
         // type in the details field
         onView(
-            withId(R.id.details)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.details),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Things I Do For Loot"),
@@ -2159,7 +2387,13 @@ class TaskTests {
 
         // type in the goal field
         onView(
-            withId(R.id.goal)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.goal),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Work on App"),
@@ -2168,7 +2402,13 @@ class TaskTests {
 
         // type in the details field
         onView(
-            withId(R.id.details)
+            childAtPosition(
+                childAtPosition(
+                    withId(R.id.details),
+                    0
+                ),
+                0
+            )
         )
             .perform(
                 typeText("Things I Do For Loot"),
@@ -2354,6 +2594,138 @@ class TaskTests {
             withId(R.id.skills)
         )
             .check(matches(withHint(R.string.hint_no_skills)))
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun clearDetailsWhileCreating() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun clearDetailsWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun clearDueDateWhileCreating() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun clearDueDateWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun clearDueTimeWhileCreating() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun clearDueTimeWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun rotateScreenWhileCreating() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun rotateScreenWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun editGoal() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun editDetails() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun editDuration() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun editDifficulty() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun editDueDate() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun editDueTime() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun addSkillWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun removeSkillWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun leaveGoalEmptyWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun leaveDetailsEmptyWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun leaveDueDateEmptyWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun leaveDueTimeEmptyWhileEditing() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun complete() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun fail() {
+
     }
 
     private fun setProgress(progress: Int): ViewAction? {
