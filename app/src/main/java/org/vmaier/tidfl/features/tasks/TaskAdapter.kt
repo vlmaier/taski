@@ -35,10 +35,8 @@ class TaskAdapter internal constructor(
         var durationView: TextView = itemView.findViewById(R.id.task_duration)
         var xpView: TextView = itemView.findViewById(R.id.task_xp)
         var skillsView: TextView = itemView.findViewById(R.id.skill_amount)
-        var tagsView: TextView = itemView.findViewById(R.id.skill_tags)
         var taskIconView: ImageView = itemView.findViewById(R.id.task_icon)
         var skillIconView: ImageView = itemView.findViewById(R.id.skill_icon)
-        var tagIconView: ImageView = itemView.findViewById(R.id.skill_tag_icon)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -49,12 +47,22 @@ class TaskAdapter internal constructor(
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val db = AppDatabase(context)
         val task: Task = tasks[position]
+
+        // --- Goal settings
         holder.goalView.text = task.goal
+        holder.goalView.isSelected = true
+
+        // --- Details settings
         holder.detailsView.text = task.details
+        holder.detailsView.isSelected = true
+
+        // --- Duration settings
         holder.durationView.text = task.getHumanReadableDurationValue(context)
+
+        // --- XP value settings
         holder.xpView.text = context.getString(R.string.term_xp_value, task.xpValue)
 
-        // skills
+        // --- Skills settings
         val skillsCount = db.skillDao().countAssignedSkills(task.id)
         if (skillsCount > 0) {
             holder.skillsView.text = context.resources.getQuantityString(
@@ -67,10 +75,7 @@ class TaskAdapter internal constructor(
             holder.skillsView.visibility = View.INVISIBLE
         }
 
-        // tags
-        holder.tagIconView.visibility = View.INVISIBLE
-        holder.tagsView.visibility = View.INVISIBLE
-
+        // --- Icon settings
         holder.taskIconView.setIcon(task.iconId)
 
         holder.itemView.setOnClickListener {

@@ -27,39 +27,78 @@
             android:layout_gravity="center_horizontal"
             >
 
+            <LinearLayout
+                android:id="@+id/linear_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@+id/task_duration"
+                app:layout_constraintStart_toEndOf="@+id/task_icon"
+                app:layout_constraintTop_toTopOf="@+id/task_icon"
+                >
+
+                <TextView
+                    android:id="@+id/task_goal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintEnd_toStartOf="@+id/task_duration"
+                    app:layout_constraintStart_toEndOf="@+id/task_icon"
+                    app:layout_constraintTop_toTopOf="@+id/task_icon"
+                    tools:text="Goal"
+                    />
+
+                <TextView
+                    android:id="@+id/task_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintEnd_toEndOf="@+id/linear_layout"
+                    app:layout_constraintStart_toStartOf="@+id/linear_layout"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                    tools:text="Details"
+                    />
+
+            </LinearLayout>
+
             <ImageView
                 android:id="@+id/time_icon"
                 android:layout_width="21dp"
                 android:layout_height="21dp"
-                app:layout_constraintBottom_toBottomOf="@+id/task_goal"
-                app:layout_constraintEnd_toEndOf="@+id/task_xp"
-                app:layout_constraintTop_toTopOf="@+id/task_goal"
-                app:srcCompat="@drawable/ic_baseline_access_time_24"
+                android:layout_marginTop="2dp"
                 android:contentDescription="@string/content_due_at_icon"
+                app:layout_constraintEnd_toEndOf="@+id/task_xp"
+                app:layout_constraintTop_toTopOf="@+id/linear_layout"
+                app:srcCompat="@drawable/ic_baseline_access_time_24"
                 />
 
             <ImageView
                 android:id="@+id/skill_icon"
                 android:layout_width="21dp"
                 android:layout_height="21dp"
-                app:layout_constraintBottom_toBottomOf="@+id/task_details"
-                app:layout_constraintEnd_toEndOf="@+id/task_xp"
-                app:layout_constraintStart_toStartOf="@+id/time_icon"
-                app:layout_constraintTop_toBottomOf="@+id/task_goal"
-                app:srcCompat="@drawable/ic_baseline_style_24"
-                android:contentDescription="@string/content_skill_icon"
-                />
-
-            <ImageView
-                android:id="@+id/skill_tag_icon"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
                 android:layout_marginTop="4dp"
-                app:layout_constraintBottom_toBottomOf="@+id/task_icon"
-                app:layout_constraintStart_toStartOf="@+id/task_details"
-                app:layout_constraintTop_toBottomOf="@+id/task_details"
-                app:srcCompat="@drawable/ic_baseline_label_24"
-                android:contentDescription="@string/content_skill_tags_icon"
+                android:contentDescription="@string/content_skill_icon"
+                app:layout_constraintEnd_toEndOf="@+id/time_icon"
+                app:layout_constraintStart_toStartOf="@+id/time_icon"
+                app:layout_constraintTop_toBottomOf="@+id/time_icon"
+                app:srcCompat="@drawable/ic_baseline_style_24"
                 />
 
             <ImageView
@@ -69,49 +108,13 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp"
+                android:contentDescription="@string/content_task_icon"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@drawable/ic_baseline_assignment_24"
                 tools:tint="@color/colorSecondary"
-                android:contentDescription="@string/content_task_icon"
-                />
-
-            <TextView
-                android:id="@+id/task_goal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="8dp"
-                app:autoSizeTextType="uniform"
-                android:singleLine="true"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:autoSizeMaxTextSize="20sp"
-                app:autoSizeMinTextSize="12sp"
-                app:autoSizeStepGranularity="2sp"
-                app:layout_constraintEnd_toStartOf="@+id/task_duration"
-                app:layout_constraintStart_toEndOf="@+id/task_icon"
-                app:layout_constraintTop_toTopOf="@+id/task_icon"
-                tools:text="Goal"
-                />
-
-            <TextView
-                android:id="@+id/task_details"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:autoSizeTextType="uniform"
-                android:singleLine="true"
-                android:textSize="16sp"
-                app:autoSizeMaxTextSize="16sp"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeStepGranularity="2sp"
-                app:layout_constraintEnd_toEndOf="@+id/task_goal"
-                app:layout_constraintStart_toStartOf="@+id/task_goal"
-                app:layout_constraintTop_toBottomOf="@+id/task_goal"
-                tools:text="Details"
                 />
 
             <TextView
@@ -120,12 +123,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginEnd="8dp"
-                app:autoSizeTextType="uniform"
                 android:singleLine="true"
                 android:textSize="12sp"
+                app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/task_details"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
                 tools:text="250 XP"
                 />
 
@@ -134,9 +137,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="3dp"
-                app:autoSizeTextType="uniform"
                 android:singleLine="true"
                 android:textSize="14sp"
+                app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="@+id/skill_icon"
                 app:layout_constraintEnd_toStartOf="@+id/skill_icon"
                 app:layout_constraintTop_toTopOf="@+id/skill_icon"
@@ -144,30 +147,13 @@
                 />
 
             <TextView
-                android:id="@+id/skill_tags"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                app:autoSizeTextType="uniform"
-                android:singleLine="true"
-                android:textSize="14sp"
-                app:autoSizeMaxTextSize="14sp"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeStepGranularity="2sp"
-                app:layout_constraintBottom_toBottomOf="@+id/skill_tag_icon"
-                app:layout_constraintStart_toEndOf="@+id/skill_tag_icon"
-                app:layout_constraintTop_toTopOf="@+id/skill_tag_icon"
-                tools:text="Work, Important"
-                />
-
-            <TextView
                 android:id="@+id/task_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="3dp"
-                app:autoSizeTextType="uniform"
                 android:singleLine="true"
                 android:textSize="14sp"
+                app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="@+id/time_icon"
                 app:layout_constraintEnd_toStartOf="@+id/time_icon"
                 app:layout_constraintTop_toTopOf="@+id/time_icon"

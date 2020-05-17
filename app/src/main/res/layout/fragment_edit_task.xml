@@ -17,44 +17,52 @@
             tools:context=".features.tasks.TaskEditFragment"
             >
 
-            <TextView
-                android:id="@+id/header"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/linear_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                app:autoSizeTextType="uniform"
-                android:singleLine="true"
-                android:text="@string/heading_task_info"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/icon_button"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                />
+                >
+
+                <TextView
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:singleLine="true"
+                    android:text="@string/heading_task_info"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="28dp"
+                    app:autoSizeMinTextSize="20dp"
+                    app:autoSizeStepGranularity="2dp"
+                    app:autoSizeTextType="uniform"
+                    />
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/goal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:ems="10"
                 android:hint="@string/hint_task_goal"
+                android:importantForAutofill="no"
                 android:inputType="textCapSentences|textAutoCorrect"
-                android:lines="1"
-                android:maxLength="100"
-                android:maxLines="1"
+                android:maxLength="36"
                 android:singleLine="true"
                 android:textSize="18sp"
+                app:autoSizeTextType="uniform"
                 app:layout_constraintEnd_toStartOf="@+id/icon_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header"
-                android:importantForAutofill="no"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
                 />
 
             <EditText
@@ -65,16 +73,15 @@
                 android:layout_marginTop="16dp"
                 android:ems="10"
                 android:hint="@string/hint_task_details"
+                android:importantForAutofill="no"
                 android:inputType="textCapSentences|textAutoCorrect"
-                android:lines="1"
-                android:maxLength="100"
-                android:maxLines="1"
+                android:maxLength="36"
                 android:singleLine="true"
-                android:textSize="16sp"
+                android:textSize="18sp"
+                app:autoSizeTextType="uniform"
                 app:layout_constraintEnd_toEndOf="@+id/goal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/goal"
-                android:importantForAutofill="no"
                 />
 
             <EditText
