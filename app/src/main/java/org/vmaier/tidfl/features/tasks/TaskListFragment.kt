@@ -34,6 +34,7 @@ class TaskListFragment : Fragment() {
         saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
+        MainActivity.toolbar.title = getString(R.string.heading_tasks)
         val binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
             inflater, R.layout.fragment_task_list, container, false
         )

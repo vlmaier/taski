@@ -12,8 +12,8 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.entity.Category
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentCreateSkillBinding
-import org.vmaier.tidfl.util.KeyBoardHider
-import org.vmaier.tidfl.util.hideKeyboard
+import org.vmaier.tidfl.utils.KeyBoardHider
+import org.vmaier.tidfl.utils.hideKeyboard
 
 
 /**
@@ -84,6 +84,13 @@ class SkillCreateFragment : SkillFragment() {
             binding.name.requestFocus()
             binding.name.error = getString(R.string.error_name_cannot_be_empty)
             return false
+        } else {
+            val foundSkill = db.skillDao().findByName(name)
+            if (foundSkill != null) {
+                binding.name.requestFocus()
+                binding.name.error = getString(R.string.error_skill_already_exists)
+                return false
+            }
         }
         val categoryName = binding.category.editText?.text.toString()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())

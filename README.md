@@ -20,14 +20,6 @@
 ##### Skill Management
 - [ ] sorting
 
-##### Profile Management
-- [ ] change profile avatar
-- [ ] set user name
-
-#### Settings Management
-- [ ] set user nickname
-- [ ] set user avatar
-
 ##### Statistics
 - [ ] xp gain daily / weekly / monthly (bar graph)
 - [ ] tasks completed daily / weekly / monthly (bar graph)
@@ -45,8 +37,3 @@
 - [ ] layout for smaller phone screens
 - [ ] tablet layout
 - [ ] implement themes
-- [ ] improve skill item card design
-- [ ] if no skills are available show hint when creating or editing a task
-
-##### Improvements
-- [ ] input validation

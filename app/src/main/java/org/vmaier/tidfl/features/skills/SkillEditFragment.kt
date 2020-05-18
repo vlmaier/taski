@@ -13,9 +13,9 @@ import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.data.entity.Category
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentEditSkillBinding
-import org.vmaier.tidfl.util.KeyBoardHider
-import org.vmaier.tidfl.util.hideKeyboard
-import org.vmaier.tidfl.util.toast
+import org.vmaier.tidfl.utils.KeyBoardHider
+import org.vmaier.tidfl.utils.hideKeyboard
+import org.vmaier.tidfl.utils.toast
 
 
 /**

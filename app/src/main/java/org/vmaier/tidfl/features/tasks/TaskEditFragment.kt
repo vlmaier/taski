@@ -13,7 +13,7 @@ import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.databinding.FragmentEditTaskBinding
-import org.vmaier.tidfl.util.*
+import org.vmaier.tidfl.utils.*
 import java.util.*
 
 

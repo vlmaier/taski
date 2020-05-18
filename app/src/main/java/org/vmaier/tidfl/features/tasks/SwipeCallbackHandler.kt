@@ -10,7 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.data.entity.Task
-import org.vmaier.tidfl.util.toBitmap
+import org.vmaier.tidfl.utils.toBitmap
 
 
 /**

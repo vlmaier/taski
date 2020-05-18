@@ -1,10 +1,12 @@
-package org.vmaier.tidfl.util
+package org.vmaier.tidfl.utils
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.util.Base64
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -16,6 +18,7 @@ import org.vmaier.tidfl.App
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DurationUnit
 import org.vmaier.tidfl.data.entity.Task
+import java.io.ByteArrayOutputStream
 
 
 /**
@@ -174,4 +177,16 @@ fun Task.getHumanReadableDurationValue(context: Context): String {
 
 fun String.toast(context: Context, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(context, this, length).show()
+}
+
+fun Bitmap.encodeTobase64(): String? {
+    val baos = ByteArrayOutputStream()
+    this.compress(Bitmap.CompressFormat.PNG, 100, baos)
+    val b: ByteArray = baos.toByteArray()
+    return Base64.encodeToString(b, Base64.DEFAULT)
+}
+
+fun String.decodeBase64(): Bitmap? {
+    val decodedByte: ByteArray = Base64.decode(this, 0)
+    return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
 }

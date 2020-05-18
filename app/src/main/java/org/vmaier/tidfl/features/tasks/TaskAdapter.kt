@@ -13,8 +13,8 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.data.entity.Task
-import org.vmaier.tidfl.util.getHumanReadableDurationValue
-import org.vmaier.tidfl.util.setIcon
+import org.vmaier.tidfl.utils.getHumanReadableDurationValue
+import org.vmaier.tidfl.utils.setIcon
 
 
 /**
@@ -113,8 +113,8 @@ class TaskAdapter internal constructor(
         if (status != Status.FAILED) {
             val xpValue = db.taskDao().countOverallXpValue()
             val levelValue = xpValue.div(10000) + 1
-            MainActivity.xpCounter.text = context.getString(R.string.term_xp_value, xpValue)
-            MainActivity.levelCounter.text =
+            MainActivity.xpCounterView.text = context.getString(R.string.term_xp_value, xpValue)
+            MainActivity.levelCounterView.text =
                 context.getString(R.string.term_level_value, levelValue)
         }
         return db.taskDao().findTaskById(task.id)

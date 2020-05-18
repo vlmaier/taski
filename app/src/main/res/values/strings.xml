@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Things I Do For Loot</string>
@@ -37,6 +38,7 @@
     </plurals>
     <!-- Error messages -->
     <string name="error_name_cannot_be_empty">Name cannot be empty</string>
+    <string name="error_skill_already_exists">Skill with such name already exists</string>
     <string name="error_goal_cannot_be_empty">Goal cannot be empty</string>
     <!-- Event messages -->
     <string name="event_skill_updated">Skill updated</string>
@@ -50,6 +52,7 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_proceed">Proceed</string>
+    <string name="action_set">Set</string>
     <!-- Headings -->
     <string name="heading_create_skill">Create new skill</string>
     <string name="heading_create_task">Create new task</string>
@@ -68,6 +71,8 @@
     <string name="heading_open_tasks">Amount of open tasks</string>
     <string name="heading_done_tasks">Amount of done tasks</string>
     <string name="heading_calendar_sync">Calendar Synchronization</string>
+    <string name="heading_user_name">Your name</string>
+    <string name="heading_select_image">Select image</string>
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
     <string name="hint_skill_category">Skill category</string>
@@ -78,6 +83,7 @@
     <string name="hint_no_skills">No skills were created yet</string>
     <!-- Description messages -->
     <string name="description_calendar_sync">If selected the application will synchronize all tasks to default calendar.</string>
+    <string name="description_user_name">Set your name to be shown in navigation menu.</string>
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Delete skill?</string>
     <plurals name="alert_assigned_task">

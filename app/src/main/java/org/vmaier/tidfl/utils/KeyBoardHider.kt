@@ -1,4 +1,4 @@
-package org.vmaier.tidfl.util
+package org.vmaier.tidfl.utils
 
 import android.view.View
 import android.view.View.OnFocusChangeListener

@@ -32,6 +32,7 @@ class SkillListFragment : Fragment() {
         saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
+        MainActivity.toolbar.title = getString(R.string.heading_skills)
         val binding = DataBindingUtil.inflate<FragmentSkillListBinding>(
             inflater, R.layout.fragment_skill_list, container, false
         )

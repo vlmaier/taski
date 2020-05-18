@@ -15,11 +15,12 @@ import com.google.android.material.snackbar.Snackbar
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.App
+import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.entity.Skill
-import org.vmaier.tidfl.util.hideKeyboard
-import org.vmaier.tidfl.util.setThemeTint
+import org.vmaier.tidfl.utils.hideKeyboard
+import org.vmaier.tidfl.utils.setThemeTint
 import kotlin.random.Random
 
 
@@ -55,6 +56,7 @@ open class SkillFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
+        MainActivity.toolbar.title = getString(R.string.heading_skills)
         val categories = db.categoryDao().findAll()
         categoryNames = categories.map { it.name }
         return this.view

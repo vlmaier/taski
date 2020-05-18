@@ -30,11 +30,12 @@ import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import org.vmaier.tidfl.App
+import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Task
-import org.vmaier.tidfl.util.*
+import org.vmaier.tidfl.utils.*
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -79,6 +80,7 @@ open class TaskFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
+        MainActivity.toolbar.title = getString(R.string.heading_tasks)
         val skills = db.skillDao().findAll()
         skillNames = skills.map { it.name }
         return this.view

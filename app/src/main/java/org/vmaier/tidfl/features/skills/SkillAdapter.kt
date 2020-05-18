@@ -12,7 +12,7 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.entity.AssignedSkill
 import org.vmaier.tidfl.data.entity.Skill
-import org.vmaier.tidfl.util.setIcon
+import org.vmaier.tidfl.utils.setIcon
 
 
 /**

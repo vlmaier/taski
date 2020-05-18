@@ -38,6 +38,7 @@
     </plurals>
     <!-- Error messages -->
     <string name="error_name_cannot_be_empty">Name kann nicht leer sein</string>
+        <string name="error_skill_already_exists">Fertigkeit mit solchem Namen existiert bereits</string>
     <string name="error_goal_cannot_be_empty">Ziel kann nicht leer sein</string>
     <!-- Event messages -->
     <string name="event_skill_updated">Fertigkeit aktualisiert</string>
@@ -50,6 +51,8 @@
     <string name="action_create">Erstellen</string>
     <string name="action_cancel">Abbrechen</string>
     <string name="action_delete">Löschen</string>
+    <string name="action_proceed">Weiter</string>
+    <string name="action_set">Setzen</string>
     <!-- Headings -->
     <string name="heading_create_skill">Neue Fertigkeit</string>
     <string name="heading_create_task">Neue Aufgabe</string>
@@ -68,6 +71,8 @@
     <string name="heading_open_tasks">Anzahl offener Aufgaben</string>
     <string name="heading_done_tasks">Anzahl abgeschlossener Aufgaben</string>
     <string name="heading_calendar_sync">Kalender Synchronisation</string>
+    <string name="heading_user_name">Dein Name</string>
+    <string name="heading_select_image">Wähle ein Bild</string>
     <!-- Hint messages -->
     <string name="hint_skill_name">Name der Fertigkeit</string>
     <string name="hint_skill_category">Kategorie</string>
@@ -78,12 +83,13 @@
     <string name="hint_no_skills">Es wurden noch keine Fertigkeiten erstellt</string>
     <!-- Description messages -->
     <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Tasks zu dem Standardkalender.</string>
+    <string name="description_user_name">Setze einen Namen, der im Navigationsmenü angezeigt wird.</string>
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Fertigkeit löschen?</string>
     <plurals name="alert_assigned_task">
         <item quantity="one">%1$d Aufgabe ist der %2$s Fertigkeit zugewiesen</item>
         <item quantity="other">%1$d Aufgaben sind der %2$s Fertigkeit zugewiesen</item>
-    </plurals><string name="action_proceed">Weiter</string>
+    </plurals>
     <!-- Content description -->
     <string name="content_task_icon">Aufgabensymbol</string>
     <string name="content_skill_icon">Fertingskeitssymbol</string>

@@ -1,4 +1,4 @@
-package org.vmaier.tidfl.util
+package org.vmaier.tidfl.utils
 
 
 /**
@@ -11,6 +11,8 @@ class Const {
     class Prefs {
         companion object {
             const val CALENDAR_SYNC = "calendar_sync"
+            const val USER_NAME = "user_name"
+            const val USER_AVATAR = "user_avatar_uri"
         }
     }
 

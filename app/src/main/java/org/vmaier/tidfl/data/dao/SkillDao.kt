@@ -42,6 +42,15 @@ interface SkillDao {
         """
         SELECT *
         FROM skills
+        WHERE name = :name
+    """
+    )
+    fun findByName(name: String): Skill?
+
+    @Query(
+        """
+        SELECT *
+        FROM skills
         WHERE name IN (:names)
     """
     )
