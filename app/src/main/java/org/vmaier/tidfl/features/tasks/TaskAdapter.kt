@@ -109,7 +109,7 @@ class TaskAdapter internal constructor(
     private fun updateTaskStatus(task: Task, status: Status): Task {
 
         val db = AppDatabase(context)
-        db.taskDao().changeTaskStatus(task.id, status)
+        db.taskDao().changeStatus(task.id, status)
         if (status != Status.FAILED) {
             val xpValue = db.taskDao().countOverallXpValue()
             val levelValue = xpValue.div(10000) + 1
@@ -117,6 +117,6 @@ class TaskAdapter internal constructor(
             MainActivity.levelCounterView.text =
                 context.getString(R.string.term_level_value, levelValue)
         }
-        return db.taskDao().findTaskById(task.id)
+        return db.taskDao().findById(task.id)
     }
 }

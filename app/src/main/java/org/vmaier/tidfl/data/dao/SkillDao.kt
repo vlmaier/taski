@@ -31,6 +31,14 @@ interface SkillDao {
 
     @Query(
         """
+        SELECT COUNT(*)
+        FROM skills
+    """
+    )
+    fun countAll(): Int
+
+    @Query(
+        """
         SELECT *
         FROM skills
         WHERE id = :skillId

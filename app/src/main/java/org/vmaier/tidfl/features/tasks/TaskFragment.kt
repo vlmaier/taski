@@ -81,6 +81,7 @@ open class TaskFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, saved)
         MainActivity.toolbar.title = getString(R.string.heading_tasks)
+        MainActivity.bottomNav.visibility = View.GONE
         val skills = db.skillDao().findAll()
         skillNames = skills.map { it.name }
         return this.view
@@ -233,7 +234,7 @@ open class TaskFragment : Fragment() {
         event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
         eventId = requireContext()
             .contentResolver.insert(CalendarContract.Events.CONTENT_URI, event)
-        db.taskDao().updateTaskEventId(task.id, eventId.toString())
+        db.taskDao().updateEventId(task.id, eventId.toString())
     }
 
     fun updateInCalendar(before: Task, after: Task?) {
@@ -250,7 +251,7 @@ open class TaskFragment : Fragment() {
             val calendarId = getCalendarId(requireContext()) ?: return
             val event = updateEvent(calendarId, before, after)
             requireContext().contentResolver.update(eventId, event, null, null)
-            db.taskDao().updateTaskEventId(before.id, eventId.toString())
+            db.taskDao().updateEventId(before.id, eventId.toString())
         }
     }
 

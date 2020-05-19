@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.maltaisn.icondialog.IconDialog
@@ -25,6 +26,7 @@ import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
 import org.vmaier.tidfl.data.AppDatabase
+import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.databinding.ActivityMainBinding
 import org.vmaier.tidfl.features.skills.SkillCreateFragment
 import org.vmaier.tidfl.features.skills.SkillEditFragment
@@ -46,22 +48,24 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
     private lateinit var navController: NavController
     private lateinit var iconDialog: IconDialog
-    private lateinit var navView: NavigationView
+    private lateinit var drawerNav: NavigationView
     lateinit var binding: ActivityMainBinding
     private val PICK_IMAGE_REQUEST = 1
 
     companion object {
         lateinit var toolbar: Toolbar
         lateinit var drawerLayout: DrawerLayout
+        lateinit var bottomNav: BottomNavigationView
         lateinit var xpCounterView: TextView
         lateinit var levelCounterView: TextView
         lateinit var userNameView: TextView
         lateinit var avatarView: ImageView
+        lateinit var db: AppDatabase
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        db = AppDatabase(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -71,7 +75,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         setSupportActionBar(toolbar)
 
         drawerLayout = findViewById(R.id.drawer_layout)
-        navView = findViewById(R.id.nav_view)
+        drawerNav = findViewById(R.id.drawer_nav)
+        bottomNav = findViewById(R.id.bottom_nav)
 
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
@@ -79,7 +84,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-        navView.setNavigationItemSelectedListener(this)
+        drawerNav.setNavigationItemSelectedListener(this)
+        bottomNav.setOnNavigationItemSelectedListener {
+            onNavigationItemSelected(it)
+        }
+        val taskAmount = db.taskDao().countByStatus(Status.OPEN)
+        val skillAmount = db.skillDao().countAll()
+        bottomNav.getOrCreateBadge(R.id.nav_tasks).number = taskAmount
+        bottomNav.getOrCreateBadge(R.id.nav_tasks).isVisible = taskAmount > 0
+        bottomNav.getOrCreateBadge(R.id.nav_skills).number = skillAmount
+        bottomNav.getOrCreateBadge(R.id.nav_skills).isVisible = skillAmount > 0
         iconDialog = supportFragmentManager
             .findFragmentByTag(Const.Tag.ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())
@@ -87,7 +101,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
     override fun onStart() {
         super.onStart()
-        val headerView = navView.getHeaderView(0)
+        val headerView = drawerNav.getHeaderView(0)
 
         // --- User name settings
         userNameView = headerView.findViewById(R.id.user_name) as TextView
@@ -109,7 +123,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // --- XP value settings
         xpCounterView = headerView.findViewById(R.id.xp_counter) as TextView
-        val db = AppDatabase(this)
         val xpValue = db.taskDao().countOverallXpValue()
         xpCounterView.text = getString(R.string.term_xp_value, xpValue)
 
@@ -121,6 +134,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
     fun selectIconButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
         iconDialog.show(supportFragmentManager, Const.Tag.ICON_DIALOG_TAG)
+    }
+
+    private fun launchGallery() {
+        val galleryIntent = Intent(Intent.ACTION_PICK)
+        galleryIntent.type = "image/*"
+        if (galleryIntent.resolveActivity(packageManager) != null) {
+            startActivityForResult(
+                Intent.createChooser(galleryIntent,
+                    getString(R.string.heading_select_image)), PICK_IMAGE_REQUEST
+            )
+        }
     }
 
     override val iconDialogIconPack: IconPack?
@@ -135,6 +159,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 navController.navigate(R.id.skillListFragment)
             }
         }
+        // update selected menu item in bottom navigation as well
+        bottomNav.menu.findItem(item.itemId).isChecked = true
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
@@ -204,7 +230,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                                 SkillEditFragment.binding.name.error =
                                     getString(R.string.error_name_cannot_be_empty)
                             } else {
-                                val foundSkill = SkillFragment.db.skillDao().findByName(name)
+                                val foundSkill = db.skillDao().findByName(name)
                                 if (foundSkill != SkillEditFragment.skill) {
                                     SkillEditFragment.binding.name.requestFocus()
                                     SkillEditFragment.binding.name.error =
@@ -230,17 +256,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             }
         } else {
             supportFragmentManager.popBackStack()
-        }
-    }
-
-    private fun launchGallery() {
-        val galleryIntent = Intent(Intent.ACTION_PICK)
-        galleryIntent.type = "image/*"
-        if (galleryIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(
-                Intent.createChooser(galleryIntent,
-                    getString(R.string.heading_select_image)), PICK_IMAGE_REQUEST
-            )
         }
     }
 

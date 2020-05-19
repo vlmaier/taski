@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_task_list.*
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
@@ -35,7 +34,8 @@ class SkillListFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, saved)
         MainActivity.toolbar.title = getString(R.string.heading_skills)
-        binding = DataBindingUtil.inflate<FragmentSkillListBinding>(
+        MainActivity.bottomNav.visibility = View.VISIBLE
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_skill_list, container, false
         )
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -53,29 +53,48 @@ class SkillListFragment : Fragment() {
         skillAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                checkIfEmpty()
+                checkIfRecyclerViewIsEmpty()
+                updateBadge()
             }
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
-                checkIfEmpty()
+                checkIfRecyclerViewIsEmpty()
+                updateBadge()
             }
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
                 super.onItemRangeRemoved(positionStart, itemCount)
-                checkIfEmpty()
+                checkIfRecyclerViewIsEmpty()
+                updateBadge()
             }
-            fun checkIfEmpty() {
+            fun checkIfRecyclerViewIsEmpty() {
                 val visibility = if (skillAdapter.itemCount == 0) View.VISIBLE else View.INVISIBLE
                 binding.emptyRvText.visibility = visibility
                 binding.emptyRvArrow.visibility = visibility
                 binding.emptyRvTumbleweed.visibility = visibility
             }
+            fun updateBadge() {
+                val size = skillAdapter.itemCount
+                if (size != 0) {
+                    MainActivity.bottomNav.getOrCreateBadge(R.id.nav_skills).number = size
+                }
+                MainActivity.bottomNav.getOrCreateBadge(R.id.nav_skills).isVisible = size > 0
+            }
         })
         val db = AppDatabase(requireContext())
         val skills = db.skillDao().findAll()
         skillAdapter.setSkills(skills)
-        rv.apply {
+        binding.rv.apply {
             layoutManager = GridLayoutManager(activity, 2)
             adapter = skillAdapter
         }
+        binding.rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy < 0 && !binding.fab.isShown) {
+                    binding.fab.show()
+                } else if (dy > 0 && binding.fab.isShown) {
+                    binding.fab.hide()
+                }
+            }
+        })
     }
 }

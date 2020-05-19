@@ -37,7 +37,8 @@ class TaskListFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, saved)
         MainActivity.toolbar.title = getString(R.string.heading_tasks)
-        binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
+        MainActivity.bottomNav.visibility = View.VISIBLE
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_task_list, container, false
         )
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -55,30 +56,49 @@ class TaskListFragment : Fragment() {
         taskAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                checkIfEmpty()
+                checkIfRecyclerViewIsEmpty()
+                updateBadge()
             }
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
-                checkIfEmpty()
+                checkIfRecyclerViewIsEmpty()
+                updateBadge()
             }
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
                 super.onItemRangeRemoved(positionStart, itemCount)
-                checkIfEmpty()
+                checkIfRecyclerViewIsEmpty()
+                updateBadge()
             }
-            fun checkIfEmpty() {
+            fun checkIfRecyclerViewIsEmpty() {
                 val visibility = if (taskAdapter.itemCount == 0) View.VISIBLE else View.INVISIBLE
                 binding.emptyRvText.visibility = visibility
                 binding.emptyRvArrow.visibility = visibility
                 binding.emptyRvTumbleweed.visibility = visibility
             }
+            fun updateBadge() {
+                val size = taskAdapter.itemCount
+                if (size != 0) {
+                    MainActivity.bottomNav.getOrCreateBadge(R.id.nav_tasks).number = size
+                }
+                MainActivity.bottomNav.getOrCreateBadge(R.id.nav_tasks).isVisible = size > 0
+            }
         })
         val db = AppDatabase(requireContext())
-        val tasks = db.taskDao().findTasksWithStatus(Status.OPEN)
+        val tasks = db.taskDao().findByStatus(Status.OPEN)
         taskAdapter.setTasks(tasks)
-        rv.apply {
+        binding.rv.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = taskAdapter
         }
+        binding.rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy < 0 && !binding.fab.isShown) {
+                    binding.fab.show()
+                } else if (dy > 0 && binding.fab.isShown) {
+                    binding.fab.hide()
+                }
+            }
+        })
         val simpleItemTouchCallback = SwipeCallbackHandler()
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(rv)

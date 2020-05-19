@@ -57,6 +57,7 @@ open class SkillFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, saved)
         MainActivity.toolbar.title = getString(R.string.heading_skills)
+        MainActivity.bottomNav.visibility = View.GONE
         val categories = db.categoryDao().findAll()
         categoryNames = categories.map { it.name }
         return this.view

@@ -3,6 +3,7 @@ package org.vmaier.tidfl.features.settings
 import android.Manifest
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
@@ -23,6 +24,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MainActivity.toolbar.title = getString(R.string.heading_settings)
+        MainActivity.bottomNav.visibility = View.GONE
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

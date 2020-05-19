@@ -53,7 +53,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -215,7 +215,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -422,7 +422,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -704,7 +704,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -851,7 +851,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -1020,7 +1020,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -1256,7 +1256,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -1375,7 +1375,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -1498,7 +1498,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -1648,7 +1648,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -1887,7 +1887,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -2155,7 +2155,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()
@@ -2321,7 +2321,7 @@ class SkillsTests {
                 childAtPosition(
                     allOf(
                         withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.nav_view), 0)
+                        childAtPosition(withId(R.id.drawer_nav), 0)
                     ), 2
                 ),
                 isDisplayed()

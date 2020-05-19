@@ -39,7 +39,7 @@ interface TaskDao {
         WHERE id = :taskId
     """
     )
-    fun findTaskById(taskId: Long): Task
+    fun findById(taskId: Long): Task
 
     @Query(
         """
@@ -48,7 +48,16 @@ interface TaskDao {
         WHERE status = :status
     """
     )
-    fun findTasksWithStatus(status: Status): List<Task>
+    fun findByStatus(status: Status): List<Task>
+
+    @Query(
+        """
+        SELECT COUNT(*)
+        FROM tasks
+        WHERE status = :status
+    """
+    )
+    fun countByStatus(status: Status): Int
 
     @Query(
         """
@@ -68,7 +77,7 @@ interface TaskDao {
         WHERE id = :taskId
     """
     )
-    fun changeTaskStatus(taskId: Long, status: Status)
+    fun changeStatus(taskId: Long, status: Status)
 
     @Query(
         """
@@ -77,7 +86,7 @@ interface TaskDao {
         WHERE id = :taskId
     """
     )
-    fun updateTaskEventId(taskId: Long, eventId: String)
+    fun updateEventId(taskId: Long, eventId: String)
 
     @Update(entity = Task::class, onConflict = OnConflictStrategy.REPLACE)
     fun update(task: Task)
