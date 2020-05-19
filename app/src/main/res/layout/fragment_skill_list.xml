@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/skill_list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,10 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="2dp"
-            android:layout_marginLeft="2dp"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="2dp"
-            android:layout_marginRight="2dp"
             android:layout_marginBottom="2dp"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -30,6 +28,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="2"
             tools:listitem="@layout/item_skill"
+            tools:visibility="invisible"
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,8 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:clickable="true"
-            android:focusable="true"
             android:contentDescription="@string/content_fab"
+            android:focusable="true"
+            android:src="@android:drawable/ic_input_add"
             app:fabSize="auto"
             app:layout_anchor="@id/rv"
             app:layout_anchorGravity="bottom|right|end"
@@ -51,8 +51,52 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
             app:tint="@color/colorTextOnSecondary"
-            android:src="@android:drawable/ic_input_add"
             />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <TextView
+            android:id="@+id/empty_rv_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="8dp"
+            android:padding="12dp"
+            android:text="@string/hint_no_skills_in_rv"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/empty_rv_arrow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/empty_rv_arrow"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="@string/content_arrow_to_fab"
+            app:layout_constraintBottom_toBottomOf="@+id/fab"
+            app:layout_constraintEnd_toStartOf="@+id/fab"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/empty_rv_text"
+            app:srcCompat="@drawable/ic_arrow_to_fab"
+            />
+
+        <ImageView
+            android:id="@+id/empty_rv_tumbleweed"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="@string/content_tumbleweed_icon"
+            android:scaleType="fitCenter"
+            android:tint="@android:color/tab_indicator_text"
+            app:layout_constraintBottom_toTopOf="@+id/empty_rv_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_tumbleweed"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

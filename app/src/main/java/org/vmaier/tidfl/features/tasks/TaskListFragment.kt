@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_task_list.*
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
@@ -27,6 +28,7 @@ class TaskListFragment : Fragment() {
 
     companion object {
         lateinit var taskAdapter: TaskAdapter
+        lateinit var binding: FragmentTaskListBinding
     }
 
     override fun onCreateView(
@@ -35,7 +37,7 @@ class TaskListFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, saved)
         MainActivity.toolbar.title = getString(R.string.heading_tasks)
-        val binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
+        binding = DataBindingUtil.inflate<FragmentTaskListBinding>(
             inflater, R.layout.fragment_task_list, container, false
         )
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -50,6 +52,26 @@ class TaskListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         taskAdapter = TaskAdapter(requireContext())
+        taskAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                checkIfEmpty()
+            }
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                checkIfEmpty()
+            }
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                super.onItemRangeRemoved(positionStart, itemCount)
+                checkIfEmpty()
+            }
+            fun checkIfEmpty() {
+                val visibility = if (taskAdapter.itemCount == 0) View.VISIBLE else View.INVISIBLE
+                binding.emptyRvText.visibility = visibility
+                binding.emptyRvArrow.visibility = visibility
+                binding.emptyRvTumbleweed.visibility = visibility
+            }
+        })
         val db = AppDatabase(requireContext())
         val tasks = db.taskDao().findTasksWithStatus(Status.OPEN)
         taskAdapter.setTasks(tasks)

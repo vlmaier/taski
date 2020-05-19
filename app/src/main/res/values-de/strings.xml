@@ -81,6 +81,8 @@
     <string name="hint_task_due_date">Datum</string>
     <string name="hint_task_due_time">Uhrzeit</string>
     <string name="hint_no_skills">Es wurden noch keine Fertigkeiten erstellt</string>
+    <string name="hint_no_tasks_in_rv">Es sind keine Aufgaben verfügbar\nKlicke auf + um eine hinzuzufügen</string>
+    <string name="hint_no_skills_in_rv">Es sind keine Fertigkeiten verfügbar\nKlicke auf + um eine hinzuzufügen</string>
     <!-- Description messages -->
     <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Tasks zu dem Standardkalender.</string>
     <string name="description_user_name">Setze einen Namen, der im Navigationsmenü angezeigt wird.</string>
@@ -93,9 +95,10 @@
     <!-- Content description -->
     <string name="content_task_icon">Aufgabensymbol</string>
     <string name="content_skill_icon">Fertingskeitssymbol</string>
-    <string name="content_fab">floating action button</string>
-    <string name="content_due_at_icon">Fällig am Symbol</string>
-    <string name="content_skill_tags_icon">Tagssymbol</string>
+    <string name="content_fab">schwebende Aktionstaste</string>
+    <string name="content_due_at_icon">Fällig-Am-Symbol</string>
     <string name="content_user_avatar">Benutzeravatar</string>
+    <string name="content_arrow_to_fab">Pfeil, der auf schwebende Aktionstaste zeigt</string>
+    <string name="content_tumbleweed_icon">Steppenläufer</string>
 
 </resources>

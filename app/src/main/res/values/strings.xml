@@ -81,6 +81,8 @@
     <string name="hint_task_due_date">Date</string>
     <string name="hint_task_due_time">Time</string>
     <string name="hint_no_skills">No skills were created yet</string>
+    <string name="hint_no_tasks_in_rv">No tasks are available\nclick + to add one</string>
+    <string name="hint_no_skills_in_rv">No skills are available\nclick + to add one</string>
     <!-- Description messages -->
     <string name="description_calendar_sync">If selected the application will synchronize all tasks to default calendar.</string>
     <string name="description_user_name">Set your name to be shown in navigation menu.</string>
@@ -95,7 +97,8 @@
     <string name="content_skill_icon">skill icon</string>
     <string name="content_fab">floating action button</string>
     <string name="content_due_at_icon">due at icon</string>
-    <string name="content_skill_tags_icon">skill tags icon</string>
     <string name="content_user_avatar">user avatar</string>
+    <string name="content_arrow_to_fab">arrow pointing to floating action button</string>
+    <string name="content_tumbleweed_icon">tumbleweed icon</string>
 
 </resources>
