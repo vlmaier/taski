@@ -51,7 +51,7 @@
     <string name="action_create">Create</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
-    <string name="action_proceed">Proceed</string>
+    <string name="action_proceed_with_delete">Proceed</string>
     <string name="action_set">Set</string>
     <!-- Headings -->
     <string name="heading_create_skill">Create new skill</string>

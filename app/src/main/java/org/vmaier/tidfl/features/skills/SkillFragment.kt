@@ -85,7 +85,7 @@ open class SkillFragment : Fragment() {
                     )
                 )
                     .setCancelable(false)
-                    .setPositiveButton(getString(R.string.action_proceed)) { _, _ ->
+                    .setPositiveButton(getString(R.string.action_proceed_with_delete)) { _, _ ->
                         deleteSkill(it, position)
                     }
                     .setNegativeButton(getString(R.string.action_cancel)) { dialog, _ ->
