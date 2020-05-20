@@ -51,7 +51,7 @@
     <string name="action_create">Erstellen</string>
     <string name="action_cancel">Abbrechen</string>
     <string name="action_delete">Löschen</string>
-    <string name="action_proceed">Weiter</string>
+    <string name="action_proceed_with_delete">Löschen</string>
     <string name="action_set">Setzen</string>
     <!-- Headings -->
     <string name="heading_create_skill">Neue Fertigkeit</string>
