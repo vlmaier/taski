@@ -2,7 +2,7 @@
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="Profile preferences">
+    <PreferenceCategory android:title="@string/heading_profile_prefs">
         <androidx.preference.EditTextPreference
             android:defaultValue="@string/app_name"
             android:key="user_name"
@@ -13,7 +13,7 @@
             />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="General settings">
+    <PreferenceCategory android:title="@string/heading_general_settings">
         <androidx.preference.CheckBoxPreference
             android:defaultValue="false"
             android:icon="@drawable/ic_baseline_calendar_today_24"
