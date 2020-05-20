@@ -111,4 +111,11 @@
         android:label="SettingsFragment"
         />
 
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="org.vmaier.tidfl.features.settings.HelpFragment"
+        android:label="HelpFragment"
+        tools:layout="@layout/fragment_help"
+        />
+
 </navigation>
