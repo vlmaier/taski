@@ -54,30 +54,18 @@ class SkillListFragment : Fragment() {
             override fun onChanged() {
                 super.onChanged()
                 checkIfRecyclerViewIsEmpty()
-                updateBadge()
             }
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 checkIfRecyclerViewIsEmpty()
-                updateBadge()
             }
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
                 super.onItemRangeRemoved(positionStart, itemCount)
                 checkIfRecyclerViewIsEmpty()
-                updateBadge()
             }
             fun checkIfRecyclerViewIsEmpty() {
-                val visibility = if (skillAdapter.itemCount == 0) View.VISIBLE else View.INVISIBLE
-                binding.emptyRvText.visibility = visibility
-                binding.emptyRvArrow.visibility = visibility
-                binding.emptyRvTumbleweed.visibility = visibility
-            }
-            fun updateBadge() {
-                val size = skillAdapter.itemCount
-                if (size != 0) {
-                    MainActivity.bottomNav.getOrCreateBadge(R.id.nav_skills).number = size
-                }
-                MainActivity.bottomNav.getOrCreateBadge(R.id.nav_skills).isVisible = size > 0
+                val visibility = if (skillAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                binding.emptyRv.visibility = visibility
             }
         })
         val db = AppDatabase(requireContext())

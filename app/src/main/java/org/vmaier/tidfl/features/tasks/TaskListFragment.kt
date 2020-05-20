@@ -70,10 +70,8 @@ class TaskListFragment : Fragment() {
                 updateBadge()
             }
             fun checkIfRecyclerViewIsEmpty() {
-                val visibility = if (taskAdapter.itemCount == 0) View.VISIBLE else View.INVISIBLE
-                binding.emptyRvText.visibility = visibility
-                binding.emptyRvArrow.visibility = visibility
-                binding.emptyRvTumbleweed.visibility = visibility
+                val visibility = if (taskAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                binding.emptyRv.visibility = visibility
             }
             fun updateBadge() {
                 val size = taskAdapter.itemCount

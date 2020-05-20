@@ -67,33 +67,40 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         super.onCreate(savedInstanceState)
         db = AppDatabase(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        // --- Fragment Navigation Settings
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
+
+        // --- Toolbar Settings
         toolbar = findViewById(R.id.toolbar)
         toolbar.title = getString(R.string.heading_tasks)
         setSupportActionBar(toolbar)
 
+        // --- Drawer Settings
         drawerLayout = findViewById(R.id.drawer_layout)
-        drawerNav = findViewById(R.id.drawer_nav)
-        bottomNav = findViewById(R.id.bottom_nav)
-
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
             0, 0
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        // --- Drawer Navigation Settings
+        drawerNav = findViewById(R.id.drawer_nav)
         drawerNav.setNavigationItemSelectedListener(this)
+
+        // --- Bottom Navigation Settings
+        bottomNav = findViewById(R.id.bottom_nav)
         bottomNav.setOnNavigationItemSelectedListener {
             onNavigationItemSelected(it)
         }
         val taskAmount = db.taskDao().countByStatus(Status.OPEN)
-        val skillAmount = db.skillDao().countAll()
         bottomNav.getOrCreateBadge(R.id.nav_tasks).number = taskAmount
         bottomNav.getOrCreateBadge(R.id.nav_tasks).isVisible = taskAmount > 0
-        bottomNav.getOrCreateBadge(R.id.nav_skills).number = skillAmount
-        bottomNav.getOrCreateBadge(R.id.nav_skills).isVisible = skillAmount > 0
+
+        // --- Icon Dialog Settings
         iconDialog = supportFragmentManager
             .findFragmentByTag(Const.Tag.ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())
@@ -108,7 +115,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         userNameView.text = getDefaultSharedPreferences(this)
             .getString(Const.Prefs.USER_NAME, getString(R.string.app_name))
 
-        // User avatar settings
+        // --- User avatar settings
         avatarView = headerView.findViewById(R.id.user_avatar)
         avatarView.clipToOutline = true
         val avatar = getDefaultSharedPreferences(this)
