@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Things I Do For Loot</string>
+    <string name="version">Version %s\n\n© 2020 Vladas Maier</string>
     <!-- Duration values -->
     <plurals name="duration_minute">
         <item quantity="one">%d Minute</item>
@@ -77,6 +78,7 @@
     <string name="heading_general_settings">Allgemeine Einstellungen</string>
     <string name="heading_help">Hilfe</string>
     <string name="heading_licenses">Lizenzen</string>
+    <string name="heading_version">Version</string>
     <!-- Hint messages -->
     <string name="hint_skill_name">Name der Fertigkeit</string>
     <string name="hint_skill_category">Kategorie</string>
