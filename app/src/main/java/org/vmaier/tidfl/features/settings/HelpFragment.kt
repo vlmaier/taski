@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import org.vmaier.tidfl.BuildConfig
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.databinding.FragmentHelpBinding
@@ -37,7 +39,17 @@ class HelpFragment : Fragment() {
         )
         binding.licensesButton.setOnClickListener {
             val intent = Intent(activity, OssLicensesMenuActivity::class.java)
+            OssLicensesMenuActivity.setActivityTitle(getString(R.string.heading_licenses));
             startActivity(intent)
+        }
+        binding.versionButton.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+            dialogBuilder
+                .setTitle(getString(R.string.app_name))
+                .setMessage(resources.getString(R.string.version, BuildConfig.VERSION_NAME))
+                .setIcon(R.mipmap.ic_launcher_round)
+                .setCancelable(true)
+            dialogBuilder.create().show()
         }
         return binding.root
     }

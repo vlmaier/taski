@@ -79,11 +79,11 @@ open class SkillFragment : Fragment() {
             val countTasks = db.skillDao().countTasksWithSkillByStatus(skill.id)
             if (countTasks > 0) {
                 val dialogBuilder = AlertDialog.Builder(requireContext())
-                dialogBuilder.setMessage(
-                    resources.getQuantityString(
+                dialogBuilder
+                    .setTitle(getString(R.string.alert_skill_delete))
+                    .setMessage(resources.getQuantityString(
                         R.plurals.alert_assigned_task, countTasks, countTasks, skill.name
-                    )
-                )
+                    ))
                     .setCancelable(false)
                     .setPositiveButton(getString(R.string.action_proceed_with_delete)) { _, _ ->
                         deleteSkill(it, position)
@@ -91,9 +91,7 @@ open class SkillFragment : Fragment() {
                     .setNegativeButton(getString(R.string.action_cancel)) { dialog, _ ->
                         dialog.cancel()
                     }
-                val alert = dialogBuilder.create()
-                alert.setTitle(getString(R.string.alert_skill_delete))
-                alert.show()
+                dialogBuilder.create().show()
             } else {
                 deleteSkill(it, position)
             }
