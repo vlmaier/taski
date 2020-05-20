@@ -73,6 +73,8 @@
     <string name="heading_calendar_sync">Calendar Synchronization</string>
     <string name="heading_user_name">Your name</string>
     <string name="heading_select_image">Select image</string>
+    <string name="heading_profile_prefs">Profile preferences</string>
+    <string name="heading_general_settings">General settings</string>
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
     <string name="hint_skill_category">Skill category</string>
