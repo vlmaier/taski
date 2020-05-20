@@ -21,6 +21,7 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
 import org.hamcrest.core.IsInstanceOf
+import org.junit.After
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
@@ -38,25 +39,17 @@ class SkillsTests {
     @Test
     fun create() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -200,25 +193,17 @@ class SkillsTests {
     @Test
     fun view() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -407,25 +392,17 @@ class SkillsTests {
     @Test
     fun edit() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -628,11 +605,16 @@ class SkillsTests {
         // validate that skill is still displayed in the recycler view
         onView(
             allOf(
+                withId(R.id.cv),
                 childAtPosition(
                     allOf(
-                        withId(R.id.cv),
-                        childAtPosition(withId(R.id.rv), 0)
-                    ), 0
+                        withId(R.id.rv),
+                        childAtPosition(
+                            withId(R.id.skill_list_layout),
+                            0
+                        )
+                    ),
+                    0
                 )
             )
         )
@@ -689,25 +671,17 @@ class SkillsTests {
     @Test
     fun delete() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -836,25 +810,17 @@ class SkillsTests {
     @Test
     fun restore() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -1005,25 +971,17 @@ class SkillsTests {
     @Test
     fun editAndDelete() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -1241,25 +1199,17 @@ class SkillsTests {
     @Test
     fun cancelWhileCreating() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -1360,25 +1310,17 @@ class SkillsTests {
     @Test
     fun createWithoutName() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -1483,25 +1425,17 @@ class SkillsTests {
     @Test
     fun createWithoutCategory() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -1633,25 +1567,17 @@ class SkillsTests {
     @Test
     fun leaveNameEmptyWhileEditing() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -1872,25 +1798,17 @@ class SkillsTests {
     @Test
     fun leaveCategoryEmptyWhileEditing() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -2090,11 +2008,16 @@ class SkillsTests {
         // validate that skill is still displayed in the recycler view
         onView(
             allOf(
+                withId(R.id.cv),
                 childAtPosition(
                     allOf(
-                        withId(R.id.cv),
-                        childAtPosition(withId(R.id.rv), 0)
-                    ), 0
+                        withId(R.id.rv),
+                        childAtPosition(
+                            withId(R.id.skill_list_layout),
+                            0
+                        )
+                    ),
+                    0
                 )
             )
         )
@@ -2140,25 +2063,17 @@ class SkillsTests {
     @Test
     fun rotateScreenWhileCreating() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -2250,11 +2165,16 @@ class SkillsTests {
         // validate that skill was created and skill item is displayed in the recycler view
         onView(
             allOf(
+                withId(R.id.cv),
                 childAtPosition(
                     allOf(
-                        withId(R.id.cv),
-                        childAtPosition(withId(R.id.rv), 0)
-                    ), 0
+                        withId(R.id.rv),
+                        childAtPosition(
+                            withId(R.id.skill_list_layout),
+                            0
+                        )
+                    ),
+                    0
                 )
             )
         )
@@ -2306,25 +2226,17 @@ class SkillsTests {
     @Test
     fun rotateScreenWhileEditing() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -2532,11 +2444,16 @@ class SkillsTests {
         // validate that skill is still displayed in the recycler view
         onView(
             allOf(
+                withId(R.id.cv),
                 childAtPosition(
                     allOf(
-                        withId(R.id.cv),
-                        childAtPosition(withId(R.id.rv), 0)
-                    ), 0
+                        withId(R.id.rv),
+                        childAtPosition(
+                            withId(R.id.skill_list_layout),
+                            0
+                        )
+                    ),
+                    0
                 )
             )
         )
@@ -2611,6 +2528,18 @@ class SkillsTests {
     @Ignore("implement test")
     @Test
     fun restoreWithAssignedTasks() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun createWithDuplicateName() {
+
+    }
+
+    @Ignore("implement test")
+    @Test
+    fun editWithDuplicateName() {
 
     }
 

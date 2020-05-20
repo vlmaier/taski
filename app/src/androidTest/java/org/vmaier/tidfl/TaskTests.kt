@@ -21,9 +21,7 @@ import org.hamcrest.Matchers
 import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
 import org.hamcrest.core.IsInstanceOf
-import org.junit.Ignore
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import java.util.*
 
@@ -1546,25 +1544,17 @@ class TaskTests {
     @Test
     fun createWithOneSkill() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -1661,25 +1651,17 @@ class TaskTests {
         )
             .check(matches(isDisplayed()))
 
-        // click on hamburger menu
+        // click on tasks menu item
         onView(
             allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
-        // click on task menu item
-        onView(
-            allOf(
+                withId(R.id.nav_tasks),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 1
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    0
+                )
             )
         )
             .perform(click())
@@ -1905,25 +1887,17 @@ class TaskTests {
     @Test
     fun createWithTwoSkills() {
 
-        // click on hamburger menu
-        onView(
-            allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
         // click on skills menu item
         onView(
             allOf(
+                withId(R.id.nav_skills),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 2
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    1
+                )
             )
         )
             .perform(click())
@@ -2110,25 +2084,17 @@ class TaskTests {
         )
             .check(matches(isDisplayed()))
 
-        // click on hamburger menu
+        // click on tasks menu item
         onView(
             allOf(
-                childAtPosition(withId(R.id.toolbar), 2),
-                isDisplayed()
-            )
-        )
-            .perform(click())
-
-        // click on task menu item
-        onView(
-            allOf(
+                withId(R.id.nav_tasks),
                 childAtPosition(
-                    allOf(
-                        withId(R.id.design_navigation_view),
-                        childAtPosition(withId(R.id.drawer_nav), 0)
-                    ), 1
-                ),
-                isDisplayed()
+                    childAtPosition(
+                        withId(R.id.bottom_nav),
+                        0
+                    ),
+                    0
+                )
             )
         )
             .perform(click())
