@@ -75,6 +75,8 @@
     <string name="heading_select_image">Wähle ein Bild</string>
     <string name="heading_profile_prefs">Profileinstellungen</string>
     <string name="heading_general_settings">Allgemeine Einstellungen</string>
+    <string name="heading_help">Hilfe</string>
+    <string name="heading_licenses">Lizenzen</string>
     <!-- Hint messages -->
     <string name="hint_skill_name">Name der Fertigkeit</string>
     <string name="hint_skill_category">Kategorie</string>

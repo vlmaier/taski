@@ -183,6 +183,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             navController.navigate(R.id.settingsFragment)
             true
         }
+        R.id.help -> {
+            navController.navigate(R.id.helpFragment)
+            true
+        }
         else -> {
             super.onOptionsItemSelected(item)
         }

@@ -6,4 +6,9 @@
         android:id="@+id/settings"
         android:title="@string/heading_settings"
         />
+
+    <item
+        android:id="@+id/help"
+        android:title="@string/heading_help"
+        />
 </menu>
