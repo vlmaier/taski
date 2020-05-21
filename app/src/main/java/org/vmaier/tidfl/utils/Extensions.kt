@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream
 
 /**
  * Created by Vladas Maier
- * on 07/02/2020.
+ * on 07/02/2020
  * at 21:03
  */
 

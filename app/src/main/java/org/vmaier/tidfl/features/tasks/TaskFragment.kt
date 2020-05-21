@@ -44,7 +44,7 @@ import kotlin.random.Random
 
 /**
  * Created by Vladas Maier
- * on 15/02/2020.
+ * on 15/02/2020
  * at 15:22
  */
 open class TaskFragment : Fragment() {

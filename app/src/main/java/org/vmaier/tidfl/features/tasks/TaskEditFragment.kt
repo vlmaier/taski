@@ -19,7 +19,7 @@ import java.util.*
 
 /**
  * Created by Vladas Maier
- * on 08/02/2020.
+ * on 08/02/2020
  * at 11:26
  */
 class TaskEditFragment : TaskFragment() {

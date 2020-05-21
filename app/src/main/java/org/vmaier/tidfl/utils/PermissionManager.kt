@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 
 /**
  * Created by Vladas Maier
- * on 19/04/2020.
+ * on 19/04/2020
  * at 12:09
  */
 class PermissionManager(

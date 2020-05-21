@@ -18,7 +18,7 @@ import org.vmaier.tidfl.databinding.FragmentSkillListBinding
 
 /**
  * Created by Vladas Maier
- * on 25/02/2020.
+ * on 25/02/2020
  * at 18:01
  */
 class SkillListFragment : Fragment() {

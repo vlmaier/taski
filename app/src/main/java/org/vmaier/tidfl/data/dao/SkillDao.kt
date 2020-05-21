@@ -8,7 +8,7 @@ import org.vmaier.tidfl.data.entity.Skill
 
 /**
  * Created by Vladas Maier
- * on 22/04/2020.
+ * on 22/04/2020
  * at 16:43
  */
 @Dao

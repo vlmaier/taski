@@ -18,7 +18,7 @@ import org.vmaier.tidfl.utils.hideKeyboard
 
 /**
  * Created by Vladas Maier
- * on 02/03/2020.
+ * on 02/03/2020
  * at 20:02
  */
 class SkillCreateFragment : SkillFragment() {

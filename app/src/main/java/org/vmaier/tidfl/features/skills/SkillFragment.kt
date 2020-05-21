@@ -26,7 +26,7 @@ import kotlin.random.Random
 
 /**
  * Created by Vladas Maier
- * on 02/03/2020.
+ * on 02/03/2020
  * at 20:48
  */
 open class SkillFragment : Fragment() {

@@ -19,7 +19,7 @@ import org.vmaier.tidfl.utils.setIcon
 
 /**
  * Created by Vladas Maier
- * on 16/02/2020.
+ * on 16/02/2020
  * at 19:24
  */
 class TaskAdapter internal constructor(

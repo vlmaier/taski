@@ -17,7 +17,7 @@ import org.vmaier.tidfl.utils.setIcon
 
 /**
  * Created by Vladas Maier
- * on 25/02/2020.
+ * on 25/02/2020
  * at 19:27
  */
 class SkillAdapter internal constructor(

@@ -20,7 +20,7 @@ import org.vmaier.tidfl.utils.toast
 
 /**
  * Created by Vladas Maier
- * on 03/03/2020.
+ * on 03/03/2020
  * at 17:38
  */
 class SkillEditFragment : SkillFragment() {
