@@ -54,6 +54,7 @@
     <string name="action_delete">Löschen</string>
     <string name="action_proceed_with_delete">Löschen</string>
     <string name="action_set">Setzen</string>
+    <string name="action_proceed_with_reset">Zurücksetzen</string>
     <!-- Headings -->
     <string name="heading_create_skill">Neue Fertigkeit</string>
     <string name="heading_create_task">Neue Aufgabe</string>
@@ -71,7 +72,7 @@
     <string name="heading_skill_xp">Erfahrung</string>
     <string name="heading_open_tasks">Anzahl offener Aufgaben</string>
     <string name="heading_done_tasks">Anzahl abgeschlossener Aufgaben</string>
-    <string name="heading_calendar_sync">Kalender Synchronisation</string>
+    <string name="heading_calendar_sync">Kalender synchronisation</string>
     <string name="heading_user_name">Dein Name</string>
     <string name="heading_select_image">Wähle ein Bild</string>
     <string name="heading_profile_prefs">Profileinstellungen</string>
@@ -79,6 +80,7 @@
     <string name="heading_help">Hilfe</string>
     <string name="heading_licenses">Lizenzen</string>
     <string name="heading_version">Version</string>
+    <string name="heading_reset_avatar">Avatar zurücksetzen</string>
     <!-- Hint messages -->
     <string name="hint_skill_name">Name der Fertigkeit</string>
     <string name="hint_skill_category">Kategorie</string>
@@ -92,8 +94,10 @@
     <!-- Description messages -->
     <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Tasks zu dem Standardkalender.</string>
     <string name="description_user_name">Setze einen Namen, der im Navigationsmenü angezeigt wird.</string>
+    <string name="description_reset_avatar">Setze den aktuellen Avatar zurück</string>
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Fertigkeit löschen?</string>
+    <string name="alert_reset_avatar">Avatar zurücksetzen?</string>
     <plurals name="alert_assigned_task">
         <item quantity="one">%1$d Aufgabe ist der %2$s Fertigkeit zugewiesen</item>
         <item quantity="other">%1$d Aufgaben sind der %2$s Fertigkeit zugewiesen</item>

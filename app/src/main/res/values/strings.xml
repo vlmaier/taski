@@ -54,6 +54,7 @@
     <string name="action_delete">Delete</string>
     <string name="action_proceed_with_delete">Proceed</string>
     <string name="action_set">Set</string>
+    <string name="action_proceed_with_reset">Proceed</string>
     <!-- Headings -->
     <string name="heading_create_skill">Create new skill</string>
     <string name="heading_create_task">Create new task</string>
@@ -71,7 +72,7 @@
     <string name="heading_skill_xp">Skill experience</string>
     <string name="heading_open_tasks">Amount of open tasks</string>
     <string name="heading_done_tasks">Amount of done tasks</string>
-    <string name="heading_calendar_sync">Calendar Synchronization</string>
+    <string name="heading_calendar_sync">Calendar synchronization</string>
     <string name="heading_user_name">Your name</string>
     <string name="heading_select_image">Select image</string>
     <string name="heading_profile_prefs">Profile preferences</string>
@@ -79,6 +80,7 @@
     <string name="heading_help">Help</string>
     <string name="heading_licenses">Licenses</string>
     <string name="heading_version">Version</string>
+    <string name="heading_reset_avatar">Reset avatar</string>
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
     <string name="hint_skill_category">Skill category</string>
@@ -92,8 +94,10 @@
     <!-- Description messages -->
     <string name="description_calendar_sync">If selected the application will synchronize all tasks to default calendar.</string>
     <string name="description_user_name">Set your name to be shown in navigation menu.</string>
+    <string name="description_reset_avatar">Reset current avatar to default</string>
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Delete skill?</string>
+    <string name="alert_reset_avatar">Reset avatar?</string>
     <plurals name="alert_assigned_task">
         <item quantity="one">%1$d task is assigned to %2$s skill</item>
         <item quantity="other">%1$d tasks are assigned to %2$s skill</item>

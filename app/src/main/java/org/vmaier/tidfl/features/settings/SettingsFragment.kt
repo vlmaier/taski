@@ -4,9 +4,9 @@ import android.Manifest
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import androidx.preference.CheckBoxPreference
-import androidx.preference.EditTextPreference
-import androidx.preference.PreferenceFragmentCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.preference.*
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.utils.Const
@@ -15,7 +15,7 @@ import org.vmaier.tidfl.utils.PermissionManager
 
 /**
  * Created by Vladas Maier
- * on 20/04/2020.
+ * on 20/04/2020
  * at 20:34
  */
 class SettingsFragment : PreferenceFragmentCompat(),
@@ -29,6 +29,28 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val pref = preferenceScreen.findPreference(Const.Prefs.RESET_AVATAR) as Preference?
+        pref?.setOnPreferenceClickListener {
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+            dialogBuilder
+                .setTitle(getString(R.string.alert_reset_avatar))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.action_proceed_with_reset)) { _, _ ->
+                    preferenceManager.sharedPreferences.edit()
+                        .putString(Const.Prefs.USER_AVATAR, null).apply()
+                    MainActivity.avatarView.setImageDrawable(
+                        getDrawable(requireContext(), R.mipmap.ic_launcher_round))
+                }
+                .setNegativeButton(getString(R.string.action_cancel)) { dialog, _ ->
+                    dialog.cancel()
+                }
+            dialogBuilder.create().show()
+            true
+        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {

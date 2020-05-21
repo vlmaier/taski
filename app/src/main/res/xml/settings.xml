@@ -11,6 +11,12 @@
             android:summary="@string/description_user_name"
             android:title="@string/heading_user_name"
             />
+        <Preference
+            android:key="reset_avatar"
+            android:icon="@drawable/ic_baseline_account_circle_24"
+            android:summary="@string/description_reset_avatar"
+            android:title="@string/heading_reset_avatar"
+            />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/heading_general_settings">
