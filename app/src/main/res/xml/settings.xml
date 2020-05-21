@@ -3,15 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/heading_profile_prefs">
-        <androidx.preference.EditTextPreference
-            android:defaultValue="@string/app_name"
+        <androidx.preference.Preference
             android:key="user_name"
-            android:negativeButtonText="@string/action_cancel"
-            android:positiveButtonText="@string/action_set"
             android:summary="@string/description_user_name"
             android:title="@string/heading_user_name"
             />
-        <Preference
+        <androidx.preference.Preference
             android:key="reset_avatar"
             android:icon="@drawable/ic_baseline_account_circle_24"
             android:summary="@string/description_reset_avatar"

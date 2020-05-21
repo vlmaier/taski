@@ -1,4 +1,4 @@
-package org.vmaier.tidfl.utils
+package org.vmaier.tidfl
 
 import android.app.Activity
 import android.content.pm.PackageManager

@@ -6,11 +6,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.preference.*
+import androidx.preference.CheckBoxPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import org.vmaier.tidfl.MainActivity
+import org.vmaier.tidfl.PermissionManager
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.utils.Const
-import org.vmaier.tidfl.utils.PermissionManager
+import org.vmaier.tidfl.views.EditTextDialog
 
 
 /**
@@ -33,8 +37,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val pref = preferenceScreen.findPreference(Const.Prefs.RESET_AVATAR) as Preference?
-        pref?.setOnPreferenceClickListener {
+        val resetAvatarPref =
+            preferenceScreen.findPreference(Const.Prefs.RESET_AVATAR) as Preference?
+        resetAvatarPref?.setOnPreferenceClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
                 .setTitle(getString(R.string.alert_reset_avatar))
@@ -43,7 +48,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     preferenceManager.sharedPreferences.edit()
                         .putString(Const.Prefs.USER_AVATAR, null).apply()
                     MainActivity.avatarView.setImageDrawable(
-                        getDrawable(requireContext(), R.mipmap.ic_launcher_round))
+                        getDrawable(requireContext(), R.mipmap.ic_launcher_round)
+                    )
                 }
                 .setNegativeButton(getString(R.string.action_cancel)) { dialog, _ ->
                     dialog.cancel()
@@ -51,18 +57,32 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialogBuilder.create().show()
             true
         }
+        val usernamePref = preferenceScreen.findPreference(Const.Prefs.USER_NAME) as Preference?
+        usernamePref?.setOnPreferenceClickListener {
+            val username = PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .getString(Const.Prefs.USER_NAME, getString(R.string.app_name))
+            val dialog = EditTextDialog.newInstance(
+                title = getString(R.string.heading_user_name),
+                hint = getString(R.string.hint_user_name),
+                text = username,
+                positiveButton = R.string.action_set
+            )
+            dialog.onPositiveButtonClicked = {
+                val textValue = dialog.editText.text.toString()
+                PreferenceManager.getDefaultSharedPreferences(requireContext())
+                    .edit().putString(Const.Prefs.USER_NAME, textValue).apply()
+                MainActivity.userNameView.text = textValue
+            }
+            dialog.onNegativeButtonClicked = {
+                dialog.dismiss()
+            }
+            dialog.show(requireFragmentManager(), EditTextDialog::class.simpleName)
+            true
+        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
-            Const.Prefs.USER_NAME -> {
-                val pref: EditTextPreference? = findPreference(key)
-                val textValue = pref?.text.toString()
-                if (textValue.isNotBlank()) {
-                    sharedPreferences.edit().putString(Const.Prefs.USER_NAME, textValue).apply()
-                    MainActivity.userNameView.text = textValue
-                }
-            }
             Const.Prefs.CALENDAR_SYNC -> {
                 val pref: CheckBoxPreference? = findPreference(key)
                 val checkBoxValue = pref?.isChecked ?: false
@@ -72,10 +92,15 @@ class SettingsFragment : PreferenceFragmentCompat(),
                         Manifest.permission.READ_CALENDAR,
                         Manifest.permission.WRITE_CALENDAR
                     )
-                    PermissionManager(requireActivity(), permissions, 1)
+                    PermissionManager(
+                        requireActivity(),
+                        permissions,
+                        1
+                    )
                         .checkPermissions()
                 }
-                sharedPreferences.edit().putBoolean(Const.Prefs.CALENDAR_SYNC, checkBoxValue).apply()
+                sharedPreferences.edit().putBoolean(Const.Prefs.CALENDAR_SYNC, checkBoxValue)
+                    .apply()
             }
         }
     }
