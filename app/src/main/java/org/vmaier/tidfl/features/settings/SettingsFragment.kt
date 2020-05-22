@@ -18,6 +18,7 @@ import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.PermissionManager
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.utils.Const
+import org.vmaier.tidfl.utils.compress
 import org.vmaier.tidfl.utils.encodeTobase64
 import org.vmaier.tidfl.views.EditTextDialog
 
@@ -144,9 +145,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 val filePath = intent.data
                 val contentResolver = requireActivity().contentResolver
                 val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
-                MainActivity.avatarView.setImageBitmap(bitmap)
+                val compressedBitmap = bitmap.compress(10)
+                MainActivity.avatarView.setImageBitmap(compressedBitmap)
                 getDefaultSharedPreferences(context)
-                    .edit().putString(Const.Prefs.USER_AVATAR, bitmap.encodeTobase64())
+                    .edit().putString(Const.Prefs.USER_AVATAR, compressedBitmap.encodeTobase64())
                     .apply()
             }
         }

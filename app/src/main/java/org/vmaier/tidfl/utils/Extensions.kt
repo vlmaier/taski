@@ -188,6 +188,13 @@ fun Bitmap.encodeTobase64(): String? {
     return Base64.encodeToString(b, Base64.DEFAULT)
 }
 
+fun Bitmap.compress(quality: Int): Bitmap {
+    val stream = ByteArrayOutputStream()
+    this.compress(Bitmap.CompressFormat.JPEG, quality, stream)
+    val byteArray = stream.toByteArray()
+    return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+}
+
 fun String.decodeBase64(): Bitmap? {
     val decodedByte: ByteArray = Base64.decode(this, 0)
     return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
