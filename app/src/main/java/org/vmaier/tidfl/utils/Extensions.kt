@@ -19,6 +19,8 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.DurationUnit
 import org.vmaier.tidfl.data.entity.Task
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**
@@ -189,4 +191,18 @@ fun Bitmap.encodeTobase64(): String? {
 fun String.decodeBase64(): Bitmap? {
     val decodedByte: ByteArray = Base64.decode(this, 0)
     return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+}
+
+fun Date.getDateInAppFormat(): String {
+    return SimpleDateFormat(
+        App.dateFormat.toPattern().split(" ")[0],
+        Locale.getDefault()
+    ).format(this.time)
+}
+
+fun Date.getTimeInAppFormat(): String {
+    return SimpleDateFormat(
+        App.dateFormat.toPattern().split(" ")[1],
+        Locale.getDefault()
+    ).format(this.time)
 }

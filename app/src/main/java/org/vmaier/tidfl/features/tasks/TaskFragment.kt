@@ -37,7 +37,6 @@ import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.utils.*
 import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.random.Random
 
@@ -167,12 +166,7 @@ open class TaskFragment : Fragment() {
                 calendar.set(Calendar.YEAR, year)
                 calendar.set(Calendar.MONTH, month)
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                view.setText(
-                    SimpleDateFormat(
-                        App.dateFormat.toPattern().split(" ")[0],
-                        Locale.GERMAN
-                    ).format(calendar.time)
-                )
+                view.setText(calendar.time.getDateInAppFormat())
             }
             DatePickerDialog(
                 requireContext(), dateSetListener,
@@ -186,21 +180,16 @@ open class TaskFragment : Fragment() {
     fun setDeadlineTimeOnClickListener(view: EditText?) {
         view?.setOnClickListener {
             it.hideKeyboard()
-            val cal = Calendar.getInstance()
+            val calendar = Calendar.getInstance()
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
-                cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, minute)
-                view.setText(
-                    SimpleDateFormat(
-                        App.dateFormat.toPattern().split(" ")[1],
-                        Locale.GERMAN
-                    ).format(cal.time)
-                )
+                calendar.set(Calendar.HOUR_OF_DAY, hour)
+                calendar.set(Calendar.MINUTE, minute)
+                view.setText(calendar.time.getDateInAppFormat())
             }
             TimePickerDialog(
                 requireContext(), timeSetListener,
-                cal.get(Calendar.HOUR_OF_DAY),
-                cal.get(Calendar.MINUTE),
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
                 true
             ).show()
         }

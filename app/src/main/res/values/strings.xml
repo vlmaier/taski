@@ -37,6 +37,10 @@
         <item quantity="one">%d skill</item>
         <item quantity="other">%d skills</item>
     </plurals>
+    <string name="term_overdue">Overdue</string>
+    <string name="term_due_today">Due today</string>
+    <string name="term_due_tomorrow">Due tomorrow</string>
+    <string name="term_due_someday">Due someday</string>
     <!-- Error messages -->
     <string name="error_name_cannot_be_empty">Name cannot be empty</string>
     <string name="error_skill_already_exists">Skill with such name already exists</string>

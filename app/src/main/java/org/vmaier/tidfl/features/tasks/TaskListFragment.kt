@@ -70,11 +70,11 @@ class TaskListFragment : Fragment() {
                 updateBadge()
             }
             fun checkIfRecyclerViewIsEmpty() {
-                val visibility = if (taskAdapter.itemCount == 0) View.VISIBLE else View.GONE
+                val visibility = if (taskAdapter.tasks.isEmpty()) View.VISIBLE else View.GONE
                 binding.emptyRv.visibility = visibility
             }
             fun updateBadge() {
-                val size = taskAdapter.itemCount
+                val size = taskAdapter.tasks.size
                 if (size != 0) {
                     MainActivity.bottomNav.getOrCreateBadge(R.id.nav_tasks).number = size
                 }
@@ -83,7 +83,7 @@ class TaskListFragment : Fragment() {
         })
         val db = AppDatabase(requireContext())
         val tasks = db.taskDao().findByStatus(Status.OPEN)
-        taskAdapter.setTasks(tasks)
+        taskAdapter.fill(tasks)
         binding.rv.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = taskAdapter

@@ -37,6 +37,10 @@
         <item quantity="one">%d Skill</item>
         <item quantity="other">%d Skills</item>
     </plurals>
+    <string name="term_overdue">Überfällig</string>
+    <string name="term_due_today">Heute fällig</string>
+    <string name="term_due_tomorrow">Morgen fällig</string>
+    <string name="term_due_someday">Eines Tages fällig</string>
     <!-- Error messages -->
     <string name="error_name_cannot_be_empty">Name kann nicht leer sein</string>
         <string name="error_skill_already_exists">Fertigkeit mit solchem Namen existiert bereits</string>

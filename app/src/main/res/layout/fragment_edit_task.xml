@@ -299,7 +299,7 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/xp_gain_text"
                 app:layout_constraintTop_toTopOf="@+id/xp_gain_text"
-                tools:text="1500 XP"
+                tools:text="15 XP"
                 />
 
             <SeekBar

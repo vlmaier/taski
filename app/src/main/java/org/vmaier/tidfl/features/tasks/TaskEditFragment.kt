@@ -166,7 +166,7 @@ class TaskEditFragment : TaskFragment() {
         if (task != toUpdate || assignedSkills != skillsToAssign) {
             db.taskDao().updateTask(toUpdate, skillsToAssign)
             TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
-            TaskListFragment.taskAdapter.notifyItemChanged(itemPosition)
+            TaskListFragment.taskAdapter.update()
             updateInCalendar(task, toUpdate)
             getString(R.string.event_task_updated).toast(requireContext())
         }

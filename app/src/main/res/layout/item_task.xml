@@ -54,7 +54,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/task_duration"
                     app:layout_constraintStart_toEndOf="@+id/task_icon"
                     app:layout_constraintTop_toTopOf="@+id/task_icon"
-                    tools:text="Goal"
+                    tools:text="Work on App"
                     />
 
                 <TextView
@@ -73,7 +73,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/linear_layout"
                     app:layout_constraintStart_toStartOf="@+id/linear_layout"
                     app:layout_constraintTop_toBottomOf="@+id/linear_layout"
-                    tools:text="Details"
+                    tools:text="@string/app_name"
                     />
 
             </LinearLayout>
@@ -129,7 +129,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linear_layout"
-                tools:text="250 XP"
+                tools:text="540 XP"
                 />
 
             <TextView
@@ -143,7 +143,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/skill_icon"
                 app:layout_constraintEnd_toStartOf="@+id/skill_icon"
                 app:layout_constraintTop_toTopOf="@+id/skill_icon"
-                tools:text="2 skills"
+                tools:text="1 skill"
                 />
 
             <TextView
@@ -157,7 +157,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/time_icon"
                 app:layout_constraintEnd_toStartOf="@+id/time_icon"
                 app:layout_constraintTop_toTopOf="@+id/time_icon"
-                tools:text="15 min"
+                tools:text="6 h"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
