@@ -100,7 +100,7 @@
     <!-- Description messages -->
     <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Tasks zu dem Standardkalender.</string>
     <string name="description_user_name">Setze einen Namen, der im Navigationsmenü angezeigt wird.</string>
-    <string name="description_change_avatar">Aktuellen Avatar ändern.</string>
+    <string name="description_change_avatar">Aktuellen Avatar ändern</string>
     <string name="description_reset_avatar">Setze den aktuellen Avatar zurück.</string>
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Fertigkeit löschen?</string>

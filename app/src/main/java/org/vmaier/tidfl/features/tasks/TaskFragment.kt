@@ -184,7 +184,7 @@ open class TaskFragment : Fragment() {
             val timeSetListener = TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                 calendar.set(Calendar.HOUR_OF_DAY, hour)
                 calendar.set(Calendar.MINUTE, minute)
-                view.setText(calendar.time.getDateInAppFormat())
+                view.setText(calendar.time.getTimeInAppFormat())
             }
             TimePickerDialog(
                 requireContext(), timeSetListener,

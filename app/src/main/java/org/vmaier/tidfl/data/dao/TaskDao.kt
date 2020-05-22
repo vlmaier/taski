@@ -23,11 +23,12 @@ interface TaskDao {
     @Insert(entity = AssignedSkill::class, onConflict = OnConflictStrategy.IGNORE)
     fun assignSkill(assignedSkill: AssignedSkill)
 
-    fun createTask(task: Task, skills: List<Skill>) {
+    fun createTask(task: Task, skills: List<Skill>): Long {
         val id = create(task)
         for (skill in skills) {
             assignSkill(AssignedSkill(skillId = skill.id, taskId = id))
         }
+        return id
     }
 
     // -------------------------------------  READ QUERIES  ------------------------------------- //

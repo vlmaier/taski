@@ -100,7 +100,7 @@
     <!-- Description messages -->
     <string name="description_calendar_sync">If selected the application will synchronize all tasks to default calendar.</string>
     <string name="description_user_name">Set your name to be shown in navigation menu.</string>
-    <string name="description_change_avatar">Change user avatar.</string>
+    <string name="description_change_avatar">Change user avatar</string>
     <string name="description_reset_avatar">Reset current avatar to default.</string>
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Delete skill?</string>

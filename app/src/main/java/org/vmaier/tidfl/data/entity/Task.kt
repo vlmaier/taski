@@ -32,7 +32,7 @@ import java.util.*
 data class Task(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    val id: Long = 0,
+    var id: Long = 0,
 
     @ColumnInfo(name = "goal")
     val goal: String,

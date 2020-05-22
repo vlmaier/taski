@@ -161,7 +161,8 @@ class TaskEditFragment : TaskFragment() {
         }
         val toUpdate = Task(
             id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,
-            createdAt = task.createdAt, dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty)
+            createdAt = task.createdAt, dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty),
+            eventId = task.eventId
         )
         if (task != toUpdate || assignedSkills != skillsToAssign) {
             db.taskDao().updateTask(toUpdate, skillsToAssign)

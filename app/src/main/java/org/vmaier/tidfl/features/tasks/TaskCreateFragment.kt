@@ -157,7 +157,8 @@ class TaskCreateFragment : TaskFragment() {
             goal = goal, details = details, duration = duration, iconId = iconId,
             dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty)
         )
-        db.taskDao().createTask(task, skillsToAssign)
+        val id = db.taskDao().createTask(task, skillsToAssign)
+        task.id = id
         TaskListFragment.taskAdapter.notifyDataSetChanged()
         addToCalendar(task)
         return true
