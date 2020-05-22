@@ -1,9 +1,6 @@
 package org.vmaier.tidfl
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -36,7 +33,6 @@ import org.vmaier.tidfl.features.tasks.TaskEditFragment
 import org.vmaier.tidfl.features.tasks.TaskFragment
 import org.vmaier.tidfl.utils.Const
 import org.vmaier.tidfl.utils.decodeBase64
-import org.vmaier.tidfl.utils.encodeTobase64
 
 
 /**
@@ -50,7 +46,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     private lateinit var iconDialog: IconDialog
     private lateinit var drawerNav: NavigationView
     lateinit var binding: ActivityMainBinding
-    private val PICK_IMAGE_REQUEST = 1
 
     companion object {
         lateinit var toolbar: Toolbar
@@ -126,7 +121,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             if (bitmap != null) avatarView.setImageBitmap(bitmap)
             else avatarView.setImageDrawable(fallbackImage)
         } else avatarView.setImageDrawable(fallbackImage)
-        avatarView.setOnClickListener { launchGallery() }
 
         // --- XP value settings
         xpCounterView = headerView.findViewById(R.id.xp_counter) as TextView
@@ -141,17 +135,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
     fun selectIconButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
         iconDialog.show(supportFragmentManager, Const.Tag.ICON_DIALOG_TAG)
-    }
-
-    private fun launchGallery() {
-        val galleryIntent = Intent(Intent.ACTION_PICK)
-        galleryIntent.type = "image/*"
-        if (galleryIntent.resolveActivity(packageManager) != null) {
-            startActivityForResult(
-                Intent.createChooser(galleryIntent,
-                    getString(R.string.heading_select_image)), PICK_IMAGE_REQUEST
-            )
-        }
     }
 
     override val iconDialogIconPack: IconPack?
@@ -267,20 +250,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             }
         } else {
             supportFragmentManager.popBackStack()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intent)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            if (intent != null && intent.data != null) {
-                val filePath = intent.data
-                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, filePath)
-                avatarView.setImageBitmap(bitmap)
-                getDefaultSharedPreferences(this)
-                    .edit().putString(Const.Prefs.USER_AVATAR, bitmap.encodeTobase64())
-                    .apply()
-            }
         }
     }
 }

@@ -84,6 +84,7 @@
     <string name="heading_help">Hilfe</string>
     <string name="heading_licenses">Lizenzen</string>
     <string name="heading_version">Version</string>
+    <string name="heading_change_avatar">Avatar ändern</string>
     <string name="heading_reset_avatar">Avatar zurücksetzen</string>
     <!-- Hint messages -->
     <string name="hint_skill_name">Name der Fertigkeit</string>
@@ -99,6 +100,7 @@
     <!-- Description messages -->
     <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Tasks zu dem Standardkalender.</string>
     <string name="description_user_name">Setze einen Namen, der im Navigationsmenü angezeigt wird.</string>
+    <string name="description_change_avatar">Aktuellen Avatar ändern.</string>
     <string name="description_reset_avatar">Setze den aktuellen Avatar zurück.</string>
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Fertigkeit löschen?</string>

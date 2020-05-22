@@ -12,6 +12,7 @@ class Const {
         companion object {
             const val CALENDAR_SYNC = "calendar_sync"
             const val USER_NAME = "user_name"
+            const val CHANGE_AVATAR = "change_avatar"
             const val RESET_AVATAR = "reset_avatar"
             const val USER_AVATAR = "user_avatar"
         }

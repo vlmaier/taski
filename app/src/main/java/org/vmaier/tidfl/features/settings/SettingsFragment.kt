@@ -1,8 +1,11 @@
 package org.vmaier.tidfl.features.settings
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
@@ -10,10 +13,12 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.PermissionManager
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.utils.Const
+import org.vmaier.tidfl.utils.encodeTobase64
 import org.vmaier.tidfl.views.EditTextDialog
 
 
@@ -24,6 +29,10 @@ import org.vmaier.tidfl.views.EditTextDialog
  */
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
+
+    companion object {
+        private const val PICK_IMAGE_REQUEST = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +46,22 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val resetAvatarPref =
-            preferenceScreen.findPreference(Const.Prefs.RESET_AVATAR) as Preference?
-        resetAvatarPref?.setOnPreferenceClickListener {
+        val changeAvatar = preferenceScreen.findPreference(Const.Prefs.CHANGE_AVATAR) as Preference?
+        changeAvatar?.setOnPreferenceClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK)
+            galleryIntent.type = "image/*"
+            if (galleryIntent.resolveActivity(requireActivity().packageManager) != null) {
+                startActivityForResult(
+                    Intent.createChooser(
+                        galleryIntent,
+                        getString(R.string.heading_select_image)
+                    ), PICK_IMAGE_REQUEST
+                )
+            }
+            true
+        }
+        val resetAvatar = preferenceScreen.findPreference(Const.Prefs.RESET_AVATAR) as Preference?
+        resetAvatar?.setOnPreferenceClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
                 .setTitle(getString(R.string.alert_reset_avatar))
@@ -57,14 +79,14 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialogBuilder.create().show()
             true
         }
-        val usernamePref = preferenceScreen.findPreference(Const.Prefs.USER_NAME) as Preference?
-        usernamePref?.setOnPreferenceClickListener {
-            val username = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val username = preferenceScreen.findPreference(Const.Prefs.USER_NAME) as Preference?
+        username?.setOnPreferenceClickListener {
+            val usernameValue = PreferenceManager.getDefaultSharedPreferences(requireContext())
                 .getString(Const.Prefs.USER_NAME, getString(R.string.app_name))
             val dialog = EditTextDialog.newInstance(
                 title = getString(R.string.heading_user_name),
                 hint = getString(R.string.hint_user_name),
-                text = username,
+                text = usernameValue,
                 positiveButton = R.string.action_set
             )
             dialog.onPositiveButtonClicked = {
@@ -113,5 +135,20 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onPause() {
         super.onPause()
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intent)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (intent != null && intent.data != null) {
+                val filePath = intent.data
+                val contentResolver = requireActivity().contentResolver
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
+                MainActivity.avatarView.setImageBitmap(bitmap)
+                getDefaultSharedPreferences(context)
+                    .edit().putString(Const.Prefs.USER_AVATAR, bitmap.encodeTobase64())
+                    .apply()
+            }
+        }
     }
 }
