@@ -17,6 +17,7 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.databinding.FragmentTaskListBinding
+import timber.log.Timber
 
 
 /**
@@ -83,6 +84,7 @@ class TaskListFragment : Fragment() {
         })
         val db = AppDatabase(requireContext())
         val tasks = db.taskDao().findByStatus(Status.OPEN)
+        Timber.d("${tasks.size} task(s) found.")
         taskAdapter.fill(tasks)
         binding.rv.apply {
             layoutManager = LinearLayoutManager(activity)

@@ -14,6 +14,7 @@ import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.databinding.FragmentEditTaskBinding
 import org.vmaier.tidfl.utils.*
+import timber.log.Timber
 import java.util.*
 
 
@@ -70,7 +71,7 @@ class TaskEditFragment : TaskFragment() {
         // --- Difficulty settings
         binding.difficulty.setOnCheckedChangeListener { chipGroup, chipId ->
             if (chipId == View.NO_ID) {
-                // do not allow to unselect a chip
+                // do not allow to unselect chip
                 difficultyChip.isChecked = true
                 return@setOnCheckedChangeListener
             }
@@ -166,6 +167,7 @@ class TaskEditFragment : TaskFragment() {
         )
         if (task != toUpdate || assignedSkills != skillsToAssign) {
             db.taskDao().updateTask(toUpdate, skillsToAssign)
+            Timber.d("Updated task with ID: ${task.id}.")
             TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
             TaskListFragment.taskAdapter.update()
             updateInCalendar(task, toUpdate)

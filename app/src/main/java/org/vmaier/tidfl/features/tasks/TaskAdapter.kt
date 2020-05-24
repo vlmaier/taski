@@ -16,6 +16,7 @@ import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.utils.getDateInAppFormat
 import org.vmaier.tidfl.utils.getHumanReadableDurationValue
 import org.vmaier.tidfl.utils.setIcon
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,7 +31,7 @@ class TaskAdapter internal constructor(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    var sections: MutableMap<Int, String> = mutableMapOf()
+    private var sections: MutableMap<Int, String> = mutableMapOf()
     var tasks: MutableMap<Int, Task> = mutableMapOf()
 
     enum class ItemViewType(val value: Int) {
@@ -124,7 +125,8 @@ class TaskAdapter internal constructor(
                     }
                 }
             }
-            else -> {}
+            else -> {
+            }
         }
     }
 
@@ -185,6 +187,7 @@ class TaskAdapter internal constructor(
             sections[index++] = context.getString(R.string.term_due_someday)
             for (task in dueSomeday) tasks[index++] = task
         }
+        Timber.d("[ ${overdue.size}, ${dueToday.size}, ${dueTomorrow.size}, ${dueSomeday.size} ]")
     }
 
     override fun getItemCount(): Int = sections.size + tasks.size
@@ -193,19 +196,22 @@ class TaskAdapter internal constructor(
         val task = tasks.getValue(position)
         tasks.remove(position)
         update()
+        Timber.d("Task removed.")
         return updateTaskStatus(task, status)
     }
 
-    fun restoreItem(task: Task, position: Int) {
+    fun restoreItem(task: Task) {
         val tasks = tasks.map { it.value } as MutableList
         tasks.add(task)
         fill(tasks)
+        Timber.d("Task restored.")
         updateTaskStatus(task, Status.OPEN)
     }
 
     private fun updateTaskStatus(task: Task, status: Status): Task {
 
         val db = AppDatabase(context)
+        Timber.d("Status for task with ID ${task.id} updated: ${task.status} ---> $status")
         db.taskDao().changeStatus(task.id, status)
         if (status != Status.FAILED) {
             val xpValue = db.taskDao().countOverallXpValue()

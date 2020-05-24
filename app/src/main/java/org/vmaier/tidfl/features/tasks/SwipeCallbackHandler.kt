@@ -52,7 +52,7 @@ class SwipeCallbackHandler :
         Snackbar.make(itemView, message, Snackbar.LENGTH_LONG)
             .setAction(context.getString(R.string.action_undo)) {
                 // undo is selected, restore the deleted item
-                TaskListFragment.taskAdapter.restoreItem(taskToRestore, position)
+                TaskListFragment.taskAdapter.restoreItem(taskToRestore)
             }.setActionTextColor(Color.YELLOW).show()
     }
 

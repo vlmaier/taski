@@ -14,6 +14,7 @@ import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.databinding.FragmentSkillListBinding
+import timber.log.Timber
 
 
 /**
@@ -70,6 +71,7 @@ class SkillListFragment : Fragment() {
         })
         val db = AppDatabase(requireContext())
         val skills = db.skillDao().findAll()
+        Timber.d("${skills.size} skill(s) found.")
         skillAdapter.setSkills(skills)
         binding.rv.apply {
             layoutManager = GridLayoutManager(activity, 2)

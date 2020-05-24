@@ -14,6 +14,7 @@ import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.databinding.FragmentCreateSkillBinding
 import org.vmaier.tidfl.utils.KeyBoardHider
 import org.vmaier.tidfl.utils.hideKeyboard
+import timber.log.Timber
 
 
 /**
@@ -97,10 +98,16 @@ class SkillCreateFragment : SkillFragment() {
         var categoryId: Long? = null
         if (categoryName.isNotBlank()) {
             val foundCategory = db.categoryDao().findByName(categoryName)
-            categoryId = foundCategory?.id ?: db.categoryDao().create(Category(name = categoryName))
+            if (foundCategory != null) {
+                categoryId = foundCategory.id
+            } else {
+                categoryId = db.categoryDao().create(Category(name = categoryName))
+                Timber.d("Created new category. ID: $categoryId returned.")
+            }
         }
         val skill = Skill(name = name, categoryId = categoryId, iconId = iconId)
-        db.skillDao().create(skill)
+        val id = db.skillDao().create(skill)
+        Timber.d("Created new skill. ID: $id returned.")
         SkillListFragment.skillAdapter.notifyDataSetChanged()
         return true
     }

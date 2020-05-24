@@ -13,6 +13,7 @@ import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.entity.AssignedSkill
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.utils.setIcon
+import timber.log.Timber
 
 
 /**
@@ -87,6 +88,7 @@ class SkillAdapter internal constructor(
         val db = AppDatabase(this.inflater.context)
         val foundAssignments = db.skillDao().findAssignments(skill.id)
         db.skillDao().delete(skill)
+        Timber.d("Skill removed.")
         return Pair(skill, foundAssignments)
     }
 
@@ -98,5 +100,6 @@ class SkillAdapter internal constructor(
         toRestore.second.forEach {
             db.taskDao().assignSkill(it)
         }
+        Timber.d("Skill restored.")
     }
 }

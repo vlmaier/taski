@@ -18,6 +18,7 @@ import org.vmaier.tidfl.utils.KeyBoardHider
 import org.vmaier.tidfl.utils.getDurationInMinutes
 import org.vmaier.tidfl.utils.getHumanReadableValue
 import org.vmaier.tidfl.utils.hideKeyboard
+import timber.log.Timber
 import java.util.*
 
 
@@ -158,6 +159,7 @@ class TaskCreateFragment : TaskFragment() {
             dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty)
         )
         val id = db.taskDao().createTask(task, skillsToAssign)
+        Timber.d("Created new task. ID: $id returned.")
         task.id = id
         TaskListFragment.taskAdapter.notifyDataSetChanged()
         addToCalendar(task)

@@ -21,6 +21,7 @@ import org.vmaier.tidfl.utils.Const
 import org.vmaier.tidfl.utils.compress
 import org.vmaier.tidfl.utils.encodeTobase64
 import org.vmaier.tidfl.views.EditTextDialog
+import timber.log.Timber
 
 
 /**
@@ -73,6 +74,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     MainActivity.avatarView.setImageDrawable(
                         getDrawable(requireContext(), R.mipmap.ic_launcher_round)
                     )
+                    Timber.d("Avatar resetted")
                 }
                 .setNegativeButton(getString(R.string.action_cancel)) { dialog, _ ->
                     dialog.cancel()
@@ -95,6 +97,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 PreferenceManager.getDefaultSharedPreferences(requireContext())
                     .edit().putString(Const.Prefs.USER_NAME, textValue).apply()
                 MainActivity.userNameView.text = textValue
+                Timber.d("Username changed.")
             }
             dialog.onNegativeButtonClicked = {
                 dialog.dismiss()
@@ -124,6 +127,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 }
                 sharedPreferences.edit().putBoolean(Const.Prefs.CALENDAR_SYNC, checkBoxValue)
                     .apply()
+                Timber.d("Calendar synchronization is %s.",
+                    if (checkBoxValue) "enabled" else "disabled")
             }
         }
     }
@@ -150,6 +155,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 getDefaultSharedPreferences(context)
                     .edit().putString(Const.Prefs.USER_AVATAR, compressedBitmap.encodeTobase64())
                     .apply()
+                Timber.d("Avatar changed.")
             }
         }
     }

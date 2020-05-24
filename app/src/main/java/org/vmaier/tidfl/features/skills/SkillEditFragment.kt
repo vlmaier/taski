@@ -16,6 +16,7 @@ import org.vmaier.tidfl.databinding.FragmentEditSkillBinding
 import org.vmaier.tidfl.utils.KeyBoardHider
 import org.vmaier.tidfl.utils.hideKeyboard
 import org.vmaier.tidfl.utils.toast
+import timber.log.Timber
 
 
 /**
@@ -113,17 +114,24 @@ class SkillEditFragment : SkillFragment() {
         val categoryName = binding.category.editText?.text.toString()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val db = AppDatabase(requireContext())
-        val categoryId: Long? = if (categoryName.isNotBlank()) {
+        val categoryId: Long?
+        if (categoryName.isNotBlank()) {
             val foundCategory = db.categoryDao().findByName(categoryName)
-            foundCategory?.id ?: db.categoryDao().create(Category(name = categoryName))
+            if (foundCategory != null) {
+                categoryId = foundCategory.id
+            } else {
+                categoryId = db.categoryDao().create(Category(name = categoryName))
+                Timber.d("Created new category. ID: $categoryId returned.")
+            }
         } else {
-            null
+            categoryId = null
         }
         val toUpdate = Skill(
             id = skill.id, name = name, categoryId = categoryId, iconId = iconId
         )
         if (skill != toUpdate) {
             db.skillDao().update(toUpdate)
+            Timber.d("Updated skill with ID: ${skill.id}.")
             SkillListFragment.skillAdapter.skills[itemPosition] = toUpdate
             SkillListFragment.skillAdapter.notifyItemChanged(itemPosition)
             getString(R.string.event_skill_updated).toast(requireContext())

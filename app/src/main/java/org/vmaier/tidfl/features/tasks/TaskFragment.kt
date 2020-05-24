@@ -36,6 +36,7 @@ import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.Difficulty
 import org.vmaier.tidfl.data.entity.Task
 import org.vmaier.tidfl.utils.*
+import timber.log.Timber
 import java.text.ParseException
 import java.util.*
 import kotlin.random.Random
@@ -146,7 +147,6 @@ open class TaskFragment : Fragment() {
                 if (progress <= 1) seek.progress = 1
                 updateXpGain(xpGainValue, durationBar)
             }
-
             override fun onStartTrackingTouch(seek: SeekBar) = Unit
             override fun onStopTrackingTouch(seek: SeekBar) = Unit
         }
@@ -201,6 +201,7 @@ open class TaskFragment : Fragment() {
         if (!isCalendarSyncOn) return
         if (task == null) return
         val calendarId = getCalendarId(requireContext()) ?: return
+        Timber.d("Picked calendar with ID $calendarId.")
         val eventId: Uri?
         val startTimeMs = if (task.dueAt != null) {
             try {
@@ -223,6 +224,8 @@ open class TaskFragment : Fragment() {
         event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
         eventId = requireContext()
             .contentResolver.insert(CalendarContract.Events.CONTENT_URI, event)
+        Timber.d("Created new event in calendar.")
+        Timber.d("Event ID: $eventId")
         db.taskDao().updateEventId(task.id, eventId.toString())
     }
 
@@ -238,8 +241,11 @@ open class TaskFragment : Fragment() {
         val eventId: Uri? = Uri.parse(after.eventId)
         if (eventId != null) {
             val calendarId = getCalendarId(requireContext()) ?: return
+            Timber.d("Picked calendar with ID $calendarId.")
             val event = updateEvent(calendarId, before, after)
             requireContext().contentResolver.update(eventId, event, null, null)
+            Timber.d("Updated event in calendar.")
+            Timber.d("Event ID: $eventId")
             db.taskDao().updateEventId(before.id, eventId.toString())
         }
     }
