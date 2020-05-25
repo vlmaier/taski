@@ -1,36 +1,36 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorAccent">@color/colorSecondary</item>
-        <item name="icdStyle">@style/CustomIconDialogStyle</item>
+    <!--Bottom Sheets-->
+    <style name="ThemeOverlay.Default.BottomSheetDialog"
+           parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Default.BottomSheet.Modal</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.MyTheme.BottomSheet.Modal</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarDividerColor"
+              tools:ignore="NewApi">@android:color/transparent</item>
     </style>
 
-    <style name="CustomIconDialogStyle" parent="IcdStyle">
-        <item name="icdIconSize">64dp</item>
-        <item name="icdIconColor">@color/colorSecondary</item>
-        <item name="icdSelectedIconColor">@color/colorPrimary</item>
-        <item name="icdDialogButtonStyle">
-            @style/Widget.MaterialComponents.Button.TextButton.Dialog
-        </item>
-        <item name="icdSearchIconStyle">@style/CustomIconStyle</item>
-        <item name="icdCancelSearchIconStyle">@style/CustomIconStyle</item>
+    <style name="Widget.MyTheme.BottomSheet.Modal"
+           parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearanceOverlay">?attr/shapeAppearanceLargeComponent</item>
     </style>
 
-    <style name="CustomIconStyle" parent="IcdSearchIconStyle">
-        <item name="tint">@color/colorSecondary</item>
+    <!--Navigation Drawer-->
+    <style name="Widget.MyTheme.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextAppearance">?attr/textAppearanceBody2</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <!--Action Bar-->
+    <style name="Theme.Default.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="CustomChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
+    <!--Chips-->
+    <style name="Theme.Default.ChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/background_color_chip_state_list</item>
         <item name="android:textColor">@color/text_color_chip_state_list</item>
     </style>

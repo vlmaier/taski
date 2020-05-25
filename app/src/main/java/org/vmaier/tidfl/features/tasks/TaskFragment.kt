@@ -109,7 +109,7 @@ open class TaskFragment : Fragment() {
                 }
                 if (icon != null) {
                     DrawableCompat.setTint(
-                        icon, ContextCompat.getColor(context, R.color.colorWhite)
+                        icon, ContextCompat.getColor(context, R.color.colorSwipeForeground)
                     )
                 }
                 return ChipSpan(context, text, icon, data)

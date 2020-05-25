@@ -180,7 +180,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/trivial"
-                    style="@style/CustomChipChoice"
+                    style="@style/Theme.Default.ChipChoice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:tag="trivial"
@@ -189,7 +189,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/regular"
-                    style="@style/CustomChipChoice"
+                    style="@style/Theme.Default.ChipChoice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:tag="regular"
@@ -199,7 +199,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/hard"
-                    style="@style/CustomChipChoice"
+                    style="@style/Theme.Default.ChipChoice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:tag="hard"
@@ -208,7 +208,7 @@
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/insane"
-                    style="@style/CustomChipChoice"
+                    style="@style/Theme.Default.ChipChoice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:tag="insane"

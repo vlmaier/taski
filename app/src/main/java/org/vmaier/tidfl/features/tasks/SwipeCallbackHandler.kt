@@ -75,7 +75,7 @@ class SwipeCallbackHandler :
             val paint = Paint()
             if (dX > 0) {
                 // swipe to the right
-                paint.color = ContextCompat.getColor(context, R.color.colorRedCancel)
+                paint.color = ContextCompat.getColor(context, R.color.colorSwipeCancel)
                 val background = RectF(left, top, dX, bottom)
                 c.drawRect(background, paint)
                 icon = AppCompatResources.getDrawable(
@@ -88,7 +88,7 @@ class SwipeCallbackHandler :
                 if (icon != null) c.drawBitmap(icon, null, destination, paint)
             } else {
                 // swipe to the left
-                paint.color = ContextCompat.getColor(context, R.color.colorGreenDone)
+                paint.color = ContextCompat.getColor(context, R.color.colorSwipeDone)
                 val background = RectF(right + dX, top, right, bottom)
                 c.drawRect(background, paint)
                 icon = AppCompatResources.getDrawable(
