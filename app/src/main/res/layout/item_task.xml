@@ -83,6 +83,7 @@
                 android:layout_height="21dp"
                 android:layout_marginTop="2dp"
                 android:contentDescription="@string/content_due_at_icon"
+                android:backgroundTint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="@+id/task_xp"
                 app:layout_constraintTop_toTopOf="@+id/linear_layout"
                 app:srcCompat="@drawable/ic_baseline_access_time_24"
@@ -94,6 +95,7 @@
                 android:layout_height="21dp"
                 android:layout_marginTop="4dp"
                 android:contentDescription="@string/content_skill_icon"
+                android:backgroundTint="?attr/colorOnSurface"
                 app:layout_constraintEnd_toEndOf="@+id/time_icon"
                 app:layout_constraintStart_toStartOf="@+id/time_icon"
                 app:layout_constraintTop_toBottomOf="@+id/time_icon"
@@ -109,11 +111,11 @@
                 android:layout_marginBottom="2dp"
                 android:contentDescription="@string/content_task_icon"
                 android:scaleType="centerCrop"
+                android:backgroundTint="?attr/colorOnSurface"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@drawable/ic_baseline_assignment_24"
-                tools:tint="@color/colorSecondary"
                 />
 
             <TextView

@@ -52,6 +52,8 @@
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Default.BottomSheetDialog</item>
         <item name="navigationViewStyle">@style/Widget.MyTheme.NavigationView</item>
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
+        <item name="actionOverflowButtonStyle">@style/Theme.Default.SettingsButton</item>
+        <item name="drawerArrowStyle">@style/Theme.Default.HamburgerButton</item>
     </style>
 
     <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.MaterialComponents.DayNight.NoActionBar">

@@ -224,11 +224,11 @@
                 android:layout_marginEnd="16dp"
                 android:contentDescription="@string/content_task_icon"
                 android:onClick="selectIconButtonClicked"
+                android:backgroundTint="?attr/colorOnSurface"
                 app:layout_constraintBottom_toBottomOf="@+id/details"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/goal"
                 tools:background="@drawable/ic_baseline_assignment_24"
-                tools:backgroundTint="@color/colorSecondary"
                 />
 
             <TextView

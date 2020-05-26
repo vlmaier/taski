@@ -65,7 +65,7 @@ open class TaskFragment : Fragment() {
 
         fun setIcon(context: Context, icon: Icon, button: ImageButton) {
             val drawable = IconDrawableLoader(context).loadDrawable(icon)
-            drawable.setThemeTint(context)
+            drawable?.clearColorFilter()
             button.background = drawable
             button.tag = icon.id
         }
@@ -93,7 +93,7 @@ open class TaskFragment : Fragment() {
     ) {
         val iconId = saved?.getInt(KEY_ICON_ID) ?: fallback
         val icon = App.iconPack.getIconDrawable(iconId, IconDrawableLoader(requireContext()))
-        icon.setThemeTint(requireContext())
+        icon?.clearColorFilter()
         button.background = icon
         button.tag = iconId
     }

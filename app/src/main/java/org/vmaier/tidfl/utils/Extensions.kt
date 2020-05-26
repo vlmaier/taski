@@ -37,11 +37,7 @@ fun View.hideKeyboard() {
 fun ImageView.setIcon(iconId: Int) {
     val drawable = App.iconPack.getIcon(iconId)?.drawable
     if (drawable != null) {
-        DrawableCompat.setTint(
-            drawable, ContextCompat.getColor(
-                this.context, R.color.colorSecondary
-            )
-        )
+        drawable.colorFilter = null
         this.background = drawable
         this.tag = iconId
     }
@@ -60,12 +56,6 @@ fun Drawable.toBitmap(): Bitmap {
     this.setBounds(0, 0, canvas.width, canvas.height)
     this.draw(canvas)
     return bitmap
-}
-
-fun Drawable?.setThemeTint(context: Context) {
-    if (this == null) return
-    this.clearColorFilter()
-    DrawableCompat.setTint(this, ContextCompat.getColor(context, R.color.colorSecondary))
 }
 
 fun SeekBar.getHumanReadableValue(): String {

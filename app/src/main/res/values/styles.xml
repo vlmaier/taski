@@ -29,6 +29,15 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.Default.SettingsButton" parent="@style/Widget.AppCompat.ActionButton.Overflow" >
+        <item name="android:tint">@color/colorLight</item>
+    </style>
+
+    <style name="Theme.Default.HamburgerButton" parent="@style/Widget.AppCompat.DrawerArrowToggle" >
+        <item name="spinBars">true</item>
+        <item name="color">@color/colorLight</item>
+    </style>
+
     <!--Chips-->
     <style name="Theme.Default.ChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/background_color_chip_state_list</item>

@@ -17,57 +17,47 @@
 <resources>
 
     <!--Color palette-->
-    <color name="purple_200">#bb86fc</color>
-    <color name="purple_500">#6200ee</color>
-    <color name="purple_600">#4b01d0</color>
-    <color name="purple_700">#3700b3</color>
-    <color name="green_200">#03dac6</color>
-    <color name="green_500">#018786</color>
-    <color name="red_200">#cf6679</color>
-    <color name="red_600">#b00020</color>
-    <color name="white_50">#ffffff</color>
-    <color name="black_800">#121212</color>
-    <color name="black_900">#000000</color>
+    <color name="colorPrimaryDark">#c5cae9</color>
+    <color name="colorPrimaryLight">#3f51b5</color>
+    <color name="colorPrimaryVariantDark">#3f51b5</color>
+    <color name="colorPrimaryVariantLight">#c5cae9</color>
 
-    <!--Preset colors-->
-    <color name="colorPrimaryLight">@color/purple_500</color>
-    <color name="colorPrimaryDark">@color/purple_200</color>
-    <color name="colorPrimaryVariantLight">@color/purple_700</color>
-    <color name="colorPrimaryVariantDark">@color/purple_600</color>
+    <color name="colorSecondary">#ff5722</color>
+    <color name="colorSecondaryVariant">#ff5722</color>
 
-    <color name="colorSecondary">@color/green_200</color>
-    <color name="colorSecondaryVariant">@color/green_500</color>
+    <color name="colorErrorDark">#cf6679</color>
+    <color name="colorErrorLight">#b00020</color>
 
-    <color name="colorErrorLight">@color/red_600</color>
-    <color name="colorErrorDark">@color/red_200</color>
+    <color name="colorLight">#ffffff</color>
+    <color name="colorDark">#212121</color>
 
-    <color name="colorSurfaceLight">@color/white_50</color>
-    <color name="colorSurfaceDark">@color/black_900</color>
+    <color name="colorSurfaceLight">@color/colorLight</color>
+    <color name="colorSurfaceDark">@color/colorDark</color>
 
-    <color name="colorBackgroundLight">@color/white_50</color>
-    <color name="colorBackgroundDark">@color/black_900</color>
+    <color name="colorBackgroundLight">@color/colorLight</color>
+    <color name="colorBackgroundDark">@color/colorDark</color>
 
-    <color name="colorOnSurfaceLight">@color/black_900</color>
-    <color name="colorOnSurfaceDark">@color/white_50</color>
+    <color name="colorOnSurfaceLight">@color/colorDark</color>
+    <color name="colorOnSurfaceDark">@color/colorLight</color>
 
-    <color name="colorOnErrorLight">@color/white_50</color>
-    <color name="colorOnErrorDark">@color/black_900</color>
+    <color name="colorOnErrorLight">@color/colorLight</color>
+    <color name="colorOnErrorDark">@color/colorDark</color>
 
-    <color name="colorOnPrimaryLight">@color/white_50</color>
-    <color name="colorOnPrimaryDark">@color/black_900</color>
+    <color name="colorOnPrimaryLight">@color/colorLight</color>
+    <color name="colorOnPrimaryDark">@color/colorDark</color>
 
-    <color name="colorOnSecondaryLight">@color/black_900</color>
-    <color name="colorOnSecondaryDark">@color/black_900</color>
+    <color name="colorOnSecondaryLight">@color/colorDark</color>
+    <color name="colorOnSecondaryDark">@color/colorLight</color>
 
-    <color name="colorOnBackgroundLight">@color/black_900</color>
-    <color name="colorOnBackgroundDark">@color/white_50</color>
+    <color name="colorOnBackgroundLight">@color/colorDark</color>
+    <color name="colorOnBackgroundDark">@color/colorLight</color>
 
     <color name="colorSwipeDone">#388e3c</color>
     <color name="colorSwipeCancel">#d32f2f</color>
-    <color name="colorSwipeForeground">@color/white_50</color>
+    <color name="colorSwipeForeground">@color/colorLight</color>
 
     <!--Overwritten colors-->
     <color name="chip_default_icon_background_color">@color/colorSecondary</color>
 
-    <color name="ic_launcher_background">#FFD62B</color>
+    <color name="ic_launcher_background">#ffd62b</color>
 </resources>

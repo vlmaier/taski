@@ -28,7 +28,7 @@
         <item name="colorOnPrimary">@color/colorOnPrimaryDark</item>
         <item name="colorOnSecondary">@color/colorOnSecondaryDark</item>
         <item name="colorOnBackground">@color/colorOnBackgroundDark</item>
-        <item name="colorOnSurface">@color/colorSurfaceDark</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceDark</item>
         <item name="colorOnError">@color/colorOnErrorDark</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>

@@ -20,7 +20,6 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.utils.hideKeyboard
-import org.vmaier.tidfl.utils.setThemeTint
 import kotlin.random.Random
 
 
@@ -41,7 +40,7 @@ open class SkillFragment : Fragment() {
 
         fun setIcon(context: Context, icon: Icon, button: ImageButton) {
             val drawable = IconDrawableLoader(context).loadDrawable(icon)
-            drawable.setThemeTint(context)
+            drawable?.clearColorFilter()
             button.background = drawable
             button.tag = icon.id
         }
@@ -69,7 +68,7 @@ open class SkillFragment : Fragment() {
     ) {
         val iconId = saved?.getInt(KEY_ICON_ID) ?: fallback
         val icon = App.iconPack.getIconDrawable(iconId, IconDrawableLoader(requireContext()))
-        icon.setThemeTint(requireContext())
+        icon?.clearColorFilter()
         button.background = icon
         button.tag = iconId
     }
