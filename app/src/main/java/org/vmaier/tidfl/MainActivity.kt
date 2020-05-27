@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                                     getString(R.string.error_name_cannot_be_empty)
                             } else {
                                 val foundSkill = db.skillDao().findByName(name)
-                                if (foundSkill == SkillEditFragment.skill) {
+                                if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                                     SkillEditFragment.binding.name.requestFocus()
                                     SkillEditFragment.binding.name.error =
                                         getString(R.string.error_skill_already_exists)
