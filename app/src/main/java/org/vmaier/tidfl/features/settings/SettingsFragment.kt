@@ -33,8 +33,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
         private const val PICK_IMAGE_REQUEST = 1
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         MainActivity.toolbar.title = getString(R.string.heading_settings)
         MainActivity.bottomNav.visibility = View.GONE
     }
