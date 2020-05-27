@@ -1,5 +1,6 @@
 package org.vmaier.tidfl
 
+import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -251,5 +252,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         } else {
             supportFragmentManager.popBackStack()
         }
+    }
+
+    override fun getTheme(): Theme? {
+        val theme: Theme = super.getTheme()
+        val selectedTheme = getDefaultSharedPreferences(this)
+            .getString(Const.Prefs.APP_THEME, "Theme.Default")
+        if (selectedTheme == "Theme.Default") {
+            theme.applyStyle(R.style.Theme_Default, true)
+        } else if (selectedTheme == "Theme.Sailor") {
+            theme.applyStyle(R.style.Theme_Sailor, true)
+        }
+        return theme
     }
 }

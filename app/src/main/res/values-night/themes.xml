@@ -15,22 +15,39 @@
 ~ limitations under the License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!--Top level DayNight theme to be used in AndroidManifest.xml-->
+
     <style name="Theme.Default" parent="Base.Theme.Default">
-        <!--Material color attributes (dark theme) -->
-        <item name="colorPrimary">@color/colorPrimaryDark</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariantDark</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-        <item name="android:colorBackground">@color/colorBackgroundDark</item>
-        <item name="colorSurface">@color/colorSurfaceDark</item>
-        <item name="colorError">@color/colorErrorDark</item>
-        <item name="colorOnPrimary">@color/colorOnPrimaryDark</item>
-        <item name="colorOnSecondary">@color/colorOnSecondaryDark</item>
-        <item name="colorOnBackground">@color/colorOnBackgroundDark</item>
-        <item name="colorOnSurface">@color/colorOnSurfaceDark</item>
-        <item name="colorOnError">@color/colorOnErrorDark</item>
+        <item name="colorPrimary">@color/colorPrimaryDarkDefault</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantDarkDefault</item>
+        <item name="colorSecondary">@color/colorSecondaryDefault</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantDefault</item>
+        <item name="android:colorBackground">@color/colorBackgroundDarkDefault</item>
+        <item name="colorSurface">@color/colorSurfaceDarkDefault</item>
+        <item name="colorError">@color/colorErrorDarkDefault</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryDarkDefault</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryDarkDefault</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundDarkDefault</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceDarkDefault</item>
+        <item name="colorOnError">@color/colorOnErrorDarkDefault</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
     </style>
+
+    <style name="Theme.Sailor" parent="Base.Theme.Sailor">
+        <item name="colorPrimary">@color/colorPrimaryDarkSailor</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantDarkSailor</item>
+        <item name="colorSecondary">@color/colorSecondarySailor</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantSailor</item>
+        <item name="android:colorBackground">@color/colorBackgroundDarkSailor</item>
+        <item name="colorSurface">@color/colorSurfaceDarkSailor</item>
+        <item name="colorError">@color/colorErrorDarkSailor</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryDarkSailor</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryDarkSailor</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundDarkSailor</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceDarkSailor</item>
+        <item name="colorOnError">@color/colorOnErrorDarkSailor</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+    </style>
+
 </resources>

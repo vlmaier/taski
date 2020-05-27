@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="theme_names_array">
+        <item>Default</item>
+        <item>Sailor</item>
+    </string-array>
+    <string-array name="theme_values_array">
+        <item>Theme.Default</item>
+        <item>Theme.Sailor</item>
+    </string-array>
+</resources>

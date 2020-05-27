@@ -2,7 +2,7 @@
 <androidx.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/heading_profile_prefs">
+    <PreferenceCategory android:title="@string/heading_visual_prefs">
         <androidx.preference.Preference
             android:key="user_name"
             android:summary="@string/description_user_name"
@@ -17,6 +17,15 @@
             android:key="reset_avatar"
             android:summary="@string/description_reset_avatar"
             android:title="@string/heading_reset_avatar"
+            />
+        <androidx.preference.ListPreference
+            android:defaultValue="Default"
+            android:entries="@array/theme_names_array"
+            android:entryValues="@array/theme_values_array"
+            android:icon="@drawable/ic_theme"
+            android:key="app_theme"
+            android:summary="Select an application theme"
+            android:title="Theme"
             />
     </PreferenceCategory>
 

@@ -16,48 +16,62 @@
 
 <resources>
 
-    <!--Color palette-->
-    <color name="colorPrimaryDark">#c5cae9</color>
-    <color name="colorPrimaryLight">#3f51b5</color>
-    <color name="colorPrimaryVariantDark">#3f51b5</color>
-    <color name="colorPrimaryVariantLight">#c5cae9</color>
+    <!-- Color palette default -->
+    <color name="colorPrimaryDarkDefault">#C5CAE9</color>
+    <color name="colorPrimaryLightDefault">#3F51B5</color>
+    <color name="colorPrimaryVariantDarkDefault">#3F51B5</color>
+    <color name="colorPrimaryVariantLightDefault">#C5CAE9</color>
+    <color name="colorSecondaryDefault">#FF5722</color>
+    <color name="colorSecondaryVariantDefault">#FF5722</color>
+    <color name="colorErrorDarkDefault">#CF6679</color>
+    <color name="colorErrorLightDefault">#B00020</color>
+    <color name="colorLightDefault">#FFFFFF</color>
+    <color name="colorDarkDefault">#212121</color>
+    <color name="colorSurfaceLightDefault">@color/colorLightDefault</color>
+    <color name="colorSurfaceDarkDefault">@color/colorDarkDefault</color>
+    <color name="colorBackgroundLightDefault">@color/colorLightDefault</color>
+    <color name="colorBackgroundDarkDefault">@color/colorDarkDefault</color>
+    <color name="colorOnSurfaceLightDefault">@color/colorDarkDefault</color>
+    <color name="colorOnSurfaceDarkDefault">@color/colorLightDefault</color>
+    <color name="colorOnErrorLightDefault">@color/colorLightDefault</color>
+    <color name="colorOnErrorDarkDefault">@color/colorDarkDefault</color>
+    <color name="colorOnPrimaryLightDefault">@color/colorLightDefault</color>
+    <color name="colorOnPrimaryDarkDefault">@color/colorDarkDefault</color>
+    <color name="colorOnSecondaryLightDefault">@color/colorDarkDefault</color>
+    <color name="colorOnSecondaryDarkDefault">@color/colorLightDefault</color>
+    <color name="colorOnBackgroundLightDefault">@color/colorDarkDefault</color>
+    <color name="colorOnBackgroundDarkDefault">@color/colorLightDefault</color>
 
-    <color name="colorSecondary">#ff5722</color>
-    <color name="colorSecondaryVariant">#ff5722</color>
+    <!-- Color palette sailor -->
+    <color name="colorPrimaryDarkSailor">#BBDEFB</color>
+    <color name="colorPrimaryLightSailor">#1976D2</color>
+    <color name="colorPrimaryVariantDarkSailor">#1976D2</color>
+    <color name="colorPrimaryVariantLightSailor">#BBDEFB</color>
+    <color name="colorSecondarySailor">#FF4081</color>
+    <color name="colorSecondaryVariantSailor">#FF4081</color>
+    <color name="colorErrorDarkSailor">#CF6679</color>
+    <color name="colorErrorLightSailor">#B00020</color>
+    <color name="colorLightSailor">#FFFFFF</color>
+    <color name="colorDarkSailor">#212121</color>
+    <color name="colorSurfaceLightSailor">@color/colorLightSailor</color>
+    <color name="colorSurfaceDarkSailor">@color/colorDarkSailor</color>
+    <color name="colorBackgroundLightSailor">@color/colorLightSailor</color>
+    <color name="colorBackgroundDarkSailor">@color/colorDarkSailor</color>
+    <color name="colorOnSurfaceLightSailor">@color/colorDarkSailor</color>
+    <color name="colorOnSurfaceDarkSailor">@color/colorLightSailor</color>
+    <color name="colorOnErrorLightSailor">@color/colorLightSailor</color>
+    <color name="colorOnErrorDarkSailor">@color/colorDarkSailor</color>
+    <color name="colorOnPrimaryLightSailor">@color/colorLightSailor</color>
+    <color name="colorOnPrimaryDarkSailor">@color/colorDarkSailor</color>
+    <color name="colorOnSecondaryLightSailor">@color/colorDarkSailor</color>
+    <color name="colorOnSecondaryDarkSailor">@color/colorLightSailor</color>
+    <color name="colorOnBackgroundLightSailor">@color/colorDarkSailor</color>
+    <color name="colorOnBackgroundDarkSailor">@color/colorLightSailor</color>
 
-    <color name="colorErrorDark">#cf6679</color>
-    <color name="colorErrorLight">#b00020</color>
+    <color name="colorSwipeDone">#388E3C</color>
+    <color name="colorSwipeCancel">#D32F2F</color>
+    <color name="colorSwipeForeground">@color/colorLightDefault</color>
 
-    <color name="colorLight">#ffffff</color>
-    <color name="colorDark">#212121</color>
-
-    <color name="colorSurfaceLight">@color/colorLight</color>
-    <color name="colorSurfaceDark">@color/colorDark</color>
-
-    <color name="colorBackgroundLight">@color/colorLight</color>
-    <color name="colorBackgroundDark">@color/colorDark</color>
-
-    <color name="colorOnSurfaceLight">@color/colorDark</color>
-    <color name="colorOnSurfaceDark">@color/colorLight</color>
-
-    <color name="colorOnErrorLight">@color/colorLight</color>
-    <color name="colorOnErrorDark">@color/colorDark</color>
-
-    <color name="colorOnPrimaryLight">@color/colorLight</color>
-    <color name="colorOnPrimaryDark">@color/colorDark</color>
-
-    <color name="colorOnSecondaryLight">@color/colorDark</color>
-    <color name="colorOnSecondaryDark">@color/colorLight</color>
-
-    <color name="colorOnBackgroundLight">@color/colorDark</color>
-    <color name="colorOnBackgroundDark">@color/colorLight</color>
-
-    <color name="colorSwipeDone">#388e3c</color>
-    <color name="colorSwipeCancel">#d32f2f</color>
-    <color name="colorSwipeForeground">@color/colorLight</color>
-
-    <!--Overwritten colors-->
-    <color name="chip_default_icon_background_color">@color/colorSecondary</color>
-
-    <color name="ic_launcher_background">#ffd62b</color>
+    <color name="chip_default_icon_background_color">@color/colorSecondaryDefault</color>
+    <color name="ic_launcher_background">#FFD62B</color>
 </resources>

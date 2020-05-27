@@ -9,10 +9,7 @@ import android.provider.MediaStore
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.preference.CheckBoxPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
+import androidx.preference.*
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.PermissionManager
@@ -129,6 +126,17 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     .apply()
                 Timber.d("Calendar synchronization is %s.",
                     if (checkBoxValue) "enabled" else "disabled")
+            }
+            Const.Prefs.APP_THEME -> {
+                val pref: ListPreference? = findPreference(key)
+                val selectedTheme = pref?.value
+                sharedPreferences.edit().putString(Const.Prefs.APP_THEME, selectedTheme).apply()
+                if (selectedTheme == "Theme.Default") {
+                    activity?.setTheme(R.style.Theme_Default)
+                } else if (selectedTheme == "Theme.Sailor") {
+                    activity?.setTheme(R.style.Theme_Sailor)
+                }
+                activity?.recreate()
             }
         }
     }

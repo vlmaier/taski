@@ -16,44 +16,59 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!--Top level DayNight theme to be used in AndroidManifest.xml-->
     <style name="Theme.Default" parent="Base.Theme.Default"/>
-
-    <!--Base custom theme which will be shared between both light and dark theme variants-->
     <style name="Base.Theme.Default" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightDefault</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightDefault</item>
+        <item name="colorSecondary">@color/colorSecondaryDefault</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantDefault</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightDefault</item>
+        <item name="colorSurface">@color/colorSurfaceLightDefault</item>
+        <item name="colorError">@color/colorErrorLightDefault</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightDefault</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightDefault</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightDefault</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightDefault</item>
+        <item name="colorOnError">@color/colorOnErrorLightDefault</item>
 
-        <!--Material color attributes (light theme) -->
-        <!--colorPrimary colors map to components and elements, such as app bars and buttons. -->
-        <!--colorSecondary colors are most often used as accents on components, such as FABs and -->
-        <!--selection controls.-->
-        <item name="colorPrimary">@color/colorPrimaryLight</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLight</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-
-        <!--colorBackground appears behind scrollable content and is used for the default window-->
-        <!--background. colorSurface is mapped to the surface of components such as cards, sheets-->
-        <!--and menus. colorError is used to indicate an error state for components such as-->
-        <!--text fields.-->
-        <item name="android:colorBackground">@color/colorBackgroundLight</item>
-        <item name="colorSurface">@color/colorSurfaceLight</item>
-        <item name="colorError">@color/colorErrorLight</item>
-
-        <!--"On" colors define how text, icons and strokes are colored in relation to the surface-->
-        <!--on which they appear.-->
-        <item name="colorOnPrimary">@color/colorOnPrimaryLight</item>
-        <item name="colorOnSecondary">@color/colorOnSecondaryLight</item>
-        <item name="colorOnBackground">@color/colorOnBackgroundLight</item>
-        <item name="colorOnSurface">@color/colorOnSurfaceLight</item>
-        <item name="colorOnError">@color/colorOnErrorLight</item>
-
-        <!--Component styles-->
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Default.BottomSheetDialog</item>
-        <item name="navigationViewStyle">@style/Widget.MyTheme.NavigationView</item>
+        <item name="navigationViewStyle">@style/Widget.Default.NavigationView</item>
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
-        <item name="actionOverflowButtonStyle">@style/Theme.Default.SettingsButton</item>
-        <item name="drawerArrowStyle">@style/Theme.Default.HamburgerButton</item>
+        <item name="actionOverflowButtonStyle">@style/Base.Theme.SettingsButton</item>
+        <item name="drawerArrowStyle">@style/Base.Theme.HamburgerButton</item>
+    </style>
+
+    <style name="Theme.Sailor" parent="Base.Theme.Sailor"/>
+    <style name="Base.Theme.Sailor" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightSailor</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightSailor</item>
+        <item name="colorSecondary">@color/colorSecondarySailor</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantSailor</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightSailor</item>
+        <item name="colorSurface">@color/colorSurfaceLightSailor</item>
+        <item name="colorError">@color/colorErrorLightSailor</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightSailor</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightSailor</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightSailor</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightSailor</item>
+        <item name="colorOnError">@color/colorOnErrorLightSailor</item>
+
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Default.BottomSheetDialog</item>
+        <item name="navigationViewStyle">@style/Widget.Default.NavigationView</item>
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
+        <item name="actionOverflowButtonStyle">@style/Base.Theme.SettingsButton</item>
+        <item name="drawerArrowStyle">@style/Base.Theme.HamburgerButton</item>
+    </style>
+
+    <style name="Base.Theme.SettingsButton" parent="@style/Widget.AppCompat.ActionButton.Overflow" >
+        <item name="android:tint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="Base.Theme.HamburgerButton" parent="@style/Widget.AppCompat.DrawerArrowToggle" >
+        <item name="spinBars">true</item>
+        <item name="color">?attr/colorOnPrimary</item>
     </style>
 
     <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.MaterialComponents.DayNight.NoActionBar">
