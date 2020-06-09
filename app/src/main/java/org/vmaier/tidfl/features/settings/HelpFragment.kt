@@ -33,7 +33,9 @@ class HelpFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, saved)
         MainActivity.toolbar.title = getString(R.string.heading_help)
+        MainActivity.fab.hide()
         MainActivity.bottomNav.visibility = View.GONE
+        MainActivity.bottomBar.visibility = View.GONE
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_help, container, false
         )

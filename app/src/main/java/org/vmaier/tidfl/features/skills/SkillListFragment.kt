@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.vmaier.tidfl.MainActivity
@@ -35,16 +34,13 @@ class SkillListFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, saved)
         MainActivity.toolbar.title = getString(R.string.heading_skills)
+        MainActivity.fab.show()
         MainActivity.bottomNav.visibility = View.VISIBLE
+        MainActivity.bottomBar.visibility = View.VISIBLE
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_skill_list, container, false
         )
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        binding.fab.setOnClickListener {
-            it.findNavController().navigate(
-                SkillListFragmentDirections.actionSkillListFragmentToCreateSkillFragment()
-            )
-        }
         return binding.root
     }
 
@@ -77,14 +73,5 @@ class SkillListFragment : Fragment() {
             layoutManager = GridLayoutManager(activity, 2)
             adapter = skillAdapter
         }
-        binding.rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy < 0 && !binding.fab.isShown) {
-                    binding.fab.show()
-                } else if (dy > 0 && binding.fab.isShown) {
-                    binding.fab.hide()
-                }
-            }
-        })
     }
 }

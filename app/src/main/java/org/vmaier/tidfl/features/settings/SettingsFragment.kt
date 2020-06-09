@@ -36,7 +36,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onStart() {
         super.onStart()
         MainActivity.toolbar.title = getString(R.string.heading_settings)
+        MainActivity.fab.hide()
         MainActivity.bottomNav.visibility = View.GONE
+        MainActivity.bottomBar.visibility = View.GONE
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

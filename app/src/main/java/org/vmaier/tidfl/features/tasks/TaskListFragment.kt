@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,16 +37,13 @@ class TaskListFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, saved)
         MainActivity.toolbar.title = getString(R.string.heading_tasks)
+        MainActivity.fab.show()
         MainActivity.bottomNav.visibility = View.VISIBLE
+        MainActivity.bottomBar.visibility = View.VISIBLE
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_task_list, container, false
         )
         MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        binding.fab.setOnClickListener {
-            it.findNavController().navigate(
-                TaskListFragmentDirections.actionTaskListFragmentToCreateTaskFragment()
-            )
-        }
         return binding.root
     }
 
@@ -90,15 +86,6 @@ class TaskListFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = taskAdapter
         }
-        binding.rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy < 0 && !binding.fab.isShown) {
-                    binding.fab.show()
-                } else if (dy > 0 && binding.fab.isShown) {
-                    binding.fab.hide()
-                }
-            }
-        })
         val simpleItemTouchCallback = SwipeCallbackHandler()
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(rv)

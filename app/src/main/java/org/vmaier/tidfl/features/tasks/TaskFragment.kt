@@ -81,7 +81,9 @@ open class TaskFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, saved)
         MainActivity.toolbar.title = getString(R.string.heading_tasks)
+        MainActivity.fab.hide()
         MainActivity.bottomNav.visibility = View.GONE
+        MainActivity.bottomBar.visibility = View.GONE
         val skills = db.skillDao().findAll()
         skillNames = skills.map { it.name }
         return this.view

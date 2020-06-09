@@ -16,7 +16,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.maltaisn.icondialog.IconDialog
@@ -29,9 +31,11 @@ import org.vmaier.tidfl.databinding.ActivityMainBinding
 import org.vmaier.tidfl.features.skills.SkillCreateFragment
 import org.vmaier.tidfl.features.skills.SkillEditFragment
 import org.vmaier.tidfl.features.skills.SkillFragment
+import org.vmaier.tidfl.features.skills.SkillListFragment
 import org.vmaier.tidfl.features.tasks.TaskCreateFragment
 import org.vmaier.tidfl.features.tasks.TaskEditFragment
 import org.vmaier.tidfl.features.tasks.TaskFragment
+import org.vmaier.tidfl.features.tasks.TaskListFragment
 import org.vmaier.tidfl.utils.Const
 import org.vmaier.tidfl.utils.decodeBase64
 
@@ -52,6 +56,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         lateinit var toolbar: Toolbar
         lateinit var drawerLayout: DrawerLayout
         lateinit var bottomNav: BottomNavigationView
+        lateinit var bottomBar: BottomAppBar
+        lateinit var fab: FloatingActionButton
         lateinit var xpCounterView: TextView
         lateinit var levelCounterView: TextView
         lateinit var userNameView: TextView
@@ -100,6 +106,28 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         iconDialog = supportFragmentManager
             .findFragmentByTag(Const.Tag.ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())
+
+        // --- Bottom Bar Settings
+        bottomBar = findViewById(R.id.bottom_bar)
+
+        // --- Floating Action Button Settings
+        fab = findViewById(R.id.fab)
+        fab.setOnClickListener {
+            val fragment = supportFragmentManager.primaryNavigationFragment
+            if (fragment != null) {
+                val fragments = fragment.childFragmentManager.fragments
+                fragments.forEach {
+                    when (it) {
+                        is TaskListFragment -> {
+                            navController.navigate(R.id.action_taskListFragment_to_createTaskFragment)
+                        }
+                        is SkillListFragment -> {
+                            navController.navigate(R.id.action_skillListFragment_to_createSkillFragment)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onStart() {
