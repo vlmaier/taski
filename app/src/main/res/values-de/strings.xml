@@ -52,6 +52,7 @@
     <string name="event_task_failed">Aufgabe fehlgeschlagen</string>
     <string name="event_task_updated">Aufgabe aktualisiert</string>
     <!-- Buttons -->
+    <string name="action_ok">Ok</string>
     <string name="action_undo">Rückgängig</string>
     <string name="action_create">Erstellen</string>
     <string name="action_cancel">Abbrechen</string>
@@ -109,6 +110,8 @@
         <item quantity="one">%1$d Aufgabe ist der %2$s Fertigkeit zugewiesen</item>
         <item quantity="other">%1$d Aufgaben sind der %2$s Fertigkeit zugewiesen</item>
     </plurals>
+    <string name="alert_permission_required">Berechtigung erforderlich</string>
+    <string name="alert_calendar_access_required">Für die Aufgabensynchronisierung ist die Berechtigung zum Zugriff auf den Kalender erforderlich.</string>
     <!-- Content description -->
     <string name="content_task_icon">Aufgabensymbol</string>
     <string name="content_skill_icon">Fertingskeitssymbol</string>

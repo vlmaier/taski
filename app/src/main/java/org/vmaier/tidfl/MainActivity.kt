@@ -1,5 +1,6 @@
 package org.vmaier.tidfl
 
+import android.content.pm.PackageManager
 import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.view.Menu
@@ -28,6 +29,7 @@ import com.maltaisn.icondialog.pack.IconPack
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.databinding.ActivityMainBinding
+import org.vmaier.tidfl.features.settings.SettingsFragment
 import org.vmaier.tidfl.features.skills.SkillCreateFragment
 import org.vmaier.tidfl.features.skills.SkillEditFragment
 import org.vmaier.tidfl.features.skills.SkillFragment
@@ -38,6 +40,7 @@ import org.vmaier.tidfl.features.tasks.TaskFragment
 import org.vmaier.tidfl.features.tasks.TaskListFragment
 import org.vmaier.tidfl.utils.Const
 import org.vmaier.tidfl.utils.decodeBase64
+import timber.log.Timber
 
 
 /**
@@ -119,10 +122,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 fragments.forEach {
                     when (it) {
                         is TaskListFragment -> {
-                            navController.navigate(R.id.action_taskListFragment_to_createTaskFragment)
+                            navController
+                                .navigate(R.id.action_taskListFragment_to_createTaskFragment)
                         }
                         is SkillListFragment -> {
-                            navController.navigate(R.id.action_skillListFragment_to_createSkillFragment)
+                            navController
+                                .navigate(R.id.action_skillListFragment_to_createSkillFragment)
                         }
                     }
                 }
@@ -292,5 +297,27 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             theme.applyStyle(R.style.Theme_Sailor, true)
         }
         return theme
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            SettingsFragment.ACCESS_CALENDAR_REQUEST -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Timber.d("Requested permission has been denied by user")
+                    SettingsFragment.isCalendarSyncOn = false
+                    getDefaultSharedPreferences(applicationContext)
+                        .edit()
+                        .putBoolean(Const.Prefs.CALENDAR_SYNC, SettingsFragment.isCalendarSyncOn)
+                        .apply()
+                    SettingsFragment.calendarSyncPref.isChecked = false
+                    Timber.d("Due to lack of permissions calendar synchronization was disabled")
+                } else {
+                    Timber.d("Requested permission has been granted by user")
+                }
+            }
+        }
     }
 }

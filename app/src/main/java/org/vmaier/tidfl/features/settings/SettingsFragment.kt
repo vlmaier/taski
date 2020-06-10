@@ -4,15 +4,18 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.content.ContextCompat
 import androidx.preference.*
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import org.vmaier.tidfl.MainActivity
-import org.vmaier.tidfl.PermissionManager
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.utils.Const
 import org.vmaier.tidfl.utils.compress
@@ -31,6 +34,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 1
+        const val ACCESS_CALENDAR_REQUEST = 2
+        var isCalendarSyncOn = false
+        lateinit var calendarSyncPref: CheckBoxPreference
     }
 
     override fun onStart() {
@@ -68,8 +74,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 .setTitle(getString(R.string.alert_reset_avatar))
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.action_proceed_with_reset)) { _, _ ->
-                    preferenceManager.sharedPreferences.edit()
-                        .putString(Const.Prefs.USER_AVATAR, null).apply()
+                    preferenceManager.sharedPreferences
+                        .edit().putString(Const.Prefs.USER_AVATAR, null)
+                        .apply()
                     MainActivity.avatarView.setImageDrawable(
                         getDrawable(requireContext(), R.mipmap.ic_launcher_round)
                     )
@@ -93,8 +100,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
             )
             dialog.onPositiveButtonClicked = {
                 val textValue = dialog.editText.text.toString()
-                PreferenceManager.getDefaultSharedPreferences(requireContext())
-                    .edit().putString(Const.Prefs.USER_NAME, textValue).apply()
+                getDefaultSharedPreferences(requireContext())
+                    .edit().putString(Const.Prefs.USER_NAME, textValue)
+                    .apply()
                 MainActivity.userNameView.text = textValue
                 Timber.d("Username changed.")
             }
@@ -109,25 +117,16 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
             Const.Prefs.CALENDAR_SYNC -> {
-                val pref: CheckBoxPreference? = findPreference(key)
-                val checkBoxValue = pref?.isChecked ?: false
-                if (checkBoxValue) {
-                    // initialize a list of required permissions to request runtime
-                    val permissions = listOf(
-                        Manifest.permission.READ_CALENDAR,
-                        Manifest.permission.WRITE_CALENDAR
-                    )
-                    PermissionManager(
-                        requireActivity(),
-                        permissions,
-                        1
-                    )
-                        .checkPermissions()
+                calendarSyncPref = findPreference(key)!!
+                isCalendarSyncOn = calendarSyncPref.isChecked
+                if (isCalendarSyncOn) {
+                    setupCalendarPermissions()
                 }
-                sharedPreferences.edit().putBoolean(Const.Prefs.CALENDAR_SYNC, checkBoxValue)
+                sharedPreferences
+                    .edit().putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
                     .apply()
                 Timber.d("Calendar synchronization is %s.",
-                    if (checkBoxValue) "enabled" else "disabled")
+                    if (isCalendarSyncOn) "enabled" else "disabled")
             }
             Const.Prefs.APP_THEME -> {
                 val pref: ListPreference? = findPreference(key)
@@ -141,6 +140,39 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 activity?.recreate()
             }
         }
+    }
+
+    private fun setupCalendarPermissions() {
+        val context = requireContext()
+        val read = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR)
+        val write = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
+        if (read == PackageManager.PERMISSION_DENIED || write == PackageManager.PERMISSION_DENIED) {
+            Timber.d("Permission to access calendar is denied")
+            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
+                    Manifest.permission.WRITE_CALENDAR)) {
+                val builder = AlertDialog.Builder(requireContext())
+                builder
+                    .setMessage(getString(R.string.alert_calendar_access_required))
+                    .setTitle(getString(R.string.alert_permission_required))
+                    .setPositiveButton(getString(R.string.action_ok)) { _, _ ->
+                        requestCalendarPermissions()
+                    }
+                val dialog = builder.create()
+                dialog.show()
+            } else {
+                requestCalendarPermissions()
+            }
+        }
+        if (read == PackageManager.PERMISSION_GRANTED && write == PackageManager.PERMISSION_GRANTED) {
+            Timber.d("Permissions to access calendar are granted")
+        }
+    }
+
+    private fun requestCalendarPermissions() {
+        requestPermissions(requireActivity(), arrayOf(
+            Manifest.permission.READ_CALENDAR,
+            Manifest.permission.WRITE_CALENDAR),
+            ACCESS_CALENDAR_REQUEST)
     }
 
     override fun onResume() {
