@@ -6,6 +6,8 @@ import android.app.TimePickerDialog
 import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
@@ -110,9 +112,7 @@ open class TaskFragment : Fragment() {
                     icon = App.iconPack.getIconDrawable(skill.iconId, IconDrawableLoader(context))
                 }
                 if (icon != null) {
-                    DrawableCompat.setTint(
-                        icon, ContextCompat.getColor(context, R.color.colorSwipeForeground)
-                    )
+                    DrawableCompat.setTint(icon, Color.WHITE)
                 }
                 return ChipSpan(context, text, icon, data)
             }
@@ -120,6 +120,9 @@ open class TaskFragment : Fragment() {
             override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
                 super.configureChip(chip, chipConfiguration)
                 chip.setShowIconOnLeft(true)
+                chip.setBackgroundColor(ColorStateList.valueOf(Utils.getThemeColor(requireContext(), R.attr.colorControlHighlight)))
+                chip.setTextColor(Utils.getThemeColor(requireContext(), R.attr.colorOnSurface))
+                chip.setIconBackgroundColor(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
             }
         }, ChipSpan::class.java)
     }
