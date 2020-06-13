@@ -182,9 +182,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             R.id.nav_skills -> {
                 navController.navigate(R.id.skillListFragment)
             }
+            R.id.nav_statistics -> {
+                navController.navigate(R.id.statisticsFragment)
+            }
         }
         // update selected menu item in bottom navigation as well
-        bottomNav.menu.findItem(item.itemId).isChecked = true
+        val foundItem = bottomNav.menu.findItem(item.itemId)
+        if (foundItem != null) {
+            foundItem.isChecked = true
+        }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }

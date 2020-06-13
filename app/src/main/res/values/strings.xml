@@ -69,12 +69,14 @@
     <string name="heading_due_at">at</string>
     <string name="heading_tasks">Tasks</string>
     <string name="heading_skills">Skills</string>
+    <string name="heading_statistics">Statistics</string>
     <string name="heading_settings">Settings</string>
     <string name="heading_xp_gain">Experience gain</string>
     <string name="heading_task_info">Task information</string>
     <string name="heading_skill_info">Skill information</string>
     <string name="heading_skill_level">Skill level</string>
     <string name="heading_skill_xp">Skill experience</string>
+    <string name="heading_skill_xp_short">Skill XP</string>
     <string name="heading_open_tasks">Amount of open tasks</string>
     <string name="heading_done_tasks">Amount of done tasks</string>
     <string name="heading_calendar_sync">Calendar synchronization</string>

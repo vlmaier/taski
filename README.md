@@ -7,7 +7,6 @@
 - [ ] show failed tasks
 - [ ] show tasks grouped by tags
 - [ ] show tasks grouped by skills
-- [ ] sorting tasks in list view by due date
 - [ ] recurring tasks
 
 ##### Tag Management
@@ -36,4 +35,3 @@
 - [ ] landscape layout
 - [ ] layout for smaller phone screens
 - [ ] tablet layout
-- [ ] implement themes

@@ -69,12 +69,14 @@
     <string name="heading_due_at">um</string>
     <string name="heading_tasks">Aufgaben</string>
     <string name="heading_skills">Fertigkeiten</string>
+    <string name="heading_statistics">Statistiken</string>
     <string name="heading_settings">Einstellungen</string>
     <string name="heading_xp_gain">Erfahrungsgewinn</string>
     <string name="heading_task_info">Aufgabe</string>
     <string name="heading_skill_info">Fertigkeit</string>
     <string name="heading_skill_level">Level</string>
     <string name="heading_skill_xp">Erfahrung</string>
+    <string name="heading_skill_xp_short">Erfahrung</string>
     <string name="heading_open_tasks">Anzahl offener Aufgaben</string>
     <string name="heading_done_tasks">Anzahl abgeschlossener Aufgaben</string>
     <string name="heading_calendar_sync">Kalender synchronisation</string>

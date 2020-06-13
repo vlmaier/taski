@@ -118,4 +118,18 @@
         tools:layout="@layout/fragment_help"
         />
 
+    <fragment
+        android:id="@+id/chartSkillXpFragment"
+        android:name="org.vmaier.tidfl.features.statistics.ChartSkillXpFragment"
+        android:label="ChartSkillXpFragment"
+        tools:layout="@layout/fragment_chart_skill_xp"
+        />
+
+    <fragment
+        android:id="@+id/statisticsFragment"
+        android:name="org.vmaier.tidfl.features.statistics.StatisticsFragment"
+        android:label="StatisticsFragment"
+        tools:layout="@layout/fragment_statistics"
+        />
+
 </navigation>
