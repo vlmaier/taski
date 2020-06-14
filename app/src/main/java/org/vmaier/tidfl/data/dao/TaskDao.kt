@@ -1,10 +1,12 @@
 package org.vmaier.tidfl.data.dao
 
 import androidx.room.*
+import org.vmaier.tidfl.App
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.data.entity.AssignedSkill
 import org.vmaier.tidfl.data.entity.Skill
 import org.vmaier.tidfl.data.entity.Task
+import java.util.*
 
 
 /**
@@ -53,6 +55,15 @@ interface TaskDao {
 
     @Query(
         """
+        SELECT *
+        FROM tasks
+        WHERE status = 'done' AND closed_at LIKE :closedAt
+    """
+    )
+    fun findByClosedAt(closedAt: String): List<Task>
+
+    @Query(
+        """
         SELECT COUNT(*)
         FROM tasks
         WHERE status = :status
@@ -74,11 +85,20 @@ interface TaskDao {
     @Query(
         """
         UPDATE tasks
-        SET status = :status
+        SET status = :status, closed_at = :closedAt
         WHERE id = :taskId
     """
     )
-    fun changeStatus(taskId: Long, status: Status)
+    fun close(taskId: Long, status: Status, closedAt: String = App.dateFormat.format(Date()))
+
+    @Query(
+        """
+        UPDATE tasks
+        SET status = 'open', closed_at = null
+        WHERE id = :taskId
+    """
+    )
+    fun reopen(taskId: Long)
 
     @Query(
         """

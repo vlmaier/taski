@@ -76,7 +76,8 @@
     <string name="heading_skill_info">Skill information</string>
     <string name="heading_skill_level">Skill level</string>
     <string name="heading_skill_xp">Skill experience</string>
-    <string name="heading_skill_xp_short">Skill XP</string>
+    <string name="heading_skill_xp_title">Skill XP</string>
+    <string name="heading_daily_xp_title">Daily XP</string>
     <string name="heading_open_tasks">Amount of open tasks</string>
     <string name="heading_done_tasks">Amount of done tasks</string>
     <string name="heading_calendar_sync">Calendar synchronization</string>

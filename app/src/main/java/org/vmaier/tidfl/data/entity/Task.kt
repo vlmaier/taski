@@ -47,6 +47,9 @@ data class Task(
     @ColumnInfo(name = "created_at")
     val createdAt: String = App.dateFormat.format(Date()),
 
+    @ColumnInfo(name = "closed_at")
+    val closedAt: String? = null,
+
     @ColumnInfo(name = "due_at")
     val dueAt: String? = null,
 

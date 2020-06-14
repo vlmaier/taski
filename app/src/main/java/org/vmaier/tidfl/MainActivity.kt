@@ -3,6 +3,7 @@ package org.vmaier.tidfl
 import android.content.pm.PackageManager
 import android.content.res.Resources.Theme
 import android.os.Bundle
+import android.text.Layout
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View

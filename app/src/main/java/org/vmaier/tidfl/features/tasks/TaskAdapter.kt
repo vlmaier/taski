@@ -212,7 +212,11 @@ class TaskAdapter internal constructor(
 
         val db = AppDatabase(context)
         Timber.d("Status for task with ID ${task.id} updated: ${task.status} ---> $status")
-        db.taskDao().changeStatus(task.id, status)
+        if (status != Status.OPEN) {
+            db.taskDao().close(task.id, status)
+        } else {
+            db.taskDao().reopen(task.id)
+        }
         if (status != Status.FAILED) {
             val xpValue = db.taskDao().countOverallXpValue()
             val levelValue = xpValue.div(10000) + 1

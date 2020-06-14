@@ -76,7 +76,8 @@
     <string name="heading_skill_info">Fertigkeit</string>
     <string name="heading_skill_level">Level</string>
     <string name="heading_skill_xp">Erfahrung</string>
-    <string name="heading_skill_xp_short">Erfahrung</string>
+    <string name="heading_skill_xp_title">Fertigkeitserfahrung</string>
+    <string name="heading_daily_xp_title">Tägliche Erfahrung</string>
     <string name="heading_open_tasks">Anzahl offener Aufgaben</string>
     <string name="heading_done_tasks">Anzahl abgeschlossener Aufgaben</string>
     <string name="heading_calendar_sync">Kalender synchronisation</string>

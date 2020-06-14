@@ -19,6 +19,7 @@ import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.AppDatabase
 import org.vmaier.tidfl.data.entity.Skill
+import org.vmaier.tidfl.utils.Utils
 import org.vmaier.tidfl.utils.hideKeyboard
 import kotlin.random.Random
 
@@ -108,7 +109,8 @@ open class SkillFragment : Fragment() {
         ).setAction(getString(R.string.action_undo)) {
             // undo is selected, restore the deleted item
             SkillListFragment.skillAdapter.restoreItem(toRestore, position)
-        }.setActionTextColor(Color.YELLOW).show()
+        }.setActionTextColor(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
+            .show()
         view.findNavController().popBackStack()
         view.hideKeyboard()
     }

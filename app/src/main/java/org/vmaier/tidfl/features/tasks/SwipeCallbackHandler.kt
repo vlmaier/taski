@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
 import org.vmaier.tidfl.data.Status
 import org.vmaier.tidfl.data.entity.Task
+import org.vmaier.tidfl.utils.Utils
 import org.vmaier.tidfl.utils.toBitmap
 
 
@@ -49,11 +51,13 @@ class SwipeCallbackHandler :
             message = context.getString(R.string.event_task_failed)
         }
         // showing snack bar with undo option
-        Snackbar.make(itemView, message, Snackbar.LENGTH_LONG)
+        Snackbar.make(MainActivity.fab, message, Snackbar.LENGTH_LONG)
             .setAction(context.getString(R.string.action_undo)) {
                 // undo is selected, restore the deleted item
                 TaskListFragment.taskAdapter.restoreItem(taskToRestore)
-            }.setActionTextColor(Color.YELLOW).show()
+            }
+            .setActionTextColor(Utils.getThemeColor(context, R.attr.colorSecondary))
+            .show()
     }
 
     override fun onChildDraw(
