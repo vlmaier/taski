@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.MainActivity
@@ -19,6 +21,7 @@ import org.vmaier.tidfl.features.tasks.TaskFragment
 import org.vmaier.tidfl.utils.Utils
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.floor
 
 
 /**
@@ -82,6 +85,11 @@ class ChartDailyXpFragment : TaskFragment() {
         data.barWidth = 0.9f
         data.setValueTextSize(14f)
         data.setValueTextColor(Utils.getThemeColor(requireContext(), R.attr.colorOnSurface))
+        data.setValueFormatter(object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return floor(value.toDouble()).toInt().toString()
+            }
+        })
 
         val xAxis = binding.chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -99,12 +107,20 @@ class ChartDailyXpFragment : TaskFragment() {
 
         binding.chart.axisRight.isEnabled = false
 
-        binding.chart.data = data
+        if (values.isNotEmpty()) {
+            binding.chart.data = data
+        }
 
         binding.chart.setExtraOffsets(20f, 20f, 10f, 20f)
         binding.chart.description.isEnabled = false
         binding.chart.setFitBars(true)
         binding.chart.legend.isEnabled = false
+        binding.chart.setTouchEnabled(false)
+
+        val p = binding.chart.getPaint(Chart.PAINT_INFO);
+        p.textSize = 64f
+        p.color = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
+        binding.chart.setNoDataText("No data available.")
 
         binding.chart.invalidate()
         binding.chart.animateXY(1000, 1000)

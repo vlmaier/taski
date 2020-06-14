@@ -126,6 +126,20 @@
         />
 
     <fragment
+        android:id="@+id/chartDailyXpFragment"
+        android:name="org.vmaier.tidfl.features.statistics.ChartDailyXpFragment"
+        android:label="ChartDailyXpFragment"
+        tools:layout="@layout/fragment_chart_daily_xp"
+        />
+
+    <fragment
+        android:id="@+id/chartWeeklyXpFragment"
+        android:name="org.vmaier.tidfl.features.statistics.ChartWeeklyXpFragment"
+        android:label="ChartWeeklyXpFragment"
+        tools:layout="@layout/fragment_chart_weekly_xp"
+        />
+
+    <fragment
         android:id="@+id/statisticsFragment"
         android:name="org.vmaier.tidfl.features.statistics.StatisticsFragment"
         android:label="StatisticsFragment"

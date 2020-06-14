@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.maltaisn.icondialog.pack.IconDrawableLoader
@@ -20,6 +22,7 @@ import org.vmaier.tidfl.R
 import org.vmaier.tidfl.databinding.FragmentChartSkillXpBinding
 import org.vmaier.tidfl.features.skills.SkillFragment
 import org.vmaier.tidfl.utils.Utils
+import kotlin.math.floor
 
 
 /**
@@ -63,8 +66,15 @@ class ChartSkillXpFragment : SkillFragment() {
         val data = PieData(dataSet)
         data.setValueTextSize(14f)
         data.setValueTextColor(Color.WHITE)
+        data.setValueFormatter(object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return floor(value.toDouble()).toInt().toString()
+            }
+        })
 
-        binding.chart.data = data
+        if (values.isNotEmpty()) {
+            binding.chart.data = data
+        }
 
         binding.chart.setDrawCenterText(false)
         binding.chart.setExtraOffsets(10f, 0f, 10f, 0f)
@@ -89,6 +99,11 @@ class ChartSkillXpFragment : SkillFragment() {
         legend.isWordWrapEnabled = true
         legend.textColor = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
         legend.setDrawInside(true)
+
+        val p = binding.chart.getPaint(Chart.PAINT_INFO);
+        p.textSize = 64f
+        p.color = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
+        binding.chart.setNoDataText("No data available.")
 
         binding.chart.invalidate()
         binding.chart.animateXY(1000, 1000)
