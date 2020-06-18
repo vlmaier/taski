@@ -44,38 +44,14 @@ class ChartWeeklyXpFragment : TaskFragment() {
             inflater, R.layout.fragment_chart_weekly_xp, container, false
         )
 
-        val calendar = Calendar.getInstance(Locale.GERMANY)
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-        val day1 = App.dateFormat.format(calendar.time).split(" ")[0]
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.TUESDAY)
-        val day2 = App.dateFormat.format(calendar.time).split(" ")[0]
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.WEDNESDAY)
-        val day3 = App.dateFormat.format(calendar.time).split(" ")[0]
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.THURSDAY)
-        val day4 = App.dateFormat.format(calendar.time).split(" ")[0]
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.FRIDAY)
-        val day5 = App.dateFormat.format(calendar.time).split(" ")[0]
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY)
-        val day6 = App.dateFormat.format(calendar.time).split(" ")[0]
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY)
-        val day7 = App.dateFormat.format(calendar.time).split(" ")[0]
-
-        val xpValueDay1 = db.taskDao().coundDailyXpValue("%$day1%").toFloat()
-        val xpValueDay2 = db.taskDao().coundDailyXpValue("%$day2%").toFloat()
-        val xpValueDay3 = db.taskDao().coundDailyXpValue("%$day3%").toFloat()
-        val xpValueDay4 = db.taskDao().coundDailyXpValue("%$day4%").toFloat()
-        val xpValueDay5 = db.taskDao().coundDailyXpValue("%$day5%").toFloat()
-        val xpValueDay6 = db.taskDao().coundDailyXpValue("%$day6%").toFloat()
-        val xpValueDay7 = db.taskDao().coundDailyXpValue("%$day7%").toFloat()
-
         val values = ArrayList<Entry>()
-        values.add(Entry(0f, xpValueDay1))
-        values.add(Entry(1f, xpValueDay2))
-        values.add(Entry(2f, xpValueDay3))
-        values.add(Entry(3f, xpValueDay4))
-        values.add(Entry(4f, xpValueDay5))
-        values.add(Entry(5f, xpValueDay6))
-        values.add(Entry(6f, xpValueDay7))
+        values.add(Entry(0f, getXpValueForDayOfTheWeek(Calendar.MONDAY)))
+        values.add(Entry(1f, getXpValueForDayOfTheWeek(Calendar.TUESDAY)))
+        values.add(Entry(2f, getXpValueForDayOfTheWeek(Calendar.WEDNESDAY)))
+        values.add(Entry(3f, getXpValueForDayOfTheWeek(Calendar.THURSDAY)))
+        values.add(Entry(4f, getXpValueForDayOfTheWeek(Calendar.FRIDAY)))
+        values.add(Entry(5f, getXpValueForDayOfTheWeek(Calendar.SATURDAY)))
+        values.add(Entry(6f, getXpValueForDayOfTheWeek(Calendar.SUNDAY)))
 
         val dataSet = LineDataSet(values, "")
         dataSet.axisDependency = YAxis.AxisDependency.LEFT
@@ -100,7 +76,15 @@ class ChartWeeklyXpFragment : TaskFragment() {
         val xAxis = binding.chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
-        val captions = arrayListOf("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
+        val captions = arrayListOf(
+            getString(R.string.term_monday_short),
+            getString(R.string.term_tuesday_short),
+            getString(R.string.term_wednesday_short),
+            getString(R.string.term_thursday_short),
+            getString(R.string.term_friday_short),
+            getString(R.string.term_saturday_short),
+            getString(R.string.term_sunday_short)
+        )
         val formatter = IndexAxisValueFormatter(captions)
         xAxis.valueFormatter = formatter
         xAxis.textSize = 14f
@@ -125,10 +109,17 @@ class ChartWeeklyXpFragment : TaskFragment() {
         val p = binding.chart.getPaint(Chart.PAINT_INFO);
         p.textSize = 64f
         p.color = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
-        binding.chart.setNoDataText("No data available.")
+        binding.chart.setNoDataText(getString(R.string.description_no_data))
 
         binding.chart.invalidate()
         binding.chart.animateXY(1000, 1000)
         return binding.root
+    }
+
+    private fun getXpValueForDayOfTheWeek(day: Int): Float {
+        val calendar = Calendar.getInstance(Locale.GERMANY)
+        calendar.set(Calendar.DAY_OF_WEEK, day)
+        val closedAtDay = App.dateFormat.format(calendar.time).split(" ")[0]
+        return db.taskDao().coundDailyXpValue("%$closedAtDay%").toFloat()
     }
 }

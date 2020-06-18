@@ -132,9 +132,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 val pref: ListPreference? = findPreference(key)
                 val selectedTheme = pref?.value
                 sharedPreferences.edit().putString(Const.Prefs.APP_THEME, selectedTheme).apply()
-                if (selectedTheme == "Theme.Default") {
+                if (selectedTheme == getString(R.string.theme_default_name)) {
                     activity?.setTheme(R.style.Theme_Default)
-                } else if (selectedTheme == "Theme.Sailor") {
+                } else if (selectedTheme == getString(R.string.theme_sailor_name)) {
                     activity?.setTheme(R.style.Theme_Sailor)
                 }
                 activity?.recreate()

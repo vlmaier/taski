@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">Things I Do For Loot</string>
+    <string name="theme_default_name">Theme.Default</string>
+    <string name="theme_sailor_name">Theme.Sailor</string>
     <string name="version">Version %s\n\n© 2020 Vladas Maier</string>
     <!-- Duration values -->
     <plurals name="duration_minute">
@@ -41,6 +43,13 @@
     <string name="term_due_today">Due today</string>
     <string name="term_due_tomorrow">Due tomorrow</string>
     <string name="term_due_someday">Due someday</string>
+    <string name="term_monday_short">MON</string>
+    <string name="term_tuesday_short">TUE</string>
+    <string name="term_wednesday_short">WED</string>
+    <string name="term_thursday_short">THU</string>
+    <string name="term_friday_short">FRI</string>
+    <string name="term_saturday_short">SAT</string>
+    <string name="term_sunday_short">SUN</string>
     <!-- Error messages -->
     <string name="error_name_cannot_be_empty">Name cannot be empty</string>
     <string name="error_skill_already_exists">Skill with such name already exists</string>
@@ -52,7 +61,7 @@
     <string name="event_task_failed">Task failed</string>
     <string name="event_task_updated">Task updated</string>
     <!-- Buttons -->
-    <string name="action_ok">Ok</string>
+    <string name="action_ok">OK</string>
     <string name="action_undo">Undo</string>
     <string name="action_create">Create</string>
     <string name="action_cancel">Cancel</string>
@@ -91,6 +100,7 @@
     <string name="heading_version">Version</string>
     <string name="heading_change_avatar">Change avatar</string>
     <string name="heading_reset_avatar">Reset avatar</string>
+    <string name="heading_unassigned">Unassigned</string>
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
     <string name="hint_skill_category">Skill category</string>
@@ -107,6 +117,7 @@
     <string name="description_user_name">Set your name to be shown in navigation menu.</string>
     <string name="description_change_avatar">Change user avatar</string>
     <string name="description_reset_avatar">Reset current avatar to default.</string>
+    <string name="description_no_data">No data available.</string>
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Delete skill?</string>
     <string name="alert_reset_avatar">Reset avatar?</string>

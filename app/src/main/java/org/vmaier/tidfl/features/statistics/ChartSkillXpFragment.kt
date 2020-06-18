@@ -103,7 +103,7 @@ class ChartSkillXpFragment : SkillFragment() {
         val p = binding.chart.getPaint(Chart.PAINT_INFO);
         p.textSize = 64f
         p.color = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
-        binding.chart.setNoDataText("No data available.")
+        binding.chart.setNoDataText(getString(R.string.description_no_data))
 
         binding.chart.invalidate()
         binding.chart.animateXY(1000, 1000)

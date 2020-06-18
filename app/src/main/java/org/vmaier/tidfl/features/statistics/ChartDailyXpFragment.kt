@@ -46,34 +46,25 @@ class ChartDailyXpFragment : TaskFragment() {
 
         val closedAt = App.dateFormat.format(Date()).split(" ")[0]
         val tasks = db.taskDao().findByClosedAt("%$closedAt%")
-        var labelWithDailyXpValue: MutableMap<String, Long> = mutableMapOf()
+        var skillWithXpValue: MutableMap<String, Long> = mutableMapOf()
         val values = ArrayList<BarEntry>()
         tasks.forEach { task ->
             val assignedSkills = db.skillDao().findAssignedSkills(task.id)
             if (assignedSkills.isEmpty()) {
-                val entry = labelWithDailyXpValue["Unassigned"]
-                if (entry != null) {
-                    labelWithDailyXpValue["Unassigned"] = entry + task.xpValue
-                } else {
-                    labelWithDailyXpValue["Unassigned"] = task.xpValue.toLong()
-                }
+                fillSkillWithXpValue(skillWithXpValue,
+                    getString(R.string.heading_unassigned), task.xpValue.toLong())
             } else {
                 assignedSkills.forEach { skill ->
-                    val entry = labelWithDailyXpValue[skill.name]
-                    if (entry != null) {
-                        labelWithDailyXpValue[skill.name] = entry + task.xpValue
-                    } else {
-                        labelWithDailyXpValue[skill.name] = task.xpValue.toLong()
-                    }
+                    fillSkillWithXpValue(skillWithXpValue, skill.name, task.xpValue.toLong())
                 }
             }
         }
         // sort asc by value
-        labelWithDailyXpValue = labelWithDailyXpValue
+        skillWithXpValue = skillWithXpValue
             .toList().sortedBy { (_, value) -> value }
             .toMap().toMutableMap()
         var i = 0f
-        labelWithDailyXpValue.forEach {
+        skillWithXpValue.forEach {
             values.add(BarEntry(i++, it.value.toFloat()))
         }
 
@@ -94,7 +85,7 @@ class ChartDailyXpFragment : TaskFragment() {
         val xAxis = binding.chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
-        val captions = labelWithDailyXpValue.keys
+        val captions = skillWithXpValue.keys
         val formatter = IndexAxisValueFormatter(captions)
         xAxis.valueFormatter = formatter
         xAxis.textSize = 14f
@@ -120,10 +111,20 @@ class ChartDailyXpFragment : TaskFragment() {
         val p = binding.chart.getPaint(Chart.PAINT_INFO);
         p.textSize = 64f
         p.color = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
-        binding.chart.setNoDataText("No data available.")
+        binding.chart.setNoDataText(getString(R.string.description_no_data))
 
         binding.chart.invalidate()
         binding.chart.animateXY(1000, 1000)
         return binding.root
+    }
+
+    private fun fillSkillWithXpValue(
+        skillWithXpValue: MutableMap<String, Long>, skillName: String, xpValue: Long) {
+        val entry = skillWithXpValue[skillName]
+        if (entry != null) {
+            skillWithXpValue[skillName] = entry + xpValue
+        } else {
+            skillWithXpValue[skillName] = xpValue
+        }
     }
 }

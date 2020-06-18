@@ -297,10 +297,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     override fun getTheme(): Theme? {
         val theme: Theme = super.getTheme()
         val selectedTheme = getDefaultSharedPreferences(this)
-            .getString(Const.Prefs.APP_THEME, "Theme.Default")
-        if (selectedTheme == "Theme.Default") {
+            .getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
+        if (selectedTheme == getString(R.string.theme_default_name)) {
             theme.applyStyle(R.style.Theme_Default, true)
-        } else if (selectedTheme == "Theme.Sailor") {
+        } else if (selectedTheme == getString(R.string.theme_sailor_name)) {
             theme.applyStyle(R.style.Theme_Sailor, true)
         }
         return theme
