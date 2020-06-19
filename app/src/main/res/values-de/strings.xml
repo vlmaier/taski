@@ -69,6 +69,7 @@
     <string name="action_proceed_with_delete">Löschen</string>
     <string name="action_set">Setzen</string>
     <string name="action_proceed_with_reset">Zurücksetzen</string>
+    <string name="action_copy">Kopieren</string>
     <!-- Headings -->
     <string name="heading_create_skill">Neue Fertigkeit</string>
     <string name="heading_create_task">Neue Aufgabe</string>

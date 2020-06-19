@@ -69,6 +69,7 @@
     <string name="action_proceed_with_delete">Proceed</string>
     <string name="action_set">Set</string>
     <string name="action_proceed_with_reset">Proceed</string>
+    <string name="action_copy">Copy</string>
     <!-- Headings -->
     <string name="heading_create_skill">Create new skill</string>
     <string name="heading_create_task">Create new task</string>

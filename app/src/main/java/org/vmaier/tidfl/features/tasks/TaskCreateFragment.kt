@@ -6,6 +6,7 @@ import android.view.View
 import android.view.View.NO_ID
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
@@ -42,20 +43,23 @@ class TaskCreateFragment : TaskFragment() {
             inflater, R.layout.fragment_create_task, container, false
         )
 
+        // Get arguments from bundle
+        val args = saved ?: this.arguments
+
         // --- Goal settings
-        binding.goal.editText?.setText(saved?.getString(KEY_GOAL) ?: "")
+        binding.goal.editText?.setText(args?.getString(KEY_GOAL) ?: "")
         binding.goal.onFocusChangeListener = KeyBoardHider()
         binding.goal.requestFocus()
 
         // --- Details settings
-        binding.details.editText?.setText(saved?.getString(KEY_DETAILS) ?: "")
+        binding.details.editText?.setText(args?.getString(KEY_DETAILS) ?: "")
         binding.details.onFocusChangeListener = KeyBoardHider()
 
         // --- Icon settings
-        setTaskIcon(saved, binding.iconButton)
+        setTaskIcon(args, binding.iconButton)
 
         // --- Duration settings
-        binding.durationBar.progress = saved?.getInt(KEY_DURATION) ?: 3
+        binding.durationBar.progress = args?.getInt(KEY_DURATION) ?: 3
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
         binding.durationBar.setOnSeekBarChangeListener(
             getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
@@ -73,7 +77,7 @@ class TaskCreateFragment : TaskFragment() {
             updateXpGain(binding.xpGainValue, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
-            saved?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
+            args?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
         )
         binding.difficulty.trivial.isChecked = selectedDifficulty == Difficulty.TRIVIAL
         binding.difficulty.regular.isChecked = selectedDifficulty == Difficulty.REGULAR
@@ -88,7 +92,7 @@ class TaskCreateFragment : TaskFragment() {
         binding.skills.hint = if (skillNames.isEmpty()) getString(R.string.hint_no_skills) else ""
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
-        binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS))
+        binding.skills.setText(args?.getStringArray(KEY_SKILLS)?.toList())
 
         // --- Action buttons settings
         binding.createTaskButton.setOnClickListener {
@@ -103,8 +107,8 @@ class TaskCreateFragment : TaskFragment() {
         }
 
         // --- Deadline settings
-        binding.deadlineDate.editText?.setText(saved?.getString(KEY_DEADLINE_DATE) ?: "")
-        binding.deadlineTime.editText?.setText(saved?.getString(KEY_DEADLINE_TIME) ?: "")
+        binding.deadlineDate.editText?.setText(args?.getString(KEY_DEADLINE_DATE) ?: "")
+        binding.deadlineTime.editText?.setText(args?.getString(KEY_DEADLINE_TIME) ?: "")
         setDeadlineDateOnClickListener(binding.deadlineDate.editText)
         setDeadlineTimeOnClickListener(binding.deadlineTime.editText)
 
@@ -120,7 +124,7 @@ class TaskCreateFragment : TaskFragment() {
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
         out.putString(KEY_GOAL, binding.goal.editText?.text.toString())
-        out.putString(KEY_DETAILS, binding.goal.editText?.text.toString())
+        out.putString(KEY_DETAILS, binding.details.editText?.text.toString())
         out.putString(KEY_DIFFICULTY, difficulty)
         out.putInt(KEY_DURATION, binding.durationBar.progress)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
