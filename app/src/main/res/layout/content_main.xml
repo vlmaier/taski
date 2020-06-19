@@ -85,6 +85,7 @@
             android:focusable="true"
             android:src="@android:drawable/ic_input_add"
             app:fabSize="auto"
+            app:elevation="4dp"
             app:layout_anchor="@id/bottom_bar"
             app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
             />

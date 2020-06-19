@@ -101,13 +101,13 @@ class ChartWeeklyXpFragment : TaskFragment() {
             binding.chart.data = data
         }
 
-        binding.chart.setExtraOffsets(20f, 20f, 10f, 20f)
+        binding.chart.setExtraOffsets(20f, 20f, 35f, 20f)
         binding.chart.description.isEnabled = false
         binding.chart.legend.isEnabled = false
         binding.chart.setTouchEnabled(false)
 
         val p = binding.chart.getPaint(Chart.PAINT_INFO);
-        p.textSize = 64f
+        p.textSize = 48f
         p.color = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
         binding.chart.setNoDataText(getString(R.string.description_no_data))
 
@@ -120,6 +120,6 @@ class ChartWeeklyXpFragment : TaskFragment() {
         val calendar = Calendar.getInstance(Locale.GERMANY)
         calendar.set(Calendar.DAY_OF_WEEK, day)
         val closedAtDay = App.dateFormat.format(calendar.time).split(" ")[0]
-        return db.taskDao().coundDailyXpValue("%$closedAtDay%").toFloat()
+        return db.taskDao().countDailyXpValue("%$closedAtDay%").toFloat()
     }
 }

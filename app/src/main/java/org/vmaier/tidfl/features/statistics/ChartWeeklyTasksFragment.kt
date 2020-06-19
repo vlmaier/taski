@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import org.vmaier.tidfl.App
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
-import org.vmaier.tidfl.databinding.FragmentChartDailyXpBinding
+import org.vmaier.tidfl.databinding.FragmentChartWeeklyTasksBinding
 import org.vmaier.tidfl.features.tasks.TaskFragment
 import org.vmaier.tidfl.utils.Utils
 import java.util.*
@@ -26,13 +26,13 @@ import kotlin.math.floor
 
 /**
  * Created by Vladas Maier
- * on 13.06.2020
- * at 22:06
+ * on 19.06.2020
+ * at 14:28
  */
-class ChartDailyXpFragment : TaskFragment() {
+class ChartWeeklyTasksFragment : TaskFragment() {
 
     companion object {
-        lateinit var binding: FragmentChartDailyXpBinding
+        lateinit var binding: FragmentChartWeeklyTasksBinding
     }
 
     override fun onCreateView(
@@ -41,40 +41,31 @@ class ChartDailyXpFragment : TaskFragment() {
         super.onCreateView(inflater, container, saved)
         MainActivity.toolbar.title = getString(R.string.heading_statistics)
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_chart_daily_xp, container, false
+            inflater, R.layout.fragment_chart_weekly_tasks, container, false
         )
 
-        val closedAt = App.dateFormat.format(Date()).split(" ")[0]
-        val tasks = db.taskDao().findByClosedAt("%$closedAt%")
-        var skillWithXpValue: MutableMap<String, Long> = mutableMapOf()
-        val values = ArrayList<BarEntry>()
-        tasks.forEach { task ->
-            val assignedSkills = db.skillDao().findAssignedSkills(task.id)
-            if (assignedSkills.isEmpty()) {
-                fillSkillWithXpValue(skillWithXpValue,
-                    getString(R.string.heading_unassigned), task.xpValue.toLong())
-            } else {
-                assignedSkills.forEach { skill ->
-                    fillSkillWithXpValue(skillWithXpValue, skill.name, task.xpValue.toLong())
-                }
-            }
-        }
-        // sort asc by value
-        skillWithXpValue = skillWithXpValue
-            .toList().sortedBy { (_, value) -> value }
-            .toMap().toMutableMap()
-        var i = 0f
-        skillWithXpValue.forEach {
-            values.add(BarEntry(i++, it.value.toFloat()))
-        }
+        val values = ArrayList<Entry>()
+        values.add(Entry(0f, getAmountOfTasksForDayOfTheWeek(Calendar.MONDAY)))
+        values.add(Entry(1f, getAmountOfTasksForDayOfTheWeek(Calendar.TUESDAY)))
+        values.add(Entry(2f, getAmountOfTasksForDayOfTheWeek(Calendar.WEDNESDAY)))
+        values.add(Entry(3f, getAmountOfTasksForDayOfTheWeek(Calendar.THURSDAY)))
+        values.add(Entry(4f, getAmountOfTasksForDayOfTheWeek(Calendar.FRIDAY)))
+        values.add(Entry(5f, getAmountOfTasksForDayOfTheWeek(Calendar.SATURDAY)))
+        values.add(Entry(6f, getAmountOfTasksForDayOfTheWeek(Calendar.SUNDAY)))
 
-        val dataSet = BarDataSet(values, "")
-        dataSet.barBorderWidth = 0.9f
-        dataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+        val dataSet = LineDataSet(values, "")
+        dataSet.axisDependency = YAxis.AxisDependency.LEFT
+        dataSet.lineWidth = 3f
+        dataSet.setColors(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
+        dataSet.setCircleColor(Utils.getThemeColor(requireContext(), R.attr.colorPrimary))
+        dataSet.circleRadius = 6f
+        dataSet.circleHoleRadius = 3f
+        dataSet.valueTextSize = 14f
+        dataSet.valueTextColor = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
 
-        val data = BarData(dataSet)
-        data.barWidth = 0.9f
+        val data = LineData(dataSet)
         data.setValueTextSize(14f)
+        data.setDrawValues(true)
         data.setValueTextColor(Utils.getThemeColor(requireContext(), R.attr.colorOnSurface))
         data.setValueFormatter(object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
@@ -85,7 +76,15 @@ class ChartDailyXpFragment : TaskFragment() {
         val xAxis = binding.chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
-        val captions = skillWithXpValue.keys
+        val captions = arrayListOf(
+            getString(R.string.term_monday_short),
+            getString(R.string.term_tuesday_short),
+            getString(R.string.term_wednesday_short),
+            getString(R.string.term_thursday_short),
+            getString(R.string.term_friday_short),
+            getString(R.string.term_saturday_short),
+            getString(R.string.term_sunday_short)
+        )
         val formatter = IndexAxisValueFormatter(captions)
         xAxis.valueFormatter = formatter
         xAxis.textSize = 14f
@@ -104,7 +103,6 @@ class ChartDailyXpFragment : TaskFragment() {
 
         binding.chart.setExtraOffsets(20f, 20f, 35f, 20f)
         binding.chart.description.isEnabled = false
-        binding.chart.setFitBars(true)
         binding.chart.legend.isEnabled = false
         binding.chart.setTouchEnabled(false)
 
@@ -118,13 +116,10 @@ class ChartDailyXpFragment : TaskFragment() {
         return binding.root
     }
 
-    private fun fillSkillWithXpValue(
-        skillWithXpValue: MutableMap<String, Long>, skillName: String, xpValue: Long) {
-        val entry = skillWithXpValue[skillName]
-        if (entry != null) {
-            skillWithXpValue[skillName] = entry + xpValue
-        } else {
-            skillWithXpValue[skillName] = xpValue
-        }
+    private fun getAmountOfTasksForDayOfTheWeek(day: Int): Float {
+        val calendar = Calendar.getInstance(Locale.GERMANY)
+        calendar.set(Calendar.DAY_OF_WEEK, day)
+        val closedAtDay = App.dateFormat.format(calendar.time).split(" ")[0]
+        return db.taskDao().countDailyTasks("%$closedAtDay%").toFloat()
     }
 }

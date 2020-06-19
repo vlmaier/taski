@@ -3,10 +3,7 @@ package org.vmaier.tidfl
 import android.content.pm.PackageManager
 import android.content.res.Resources.Theme
 import android.os.Bundle
-import android.text.Layout
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -40,6 +37,7 @@ import org.vmaier.tidfl.features.tasks.TaskEditFragment
 import org.vmaier.tidfl.features.tasks.TaskFragment
 import org.vmaier.tidfl.features.tasks.TaskListFragment
 import org.vmaier.tidfl.utils.Const
+import org.vmaier.tidfl.utils.Utils
 import org.vmaier.tidfl.utils.decodeBase64
 import timber.log.Timber
 
@@ -134,6 +132,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 }
             }
         }
+
+        // --- Status Bar Settings
+        this.window.statusBarColor = Utils.getThemeColor(this, R.attr.colorPrimary)
     }
 
     override fun onStart() {
