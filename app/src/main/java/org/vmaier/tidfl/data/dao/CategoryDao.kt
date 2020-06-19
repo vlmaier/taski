@@ -48,6 +48,20 @@ interface CategoryDao {
     )
     fun findAll(): List<Category>
 
+    @Query(
+        """
+        SELECT SUM(xp_value)
+        FROM assigned_skills 
+        INNER JOIN tasks
+          ON task_id = tasks.id
+        INNER JOIN skills
+          ON skill_id = skills.id
+        WHERE category_id = :categoryId
+          AND status = 'done'
+    """
+    )
+    fun countCategoryXpValue(categoryId: Long): Long
+
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 
 

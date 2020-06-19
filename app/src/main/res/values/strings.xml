@@ -86,6 +86,7 @@
     <string name="heading_skill_level">Skill level</string>
     <string name="heading_skill_xp">Skill experience</string>
     <string name="heading_skill_xp_title">Skill XP</string>
+    <string name="heading_category_xp_title">Category XP</string>
     <string name="heading_daily_xp_title">Daily XP</string>
     <string name="heading_weekly_xp_title">Weekly XP</string>
     <string name="heading_weekly_tasks_title">Done tasks</string>
