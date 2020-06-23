@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/taskListFragment"
-        android:name="org.vmaier.tidfl.features.tasks.TaskListFragment"
+        android:name="com.vmaier.taski.features.tasks.TaskListFragment"
         android:label="TaskListFragment"
         tools:layout="@layout/fragment_task_list"
         >
@@ -37,20 +37,20 @@
 
     <fragment
         android:id="@+id/createTaskFragment"
-        android:name="org.vmaier.tidfl.features.tasks.TaskCreateFragment"
+        android:name="com.vmaier.taski.features.tasks.TaskCreateFragment"
         android:label="CreateTaskFragment"
         tools:layout="@layout/fragment_create_task"
         />
 
     <fragment
         android:id="@+id/editTaskFragment"
-        android:name="org.vmaier.tidfl.features.tasks.TaskEditFragment"
+        android:name="com.vmaier.taski.features.tasks.TaskEditFragment"
         android:label="EditTaskFragment"
         tools:layout="@layout/fragment_edit_task"
         >
         <argument
             android:name="task"
-            app:argType="org.vmaier.tidfl.data.entity.Task"
+            app:argType="com.vmaier.taski.data.entity.Task"
             />
         <argument
             android:name="itemPosition"
@@ -60,7 +60,7 @@
 
     <fragment
         android:id="@+id/skillListFragment"
-        android:name="org.vmaier.tidfl.features.skills.SkillListFragment"
+        android:name="com.vmaier.taski.features.skills.SkillListFragment"
         android:label="SkillListFragment"
         tools:layout="@layout/fragment_skill_list"
         >
@@ -84,20 +84,20 @@
 
     <fragment
         android:id="@+id/createSkillFragment"
-        android:name="org.vmaier.tidfl.features.skills.SkillCreateFragment"
+        android:name="com.vmaier.taski.features.skills.SkillCreateFragment"
         android:label="CreateSkillFragment"
         tools:layout="@layout/fragment_create_skill"
         />
 
     <fragment
         android:id="@+id/skillEditFragment"
-        android:name="org.vmaier.tidfl.features.skills.SkillEditFragment"
+        android:name="com.vmaier.taski.features.skills.SkillEditFragment"
         android:label="SkillEditFragment"
         tools:layout="@layout/fragment_edit_skill"
         >
         <argument
             android:name="skill"
-            app:argType="org.vmaier.tidfl.data.entity.Skill"
+            app:argType="com.vmaier.taski.data.entity.Skill"
             />
         <argument
             android:name="itemPosition"
@@ -107,41 +107,41 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="org.vmaier.tidfl.features.settings.SettingsFragment"
+        android:name="com.vmaier.taski.features.settings.SettingsFragment"
         android:label="SettingsFragment"
         />
 
     <fragment
         android:id="@+id/helpFragment"
-        android:name="org.vmaier.tidfl.features.settings.HelpFragment"
+        android:name="com.vmaier.taski.features.settings.HelpFragment"
         android:label="HelpFragment"
         tools:layout="@layout/fragment_help"
         />
 
     <fragment
         android:id="@+id/chartSkillXpFragment"
-        android:name="org.vmaier.tidfl.features.statistics.ChartSkillXpFragment"
+        android:name="com.vmaier.taski.features.statistics.ChartSkillXpFragment"
         android:label="ChartSkillXpFragment"
         tools:layout="@layout/fragment_chart_skill_xp"
         />
 
     <fragment
         android:id="@+id/chartDailyXpFragment"
-        android:name="org.vmaier.tidfl.features.statistics.ChartDailyXpFragment"
+        android:name="com.vmaier.taski.features.statistics.ChartDailyXpFragment"
         android:label="ChartDailyXpFragment"
         tools:layout="@layout/fragment_chart_daily_xp"
         />
 
     <fragment
         android:id="@+id/chartWeeklyXpFragment"
-        android:name="org.vmaier.tidfl.features.statistics.ChartWeeklyXpFragment"
+        android:name="com.vmaier.taski.features.statistics.ChartWeeklyXpFragment"
         android:label="ChartWeeklyXpFragment"
         tools:layout="@layout/fragment_chart_weekly_xp"
         />
 
     <fragment
         android:id="@+id/statisticsFragment"
-        android:name="org.vmaier.tidfl.features.statistics.StatisticsFragment"
+        android:name="com.vmaier.taski.features.statistics.StatisticsFragment"
         android:label="StatisticsFragment"
         tools:layout="@layout/fragment_statistics"
         />

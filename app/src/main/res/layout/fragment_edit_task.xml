@@ -14,7 +14,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".features.tasks.TaskEditFragment"
+            tools:context="com.vmaier.taski.features.tasks.TaskEditFragment"
             >
 
             <LinearLayout

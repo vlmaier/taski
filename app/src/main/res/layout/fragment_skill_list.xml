@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize"
-        tools:context=".features.skills.SkillListFragment"
+        tools:context="com.vmaier.taski.features.skills.SkillListFragment"
         >
 
         <androidx.recyclerview.widget.RecyclerView

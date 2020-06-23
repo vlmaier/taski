@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Things I Do For Loot</string>
+    <string name="app_name">Taski</string>
     <string name="theme_default_name">Theme.Default</string>
     <string name="theme_sailor_name">Theme.Sailor</string>
     <string name="version">Version %s\n\n© 2020 Vladas Maier</string>

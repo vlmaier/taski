@@ -72,5 +72,5 @@
     <color name="colorSwipeForeground">@color/colorLightDefault</color>
 
     <color name="chip_default_icon_background_color">@color/colorSecondaryDefault</color>
-    <color name="ic_launcher_background">#FFD62B</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
 </resources>
