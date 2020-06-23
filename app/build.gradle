@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs.kotlin'
+apply plugin: 'com.mikepenz.aboutlibraries.plugin'
 
 android {
 
@@ -75,11 +75,11 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.3.0-alpha06'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72'
     implementation 'com.google.android.material:material:1.3.0-alpha01'
-    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
     implementation 'com.maltaisn:icondialog:3.1.0'
     implementation 'com.hootsuite.android:nachos:1.1.1'
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation "com.mikepenz:aboutlibraries:$latestAboutLibsRelease"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':iconpack-default-1.0.0')
 

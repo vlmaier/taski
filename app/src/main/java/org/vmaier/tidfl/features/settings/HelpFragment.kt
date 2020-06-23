@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.mikepenz.aboutlibraries.LibsBuilder
 import org.vmaier.tidfl.BuildConfig
 import org.vmaier.tidfl.MainActivity
 import org.vmaier.tidfl.R
@@ -40,9 +40,11 @@ class HelpFragment : Fragment() {
             inflater, R.layout.fragment_help, container, false
         )
         binding.licensesButton.setOnClickListener {
-            val intent = Intent(activity, OssLicensesMenuActivity::class.java)
-            OssLicensesMenuActivity.setActivityTitle(getString(R.string.heading_licenses));
-            startActivity(intent)
+            LibsBuilder()
+                .withAboutVersionShown(false)
+                .withActivityTitle(getString(R.string.heading_licenses))
+                .withSortEnabled(true)
+                .start(requireContext())
         }
         binding.versionButton.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())

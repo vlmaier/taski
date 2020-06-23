@@ -18,7 +18,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.Default.NoActionBar"
+            android:theme="@style/Theme.Default"
             android:windowSoftInputMode="stateAlwaysHidden"
             >
             <intent-filter>
@@ -26,6 +26,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
+            android:theme="@style/Theme.Default">
         </activity>
     </application>
 
