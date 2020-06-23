@@ -3,7 +3,9 @@ package org.vmaier.tidfl
 import android.content.pm.PackageManager
 import android.content.res.Resources.Theme
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle

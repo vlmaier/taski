@@ -1,6 +1,9 @@
 package org.vmaier.tidfl.features.tasks
 
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.RectF
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -31,7 +34,10 @@ class SwipeCallbackHandler :
         return false
     }
 
-    override fun getSwipeDirs (recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+    override fun getSwipeDirs(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
         // disable swiping on section items
         if (viewHolder is TaskAdapter.TaskSectionViewHolder) return 0
         return super.getSwipeDirs(recyclerView, viewHolder)

@@ -100,11 +100,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="?attr/colorOnSurface"
+                android:contentDescription="@string/content_skill_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@drawable/ic_baseline_book_24"
-                android:contentDescription="@string/content_skill_icon"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

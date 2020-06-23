@@ -125,8 +125,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 sharedPreferences
                     .edit().putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
                     .apply()
-                Timber.d("Calendar synchronization is %s.",
-                    if (isCalendarSyncOn) "enabled" else "disabled")
+                Timber.d(
+                    "Calendar synchronization is %s.",
+                    if (isCalendarSyncOn) "enabled" else "disabled"
+                )
             }
             Const.Prefs.APP_THEME -> {
                 val pref: ListPreference? = findPreference(key)
@@ -148,8 +150,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val write = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
         if (read == PackageManager.PERMISSION_DENIED || write == PackageManager.PERMISSION_DENIED) {
             Timber.d("Permission to access calendar is denied")
-            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                    Manifest.permission.WRITE_CALENDAR)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    Manifest.permission.WRITE_CALENDAR
+                )
+            ) {
                 val builder = AlertDialog.Builder(requireContext())
                 builder
                     .setMessage(getString(R.string.alert_calendar_access_required))
@@ -169,10 +174,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun requestCalendarPermissions() {
-        requestPermissions(requireActivity(), arrayOf(
-            Manifest.permission.READ_CALENDAR,
-            Manifest.permission.WRITE_CALENDAR),
-            ACCESS_CALENDAR_REQUEST)
+        requestPermissions(
+            requireActivity(), arrayOf(
+                Manifest.permission.READ_CALENDAR,
+                Manifest.permission.WRITE_CALENDAR
+            ),
+            ACCESS_CALENDAR_REQUEST
+        )
     }
 
     override fun onResume() {

@@ -51,8 +51,10 @@ class ChartDailyXpFragment : TaskFragment() {
         tasks.forEach { task ->
             val assignedSkills = db.skillDao().findAssignedSkills(task.id)
             if (assignedSkills.isEmpty()) {
-                fillSkillWithXpValue(skillWithXpValue,
-                    getString(R.string.heading_unassigned), task.xpValue.toLong())
+                fillSkillWithXpValue(
+                    skillWithXpValue,
+                    getString(R.string.heading_unassigned), task.xpValue.toLong()
+                )
             } else {
                 assignedSkills.forEach { skill ->
                     fillSkillWithXpValue(skillWithXpValue, skill.name, task.xpValue.toLong())
@@ -119,7 +121,8 @@ class ChartDailyXpFragment : TaskFragment() {
     }
 
     private fun fillSkillWithXpValue(
-        skillWithXpValue: MutableMap<String, Long>, skillName: String, xpValue: Long) {
+        skillWithXpValue: MutableMap<String, Long>, skillName: String, xpValue: Long
+    ) {
         val entry = skillWithXpValue[skillName]
         if (entry != null) {
             skillWithXpValue[skillName] = entry + xpValue

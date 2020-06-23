@@ -9,8 +9,8 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:gravity="bottom"
         android:background="?attr/colorPrimary"
+        android:gravity="bottom"
         >
 
         <ImageView
@@ -36,9 +36,9 @@
             android:layout_marginTop="16dp"
             android:singleLine="true"
             android:text="@string/app_name"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="?attr/colorOnPrimary"
             app:autoSizeTextType="uniform"
             app:layout_constraintStart_toStartOf="@+id/user_avatar"
             app:layout_constraintTop_toBottomOf="@+id/user_avatar"

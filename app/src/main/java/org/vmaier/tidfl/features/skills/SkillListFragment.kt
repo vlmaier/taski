@@ -52,14 +52,17 @@ class SkillListFragment : Fragment() {
                 super.onChanged()
                 checkIfRecyclerViewIsEmpty()
             }
+
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 checkIfRecyclerViewIsEmpty()
             }
+
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
                 super.onItemRangeRemoved(positionStart, itemCount)
                 checkIfRecyclerViewIsEmpty()
             }
+
             fun checkIfRecyclerViewIsEmpty() {
                 val visibility = if (skillAdapter.itemCount == 0) View.VISIBLE else View.GONE
                 binding.emptyRv.visibility = visibility

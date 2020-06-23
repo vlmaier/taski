@@ -56,23 +56,27 @@ class TaskListFragment : Fragment() {
                 checkIfRecyclerViewIsEmpty()
                 updateBadge()
             }
+
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 checkIfRecyclerViewIsEmpty()
                 updateBadge()
             }
+
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
                 super.onItemRangeRemoved(positionStart, itemCount)
                 checkIfRecyclerViewIsEmpty()
                 updateBadge()
             }
+
             fun checkIfRecyclerViewIsEmpty() {
                 val visibility = if (taskAdapter.tasks.isEmpty()) View.VISIBLE else View.GONE
                 binding.emptyRv.visibility = visibility
             }
+
             fun updateBadge() {
                 val size = taskAdapter.tasks.size
-                if (size != 0) {
+                if (size > 0) {
                     MainActivity.bottomNav.getOrCreateBadge(R.id.nav_tasks).number = size
                 }
                 MainActivity.bottomNav.getOrCreateBadge(R.id.nav_tasks).isVisible = size > 0

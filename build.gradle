@@ -6,11 +6,19 @@ buildscript {
         jcenter()
     }
 
+    ext {
+        kotlinVersion = '1.3.72'
+        navVersion = '2.3.0-rc01'
+        gradleVersion = '4.2.0-alpha02'
+        ossLicensesVersion = '0.10.2'
+        dataBindingCompilerVersion = gradleVersion
+    }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0-alpha02'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72'
-        classpath 'android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0'
-        classpath 'com.google.android.gms:oss-licenses-plugin:0.10.2'
+        classpath "com.android.tools.build:gradle:$gradleVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion"
+        classpath "com.google.android.gms:oss-licenses-plugin:$ossLicensesVersion"
     }
 }
 

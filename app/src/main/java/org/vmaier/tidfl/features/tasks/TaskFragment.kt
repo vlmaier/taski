@@ -120,9 +120,21 @@ open class TaskFragment : Fragment() {
             override fun configureChip(chip: ChipSpan, chipConfiguration: ChipConfiguration) {
                 super.configureChip(chip, chipConfiguration)
                 chip.setShowIconOnLeft(true)
-                chip.setBackgroundColor(ColorStateList.valueOf(Utils.getThemeColor(requireContext(), R.attr.colorControlHighlight)))
+                chip.setBackgroundColor(
+                    ColorStateList.valueOf(
+                        Utils.getThemeColor(
+                            requireContext(),
+                            R.attr.colorControlHighlight
+                        )
+                    )
+                )
                 chip.setTextColor(Utils.getThemeColor(requireContext(), R.attr.colorOnSurface))
-                chip.setIconBackgroundColor(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
+                chip.setIconBackgroundColor(
+                    Utils.getThemeColor(
+                        requireContext(),
+                        R.attr.colorSecondary
+                    )
+                )
             }
         }, ChipSpan::class.java)
     }
@@ -152,6 +164,7 @@ open class TaskFragment : Fragment() {
                 if (progress <= 1) seek.progress = 1
                 updateXpGain(xpGainValue, durationBar)
             }
+
             override fun onStartTrackingTouch(seek: SeekBar) = Unit
             override fun onStopTrackingTouch(seek: SeekBar) = Unit
         }

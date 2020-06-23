@@ -1,7 +1,6 @@
 package org.vmaier.tidfl.features.skills
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -83,9 +82,11 @@ open class SkillFragment : Fragment() {
                 val dialogBuilder = AlertDialog.Builder(requireContext())
                 dialogBuilder
                     .setTitle(getString(R.string.alert_skill_delete))
-                    .setMessage(resources.getQuantityString(
-                        R.plurals.alert_assigned_task, countTasks, countTasks, skill.name
-                    ))
+                    .setMessage(
+                        resources.getQuantityString(
+                            R.plurals.alert_assigned_task, countTasks, countTasks, skill.name
+                        )
+                    )
                     .setCancelable(false)
                     .setPositiveButton(getString(R.string.action_proceed_with_delete)) { _, _ ->
                         deleteSkill(it, position)

@@ -41,7 +41,6 @@
     <color name="colorOnSecondaryDarkDefault">@color/colorLightDefault</color>
     <color name="colorOnBackgroundLightDefault">@color/colorDarkDefault</color>
     <color name="colorOnBackgroundDarkDefault">@color/colorLightDefault</color>
-
     <!-- Color palette sailor -->
     <color name="colorPrimaryDarkSailor">#BBDEFB</color>
     <color name="colorPrimaryLightSailor">#1976D2</color>

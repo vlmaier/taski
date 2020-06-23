@@ -2,7 +2,9 @@ package org.vmaier.tidfl.features.tasks
 
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
@@ -128,26 +130,37 @@ class TaskAdapter internal constructor(
                     holder.itemView.setOnLongClickListener { it ->
                         val menu = PopupMenu(it.context, it)
                         menu.inflate(R.menu.task_context_menu)
-                        menu.setOnMenuItemClickListener { item->
-                            when(item.itemId) {
+                        menu.setOnMenuItemClickListener { item ->
+                            when (item.itemId) {
                                 R.id.copy -> {
                                     val taskSkills = db.skillDao().findAssignedSkills(task.id)
                                     val bundle = Bundle()
                                     bundle.putString(TaskFragment.KEY_GOAL, task.goal)
                                     bundle.putString(TaskFragment.KEY_DETAILS, task.details)
-                                    bundle.putString(TaskFragment.KEY_DIFFICULTY,
-                                        task.difficulty.value.toUpperCase(Locale.getDefault()))
+                                    bundle.putString(
+                                        TaskFragment.KEY_DIFFICULTY,
+                                        task.difficulty.value.toUpperCase(Locale.getDefault())
+                                    )
                                     bundle.putInt(TaskFragment.KEY_DURATION, task.getSeekBarValue())
-                                    bundle.putStringArray(TaskFragment.KEY_SKILLS,
-                                        taskSkills.map { skill -> skill.name }.toTypedArray())
+                                    bundle.putStringArray(
+                                        TaskFragment.KEY_SKILLS,
+                                        taskSkills.map { skill -> skill.name }.toTypedArray()
+                                    )
                                     bundle.putInt(TaskFragment.KEY_ICON_ID, task.iconId)
                                     if (task.dueAt != null) {
                                         val dueAtParts = task.dueAt.split(" ")
-                                        bundle.putString(TaskFragment.KEY_DEADLINE_DATE, dueAtParts[0])
-                                        bundle.putString(TaskFragment.KEY_DEADLINE_TIME, dueAtParts[1])
+                                        bundle.putString(
+                                            TaskFragment.KEY_DEADLINE_DATE,
+                                            dueAtParts[0]
+                                        )
+                                        bundle.putString(
+                                            TaskFragment.KEY_DEADLINE_TIME,
+                                            dueAtParts[1]
+                                        )
                                     }
                                     it.findNavController().navigate(
-                                        R.id.action_taskListFragment_to_createTaskFragment, bundle)
+                                        R.id.action_taskListFragment_to_createTaskFragment, bundle
+                                    )
                                 }
                             }
                             true
