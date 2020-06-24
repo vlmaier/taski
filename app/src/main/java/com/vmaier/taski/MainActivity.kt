@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         avatarView.clipToOutline = true
         val avatar = getDefaultSharedPreferences(this)
             .getString(Const.Prefs.USER_AVATAR, null)
-        val fallbackImage = getDrawable(R.mipmap.ic_launcher_round)
+        val fallbackImage = getDrawable(R.drawable.ic_launcher)
         if (avatar != null) {
             val bitmap = avatar.decodeBase64()
             if (bitmap != null) avatarView.setImageBitmap(bitmap)

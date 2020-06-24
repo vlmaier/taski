@@ -78,7 +78,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                         .edit().putString(Const.Prefs.USER_AVATAR, null)
                         .apply()
                     MainActivity.avatarView.setImageDrawable(
-                        getDrawable(requireContext(), R.mipmap.ic_launcher_round)
+                        getDrawable(requireContext(), R.drawable.ic_launcher)
                     )
                     Timber.d("Avatar resetted")
                 }

@@ -51,7 +51,7 @@
                 android:text="@string/hint_no_tasks_in_rv"
                 android:textAlignment="center"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,15 +59,14 @@
 
             <ImageView
                 android:id="@+id/empty_rv_tumbleweed"
-                android:layout_width="150dp"
-                android:layout_height="175dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:contentDescription="@string/content_tumbleweed_icon"
                 android:scaleType="fitCenter"
-                android:tint="?attr/colorOnSurface"
                 app:layout_constraintBottom_toTopOf="@+id/empty_rv_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ic_tumbleweed"
+                app:srcCompat="@drawable/ic_empty"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
