@@ -99,7 +99,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 positiveButton = R.string.action_set
             )
             dialog.onPositiveButtonClicked = {
-                val textValue = dialog.editText.text.toString()
+                val textValue = dialog.editText.text.toString().trim()
                 getDefaultSharedPreferences(requireContext())
                     .edit().putString(Const.Prefs.USER_NAME, textValue)
                     .apply()

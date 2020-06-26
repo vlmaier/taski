@@ -142,8 +142,8 @@ class TaskEditFragment : TaskFragment() {
 
     private fun saveChangesOnTask() {
 
-        val goal = binding.goal.editText?.text.toString()
-        val detailsValue = binding.details.editText?.text.toString()
+        val goal = binding.goal.editText?.text.toString().trim()
+        val detailsValue = binding.details.editText?.text.toString().trim()
         val details = if (detailsValue.isNotBlank()) detailsValue else null
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())

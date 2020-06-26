@@ -134,13 +134,13 @@ class TaskCreateFragment : TaskFragment() {
 
     private fun createTaskButtonClicked(): Boolean {
 
-        val goal = binding.goal.editText?.text.toString()
+        val goal = binding.goal.editText?.text.toString().trim()
         if (goal.isBlank()) {
             binding.goal.requestFocus()
             binding.goal.error = getString(R.string.error_goal_cannot_be_empty)
             return false
         }
-        val detailsValue = binding.details.editText?.text.toString()
+        val detailsValue = binding.details.editText?.text.toString().trim()
         val details = if (detailsValue.isNotBlank()) detailsValue else null
         val duration = binding.durationBar.getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())

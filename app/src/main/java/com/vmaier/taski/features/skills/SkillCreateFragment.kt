@@ -87,7 +87,7 @@ class SkillCreateFragment : SkillFragment() {
     }
 
     private fun createSkillButtonClicked(): Boolean {
-        val name = binding.name.editText?.text.toString()
+        val name = binding.name.editText?.text.toString().trim()
         if (name.isBlank()) {
             binding.name.requestFocus()
             binding.name.error = getString(R.string.error_name_cannot_be_empty)
@@ -100,7 +100,7 @@ class SkillCreateFragment : SkillFragment() {
                 return false
             }
         }
-        val categoryName = binding.category.editText?.text.toString()
+        val categoryName = binding.category.editText?.text.toString().trim()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         var categoryId: Long? = null
         if (categoryName.isNotBlank()) {
