@@ -112,6 +112,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialog.show(requireFragmentManager(), EditTextDialog::class.simpleName)
             true
         }
+        val appTheme = preferenceScreen.findPreference(Const.Prefs.APP_THEME) as ListPreference?
+        // preselect "Default" value
+        appTheme?.setValueIndex(0)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
