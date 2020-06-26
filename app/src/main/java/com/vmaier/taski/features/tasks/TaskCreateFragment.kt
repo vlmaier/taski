@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
+import com.vmaier.taski.App
+import com.vmaier.taski.NotificationUtils
 import com.vmaier.taski.R
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Task
@@ -19,7 +21,9 @@ import com.vmaier.taski.utils.getHumanReadableValue
 import com.vmaier.taski.utils.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import timber.log.Timber
+import java.text.ParseException
 import java.util.*
+import kotlin.time.toDuration
 
 
 /**
@@ -166,6 +170,24 @@ class TaskCreateFragment : TaskFragment() {
         task.id = id
         TaskListFragment.taskAdapter.notifyDataSetChanged()
         addToCalendar(task)
+        if (dueAt != null) {
+            val notifyAtInMs: Long = try {
+                // 900000 ms = 15 minutes before
+                val durationInMs: Long = duration.toLong() * 60 * 1000
+                App.dateFormat.parse(dueAt)?.time
+                    ?.minus(durationInMs)
+                    ?.minus(900000)
+                    ?: 0
+            } catch (e: ParseException) {
+                0
+            }
+            NotificationUtils().setNotification(
+                notifyAtInMs,
+                task.goal,
+                "Due at ${dueAt.split(" ")[1]}",
+                requireActivity()
+            )
+        }
         return true
     }
 }

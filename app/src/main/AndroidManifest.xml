@@ -27,10 +27,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
             android:theme="@style/Theme.Default">
         </activity>
+
+        <receiver
+            android:name=".NotificationReceiver"
+            android:enabled="true" />
+
+        <service
+            android:name=".NotificationService"
+            android:enabled="true" />
+
     </application>
 
 </manifest>
