@@ -44,14 +44,20 @@ class ChartWeeklyXpFragment : TaskFragment() {
             inflater, R.layout.fragment_chart_weekly_xp, container, false
         )
 
+        val daysOfWeekWithValue = ArrayList<Float>()
+        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.MONDAY))
+        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.TUESDAY))
+        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.WEDNESDAY))
+        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.THURSDAY))
+        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.FRIDAY))
+        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.SATURDAY))
+        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.SUNDAY))
         val values = ArrayList<Entry>()
-        values.add(Entry(0f, getXpValueForDayOfTheWeek(Calendar.MONDAY)))
-        values.add(Entry(1f, getXpValueForDayOfTheWeek(Calendar.TUESDAY)))
-        values.add(Entry(2f, getXpValueForDayOfTheWeek(Calendar.WEDNESDAY)))
-        values.add(Entry(3f, getXpValueForDayOfTheWeek(Calendar.THURSDAY)))
-        values.add(Entry(4f, getXpValueForDayOfTheWeek(Calendar.FRIDAY)))
-        values.add(Entry(5f, getXpValueForDayOfTheWeek(Calendar.SATURDAY)))
-        values.add(Entry(6f, getXpValueForDayOfTheWeek(Calendar.SUNDAY)))
+        if (daysOfWeekWithValue.sum() > 0) {
+            for (i in 0..6) {
+                values.add(Entry(i.toFloat(), daysOfWeekWithValue[i]))
+            }
+        }
 
         val dataSet = LineDataSet(values, "")
         dataSet.axisDependency = YAxis.AxisDependency.LEFT

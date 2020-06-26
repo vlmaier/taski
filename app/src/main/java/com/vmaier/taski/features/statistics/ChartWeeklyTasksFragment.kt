@@ -44,14 +44,20 @@ class ChartWeeklyTasksFragment : TaskFragment() {
             inflater, R.layout.fragment_chart_weekly_tasks, container, false
         )
 
+        val daysOfWeekWithValue = ArrayList<Float>()
+        daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.MONDAY))
+        daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.TUESDAY))
+        daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.WEDNESDAY))
+        daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.THURSDAY))
+        daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.FRIDAY))
+        daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.SATURDAY))
+        daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.SUNDAY))
         val values = ArrayList<Entry>()
-        values.add(Entry(0f, getAmountOfTasksForDayOfTheWeek(Calendar.MONDAY)))
-        values.add(Entry(1f, getAmountOfTasksForDayOfTheWeek(Calendar.TUESDAY)))
-        values.add(Entry(2f, getAmountOfTasksForDayOfTheWeek(Calendar.WEDNESDAY)))
-        values.add(Entry(3f, getAmountOfTasksForDayOfTheWeek(Calendar.THURSDAY)))
-        values.add(Entry(4f, getAmountOfTasksForDayOfTheWeek(Calendar.FRIDAY)))
-        values.add(Entry(5f, getAmountOfTasksForDayOfTheWeek(Calendar.SATURDAY)))
-        values.add(Entry(6f, getAmountOfTasksForDayOfTheWeek(Calendar.SUNDAY)))
+        if (daysOfWeekWithValue.sum() > 0) {
+            for (i in 0..6) {
+                values.add(Entry(i.toFloat(), daysOfWeekWithValue[i]))
+            }
+        }
 
         val dataSet = LineDataSet(values, "")
         dataSet.axisDependency = YAxis.AxisDependency.LEFT
