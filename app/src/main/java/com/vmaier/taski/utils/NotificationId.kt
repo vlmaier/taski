@@ -1,4 +1,4 @@
-package com.vmaier.taski
+package com.vmaier.taski.utils
 
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -8,11 +8,10 @@ import java.util.concurrent.atomic.AtomicInteger
  * on 26.06.2020
  * at 20:01
  */
-class NotificationID {
-
+class NotificationId {
     companion object {
-        private val c: AtomicInteger = AtomicInteger(0)
-        fun getID(): Int {
+        private val c: AtomicInteger = AtomicInteger(1)
+        fun getId(): Int {
             return c.incrementAndGet()
         }
     }

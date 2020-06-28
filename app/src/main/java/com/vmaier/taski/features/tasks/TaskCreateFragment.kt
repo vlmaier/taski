@@ -15,15 +15,11 @@ import com.vmaier.taski.R
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentCreateTaskBinding
-import com.vmaier.taski.utils.KeyBoardHider
-import com.vmaier.taski.utils.getDurationInMinutes
-import com.vmaier.taski.utils.getHumanReadableValue
-import com.vmaier.taski.utils.hideKeyboard
+import com.vmaier.taski.utils.*
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import timber.log.Timber
 import java.text.ParseException
 import java.util.*
-import kotlin.time.toDuration
 
 
 /**
@@ -172,7 +168,7 @@ class TaskCreateFragment : TaskFragment() {
         addToCalendar(task)
         if (dueAt != null) {
             val notifyAtInMs: Long = try {
-                // 900000 ms = 15 minutes before
+                // remind 15 minutes before the task is due (incl. duration)
                 val durationInMs: Long = duration.toLong() * 60 * 1000
                 App.dateFormat.parse(dueAt)?.time
                     ?.minus(durationInMs)
@@ -181,12 +177,16 @@ class TaskCreateFragment : TaskFragment() {
             } catch (e: ParseException) {
                 0
             }
-            NotificationUtils().setNotification(
+            val requestCode = ReminderRequestCode.getRequestCode()
+            NotificationUtils.setReminder(
                 notifyAtInMs,
+                task.id,
                 task.goal,
                 "Due at ${dueAt.split(" ")[1]}",
-                requireActivity()
+                requireActivity(),
+                requestCode
             )
+            db.taskDao().updateAlarmRequestCode(id, requestCode)
         }
         return true
     }

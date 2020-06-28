@@ -34,12 +34,24 @@
         </activity>
 
         <receiver
-            android:name=".NotificationReceiver"
-            android:enabled="true" />
+            android:name=".ReminderReceiver"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="taski.action.snooze" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="taski.action.done" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name=".NotificationService"
-            android:enabled="true" />
+            android:exported="false"/>
 
     </application>
 

@@ -127,6 +127,15 @@ interface TaskDao {
     )
     fun updateEventId(taskId: Long, eventId: String)
 
+    @Query(
+        """
+        UPDATE tasks
+        SET reminder_request_code = :requestCode
+        WHERE id = :taskId
+    """
+    )
+    fun updateAlarmRequestCode(taskId: Long, requestCode: Int)
+
     @Update(entity = Task::class, onConflict = OnConflictStrategy.REPLACE)
     fun update(task: Task)
 

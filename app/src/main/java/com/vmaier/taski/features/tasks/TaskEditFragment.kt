@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.chip.Chip
+import com.vmaier.taski.App
+import com.vmaier.taski.NotificationUtils
 import com.vmaier.taski.R
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Skill
@@ -15,6 +17,7 @@ import com.vmaier.taski.databinding.FragmentEditTaskBinding
 import com.vmaier.taski.utils.*
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import timber.log.Timber
+import java.text.ParseException
 import java.util.*
 
 
@@ -166,12 +169,36 @@ class TaskEditFragment : TaskFragment() {
             eventId = task.eventId
         )
         if (task != toUpdate || assignedSkills != skillsToAssign) {
+            val reminderUpdateRequired = task.dueAt != toUpdate.dueAt
             db.taskDao().updateTask(toUpdate, skillsToAssign)
             Timber.d("Updated task with ID: ${task.id}.")
             TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
             TaskListFragment.taskAdapter.update()
             updateInCalendar(task, toUpdate)
             getString(R.string.event_task_updated).toast(requireContext())
+            if (reminderUpdateRequired && toUpdate.dueAt != null) {
+                NotificationUtils.cancelReminder(requireActivity(), task.reminderRequestCode)
+                val notifyAtInMs: Long = try {
+                    // remind 15 minutes before the task is due (incl. duration)
+                    val durationInMs: Long = duration.toLong() * 60 * 1000
+                    App.dateFormat.parse(toUpdate.dueAt)?.time
+                        ?.minus(durationInMs)
+                        ?.minus(900000)
+                        ?: 0
+                } catch (e: ParseException) {
+                    0
+                }
+                val requestCode = ReminderRequestCode.getRequestCode()
+                NotificationUtils.setReminder(
+                    notifyAtInMs,
+                    toUpdate.id,
+                    toUpdate.goal,
+                    "Due at ${toUpdate.dueAt.split(" ")[1]}",
+                    requireActivity(),
+                    requestCode
+                )
+                db.taskDao().updateAlarmRequestCode(task.id, requestCode)
+            }
         }
     }
 }

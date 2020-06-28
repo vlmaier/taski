@@ -115,9 +115,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val appTheme = preferenceScreen.findPreference(Const.Prefs.APP_THEME) as ListPreference?
         val selectedTheme = preferenceManager.sharedPreferences
             .getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
-        val themeValues = resources.getStringArray(R.array.theme_values_array)
+        val themeNames = resources.getStringArray(R.array.theme_names_array)
         // preselect theme value
-        appTheme?.setValueIndex(themeValues.indexOf(selectedTheme))
+        appTheme?.setValueIndex(themeNames.indexOf(selectedTheme))
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {

@@ -67,5 +67,8 @@ data class Task(
     val iconId: Int,
 
     @ColumnInfo(name = "event_id")
-    val eventId: String? = null
+    val eventId: String? = null,
+
+    @ColumnInfo(name = "reminder_request_code")
+    val reminderRequestCode: Int? = null
 ) : Parcelable

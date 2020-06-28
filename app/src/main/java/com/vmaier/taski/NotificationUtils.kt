@@ -3,7 +3,10 @@ package com.vmaier.taski
 import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.os.Build
+import timber.log.Timber
 import java.util.*
 
 
@@ -14,21 +17,63 @@ import java.util.*
  */
 class NotificationUtils {
 
-    fun setNotification(timeInMilliSeconds: Long, title: String, message: String, activity: Activity) {
-        if (timeInMilliSeconds > 0) {
-            val alarmManager = activity.getSystemService(Activity.ALARM_SERVICE) as AlarmManager
-            val alarmIntent = Intent(activity.applicationContext, NotificationReceiver::class.java)
-
-            alarmIntent.putExtra("timestamp", timeInMilliSeconds)
-            alarmIntent.putExtra("title", title)
-            alarmIntent.putExtra("message", message)
-            alarmIntent.putExtra("reason", "notification")
-
+    companion object {
+        fun setReminder(
+            timeInMs: Long,
+            taskId: Long,
+            title: String,
+            message: String,
+            activity: Activity,
+            requestCode: Int
+        ) {
+            val intent = Intent(activity.applicationContext, ReminderReceiver::class.java)
+            intent.putExtra("taskId", taskId)
+            intent.putExtra("timestamp", timeInMs)
+            intent.putExtra("title", title)
+            intent.putExtra("message", message)
+            val pendingIntent = PendingIntent.getBroadcast(
+                activity,
+                requestCode,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
             val calendar = Calendar.getInstance()
-            calendar.timeInMillis = timeInMilliSeconds
+            calendar.timeInMillis = timeInMs
+            val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            if (Build.VERSION.SDK_INT >= 23) {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis,
+                    pendingIntent
+                )
 
-            val pendingIntent = PendingIntent.getBroadcast(activity, 0, alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT)
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+            } else {
+                if (Build.VERSION.SDK_INT >= 21) {
+                    alarmManager.setExact(
+                        AlarmManager.RTC_WAKEUP,
+                        calendar.timeInMillis,
+                        pendingIntent
+                    )
+                } else {
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+                }
+            }
+            Timber.d("Reminder for '$title' at ${calendar.time} created.")
+        }
+
+        fun cancelReminder(activity: Activity, requestCode: Int?) {
+            if (requestCode != null) {
+                val intent = Intent(activity.applicationContext, ReminderReceiver::class.java)
+                val pendingIntent = PendingIntent.getBroadcast(
+                    activity,
+                    requestCode,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+                val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                alarmManager.cancel(pendingIntent)
+                Timber.d("Reminder canceled.")
+            }
         }
     }
 }
