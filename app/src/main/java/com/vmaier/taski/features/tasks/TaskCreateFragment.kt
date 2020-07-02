@@ -177,16 +177,15 @@ class TaskCreateFragment : TaskFragment() {
             } catch (e: ParseException) {
                 0
             }
-            val requestCode = ReminderRequestCode.getRequestCode()
+            val taskReminderRequestCode = RequestCode.get(requireContext())
             NotificationUtils.setReminder(
                 notifyAtInMs,
-                task.id,
                 task.goal,
                 "Due at ${dueAt.split(" ")[1]}",
                 requireActivity(),
-                requestCode
+                taskReminderRequestCode
             )
-            db.taskDao().updateAlarmRequestCode(id, requestCode)
+            db.taskDao().updateAlarmRequestCode(id, taskReminderRequestCode)
         }
         return true
     }

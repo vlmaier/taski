@@ -1,5 +1,6 @@
 package com.vmaier.taski
 
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -15,11 +16,12 @@ class ReminderReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
-            NotificationService.ACTION_SNOOZE -> {
-                // TODO: handle action
-            }
-            NotificationService.ACTION_DONE -> {
-                // TODO: handle action
+            NotificationService.ACTION_DISMISS -> {
+                Timber.d("Dismiss pressed.")
+                val notificationId = intent.getIntExtra("notificationId", 1)
+                val notificationManager =
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.cancel(notificationId)
             }
             else -> {
                 val service = Intent(context, NotificationService::class.java)

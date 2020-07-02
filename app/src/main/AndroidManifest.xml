@@ -42,10 +42,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="taski.action.snooze" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="taski.action.done" />
+                <action android:name="taski.action.dismiss" />
             </intent-filter>
         </receiver>
 

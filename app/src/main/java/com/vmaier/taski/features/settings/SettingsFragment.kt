@@ -18,10 +18,12 @@ import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
 import com.vmaier.taski.utils.Const
+import com.vmaier.taski.utils.RequestCode
 import com.vmaier.taski.utils.compress
 import com.vmaier.taski.utils.encodeTobase64
 import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
+import kotlin.properties.Delegates
 
 
 /**
@@ -33,8 +35,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
-        private const val PICK_IMAGE_REQUEST = 1
-        const val ACCESS_CALENDAR_REQUEST = 2
+        var PICK_IMAGE_REQUEST_CODE by Delegates.notNull<Int>()
+        var ACCESS_CALENDAR_REQUEST_CODE by Delegates.notNull<Int>()
         var isCalendarSyncOn = false
         lateinit var calendarSyncPref: CheckBoxPreference
     }
@@ -53,6 +55,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        PICK_IMAGE_REQUEST_CODE = RequestCode.get(requireContext())
+        ACCESS_CALENDAR_REQUEST_CODE = RequestCode.get(requireContext())
         val changeAvatar = preferenceScreen.findPreference(Const.Prefs.CHANGE_AVATAR) as Preference?
         changeAvatar?.setOnPreferenceClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
@@ -62,7 +66,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     Intent.createChooser(
                         galleryIntent,
                         getString(R.string.heading_select_image)
-                    ), PICK_IMAGE_REQUEST
+                    ), PICK_IMAGE_REQUEST_CODE
                 )
             }
             true
@@ -116,8 +120,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val selectedTheme = preferenceManager.sharedPreferences
             .getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
         val themeNames = resources.getStringArray(R.array.theme_names_array)
+        val themeValues = resources.getStringArray(R.array.theme_values_array)
+        var index = themeNames.indexOf(selectedTheme)
+        if (index == -1) {
+            index = themeValues.indexOf(selectedTheme)
+        }
         // preselect theme value
-        appTheme?.setValueIndex(themeNames.indexOf(selectedTheme))
+        appTheme?.setValueIndex(index)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -185,7 +194,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 Manifest.permission.READ_CALENDAR,
                 Manifest.permission.WRITE_CALENDAR
             ),
-            ACCESS_CALENDAR_REQUEST
+            ACCESS_CALENDAR_REQUEST_CODE
         )
     }
 
@@ -201,7 +210,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (intent != null && intent.data != null) {
                 val filePath = intent.data
                 val contentResolver = requireActivity().contentResolver

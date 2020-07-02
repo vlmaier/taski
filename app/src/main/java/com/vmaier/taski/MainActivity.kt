@@ -42,7 +42,6 @@ import com.vmaier.taski.features.tasks.TaskListFragment
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.utils.decodeBase64
 import timber.log.Timber
-import java.util.*
 
 
 /**
@@ -315,7 +314,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            SettingsFragment.ACCESS_CALENDAR_REQUEST -> {
+            SettingsFragment.ACCESS_CALENDAR_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Timber.d("Requested permission has been denied by user")
                     SettingsFragment.isCalendarSyncOn = false

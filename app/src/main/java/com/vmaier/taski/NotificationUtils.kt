@@ -19,15 +19,9 @@ class NotificationUtils {
 
     companion object {
         fun setReminder(
-            timeInMs: Long,
-            taskId: Long,
-            title: String,
-            message: String,
-            activity: Activity,
-            requestCode: Int
+            timeInMs: Long, title: String, message: String, activity: Activity, requestCode: Int
         ) {
             val intent = Intent(activity.applicationContext, ReminderReceiver::class.java)
-            intent.putExtra("taskId", taskId)
             intent.putExtra("timestamp", timeInMs)
             intent.putExtra("title", title)
             intent.putExtra("message", message)
