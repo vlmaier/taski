@@ -124,7 +124,18 @@ class SkillEditFragment : SkillFragment() {
     }
 
     private fun saveChangesOnSkill() {
+
         val name = binding.name.editText?.text.toString().trim()
+        if (name.isBlank()) {
+            binding.name.requestFocus()
+            binding.name.error = getString(R.string.error_cannot_be_empty)
+            return
+        }
+        if (name.length < 4) {
+            binding.name.requestFocus()
+            binding.name.error = getString(R.string.error_too_short)
+            return
+        }
         val categoryName = binding.category.editText?.text.toString().trim()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val db = AppDatabase(requireContext())

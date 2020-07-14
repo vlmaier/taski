@@ -276,13 +276,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                                 SkillEditFragment.binding.name.error =
                                     getString(R.string.error_cannot_be_empty)
                             } else {
+                                val foundSkill = db.skillDao().findByName(name)
                                 if (name.length < 4) {
                                     SkillEditFragment.binding.name.requestFocus()
                                     SkillEditFragment.binding.name.error =
                                         getString(R.string.error_too_short)
-                                }
-                                val foundSkill = db.skillDao().findByName(name)
-                                if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
+                                } else if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                                     SkillEditFragment.binding.name.requestFocus()
                                     SkillEditFragment.binding.name.error =
                                         getString(R.string.error_skill_already_exists)
@@ -293,17 +292,20 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                         }
                         is TaskEditFragment -> {
                             val goal = TaskEditFragment.binding.goal.editText?.text.toString()
-                            if (goal.isBlank()) {
-                                TaskEditFragment.binding.goal.requestFocus()
-                                TaskEditFragment.binding.goal.error =
-                                    getString(R.string.error_cannot_be_empty)
-                            } else {
-                                if (goal.length < 4) {
+                            when {
+                                goal.isBlank() -> {
+                                    TaskEditFragment.binding.goal.requestFocus()
+                                    TaskEditFragment.binding.goal.error =
+                                        getString(R.string.error_cannot_be_empty)
+                                }
+                                goal.length < 4 -> {
                                     TaskEditFragment.binding.goal.requestFocus()
                                     TaskEditFragment.binding.goal.error =
                                         getString(R.string.error_too_short)
                                 }
-                                super.onBackPressed()
+                                else -> {
+                                    super.onBackPressed()
+                                }
                             }
                         }
                         else -> {

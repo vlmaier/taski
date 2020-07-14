@@ -146,6 +146,16 @@ class TaskEditFragment : TaskFragment() {
     private fun saveChangesOnTask() {
 
         val goal = binding.goal.editText?.text.toString().trim()
+        if (goal.isBlank()) {
+            binding.goal.requestFocus()
+            binding.goal.error = getString(R.string.error_cannot_be_empty)
+            return
+        }
+        if (goal.length < 4) {
+            binding.goal.requestFocus()
+            binding.goal.error = getString(R.string.error_too_short)
+            return
+        }
         val detailsValue = binding.details.editText?.text.toString().trim()
         val details = if (detailsValue.isNotBlank()) detailsValue else null
         val duration = binding.durationBar.getDurationInMinutes()
