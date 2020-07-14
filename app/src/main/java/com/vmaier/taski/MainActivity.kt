@@ -3,6 +3,7 @@ package com.vmaier.taski
 import android.content.pm.PackageManager
 import android.content.res.Resources.Theme
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     private lateinit var iconDialog: IconDialog
     private lateinit var drawerNav: NavigationView
     lateinit var binding: ActivityMainBinding
+    private var doubleBackToExitPressedOnce = false
 
     companion object {
         lateinit var toolbar: Toolbar
@@ -254,6 +256,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     }
 
     override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            finish()
+        }
+        doubleBackToExitPressedOnce = true
+        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+
         val count = supportFragmentManager.backStackEntryCount
         if (count == 0) {
             val fragment = supportFragmentManager.primaryNavigationFragment
