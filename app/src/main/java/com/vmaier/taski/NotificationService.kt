@@ -104,7 +104,7 @@ class NotificationService : IntentService("NotificationService") {
                     .setContentIntent(pendingIntent)
                     .setSmallIcon(R.drawable.ic_stat_taski)
                     .setColor(Utils.getThemeColor(context, R.attr.colorPrimary))
-                    .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_launcher))
+                    .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
                     .setAutoCancel(true)
                     .setContentTitle(title)
                     .setStyle(
@@ -119,7 +119,7 @@ class NotificationService : IntentService("NotificationService") {
                     .setContentIntent(pendingIntent)
                     .setSmallIcon(R.drawable.ic_stat_taski)
                     .setColor(Utils.getThemeColor(context, R.attr.colorPrimary))
-                    .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_launcher))
+                    .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
                     .setAutoCancel(true)
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setContentTitle(title)

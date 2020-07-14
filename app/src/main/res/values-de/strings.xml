@@ -51,9 +51,9 @@
     <string name="term_saturday_short">Sa.</string>
     <string name="term_sunday_short">So.</string>
     <!-- Error messages -->
-    <string name="error_name_cannot_be_empty">Name kann nicht leer sein</string>
-        <string name="error_skill_already_exists">Fertigkeit mit solchem Namen existiert bereits</string>
-    <string name="error_goal_cannot_be_empty">Ziel kann nicht leer sein</string>
+    <string name="error_cannot_be_empty">Kann nicht leer sein</string>
+    <string name="error_too_short">Muss mindestens 4 Zeichen lang sein</string>
+    <string name="error_skill_already_exists">Fertigkeit mit solchem Namen existiert bereits</string>
     <!-- Event messages -->
     <string name="event_skill_updated">Fertigkeit aktualisiert</string>
     <string name="event_skill_deleted">Fertigkeit gelöscht</string>

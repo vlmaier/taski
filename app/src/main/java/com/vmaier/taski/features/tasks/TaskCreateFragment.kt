@@ -137,7 +137,12 @@ class TaskCreateFragment : TaskFragment() {
         val goal = binding.goal.editText?.text.toString().trim()
         if (goal.isBlank()) {
             binding.goal.requestFocus()
-            binding.goal.error = getString(R.string.error_goal_cannot_be_empty)
+            binding.goal.error = getString(R.string.error_cannot_be_empty)
+            return false
+        }
+        if (goal.length < 4) {
+            binding.goal.requestFocus()
+            binding.goal.error = getString(R.string.error_too_short)
             return false
         }
         val detailsValue = binding.details.editText?.text.toString().trim()

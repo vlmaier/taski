@@ -50,7 +50,7 @@ class HelpFragment : Fragment() {
             dialogBuilder
                 .setTitle(getString(R.string.app_name))
                 .setMessage(resources.getString(R.string.version, BuildConfig.VERSION_NAME))
-                .setIcon(R.drawable.ic_launcher)
+                .setIcon(R.mipmap.ic_launcher)
                 .setCancelable(true)
             dialogBuilder.create().show()
         }

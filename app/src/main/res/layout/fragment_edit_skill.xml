@@ -94,7 +94,7 @@
                     android:importantForAutofill="no"
                     android:inputType="textCapSentences|textAutoCorrect"
                     android:maxLength="24"
-                    android:padding="0dp"
+                    android:padding="12dp"
                     android:singleLine="true"
                     android:textSize="16sp"
                     app:autoSizeTextType="uniform"

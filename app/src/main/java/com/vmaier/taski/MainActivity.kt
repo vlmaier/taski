@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         avatarView.clipToOutline = true
         val avatar = getDefaultSharedPreferences(this)
             .getString(Const.Prefs.USER_AVATAR, null)
-        val fallbackImage = getDrawable(R.drawable.ic_launcher)
+        val fallbackImage = getDrawable(R.mipmap.ic_launcher)
         if (avatar != null) {
             val bitmap = avatar.decodeBase64()
             if (bitmap != null) avatarView.setImageBitmap(bitmap)
@@ -266,8 +266,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                             if (name.isBlank()) {
                                 SkillEditFragment.binding.name.requestFocus()
                                 SkillEditFragment.binding.name.error =
-                                    getString(R.string.error_name_cannot_be_empty)
+                                    getString(R.string.error_cannot_be_empty)
                             } else {
+                                if (name.length < 4) {
+                                    SkillEditFragment.binding.name.requestFocus()
+                                    SkillEditFragment.binding.name.error =
+                                        getString(R.string.error_too_short)
+                                }
                                 val foundSkill = db.skillDao().findByName(name)
                                 if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                                     SkillEditFragment.binding.name.requestFocus()
@@ -283,8 +288,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                             if (goal.isBlank()) {
                                 TaskEditFragment.binding.goal.requestFocus()
                                 TaskEditFragment.binding.goal.error =
-                                    getString(R.string.error_goal_cannot_be_empty)
-                            } else super.onBackPressed()
+                                    getString(R.string.error_cannot_be_empty)
+                            } else {
+                                if (goal.length < 4) {
+                                    TaskEditFragment.binding.goal.requestFocus()
+                                    TaskEditFragment.binding.goal.error =
+                                        getString(R.string.error_too_short)
+                                }
+                                super.onBackPressed()
+                            }
                         }
                         else -> {
                             super.onBackPressed()

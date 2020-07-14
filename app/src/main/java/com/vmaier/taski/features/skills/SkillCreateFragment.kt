@@ -37,15 +37,11 @@ class SkillCreateFragment : SkillFragment() {
         )
 
         // --- Name settings
-        binding.name.editText?.setText(saved?.getString(
-            KEY_NAME
-        ) ?: "")
+        binding.name.editText?.setText(saved?.getString(KEY_NAME) ?: "")
         binding.name.onFocusChangeListener = KeyBoardHider()
 
         // --- Category settings
-        binding.category.editText?.setText(saved?.getString(
-            KEY_CATEGORY
-        ) ?: "")
+        binding.category.editText?.setText(saved?.getString(KEY_CATEGORY) ?: "")
         val adapter = ArrayAdapter(
             requireContext(), R.layout.support_simple_spinner_dropdown_item,
             categoryNames
@@ -90,9 +86,14 @@ class SkillCreateFragment : SkillFragment() {
         val name = binding.name.editText?.text.toString().trim()
         if (name.isBlank()) {
             binding.name.requestFocus()
-            binding.name.error = getString(R.string.error_name_cannot_be_empty)
+            binding.name.error = getString(R.string.error_cannot_be_empty)
             return false
         } else {
+            if (name.length < 4) {
+                binding.name.requestFocus()
+                binding.name.error = getString(R.string.error_too_short)
+                return false
+            }
             val foundSkill = db.skillDao().findByName(name)
             if (foundSkill != null) {
                 binding.name.requestFocus()

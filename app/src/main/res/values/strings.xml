@@ -51,9 +51,9 @@
     <string name="term_saturday_short">SAT</string>
     <string name="term_sunday_short">SUN</string>
     <!-- Error messages -->
-    <string name="error_name_cannot_be_empty">Name cannot be empty</string>
+    <string name="error_cannot_be_empty">Cannot be empty</string>
+    <string name="error_too_short">Must be at least 4 characters long</string>
     <string name="error_skill_already_exists">Skill with such name already exists</string>
-    <string name="error_goal_cannot_be_empty">Goal cannot be empty</string>
     <!-- Event messages -->
     <string name="event_skill_updated">Skill updated</string>
     <string name="event_skill_deleted">Skill deleted</string>
