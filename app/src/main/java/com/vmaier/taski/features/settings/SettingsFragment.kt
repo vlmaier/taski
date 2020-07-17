@@ -76,7 +76,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
                 .setTitle(getString(R.string.alert_reset_avatar))
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton(getString(R.string.action_proceed_with_reset)) { _, _ ->
                     preferenceManager.sharedPreferences
                         .edit().putString(Const.Prefs.USER_AVATAR, null)
