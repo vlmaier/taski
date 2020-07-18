@@ -84,6 +84,7 @@ class ChartSkillXpFragment : SkillFragment() {
         binding.chart.transparentCircleRadius = 40f
         binding.chart.setEntryLabelColor(Color.WHITE)
         binding.chart.setHoleColor(Utils.getThemeColor(requireContext(), R.attr.colorSurface))
+        binding.chart.setTouchEnabled(false)
 
         val legend = binding.chart.legend
         binding.chart.legend.isWordWrapEnabled = true
