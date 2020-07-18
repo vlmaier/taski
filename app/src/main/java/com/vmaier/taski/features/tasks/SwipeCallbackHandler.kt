@@ -57,13 +57,14 @@ class SwipeCallbackHandler :
             message = context.getString(R.string.event_task_failed)
         }
         // showing snack bar with undo option
-        Snackbar.make(MainActivity.fab, message, Snackbar.LENGTH_LONG)
+        val snackbar = Snackbar.make(MainActivity.fab, message, Snackbar.LENGTH_LONG)
             .setAction(context.getString(R.string.action_undo)) {
                 // undo is selected, restore the deleted item
                 TaskListFragment.taskAdapter.restoreItem(taskToRestore)
             }
             .setActionTextColor(Utils.getThemeColor(context, R.attr.colorSecondary))
-            .show()
+        snackbar.view.setOnClickListener { snackbar.dismiss() }
+        snackbar.show()
     }
 
     override fun onChildDraw(

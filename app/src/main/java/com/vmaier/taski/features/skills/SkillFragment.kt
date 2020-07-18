@@ -103,15 +103,14 @@ open class SkillFragment : Fragment() {
 
     private fun deleteSkill(view: View, position: Int) {
         val toRestore = SkillListFragment.skillAdapter.removeItem(position)
-        Snackbar.make(
-            view,
-            getString(R.string.event_skill_deleted),
-            Snackbar.LENGTH_LONG
-        ).setAction(getString(R.string.action_undo)) {
-            // undo is selected, restore the deleted item
-            SkillListFragment.skillAdapter.restoreItem(toRestore, position)
-        }.setActionTextColor(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
-            .show()
+        val snackbar = Snackbar.make(view, getString(R.string.event_skill_deleted), Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.action_undo)) {
+                // undo is selected, restore the deleted item
+                SkillListFragment.skillAdapter.restoreItem(toRestore, position)
+            }
+            .setActionTextColor(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
+        snackbar.view.setOnClickListener { snackbar.dismiss() }
+        snackbar.show()
         view.findNavController().popBackStack()
         view.hideKeyboard()
     }
