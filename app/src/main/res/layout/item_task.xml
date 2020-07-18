@@ -1,166 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="5dp"
-        app:cardElevation="2dp"
-        app:cardMaxElevation="2dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
-        >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            >
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardMaxElevation="2dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
 
             <LinearLayout
-                android:id="@+id/linear_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/task_duration"
-                app:layout_constraintStart_toEndOf="@+id/task_icon"
-                app:layout_constraintTop_toTopOf="@+id/task_icon"
-                >
-
-                <TextView
-                    android:id="@+id/task_goal"
-                    android:layout_width="match_parent"
+                    android:id="@+id/linear_layout"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:autoSizeTextType="uniform"
+                    android:layout_marginEnd="8dp"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toStartOf="@+id/task_duration"
                     app:layout_constraintStart_toEndOf="@+id/task_icon"
-                    app:layout_constraintTop_toTopOf="@+id/task_icon"
-                    tools:text="Work on App"
-                    />
+                    app:layout_constraintTop_toTopOf="@+id/task_icon">
 
                 <TextView
-                    android:id="@+id/task_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:ellipsize="marquee"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:textSize="16sp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintEnd_toEndOf="@+id/linear_layout"
-                    app:layout_constraintStart_toStartOf="@+id/linear_layout"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_layout"
-                    tools:text="@string/app_name"
-                    />
+                        android:id="@+id/task_goal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:autoSizeTextType="uniform"
+                        app:layout_constraintEnd_toStartOf="@+id/task_duration"
+                        app:layout_constraintStart_toEndOf="@+id/task_icon"
+                        app:layout_constraintTop_toTopOf="@+id/task_icon"
+                        tools:text="Work on App" />
+
+                <TextView
+                        android:id="@+id/task_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"
+                        android:textSize="16sp"
+                        app:autoSizeTextType="uniform"
+                        app:layout_constraintEnd_toEndOf="@+id/linear_layout"
+                        app:layout_constraintStart_toStartOf="@+id/linear_layout"
+                        app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                        tools:text="@string/app_name" />
 
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/time_icon"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginTop="2dp"
-                android:backgroundTint="?attr/colorOnSurface"
-                android:contentDescription="@string/content_due_at_icon"
-                app:layout_constraintEnd_toEndOf="@+id/task_xp"
-                app:layout_constraintTop_toTopOf="@+id/linear_layout"
-                app:srcCompat="@drawable/ic_baseline_access_time_24"
-                />
+                    android:id="@+id/time_icon"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_marginTop="2dp"
+                    android:backgroundTint="?attr/colorOnSurface"
+                    android:contentDescription="@string/content_due_at_icon"
+                    app:layout_constraintEnd_toEndOf="@+id/task_xp"
+                    app:layout_constraintTop_toTopOf="@+id/linear_layout"
+                    app:srcCompat="@drawable/ic_baseline_access_time_24" />
 
             <ImageView
-                android:id="@+id/skill_icon"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginTop="4dp"
-                android:backgroundTint="?attr/colorOnSurface"
-                android:contentDescription="@string/content_skill_icon"
-                app:layout_constraintEnd_toEndOf="@+id/time_icon"
-                app:layout_constraintStart_toStartOf="@+id/time_icon"
-                app:layout_constraintTop_toBottomOf="@+id/time_icon"
-                app:srcCompat="@drawable/ic_baseline_style_24"
-                />
+                    android:id="@+id/skill_icon"
+                    android:layout_width="21dp"
+                    android:layout_height="21dp"
+                    android:layout_marginTop="4dp"
+                    android:backgroundTint="?attr/colorOnSurface"
+                    android:contentDescription="@string/content_skill_icon"
+                    app:layout_constraintEnd_toEndOf="@+id/time_icon"
+                    app:layout_constraintStart_toStartOf="@+id/time_icon"
+                    app:layout_constraintTop_toBottomOf="@+id/time_icon"
+                    app:srcCompat="@drawable/ic_baseline_style_24" />
 
             <ImageView
-                android:id="@+id/task_icon"
-                android:layout_width="78dp"
-                android:layout_height="78dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:backgroundTint="?attr/colorOnSurface"
-                android:contentDescription="@string/content_task_icon"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/ic_baseline_assignment_24"
-                />
+                    android:id="@+id/task_icon"
+                    android:layout_width="78dp"
+                    android:layout_height="78dp"
+                    android:layout_margin="4dp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:adjustViewBounds="false"
+                    android:backgroundTint="?attr/colorOnSurface"
+                    android:contentDescription="@string/content_task_icon"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@drawable/ic_baseline_assignment_24" />
 
             <TextView
-                android:id="@+id/task_xp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="8dp"
-                android:singleLine="true"
-                android:textSize="12sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
-                tools:text="540 XP"
-                />
+                    android:id="@+id/task_xp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="8dp"
+                    android:singleLine="true"
+                    android:textSize="12sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                    tools:text="540 XP" />
 
             <TextView
-                android:id="@+id/skill_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="3dp"
-                android:singleLine="true"
-                android:textSize="14sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/skill_icon"
-                app:layout_constraintEnd_toStartOf="@+id/skill_icon"
-                app:layout_constraintTop_toTopOf="@+id/skill_icon"
-                tools:text="1 skill"
-                />
+                    android:id="@+id/skill_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="@+id/skill_icon"
+                    app:layout_constraintEnd_toStartOf="@+id/skill_icon"
+                    app:layout_constraintTop_toTopOf="@+id/skill_icon"
+                    tools:text="1 skill" />
 
             <TextView
-                android:id="@+id/task_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="3dp"
-                android:singleLine="true"
-                android:textSize="14sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/time_icon"
-                app:layout_constraintEnd_toStartOf="@+id/time_icon"
-                app:layout_constraintTop_toTopOf="@+id/time_icon"
-                tools:text="6 h"
-                />
+                    android:id="@+id/task_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="@+id/time_icon"
+                    app:layout_constraintEnd_toStartOf="@+id/time_icon"
+                    app:layout_constraintTop_toTopOf="@+id/time_icon"
+                    tools:text="6 h" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
