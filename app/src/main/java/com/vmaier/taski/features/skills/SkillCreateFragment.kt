@@ -79,7 +79,9 @@ class SkillCreateFragment : SkillFragment() {
         out.putString(KEY_CATEGORY, binding.category.editText?.text.toString())
         out.putInt(
             KEY_ICON_ID, Integer.parseInt(
-                binding.iconButton.tag.toString()))
+                binding.iconButton.tag.toString()
+            )
+        )
     }
 
     private fun createSkillButtonClicked(): Boolean {

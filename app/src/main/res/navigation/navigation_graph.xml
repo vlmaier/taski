@@ -165,7 +165,7 @@
             android:id="@+id/statisticsFragment"
             android:name="com.vmaier.taski.features.statistics.StatisticsFragment"
             android:label="StatisticsFragment"
-            tools:layout="@layout/fragment_statistics" >
+            tools:layout="@layout/fragment_statistics">
         <action
                 android:id="@+id/action_statisticsFragment_to_skillListFragment"
                 app:destination="@id/skillListFragment"

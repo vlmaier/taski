@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.Default" parent="Base.Theme.Default"/>
+    <style name="Theme.Default" parent="Base.Theme.Default" />
+
     <style name="Base.Theme.Default" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightDefault</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightDefault</item>
@@ -16,7 +17,8 @@
         <item name="colorOnSurface">@color/colorOnSurfaceLightDefault</item>
         <item name="colorOnError">@color/colorOnErrorLightDefault</item>
 
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert
+        </item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Default.BottomSheetDialog</item>
         <item name="navigationViewStyle">@style/Widget.Default.NavigationView</item>
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
@@ -24,7 +26,8 @@
         <item name="drawerArrowStyle">@style/Base.Theme.HamburgerButton</item>
     </style>
 
-    <style name="Theme.Sailor" parent="Base.Theme.Sailor"/>
+    <style name="Theme.Sailor" parent="Base.Theme.Sailor" />
+
     <style name="Base.Theme.Sailor" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightSailor</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightSailor</item>
@@ -39,7 +42,8 @@
         <item name="colorOnSurface">@color/colorOnSurfaceLightSailor</item>
         <item name="colorOnError">@color/colorOnErrorLightSailor</item>
 
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert
+        </item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Default.BottomSheetDialog</item>
         <item name="navigationViewStyle">@style/Widget.Default.NavigationView</item>
         <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
@@ -59,8 +63,12 @@
     <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor" tools:ignore="NewApi">?attr/colorSurface</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
-        <item name="android:navigationBarColor" tools:ignore="NewApi">?android:attr/colorBackground</item>
+        <item name="android:navigationBarColor" tools:ignore="NewApi">
+            ?android:attr/colorBackground
+        </item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
-        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">?attr/colorControlHighlight</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">
+            ?attr/colorControlHighlight
+        </item>
     </style>
 </resources>

@@ -1,42 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/heading_visual_prefs">
         <androidx.preference.Preference
-            android:key="user_name"
-            android:summary="@string/description_user_name"
-            android:title="@string/heading_user_name"
-            />
+                android:key="user_name"
+                android:summary="@string/description_user_name"
+                android:title="@string/heading_user_name" />
         <androidx.preference.Preference
-            android:key="change_avatar"
-            android:summary="@string/description_change_avatar"
-            android:title="@string/heading_change_avatar"
-            />
+                android:key="change_avatar"
+                android:summary="@string/description_change_avatar"
+                android:title="@string/heading_change_avatar" />
         <androidx.preference.Preference
-            android:key="reset_avatar"
-            android:summary="@string/description_reset_avatar"
-            android:title="@string/heading_reset_avatar"
-            />
+                android:key="reset_avatar"
+                android:summary="@string/description_reset_avatar"
+                android:title="@string/heading_reset_avatar" />
         <androidx.preference.ListPreference
-            android:defaultValue="Default"
-            android:entries="@array/theme_names_array"
-            android:entryValues="@array/theme_values_array"
-            android:icon="@drawable/ic_theme"
-            android:key="app_theme"
-            android:summary="Select an application theme"
-            android:title="Theme"
-            />
+                android:defaultValue="Default"
+                android:entries="@array/theme_names_array"
+                android:entryValues="@array/theme_values_array"
+                android:icon="@drawable/ic_theme"
+                android:key="app_theme"
+                android:summary="Select an application theme"
+                android:title="Theme" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/heading_general_settings">
         <androidx.preference.CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/ic_baseline_calendar_today_24"
-            android:key="calendar_sync"
-            android:summary="@string/description_calendar_sync"
-            android:title="@string/heading_calendar_sync"
-            />
+                android:defaultValue="false"
+                android:icon="@drawable/ic_baseline_calendar_today_24"
+                android:key="calendar_sync"
+                android:summary="@string/description_calendar_sync"
+                android:title="@string/heading_calendar_sync" />
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

@@ -1,41 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vmaier.taski"
-    >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="com.vmaier.taski">
 
-    <uses-permission android:name="android.permission.READ_CALENDAR"/>
-    <uses-permission android:name="android.permission.WRITE_CALENDAR"/>
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <application
-        android:name="com.vmaier.taski.App"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Default"
-        >
+            android:name="com.vmaier.taski.App"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:supportsRtl="true"
+            android:theme="@style/Theme.Default">
 
         <activity
-            android:name="com.vmaier.taski.MainActivity"
-            android:theme="@style/Theme.Default"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            >
+                android:name="com.vmaier.taski.MainActivity"
+                android:theme="@style/Theme.Default"
+                android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
-            android:theme="@style/Theme.Default">
-        </activity>
+                android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
+                android:theme="@style/Theme.Default"></activity>
 
         <receiver
-            android:name=".ReminderReceiver"
-            android:process=":remote">
+                android:name=".ReminderReceiver"
+                android:process=":remote">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
 
@@ -47,8 +42,8 @@
         </receiver>
 
         <service
-            android:name=".NotificationService"
-            android:exported="false"/>
+                android:name=".NotificationService"
+                android:exported="false" />
 
     </application>
 

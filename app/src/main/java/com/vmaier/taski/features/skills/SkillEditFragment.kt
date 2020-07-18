@@ -50,18 +50,22 @@ class SkillEditFragment : SkillFragment() {
         itemPosition = args.itemPosition
 
         // --- Name settings
-        binding.name.editText?.setText(saved?.getString(
-            KEY_NAME
-        ) ?: skill.name)
+        binding.name.editText?.setText(
+            saved?.getString(
+                KEY_NAME
+            ) ?: skill.name
+        )
         binding.name.onFocusChangeListener = KeyBoardHider()
 
         // --- Category settings
         val categoryId = skill.categoryId
         val categoryName =
             if (categoryId != null) db.categoryDao().findNameById(categoryId) else null
-        binding.category.editText?.setText(saved?.getString(
-            KEY_CATEGORY
-        ) ?: categoryName)
+        binding.category.editText?.setText(
+            saved?.getString(
+                KEY_CATEGORY
+            ) ?: categoryName
+        )
         binding.category.onFocusChangeListener = KeyBoardHider()
         val adapter = ArrayAdapter(
             requireContext(), R.layout.support_simple_spinner_dropdown_item,
@@ -72,17 +76,20 @@ class SkillEditFragment : SkillFragment() {
 
         // --- Open tasks settings
         val openTasksAmount = db.skillDao().countTasksWithSkillByStatus(
-            skill.id, Status.OPEN)
+            skill.id, Status.OPEN
+        )
         binding.skillOpenTasksValue.text = "$openTasksAmount"
 
         // --- Done tasks settings
         val doneTasksAmount = db.skillDao().countTasksWithSkillByStatus(
-            skill.id, Status.DONE)
+            skill.id, Status.DONE
+        )
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
 
         // --- XP settings
         val xpValue = db.skillDao().countSkillXpValue(
-            skill.id)
+            skill.id
+        )
         binding.skillXpValue.text = getString(R.string.term_xp_value, xpValue)
 
         // --- Level settings
@@ -106,7 +113,9 @@ class SkillEditFragment : SkillFragment() {
 
         // check if the skill was not deleted
         if (db.skillDao().findById(
-                skill.id) != null) {
+                skill.id
+            ) != null
+        ) {
             saveChangesOnSkill()
         }
         binding.name.hideKeyboard()
@@ -119,7 +128,9 @@ class SkillEditFragment : SkillFragment() {
         out.putString(KEY_CATEGORY, binding.category.editText?.text.toString())
         out.putInt(
             KEY_ICON_ID, Integer.parseInt(
-                binding.iconButton.tag.toString()))
+                binding.iconButton.tag.toString()
+            )
+        )
         saveChangesOnSkill()
     }
 

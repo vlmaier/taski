@@ -1,74 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/task_list_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
-        tools:context="com.vmaier.taski.features.tasks.TaskListFragment"
-        >
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv"
+            android:id="@+id/task_list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="2dp"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_task"
-            tools:visibility="invisible"
-            />
+            android:layout_marginBottom="?attr/actionBarSize"
+            tools:context="com.vmaier.taski.features.tasks.TaskListFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/empty_rv"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-
-            <TextView
-                android:id="@+id/empty_rv_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="150dp"
-                android:padding="12dp"
-                android:text="@string/hint_no_tasks_in_rv"
-                android:textAlignment="center"
-                android:textColor="?attr/colorOnSurface"
-                android:textSize="18sp"
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="2dp"
+                android:scrollbars="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/item_task"
+                tools:visibility="invisible" />
 
-            <ImageView
-                android:id="@+id/empty_rv_tumbleweed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/content_tumbleweed_icon"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="false"
-                app:layout_constraintBottom_toTopOf="@+id/empty_rv_text"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/empty_rv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/ic_empty"
-                />
+                app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                    android:id="@+id/empty_rv_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="150dp"
+                    android:padding="12dp"
+                    android:text="@string/hint_no_tasks_in_rv"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                    android:id="@+id/empty_rv_tumbleweed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="false"
+                    android:contentDescription="@string/content_tumbleweed_icon"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toTopOf="@+id/empty_rv_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:srcCompat="@drawable/ic_empty" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

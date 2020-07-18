@@ -1,381 +1,351 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        >
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context="com.vmaier.taski.features.tasks.TaskEditFragment"
-            >
-
-            <LinearLayout
-                android:id="@+id/linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                >
+                tools:context="com.vmaier.taski.features.tasks.TaskEditFragment">
+
+            <LinearLayout
+                    android:id="@+id/linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/header"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:singleLine="true"
-                    android:text="@string/heading_task_info"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    app:autoSizeMaxTextSize="28dp"
-                    app:autoSizeMinTextSize="20dp"
-                    app:autoSizeStepGranularity="2dp"
-                    app:autoSizeTextType="uniform"
-                    />
+                        android:id="@+id/header"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:text="@string/heading_task_info"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        app:autoSizeMaxTextSize="28dp"
+                        app:autoSizeMinTextSize="20dp"
+                        app:autoSizeStepGranularity="2dp"
+                        app:autoSizeTextType="uniform" />
 
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/goal"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:hint="@string/hint_task_goal"
-                app:layout_constraintEnd_toStartOf="@+id/icon_button"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
+                    android:id="@+id/goal"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:importantForAutofill="no"
-                    android:inputType="textCapSentences|textAutoCorrect"
-                    android:maxLength="36"
-                    android:padding="12dp"
-                    android:singleLine="true"
-                    android:textSize="16sp"
-                    app:autoSizeTextType="uniform"
-                    />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:hint="@string/hint_task_goal"
+                    app:layout_constraintEnd_toStartOf="@+id/icon_button"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences|textAutoCorrect"
+                        android:maxLength="36"
+                        android:padding="12dp"
+                        android:singleLine="true"
+                        android:textSize="16sp"
+                        app:autoSizeTextType="uniform" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/details"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:hint="@string/hint_task_details"
-                app:endIconMode="clear_text"
-                app:layout_constraintEnd_toEndOf="@+id/goal"
-                app:layout_constraintEnd_toStartOf="@+id/icon_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/goal"
-                >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
+                    android:id="@+id/details"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:importantForAutofill="no"
-                    android:inputType="textCapSentences|textAutoCorrect"
-                    android:maxLength="36"
-                    android:padding="12dp"
-                    android:singleLine="true"
-                    android:textSize="16sp"
-                    app:autoSizeTextType="uniform"
-                    />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:hint="@string/hint_task_details"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintEnd_toEndOf="@+id/goal"
+                    app:layout_constraintEnd_toStartOf="@+id/icon_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/goal">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
+                        android:inputType="textCapSentences|textAutoCorrect"
+                        android:maxLength="36"
+                        android:padding="12dp"
+                        android:singleLine="true"
+                        android:textSize="16sp"
+                        app:autoSizeTextType="uniform" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/deadline_date"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="136dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:hint="@string/hint_task_due_date"
-                app:endIconMode="clear_text"
-                app:layout_constraintStart_toEndOf="@+id/deadline_date_text"
-                app:layout_constraintTop_toBottomOf="@+id/difficulty"
-                >
+                    android:id="@+id/deadline_date"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="136dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/hint_task_due_date"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintStart_toEndOf="@+id/deadline_date_text"
+                    app:layout_constraintTop_toBottomOf="@+id/difficulty">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:importantForAutofill="no"
-                    android:inputType="none"
-                    android:padding="12dp"
-                    android:singleLine="true"
-                    android:textSize="14sp"
-                    tools:ignore="KeyboardInaccessibleWidget,TextFields"
-                    tools:text="17.05.2020"
-                    />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:importantForAutofill="no"
+                        android:inputType="none"
+                        android:padding="12dp"
+                        android:singleLine="true"
+                        android:textSize="14sp"
+                        tools:ignore="KeyboardInaccessibleWidget,TextFields"
+                        tools:text="17.05.2020" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/deadline_time"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:hint="@string/hint_task_due_time"
-                app:endIconMode="clear_text"
-                app:layout_constraintBottom_toBottomOf="@+id/deadline_date"
-                app:layout_constraintStart_toEndOf="@+id/deadline_time_text"
-                app:layout_constraintTop_toTopOf="@+id/deadline_date"
-                >
+                    android:id="@+id/deadline_time"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:hint="@string/hint_task_due_time"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintBottom_toBottomOf="@+id/deadline_date"
+                    app:layout_constraintStart_toEndOf="@+id/deadline_time_text"
+                    app:layout_constraintTop_toTopOf="@+id/deadline_date">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:importantForAutofill="no"
-                    android:inputType="none"
-                    android:padding="12dp"
-                    android:singleLine="true"
-                    android:textSize="14sp"
-                    tools:ignore="KeyboardInaccessibleWidget"
-                    tools:text="14:45"
-                    />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:importantForAutofill="no"
+                        android:inputType="none"
+                        android:padding="12dp"
+                        android:singleLine="true"
+                        android:textSize="14sp"
+                        tools:ignore="KeyboardInaccessibleWidget"
+                        tools:text="14:45" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/difficulty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/difficulty_text"
-                app:singleSelection="true"
-                >
+                    android:id="@+id/difficulty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/difficulty_text"
+                    app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/trivial"
-                    style="@style/Theme.Default.ChipChoice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="trivial"
-                    android:text="@string/difficulty_trivial_value"
-                    />
+                        android:id="@+id/trivial"
+                        style="@style/Theme.Default.ChipChoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="trivial"
+                        android:text="@string/difficulty_trivial_value" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/regular"
-                    style="@style/Theme.Default.ChipChoice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="regular"
-                    android:text="@string/difficulty_regular_value"
-                    tools:checked="true"
-                    />
+                        android:id="@+id/regular"
+                        style="@style/Theme.Default.ChipChoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="regular"
+                        android:text="@string/difficulty_regular_value"
+                        tools:checked="true" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/hard"
-                    style="@style/Theme.Default.ChipChoice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="hard"
-                    android:text="@string/difficulty_hard_value"
-                    />
+                        android:id="@+id/hard"
+                        style="@style/Theme.Default.ChipChoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="hard"
+                        android:text="@string/difficulty_hard_value" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/insane"
-                    style="@style/Theme.Default.ChipChoice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:tag="insane"
-                    android:text="@string/difficulty_insane_value"
-                    />
+                        android:id="@+id/insane"
+                        style="@style/Theme.Default.ChipChoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tag="insane"
+                        android:text="@string/difficulty_insane_value" />
 
             </com.google.android.material.chip.ChipGroup>
 
             <ImageButton
-                android:id="@+id/icon_button"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="?attr/colorOnSurface"
-                android:contentDescription="@string/content_task_icon"
-                android:onClick="selectIconButtonClicked"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="false"
-                app:layout_constraintBottom_toBottomOf="@+id/details"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/goal"
-                tools:background="@drawable/ic_baseline_assignment_24"
-                />
+                    android:id="@+id/icon_button"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginEnd="16dp"
+                    android:adjustViewBounds="false"
+                    android:backgroundTint="?attr/colorOnSurface"
+                    android:contentDescription="@string/content_task_icon"
+                    android:onClick="selectIconButtonClicked"
+                    android:scaleType="fitXY"
+                    app:layout_constraintBottom_toBottomOf="@+id/details"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/goal"
+                    tools:background="@drawable/ic_baseline_assignment_24" />
 
             <TextView
-                android:id="@+id/duration_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
-                android:singleLine="true"
-                android:text="@string/heading_duration"
-                android:textSize="16sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toStartOf="@+id/duration_bar"
-                app:layout_constraintTop_toBottomOf="@+id/details"
-                />
+                    android:id="@+id/duration_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="16dp"
+                    android:singleLine="true"
+                    android:text="@string/heading_duration"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintStart_toStartOf="@+id/duration_bar"
+                    app:layout_constraintTop_toBottomOf="@+id/details" />
 
             <TextView
-                android:id="@+id/deadline_date_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:singleLine="true"
-                android:text="@string/heading_due_on"
-                android:textSize="16sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/deadline_date"
-                app:layout_constraintStart_toStartOf="@+id/difficulty"
-                app:layout_constraintTop_toTopOf="@+id/deadline_date"
-                />
+                    android:id="@+id/deadline_date_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:singleLine="true"
+                    android:text="@string/heading_due_on"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="@+id/deadline_date"
+                    app:layout_constraintStart_toStartOf="@+id/difficulty"
+                    app:layout_constraintTop_toTopOf="@+id/deadline_date" />
 
             <TextView
-                android:id="@+id/deadline_time_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:singleLine="true"
-                android:text="@string/heading_due_at"
-                android:textSize="16sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/deadline_date"
-                app:layout_constraintStart_toEndOf="@+id/deadline_date"
-                app:layout_constraintTop_toTopOf="@+id/deadline_date"
-                />
+                    android:id="@+id/deadline_time_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:singleLine="true"
+                    android:text="@string/heading_due_at"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="@+id/deadline_date"
+                    app:layout_constraintStart_toEndOf="@+id/deadline_date"
+                    app:layout_constraintTop_toTopOf="@+id/deadline_date" />
 
             <TextView
-                android:id="@+id/duration_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:singleLine="true"
-                android:textSize="16sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/duration_text"
-                app:layout_constraintEnd_toEndOf="@+id/icon_button"
-                app:layout_constraintTop_toTopOf="@+id/duration_text"
-                tools:text="15 minutes"
-                />
+                    android:id="@+id/duration_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="@+id/duration_text"
+                    app:layout_constraintEnd_toEndOf="@+id/icon_button"
+                    app:layout_constraintTop_toTopOf="@+id/duration_text"
+                    tools:text="15 minutes" />
 
             <TextView
-                android:id="@+id/xp_gain_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textSize="16sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/xp_gain_text"
-                app:layout_constraintEnd_toEndOf="@+id/skills"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/xp_gain_text"
-                app:layout_constraintTop_toTopOf="@+id/xp_gain_text"
-                tools:text="15 XP"
-                />
+                    android:id="@+id/xp_gain_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="@+id/xp_gain_text"
+                    app:layout_constraintEnd_toEndOf="@+id/skills"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/xp_gain_text"
+                    app:layout_constraintTop_toTopOf="@+id/xp_gain_text"
+                    tools:text="15 XP" />
 
             <SeekBar
-                android:id="@+id/duration_bar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:max="20"
-                app:layout_constraintEnd_toEndOf="@+id/icon_button"
-                app:layout_constraintStart_toStartOf="@+id/details"
-                app:layout_constraintTop_toBottomOf="@+id/duration_text"
-                tools:progress="3"
-                />
+                    android:id="@+id/duration_bar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:max="20"
+                    app:layout_constraintEnd_toEndOf="@+id/icon_button"
+                    app:layout_constraintStart_toStartOf="@+id/details"
+                    app:layout_constraintTop_toBottomOf="@+id/duration_text"
+                    tools:progress="3" />
 
             <TextView
-                android:id="@+id/difficulty_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
-                android:singleLine="true"
-                android:text="@string/heading_difficulty"
-                android:textSize="16sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toStartOf="@+id/difficulty"
-                app:layout_constraintTop_toBottomOf="@+id/duration_bar"
-                />
+                    android:id="@+id/difficulty_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="16dp"
+                    android:singleLine="true"
+                    android:text="@string/heading_difficulty"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintStart_toStartOf="@+id/difficulty"
+                    app:layout_constraintTop_toBottomOf="@+id/duration_bar" />
 
             <TextView
-                android:id="@+id/skills_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
-                android:singleLine="true"
-                android:text="@string/heading_skills"
-                android:textSize="16sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toStartOf="@+id/skills"
-                app:layout_constraintTop_toBottomOf="@+id/deadline_date"
-                />
+                    android:id="@+id/skills_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="16dp"
+                    android:singleLine="true"
+                    android:text="@string/heading_skills"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintStart_toStartOf="@+id/skills"
+                    app:layout_constraintTop_toBottomOf="@+id/deadline_date" />
 
             <TextView
-                android:id="@+id/xp_gain_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:singleLine="true"
-                android:text="@string/heading_xp_gain"
-                android:textSize="16sp"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/skills"
-                app:layout_constraintTop_toBottomOf="@+id/skills"
-                app:layout_constraintVertical_bias="0.0"
-                />
+                    android:id="@+id/xp_gain_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:singleLine="true"
+                    android:text="@string/heading_xp_gain"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/skills"
+                    app:layout_constraintTop_toBottomOf="@+id/skills"
+                    app:layout_constraintVertical_bias="0.0" />
 
             <com.hootsuite.nachos.NachoTextView
-                android:id="@+id/skills"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:singleLine="true"
-                app:autoSizeTextType="uniform"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/skills_text"
-                />
+                    android:id="@+id/skills"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:singleLine="true"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/skills_text" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

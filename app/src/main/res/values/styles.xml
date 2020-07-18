@@ -8,7 +8,9 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="bottomSheetStyle">@style/Widget.Default.BottomSheet.Modal</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
-        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">@android:color/transparent</item>
+        <item name="android:navigationBarDividerColor" tools:ignore="NewApi">
+            @android:color/transparent
+        </item>
     </style>
 
     <style name="Widget.Default.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">

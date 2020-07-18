@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vmaier.taski.MainActivity
-import kotlinx.android.synthetic.main.fragment_task_list.*
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.databinding.FragmentTaskListBinding
+import kotlinx.android.synthetic.main.fragment_task_list.*
 import timber.log.Timber
 
 

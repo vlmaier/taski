@@ -41,11 +41,11 @@ abstract class AppDatabase : RoomDatabase() {
 
         operator fun invoke(context: Context) = instance
             ?: synchronized(LOCK) {
-            instance
-                ?: buildDatabase(
-                    context
-                ).also { instance = it }
-        }
+                instance
+                    ?: buildDatabase(
+                        context
+                    ).also { instance = it }
+            }
 
         val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {

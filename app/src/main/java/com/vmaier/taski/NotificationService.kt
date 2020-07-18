@@ -94,9 +94,15 @@ class NotificationService : IntentService("NotificationService") {
                 putExtra("notificationId", notificationId)
             }
             val dismissPendingIntent: PendingIntent =
-                PendingIntent.getBroadcast(this, ACTION_DISMISS_REQUEST_CODE, dismissIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+                PendingIntent.getBroadcast(
+                    this,
+                    ACTION_DISMISS_REQUEST_CODE,
+                    dismissIntent,
+                    PendingIntent.FLAG_CANCEL_CURRENT
+                )
             val dismissAction: Notification.Action = Notification.Action.Builder(
-                R.drawable.ic_baseline_access_time_24, "Dismiss", dismissPendingIntent)
+                R.drawable.ic_baseline_access_time_24, "Dismiss", dismissPendingIntent
+            )
                 .build()
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

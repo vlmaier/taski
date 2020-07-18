@@ -27,16 +27,15 @@ import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
-import com.mikepenz.aboutlibraries.ui.LibsFragment
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
-import com.vmaier.taski.utils.Const
 import com.vmaier.taski.databinding.ActivityMainBinding
 import com.vmaier.taski.features.settings.HelpFragment
 import com.vmaier.taski.features.settings.SettingsFragment
 import com.vmaier.taski.features.skills.*
 import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
 import com.vmaier.taski.features.tasks.*
+import com.vmaier.taski.utils.Const
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.utils.decodeBase64
 import timber.log.Timber
@@ -184,12 +183,14 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                     R.id.skillListFragment -> {
                         navController.navigate(
                             SkillListFragmentDirections
-                                .actionSkillListFragmentToTaskListFragment())
+                                .actionSkillListFragmentToTaskListFragment()
+                        )
                     }
                     R.id.statisticsFragment -> {
                         navController.navigate(
                             StatisticsFragmentDirections
-                                .actionStatisticsFragmentToTaskListFragment())
+                                .actionStatisticsFragmentToTaskListFragment()
+                        )
                     }
                     else -> navController.navigate(R.id.taskListFragment)
                 }
@@ -199,12 +200,14 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                     R.id.taskListFragment -> {
                         navController.navigate(
                             TaskListFragmentDirections
-                                .actionTaskListFragmentToSkillListFragment())
+                                .actionTaskListFragmentToSkillListFragment()
+                        )
                     }
                     R.id.statisticsFragment -> {
                         navController.navigate(
                             StatisticsFragmentDirections
-                                .actionStatisticsFragmentToSkillListFragment())
+                                .actionStatisticsFragmentToSkillListFragment()
+                        )
                     }
                     else -> navController.navigate(R.id.skillListFragment)
                 }
@@ -214,7 +217,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                     R.id.taskListFragment -> {
                         navController.navigate(
                             TaskListFragmentDirections
-                                .actionTaskListFragmentToStatisticsFragment())
+                                .actionTaskListFragmentToStatisticsFragment()
+                        )
                     }
                     R.id.skillListFragment -> {
                         navController.navigate(
