@@ -101,6 +101,8 @@
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="?attr/colorOnSurface"
                 android:contentDescription="@string/content_skill_icon"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

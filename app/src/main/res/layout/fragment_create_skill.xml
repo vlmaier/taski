@@ -110,6 +110,8 @@
                 android:backgroundTint="?attr/colorOnSurface"
                 android:contentDescription="@string/content_skill_icon"
                 android:onClick="selectIconButtonClicked"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="false"
                 app:layout_constraintBottom_toBottomOf="@+id/category"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/name"
