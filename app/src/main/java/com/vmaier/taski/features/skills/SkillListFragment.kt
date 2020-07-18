@@ -82,5 +82,19 @@ class SkillListFragment : Fragment() {
             adapter =
                 skillAdapter
         }
+        binding.rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            val fab = MainActivity.fab
+            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                if (dy < 0 && !fab.isShown) {
+                    fab.show()
+                    MainActivity.bottomNav.visibility = View.VISIBLE
+                    MainActivity.bottomBar.visibility = View.VISIBLE
+                } else if (dy > 0 && fab.isShown) {
+                    fab.hide()
+                    MainActivity.bottomNav.visibility = View.GONE
+                    MainActivity.bottomBar.visibility = View.GONE
+                }
+            }
+        })
     }
 }
