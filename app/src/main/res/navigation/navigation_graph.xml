@@ -1,149 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_graph"
-    app:defaultNavHost="true"
-    app:startDestination="@id/taskListFragment"
-    >
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/navigation_graph"
+        app:defaultNavHost="true"
+        app:startDestination="@id/taskListFragment">
+
+    <activity
+            android:id="@+id/mainActivity"
+            android:name="com.vmaier.taski.MainActivity"
+            android:label="MainActivity"
+            tools:layout="@layout/activity_main" />
 
     <fragment
-        android:id="@+id/taskListFragment"
-        android:name="com.vmaier.taski.features.tasks.TaskListFragment"
-        android:label="TaskListFragment"
-        tools:layout="@layout/fragment_task_list"
-        >
-
+            android:id="@+id/taskListFragment"
+            android:name="com.vmaier.taski.features.tasks.TaskListFragment"
+            android:label="TaskListFragment"
+            tools:layout="@layout/fragment_task_list">
         <action
-            android:id="@+id/action_taskListFragment_to_createTaskFragment"
-            app:destination="@id/createTaskFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right"
-            />
-
+                android:id="@+id/action_taskListFragment_to_createTaskFragment"
+                app:destination="@id/createTaskFragment"
+                app:enterAnim="@anim/enter_from_right"
+                app:exitAnim="@anim/exit_to_left"
+                app:popEnterAnim="@anim/enter_from_left"
+                app:popExitAnim="@anim/exit_to_right" />
         <action
-            android:id="@+id/action_taskListFragment_to_editTaskFragment"
-            app:destination="@id/editTaskFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right"
-            />
-
+                android:id="@+id/action_taskListFragment_to_editTaskFragment"
+                app:destination="@id/editTaskFragment"
+                app:enterAnim="@anim/enter_from_right"
+                app:exitAnim="@anim/exit_to_left"
+                app:popEnterAnim="@anim/enter_from_left"
+                app:popExitAnim="@anim/exit_to_right" />
+        <action
+                android:id="@+id/action_taskListFragment_to_skillListFragment"
+                app:destination="@id/skillListFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
+        <action
+                android:id="@+id/action_taskListFragment_to_statisticsFragment"
+                app:destination="@id/statisticsFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
     </fragment>
 
     <fragment
-        android:id="@+id/createTaskFragment"
-        android:name="com.vmaier.taski.features.tasks.TaskCreateFragment"
-        android:label="CreateTaskFragment"
-        tools:layout="@layout/fragment_create_task"
-        />
+            android:id="@+id/createTaskFragment"
+            android:name="com.vmaier.taski.features.tasks.TaskCreateFragment"
+            android:label="CreateTaskFragment"
+            tools:layout="@layout/fragment_create_task" />
 
     <fragment
-        android:id="@+id/editTaskFragment"
-        android:name="com.vmaier.taski.features.tasks.TaskEditFragment"
-        android:label="EditTaskFragment"
-        tools:layout="@layout/fragment_edit_task"
-        >
+            android:id="@+id/editTaskFragment"
+            android:name="com.vmaier.taski.features.tasks.TaskEditFragment"
+            android:label="EditTaskFragment"
+            tools:layout="@layout/fragment_edit_task">
         <argument
-            android:name="task"
-            app:argType="com.vmaier.taski.data.entity.Task"
-            />
+                android:name="task"
+                app:argType="com.vmaier.taski.data.entity.Task" />
         <argument
-            android:name="itemPosition"
-            app:argType="integer"
-            />
+                android:name="itemPosition"
+                app:argType="integer" />
     </fragment>
 
     <fragment
-        android:id="@+id/skillListFragment"
-        android:name="com.vmaier.taski.features.skills.SkillListFragment"
-        android:label="SkillListFragment"
-        tools:layout="@layout/fragment_skill_list"
-        >
+            android:id="@+id/skillListFragment"
+            android:name="com.vmaier.taski.features.skills.SkillListFragment"
+            android:label="SkillListFragment"
+            tools:layout="@layout/fragment_skill_list">
         <action
-            android:id="@+id/action_skillListFragment_to_createSkillFragment"
-            app:destination="@id/createSkillFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right"
-            />
+                android:id="@+id/action_skillListFragment_to_createSkillFragment"
+                app:destination="@id/createSkillFragment"
+                app:enterAnim="@anim/enter_from_right"
+                app:exitAnim="@anim/exit_to_left"
+                app:popEnterAnim="@anim/enter_from_left"
+                app:popExitAnim="@anim/exit_to_right" />
         <action
-            android:id="@+id/action_skillListFragment_to_skillEditFragment"
-            app:destination="@id/skillEditFragment"
-            app:enterAnim="@anim/enter_from_right"
-            app:exitAnim="@anim/exit_to_left"
-            app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right"
-            />
+                android:id="@+id/action_skillListFragment_to_skillEditFragment"
+                app:destination="@id/skillEditFragment"
+                app:enterAnim="@anim/enter_from_right"
+                app:exitAnim="@anim/exit_to_left"
+                app:popEnterAnim="@anim/enter_from_left"
+                app:popExitAnim="@anim/exit_to_right" />
+        <action
+                android:id="@+id/action_skillListFragment_to_taskListFragment"
+                app:destination="@id/taskListFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
+        <action
+                android:id="@+id/action_skillListFragment_to_statisticsFragment"
+                app:destination="@id/statisticsFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
     </fragment>
 
     <fragment
-        android:id="@+id/createSkillFragment"
-        android:name="com.vmaier.taski.features.skills.SkillCreateFragment"
-        android:label="CreateSkillFragment"
-        tools:layout="@layout/fragment_create_skill"
-        />
+            android:id="@+id/createSkillFragment"
+            android:name="com.vmaier.taski.features.skills.SkillCreateFragment"
+            android:label="CreateSkillFragment"
+            tools:layout="@layout/fragment_create_skill" />
 
     <fragment
-        android:id="@+id/skillEditFragment"
-        android:name="com.vmaier.taski.features.skills.SkillEditFragment"
-        android:label="SkillEditFragment"
-        tools:layout="@layout/fragment_edit_skill"
-        >
+            android:id="@+id/skillEditFragment"
+            android:name="com.vmaier.taski.features.skills.SkillEditFragment"
+            android:label="SkillEditFragment"
+            tools:layout="@layout/fragment_edit_skill">
         <argument
-            android:name="skill"
-            app:argType="com.vmaier.taski.data.entity.Skill"
-            />
+                android:name="skill"
+                app:argType="com.vmaier.taski.data.entity.Skill" />
         <argument
-            android:name="itemPosition"
-            app:argType="integer"
-            />
+                android:name="itemPosition"
+                app:argType="integer" />
     </fragment>
 
     <fragment
-        android:id="@+id/settingsFragment"
-        android:name="com.vmaier.taski.features.settings.SettingsFragment"
-        android:label="SettingsFragment"
-        />
+            android:id="@+id/settingsFragment"
+            android:name="com.vmaier.taski.features.settings.SettingsFragment"
+            android:label="SettingsFragment" />
 
     <fragment
-        android:id="@+id/helpFragment"
-        android:name="com.vmaier.taski.features.settings.HelpFragment"
-        android:label="HelpFragment"
-        tools:layout="@layout/fragment_help"
-        />
+            android:id="@+id/helpFragment"
+            android:name="com.vmaier.taski.features.settings.HelpFragment"
+            android:label="HelpFragment"
+            tools:layout="@layout/fragment_help" />
 
     <fragment
-        android:id="@+id/chartSkillXpFragment"
-        android:name="com.vmaier.taski.features.statistics.ChartSkillXpFragment"
-        android:label="ChartSkillXpFragment"
-        tools:layout="@layout/fragment_chart_skill_xp"
-        />
+            android:id="@+id/chartSkillXpFragment"
+            android:name="com.vmaier.taski.features.statistics.ChartSkillXpFragment"
+            android:label="ChartSkillXpFragment"
+            tools:layout="@layout/fragment_chart_skill_xp" />
 
     <fragment
-        android:id="@+id/chartDailyXpFragment"
-        android:name="com.vmaier.taski.features.statistics.ChartDailyXpFragment"
-        android:label="ChartDailyXpFragment"
-        tools:layout="@layout/fragment_chart_daily_xp"
-        />
+            android:id="@+id/chartDailyXpFragment"
+            android:name="com.vmaier.taski.features.statistics.ChartDailyXpFragment"
+            android:label="ChartDailyXpFragment"
+            tools:layout="@layout/fragment_chart_daily_xp" />
 
     <fragment
-        android:id="@+id/chartWeeklyXpFragment"
-        android:name="com.vmaier.taski.features.statistics.ChartWeeklyXpFragment"
-        android:label="ChartWeeklyXpFragment"
-        tools:layout="@layout/fragment_chart_weekly_xp"
-        />
+            android:id="@+id/chartWeeklyXpFragment"
+            android:name="com.vmaier.taski.features.statistics.ChartWeeklyXpFragment"
+            android:label="ChartWeeklyXpFragment"
+            tools:layout="@layout/fragment_chart_weekly_xp" />
 
     <fragment
-        android:id="@+id/statisticsFragment"
-        android:name="com.vmaier.taski.features.statistics.StatisticsFragment"
-        android:label="StatisticsFragment"
-        tools:layout="@layout/fragment_statistics"
-        />
+            android:id="@+id/chartCategoryXpFragment"
+            android:name="com.vmaier.taski.features.statistics.ChartCategoryXpFragment"
+            android:label="ChartCategoryXpFragment"
+            tools:layout="@layout/fragment_chart_category_xp" />
+
+    <fragment
+            android:id="@+id/chartWeeklyTasksFragment"
+            android:name="com.vmaier.taski.features.statistics.ChartWeeklyTasksFragment"
+            android:label="ChartWeeklyTasksFragment"
+            tools:layout="@layout/fragment_chart_weekly_tasks" />
+
+    <fragment
+            android:id="@+id/statisticsFragment"
+            android:name="com.vmaier.taski.features.statistics.StatisticsFragment"
+            android:label="StatisticsFragment"
+            tools:layout="@layout/fragment_statistics" >
+        <action
+                android:id="@+id/action_statisticsFragment_to_skillListFragment"
+                app:destination="@id/skillListFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
+        <action
+                android:id="@+id/action_statisticsFragment_to_taskListFragment"
+                app:destination="@id/taskListFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
+    </fragment>
 
 </navigation>

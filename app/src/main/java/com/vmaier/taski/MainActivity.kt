@@ -32,14 +32,9 @@ import com.vmaier.taski.data.Status
 import com.vmaier.taski.utils.Const
 import com.vmaier.taski.databinding.ActivityMainBinding
 import com.vmaier.taski.features.settings.SettingsFragment
-import com.vmaier.taski.features.skills.SkillCreateFragment
-import com.vmaier.taski.features.skills.SkillEditFragment
-import com.vmaier.taski.features.skills.SkillFragment
-import com.vmaier.taski.features.skills.SkillListFragment
-import com.vmaier.taski.features.tasks.TaskCreateFragment
-import com.vmaier.taski.features.tasks.TaskEditFragment
-import com.vmaier.taski.features.tasks.TaskFragment
-import com.vmaier.taski.features.tasks.TaskListFragment
+import com.vmaier.taski.features.skills.*
+import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
+import com.vmaier.taski.features.tasks.*
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.utils.decodeBase64
 import timber.log.Timber
@@ -183,13 +178,47 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_tasks -> {
-                navController.navigate(R.id.taskListFragment)
+                when (navController.currentDestination?.id) {
+                    R.id.skillListFragment -> {
+                        navController.navigate(
+                            SkillListFragmentDirections
+                                .actionSkillListFragmentToTaskListFragment())
+                    }
+                    R.id.statisticsFragment -> {
+                        navController.navigate(
+                            StatisticsFragmentDirections
+                                .actionStatisticsFragmentToTaskListFragment())
+                    }
+                }
             }
             R.id.nav_skills -> {
-                navController.navigate(R.id.skillListFragment)
+                when (navController.currentDestination?.id) {
+                    R.id.taskListFragment -> {
+                        navController.navigate(
+                            TaskListFragmentDirections
+                                .actionTaskListFragmentToSkillListFragment())
+                    }
+                    R.id.statisticsFragment -> {
+                        navController.navigate(
+                            StatisticsFragmentDirections
+                                .actionStatisticsFragmentToSkillListFragment())
+                    }
+                }
             }
             R.id.nav_statistics -> {
-                navController.navigate(R.id.statisticsFragment)
+                when (navController.currentDestination?.id) {
+                    R.id.taskListFragment -> {
+                        navController.navigate(
+                            TaskListFragmentDirections
+                                .actionTaskListFragmentToStatisticsFragment())
+                    }
+                    R.id.skillListFragment -> {
+                        navController.navigate(
+                            SkillListFragmentDirections
+                                .actionSkillListFragmentToStatisticsFragment()
+                        )
+                    }
+                }
             }
         }
         // update selected menu item in bottom navigation as well
