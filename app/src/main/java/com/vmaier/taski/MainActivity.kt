@@ -27,10 +27,12 @@ import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
+import com.mikepenz.aboutlibraries.ui.LibsFragment
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.utils.Const
 import com.vmaier.taski.databinding.ActivityMainBinding
+import com.vmaier.taski.features.settings.HelpFragment
 import com.vmaier.taski.features.settings.SettingsFragment
 import com.vmaier.taski.features.skills.*
 import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
@@ -189,6 +191,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                             StatisticsFragmentDirections
                                 .actionStatisticsFragmentToTaskListFragment())
                     }
+                    else -> navController.navigate(R.id.taskListFragment)
                 }
             }
             R.id.nav_skills -> {
@@ -203,6 +206,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                             StatisticsFragmentDirections
                                 .actionStatisticsFragmentToSkillListFragment())
                     }
+                    else -> navController.navigate(R.id.skillListFragment)
                 }
             }
             R.id.nav_statistics -> {
@@ -218,6 +222,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                                 .actionSkillListFragmentToStatisticsFragment()
                         )
                     }
+                    else -> navController.navigate(R.id.statisticsFragment)
                 }
             }
         }
@@ -336,6 +341,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                                     super.onBackPressed()
                                 }
                             }
+                        }
+                        is HelpFragment -> {
+                            toolbar.title = getString(R.string.heading_help)
+                            HelpFragment.binding.licensesButton.visibility = View.VISIBLE
+                            HelpFragment.binding.versionButton.visibility = View.VISIBLE
+                            super.onBackPressed()
                         }
                         else -> {
                             super.onBackPressed()
