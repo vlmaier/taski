@@ -82,8 +82,9 @@ class TaskListFragment : Fragment() {
                 val size = taskAdapter.tasks.size
                 if (size > 0) {
                     MainActivity.bottomNav.getOrCreateBadge(R.id.nav_tasks).number = size
+                } else {
+                    MainActivity.bottomNav.removeBadge(R.id.nav_tasks)
                 }
-                MainActivity.bottomNav.getOrCreateBadge(R.id.nav_tasks).isVisible = size > 0
             }
         })
         val db = AppDatabase(requireContext())
