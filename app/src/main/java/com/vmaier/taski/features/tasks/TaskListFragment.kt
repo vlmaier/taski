@@ -40,6 +40,10 @@ class TaskListFragment : Fragment() {
         MainActivity.fab.show()
         MainActivity.bottomNav.visibility = View.VISIBLE
         MainActivity.bottomBar.visibility = View.VISIBLE
+        val foundItem = MainActivity.bottomNav.menu.findItem(R.id.nav_tasks)
+        if (foundItem != null) {
+            foundItem.isChecked = true
+        }
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_task_list, container, false
         )

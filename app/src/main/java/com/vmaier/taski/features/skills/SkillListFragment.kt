@@ -37,6 +37,10 @@ class SkillListFragment : Fragment() {
         MainActivity.fab.show()
         MainActivity.bottomNav.visibility = View.VISIBLE
         MainActivity.bottomBar.visibility = View.VISIBLE
+        val foundItem = MainActivity.bottomNav.menu.findItem(R.id.nav_skills)
+        if (foundItem != null) {
+            foundItem.isChecked = true
+        }
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_skill_list, container, false
         )
