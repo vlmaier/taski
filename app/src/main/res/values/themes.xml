@@ -2,7 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.Default" parent="Base.Theme.Default" />
-
     <style name="Base.Theme.Default" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightDefault</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightDefault</item>
@@ -16,18 +15,9 @@
         <item name="colorOnBackground">@color/colorOnBackgroundLightDefault</item>
         <item name="colorOnSurface">@color/colorOnSurfaceLightDefault</item>
         <item name="colorOnError">@color/colorOnErrorLightDefault</item>
-
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert
-        </item>
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Default.BottomSheetDialog</item>
-        <item name="navigationViewStyle">@style/Widget.Default.NavigationView</item>
-        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
-        <item name="actionOverflowButtonStyle">@style/Base.Theme.SettingsButton</item>
-        <item name="drawerArrowStyle">@style/Base.Theme.HamburgerButton</item>
     </style>
 
     <style name="Theme.Sailor" parent="Base.Theme.Sailor" />
-
     <style name="Base.Theme.Sailor" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightSailor</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightSailor</item>
@@ -41,14 +31,134 @@
         <item name="colorOnBackground">@color/colorOnBackgroundLightSailor</item>
         <item name="colorOnSurface">@color/colorOnSurfaceLightSailor</item>
         <item name="colorOnError">@color/colorOnErrorLightSailor</item>
+    </style>
 
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert
-        </item>
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Default.BottomSheetDialog</item>
-        <item name="navigationViewStyle">@style/Widget.Default.NavigationView</item>
-        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
-        <item name="actionOverflowButtonStyle">@style/Base.Theme.SettingsButton</item>
-        <item name="drawerArrowStyle">@style/Base.Theme.HamburgerButton</item>
+    <style name="Theme.Royal" parent="Base.Theme.Royal" />
+    <style name="Base.Theme.Royal" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightRoyal</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightRoyal</item>
+        <item name="colorSecondary">@color/colorSecondaryRoyal</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantRoyal</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightRoyal</item>
+        <item name="colorSurface">@color/colorSurfaceLightRoyal</item>
+        <item name="colorError">@color/colorErrorLightRoyal</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightRoyal</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightRoyal</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightRoyal</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightRoyal</item>
+        <item name="colorOnError">@color/colorOnErrorLightRoyal</item>
+    </style>
+
+    <style name="Theme.Mercury" parent="Base.Theme.Mercury" />
+    <style name="Base.Theme.Mercury" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightMercury</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightMercury</item>
+        <item name="colorSecondary">@color/colorSecondaryMercury</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantMercury</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightMercury</item>
+        <item name="colorSurface">@color/colorSurfaceLightMercury</item>
+        <item name="colorError">@color/colorErrorLightMercury</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightMercury</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightMercury</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightMercury</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightMercury</item>
+        <item name="colorOnError">@color/colorOnErrorLightMercury</item>
+    </style>
+
+    <style name="Theme.Mocca" parent="Base.Theme.Mocca" />
+    <style name="Base.Theme.Mocca" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightMocca</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightMocca</item>
+        <item name="colorSecondary">@color/colorSecondaryMocca</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantMocca</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightMocca</item>
+        <item name="colorSurface">@color/colorSurfaceLightMocca</item>
+        <item name="colorError">@color/colorErrorLightMocca</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightMocca</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightMocca</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightMocca</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightMocca</item>
+        <item name="colorOnError">@color/colorOnErrorLightMocca</item>
+    </style>
+
+    <style name="Theme.Creeper" parent="Base.Theme.Creeper" />
+    <style name="Base.Theme.Creeper" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightCreeper</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightCreeper</item>
+        <item name="colorSecondary">@color/colorSecondaryCreeper</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantCreeper</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightCreeper</item>
+        <item name="colorSurface">@color/colorSurfaceLightCreeper</item>
+        <item name="colorError">@color/colorErrorLightCreeper</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightCreeper</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightCreeper</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightCreeper</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightCreeper</item>
+        <item name="colorOnError">@color/colorOnErrorLightCreeper</item>
+    </style>
+
+    <style name="Theme.Flamingo" parent="Base.Theme.Flamingo" />
+    <style name="Base.Theme.Flamingo" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightFlamingo</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightFlamingo</item>
+        <item name="colorSecondary">@color/colorSecondaryFlamingo</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantFlamingo</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightFlamingo</item>
+        <item name="colorSurface">@color/colorSurfaceLightFlamingo</item>
+        <item name="colorError">@color/colorErrorLightFlamingo</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightFlamingo</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightFlamingo</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightFlamingo</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightFlamingo</item>
+        <item name="colorOnError">@color/colorOnErrorLightFlamingo</item>
+    </style>
+
+    <style name="Theme.Pilot" parent="Base.Theme.Pilot" />
+    <style name="Base.Theme.Pilot" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightPilot</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightPilot</item>
+        <item name="colorSecondary">@color/colorSecondaryPilot</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantPilot</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightPilot</item>
+        <item name="colorSurface">@color/colorSurfaceLightPilot</item>
+        <item name="colorError">@color/colorErrorLightPilot</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightPilot</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightPilot</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightPilot</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightPilot</item>
+        <item name="colorOnError">@color/colorOnErrorLightPilot</item>
+    </style>
+
+    <style name="Theme.Coral" parent="Base.Theme.Coral" />
+    <style name="Base.Theme.Coral" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightCoral</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightCoral</item>
+        <item name="colorSecondary">@color/colorSecondaryCoral</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantCoral</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightCoral</item>
+        <item name="colorSurface">@color/colorSurfaceLightCoral</item>
+        <item name="colorError">@color/colorErrorLightCoral</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightCoral</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightCoral</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightCoral</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightCoral</item>
+        <item name="colorOnError">@color/colorOnErrorLightCoral</item>
+    </style>
+
+    <style name="Theme.Blossom" parent="Base.Theme.Blossom" />
+    <style name="Base.Theme.Blossom" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightBlossom</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightBlossom</item>
+        <item name="colorSecondary">@color/colorSecondaryBlossom</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantBlossom</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightBlossom</item>
+        <item name="colorSurface">@color/colorSurfaceLightBlossom</item>
+        <item name="colorError">@color/colorErrorLightBlossom</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightBlossom</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryDarkBlossom</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightBlossom</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightBlossom</item>
+        <item name="colorOnError">@color/colorOnErrorLightBlossom</item>
     </style>
 
     <style name="Base.Theme.SettingsButton" parent="@style/Widget.AppCompat.ActionButton.Overflow">
@@ -61,7 +171,13 @@
     </style>
 
     <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:statusBarColor" tools:ignore="NewApi">?attr/colorSurface</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Default.BottomSheetDialog</item>
+        <item name="navigationViewStyle">@style/Widget.Default.NavigationView</item>
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
+        <item name="actionOverflowButtonStyle">@style/Base.Theme.SettingsButton</item>
+        <item name="drawerArrowStyle">@style/Base.Theme.HamburgerButton</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">?attr/colorPrimary</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
         <item name="android:navigationBarColor" tools:ignore="NewApi">
             ?android:attr/colorBackground

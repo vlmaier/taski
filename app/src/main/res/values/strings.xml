@@ -4,6 +4,14 @@
     <string name="app_name">Taski</string>
     <string name="theme_default_name">Theme.Default</string>
     <string name="theme_sailor_name">Theme.Sailor</string>
+    <string name="theme_royal_name">Theme.Royal</string>
+    <string name="theme_mercury_name">Theme.Mercury</string>
+    <string name="theme_mocca_name">Theme.Mocca</string>
+    <string name="theme_creeper_name">Theme.Creeper</string>
+    <string name="theme_flamingo_name">Theme.Flamingo</string>
+    <string name="theme_pilot_name">Theme.Pilot</string>
+    <string name="theme_coral_name">Theme.Coral</string>
+    <string name="theme_blossom_name">Theme.Blossom</string>
     <string name="version">Version %s\n\n© 2020 Vladas Maier</string>
     <!-- Duration values -->
     <plurals name="duration_minute">

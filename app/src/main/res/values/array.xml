@@ -3,9 +3,25 @@
     <string-array name="theme_names_array">
         <item>Default</item>
         <item>Sailor</item>
+        <item>Royal</item>
+        <item>Mercury</item>
+        <item>Mocca</item>
+        <item>Creeper</item>
+        <item>Flamingo</item>
+        <item>Pilot</item>
+        <item>Coral</item>
+        <item>Blossom</item>
     </string-array>
     <string-array name="theme_values_array">
         <item>Theme.Default</item>
         <item>Theme.Sailor</item>
+        <item>Theme.Royal</item>
+        <item>Theme.Mercury</item>
+        <item>Theme.Mocca</item>
+        <item>Theme.Creeper</item>
+        <item>Theme.Flamingo</item>
+        <item>Theme.Pilot</item>
+        <item>Theme.Coral</item>
+        <item>Theme.Blossom</item>
     </string-array>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Color palette default -->
+    <!-- Color palette for Default theme -->
     <color name="colorPrimaryDarkDefault">#C5CAE9</color>
     <color name="colorPrimaryLightDefault">#3F51B5</color>
     <color name="colorPrimaryVariantDarkDefault">#3F51B5</color>
@@ -26,7 +26,8 @@
     <color name="colorOnSecondaryDarkDefault">@color/colorLightDefault</color>
     <color name="colorOnBackgroundLightDefault">@color/colorDarkDefault</color>
     <color name="colorOnBackgroundDarkDefault">@color/colorLightDefault</color>
-    <!-- Color palette sailor -->
+    
+    <!-- Color palette for Sailor theme -->
     <color name="colorPrimaryDarkSailor">#BBDEFB</color>
     <color name="colorPrimaryLightSailor">#1976D2</color>
     <color name="colorPrimaryVariantDarkSailor">#1976D2</color>
@@ -47,10 +48,218 @@
     <color name="colorOnErrorDarkSailor">@color/colorDarkSailor</color>
     <color name="colorOnPrimaryLightSailor">@color/colorLightSailor</color>
     <color name="colorOnPrimaryDarkSailor">@color/colorDarkSailor</color>
-    <color name="colorOnSecondaryLightSailor">@color/colorDarkSailor</color>
-    <color name="colorOnSecondaryDarkSailor">@color/colorLightSailor</color>
+    <color name="colorOnSecondaryLightSailor">@color/colorLightSailor</color>
+    <color name="colorOnSecondaryDarkSailor">@color/colorDarkSailor</color>
     <color name="colorOnBackgroundLightSailor">@color/colorDarkSailor</color>
     <color name="colorOnBackgroundDarkSailor">@color/colorLightSailor</color>
+    
+    <!-- Color palette for Royal theme -->
+    <color name="colorPrimaryDarkRoyal">#446786</color>
+    <color name="colorPrimaryLightRoyal">#143D59</color>
+    <color name="colorPrimaryVariantDarkRoyal">#143D59</color>
+    <color name="colorPrimaryVariantLightRoyal">#446786</color>
+    <color name="colorSecondaryRoyal">#F4B418</color>
+    <color name="colorSecondaryVariantRoyal">#FFE654</color>
+    <color name="colorErrorDarkRoyal">#CF6679</color>
+    <color name="colorErrorLightRoyal">#B00020</color>
+    <color name="colorLightRoyal">#FFFFFF</color>
+    <color name="colorDarkRoyal">#212121</color>
+    <color name="colorSurfaceLightRoyal">@color/colorLightRoyal</color>
+    <color name="colorSurfaceDarkRoyal">@color/colorDarkRoyal</color>
+    <color name="colorBackgroundLightRoyal">@color/colorLightRoyal</color>
+    <color name="colorBackgroundDarkRoyal">@color/colorDarkRoyal</color>
+    <color name="colorOnSurfaceLightRoyal">@color/colorDarkRoyal</color>
+    <color name="colorOnSurfaceDarkRoyal">@color/colorLightRoyal</color>
+    <color name="colorOnErrorLightRoyal">@color/colorLightRoyal</color>
+    <color name="colorOnErrorDarkRoyal">@color/colorDarkRoyal</color>
+    <color name="colorOnPrimaryLightRoyal">@color/colorLightRoyal</color>
+    <color name="colorOnPrimaryDarkRoyal">@color/colorDarkRoyal</color>
+    <color name="colorOnSecondaryLightRoyal">@color/colorDarkRoyal</color>
+    <color name="colorOnSecondaryDarkRoyal">@color/colorLightRoyal</color>
+    <color name="colorOnBackgroundLightRoyal">@color/colorDarkRoyal</color>
+    <color name="colorOnBackgroundDarkRoyal">@color/colorLightRoyal</color>
+
+    <!-- Color palette for Mercury theme -->
+    <color name="colorPrimaryDarkMercury">#585858</color>
+    <color name="colorPrimaryLightMercury">#2F2F2F</color>
+    <color name="colorPrimaryVariantDarkMercury">#2F2F2F</color>
+    <color name="colorPrimaryVariantLightMercury">#585858</color>
+    <color name="colorSecondaryMercury">#F6712A</color>
+    <color name="colorSecondaryVariantMercury">#FFA259</color>
+    <color name="colorErrorDarkMercury">#CF6679</color>
+    <color name="colorErrorLightMercury">#B00020</color>
+    <color name="colorLightMercury">#FFFFFF</color>
+    <color name="colorDarkMercury">#212121</color>
+    <color name="colorSurfaceLightMercury">@color/colorLightMercury</color>
+    <color name="colorSurfaceDarkMercury">@color/colorDarkMercury</color>
+    <color name="colorBackgroundLightMercury">@color/colorLightMercury</color>
+    <color name="colorBackgroundDarkMercury">@color/colorDarkMercury</color>
+    <color name="colorOnSurfaceLightMercury">@color/colorDarkMercury</color>
+    <color name="colorOnSurfaceDarkMercury">@color/colorLightMercury</color>
+    <color name="colorOnErrorLightMercury">@color/colorLightMercury</color>
+    <color name="colorOnErrorDarkMercury">@color/colorDarkMercury</color>
+    <color name="colorOnPrimaryLightMercury">@color/colorLightMercury</color>
+    <color name="colorOnPrimaryDarkMercury">@color/colorDarkMercury</color>
+    <color name="colorOnSecondaryLightMercury">@color/colorDarkMercury</color>
+    <color name="colorOnSecondaryDarkMercury">@color/colorLightMercury</color>
+    <color name="colorOnBackgroundLightMercury">@color/colorDarkMercury</color>
+    <color name="colorOnBackgroundDarkMercury">@color/colorLightMercury</color>
+
+    <!-- Color palette for Mocca theme -->
+    <color name="colorPrimaryDarkMocca">#F2BD94</color>
+    <color name="colorPrimaryLightMocca">#BE8D66</color>
+    <color name="colorPrimaryVariantDarkMocca">#BE8D66</color>
+    <color name="colorPrimaryVariantLightMocca">#F2BD94</color>
+    <color name="colorSecondaryMocca">#A95247</color>
+    <color name="colorSecondaryVariantMocca">#76261F</color>
+    <color name="colorErrorDarkMocca">#CF6679</color>
+    <color name="colorErrorLightMocca">#B00020</color>
+    <color name="colorLightMocca">#FFFFFF</color>
+    <color name="colorDarkMocca">#212121</color>
+    <color name="colorSurfaceLightMocca">@color/colorLightMocca</color>
+    <color name="colorSurfaceDarkMocca">@color/colorDarkMocca</color>
+    <color name="colorBackgroundLightMocca">@color/colorLightMocca</color>
+    <color name="colorBackgroundDarkMocca">@color/colorDarkMocca</color>
+    <color name="colorOnSurfaceLightMocca">@color/colorDarkMocca</color>
+    <color name="colorOnSurfaceDarkMocca">@color/colorLightMocca</color>
+    <color name="colorOnErrorLightMocca">@color/colorLightMocca</color>
+    <color name="colorOnErrorDarkMocca">@color/colorDarkMocca</color>
+    <color name="colorOnPrimaryLightMocca">@color/colorLightMocca</color>
+    <color name="colorOnPrimaryDarkMocca">@color/colorDarkMocca</color>
+    <color name="colorOnSecondaryLightMocca">@color/colorLightMocca</color>
+    <color name="colorOnSecondaryDarkMocca">@color/colorDarkMocca</color>
+    <color name="colorOnBackgroundLightMocca">@color/colorDarkMocca</color>
+    <color name="colorOnBackgroundDarkMocca">@color/colorLightMocca</color>
+
+    <!-- Color palette for Creeper theme -->
+    <color name="colorPrimaryDarkCreeper">#545D80</color>
+    <color name="colorPrimaryLightCreeper">#293453</color>
+    <color name="colorPrimaryVariantDarkCreeper">#293453</color>
+    <color name="colorPrimaryVariantLightCreeper">#545D80</color>
+    <color name="colorSecondaryCreeper">#6ED57E</color>
+    <color name="colorSecondaryVariantCreeper">#A1FFAE</color>
+    <color name="colorErrorDarkCreeper">#CF6679</color>
+    <color name="colorErrorLightCreeper">#B00020</color>
+    <color name="colorLightCreeper">#FFFFFF</color>
+    <color name="colorDarkCreeper">#212121</color>
+    <color name="colorSurfaceLightCreeper">@color/colorLightCreeper</color>
+    <color name="colorSurfaceDarkCreeper">@color/colorDarkCreeper</color>
+    <color name="colorBackgroundLightCreeper">@color/colorLightCreeper</color>
+    <color name="colorBackgroundDarkCreeper">@color/colorDarkCreeper</color>
+    <color name="colorOnSurfaceLightCreeper">@color/colorDarkCreeper</color>
+    <color name="colorOnSurfaceDarkCreeper">@color/colorLightCreeper</color>
+    <color name="colorOnErrorLightCreeper">@color/colorLightCreeper</color>
+    <color name="colorOnErrorDarkCreeper">@color/colorDarkCreeper</color>
+    <color name="colorOnPrimaryLightCreeper">@color/colorLightCreeper</color>
+    <color name="colorOnPrimaryDarkCreeper">@color/colorDarkCreeper</color>
+    <color name="colorOnSecondaryLightCreeper">@color/colorDarkCreeper</color>
+    <color name="colorOnSecondaryDarkCreeper">@color/colorLightCreeper</color>
+    <color name="colorOnBackgroundLightCreeper">@color/colorDarkCreeper</color>
+    <color name="colorOnBackgroundDarkCreeper">@color/colorLightCreeper</color>
+
+    <!-- Color palette for Flamingo theme -->
+    <color name="colorPrimaryDarkFlamingo">#FFB5BB</color>
+    <color name="colorPrimaryLightFlamingo">#F7848B</color>
+    <color name="colorPrimaryVariantDarkFlamingo">#F7848B</color>
+    <color name="colorPrimaryVariantLightFlamingo">#FFB5BB</color>
+    <color name="colorSecondaryFlamingo">#EB345E</color>
+    <color name="colorSecondaryVariantFlamingo">#FF6D8B</color>
+    <color name="colorErrorDarkFlamingo">#CF6679</color>
+    <color name="colorErrorLightFlamingo">#B00020</color>
+    <color name="colorLightFlamingo">#FFFFFF</color>
+    <color name="colorDarkFlamingo">#212121</color>
+    <color name="colorSurfaceLightFlamingo">@color/colorLightFlamingo</color>
+    <color name="colorSurfaceDarkFlamingo">@color/colorDarkFlamingo</color>
+    <color name="colorBackgroundLightFlamingo">@color/colorLightFlamingo</color>
+    <color name="colorBackgroundDarkFlamingo">@color/colorDarkFlamingo</color>
+    <color name="colorOnSurfaceLightFlamingo">@color/colorDarkFlamingo</color>
+    <color name="colorOnSurfaceDarkFlamingo">@color/colorLightFlamingo</color>
+    <color name="colorOnErrorLightFlamingo">@color/colorLightFlamingo</color>
+    <color name="colorOnErrorDarkFlamingo">@color/colorDarkFlamingo</color>
+    <color name="colorOnPrimaryLightFlamingo">@color/colorLightFlamingo</color>
+    <color name="colorOnPrimaryDarkFlamingo">@color/colorDarkFlamingo</color>
+    <color name="colorOnSecondaryLightFlamingo">@color/colorLightFlamingo</color>
+    <color name="colorOnSecondaryDarkFlamingo">@color/colorDarkFlamingo</color>
+    <color name="colorOnBackgroundLightFlamingo">@color/colorDarkFlamingo</color>
+    <color name="colorOnBackgroundDarkFlamingo">@color/colorLightFlamingo</color>
+
+    <!-- Color palette for Pilot theme -->
+    <color name="colorPrimaryDarkPilot">#567BC5</color>
+    <color name="colorPrimaryLightPilot">#1B4F94</color>
+    <color name="colorPrimaryVariantDarkPilot">#1B4F94</color>
+    <color name="colorPrimaryVariantLightPilot">#567BC5</color>
+    <color name="colorSecondaryPilot">#BB9980</color>
+    <color name="colorSecondaryVariantPilot">#EECAAF</color>
+    <color name="colorErrorDarkPilot">#CF6679</color>
+    <color name="colorErrorLightPilot">#B00020</color>
+    <color name="colorLightPilot">#FFFFFF</color>
+    <color name="colorDarkPilot">#212121</color>
+    <color name="colorSurfaceLightPilot">@color/colorLightPilot</color>
+    <color name="colorSurfaceDarkPilot">@color/colorDarkPilot</color>
+    <color name="colorBackgroundLightPilot">@color/colorLightPilot</color>
+    <color name="colorBackgroundDarkPilot">@color/colorDarkPilot</color>
+    <color name="colorOnSurfaceLightPilot">@color/colorDarkPilot</color>
+    <color name="colorOnSurfaceDarkPilot">@color/colorLightPilot</color>
+    <color name="colorOnErrorLightPilot">@color/colorLightPilot</color>
+    <color name="colorOnErrorDarkPilot">@color/colorDarkPilot</color>
+    <color name="colorOnPrimaryLightPilot">@color/colorLightPilot</color>
+    <color name="colorOnPrimaryDarkPilot">@color/colorDarkPilot</color>
+    <color name="colorOnSecondaryLightPilot">@color/colorDarkPilot</color>
+    <color name="colorOnSecondaryDarkPilot">@color/colorLightPilot</color>
+    <color name="colorOnBackgroundLightPilot">@color/colorDarkPilot</color>
+    <color name="colorOnBackgroundDarkPilot">@color/colorLightPilot</color>
+
+    <!-- Color palette for Coral theme -->
+    <color name="colorPrimaryDarkCoral">#FFA898</color>
+    <color name="colorPrimaryLightCoral">#FC766A</color>
+    <color name="colorPrimaryVariantDarkCoral">#FC766A</color>
+    <color name="colorPrimaryVariantLightCoral">#FFA898</color>
+    <color name="colorSecondaryCoral">#5B84B1</color>
+    <color name="colorSecondaryVariantCoral">#8CB3E3</color>
+    <color name="colorErrorDarkCoral">#CF6679</color>
+    <color name="colorErrorLightCoral">#B00020</color>
+    <color name="colorLightCoral">#FFFFFF</color>
+    <color name="colorDarkCoral">#212121</color>
+    <color name="colorSurfaceLightCoral">@color/colorLightCoral</color>
+    <color name="colorSurfaceDarkCoral">@color/colorDarkCoral</color>
+    <color name="colorBackgroundLightCoral">@color/colorLightCoral</color>
+    <color name="colorBackgroundDarkCoral">@color/colorDarkCoral</color>
+    <color name="colorOnSurfaceLightCoral">@color/colorDarkCoral</color>
+    <color name="colorOnSurfaceDarkCoral">@color/colorLightCoral</color>
+    <color name="colorOnErrorLightCoral">@color/colorLightCoral</color>
+    <color name="colorOnErrorDarkCoral">@color/colorDarkCoral</color>
+    <color name="colorOnPrimaryLightCoral">@color/colorLightCoral</color>
+    <color name="colorOnPrimaryDarkCoral">@color/colorDarkCoral</color>
+    <color name="colorOnSecondaryLightCoral">@color/colorLightCoral</color>
+    <color name="colorOnSecondaryDarkCoral">@color/colorDarkCoral</color>
+    <color name="colorOnBackgroundLightCoral">@color/colorDarkCoral</color>
+    <color name="colorOnBackgroundDarkCoral">@color/colorLightCoral</color>
+
+    <!-- Color palette for Blossom theme -->
+    <color name="colorPrimaryDarkBlossom">#BBACDD</color>
+    <color name="colorPrimaryLightBlossom">#8B7DAB</color>
+    <color name="colorPrimaryVariantDarkBlossom">#8B7DAB</color>
+    <color name="colorPrimaryVariantLightBlossom">#BBACDD</color>
+    <color name="colorSecondaryBlossom">#E9B5AC</color>
+    <color name="colorSecondaryVariantBlossom">#FFE7DE</color>
+    <color name="colorErrorDarkBlossom">#CF6679</color>
+    <color name="colorErrorLightBlossom">#B00020</color>
+    <color name="colorLightBlossom">#FFFFFF</color>
+    <color name="colorDarkBlossom">#212121</color>
+    <color name="colorSurfaceLightBlossom">@color/colorLightBlossom</color>
+    <color name="colorSurfaceDarkBlossom">@color/colorDarkBlossom</color>
+    <color name="colorBackgroundLightBlossom">@color/colorLightBlossom</color>
+    <color name="colorBackgroundDarkBlossom">@color/colorDarkBlossom</color>
+    <color name="colorOnSurfaceLightBlossom">@color/colorDarkBlossom</color>
+    <color name="colorOnSurfaceDarkBlossom">@color/colorLightBlossom</color>
+    <color name="colorOnErrorLightBlossom">@color/colorLightBlossom</color>
+    <color name="colorOnErrorDarkBlossom">@color/colorDarkBlossom</color>
+    <color name="colorOnPrimaryLightBlossom">@color/colorLightBlossom</color>
+    <color name="colorOnPrimaryDarkBlossom">@color/colorDarkBlossom</color>
+    <color name="colorOnSecondaryLightBlossom">@color/colorLightBlossom</color>
+    <color name="colorOnSecondaryDarkBlossom">@color/colorDarkBlossom</color>
+    <color name="colorOnBackgroundLightBlossom">@color/colorDarkBlossom</color>
+    <color name="colorOnBackgroundDarkBlossom">@color/colorLightBlossom</color>
 
     <color name="colorSwipeDone">#388E3C</color>
     <color name="colorSwipeCancel">#D32F2F</color>

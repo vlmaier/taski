@@ -149,10 +149,37 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 val pref: ListPreference? = findPreference(key)
                 val selectedTheme = pref?.value
                 sharedPreferences.edit().putString(Const.Prefs.APP_THEME, selectedTheme).apply()
-                if (selectedTheme == getString(R.string.theme_default_name)) {
-                    activity?.setTheme(R.style.Theme_Default)
-                } else if (selectedTheme == getString(R.string.theme_sailor_name)) {
-                    activity?.setTheme(R.style.Theme_Sailor)
+                when (selectedTheme) {
+                    getString(R.string.theme_default_name) -> {
+                        activity?.setTheme(R.style.Theme_Default)
+                    }
+                    getString(R.string.theme_sailor_name) -> {
+                        activity?.setTheme(R.style.Theme_Sailor)
+                    }
+                    getString(R.string.theme_royal_name) -> {
+                        activity?.setTheme(R.style.Theme_Royal)
+                    }
+                    getString(R.string.theme_mercury_name) -> {
+                        activity?.setTheme(R.style.Theme_Mercury)
+                    }
+                    getString(R.string.theme_mocca_name) -> {
+                        activity?.setTheme(R.style.Theme_Mocca)
+                    }
+                    getString(R.string.theme_creeper_name) -> {
+                        activity?.setTheme(R.style.Theme_Creeper)
+                    }
+                    getString(R.string.theme_flamingo_name) -> {
+                        activity?.setTheme(R.style.Theme_Flamingo)
+                    }
+                    getString(R.string.theme_pilot_name) -> {
+                        activity?.setTheme(R.style.Theme_Pilot)
+                    }
+                    getString(R.string.theme_coral_name) -> {
+                        activity?.setTheme(R.style.Theme_Coral)
+                    }
+                    getString(R.string.theme_blossom_name) -> {
+                        activity?.setTheme(R.style.Theme_Blossom)
+                    }
                 }
                 activity?.recreate()
             }
