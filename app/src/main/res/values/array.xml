@@ -13,15 +13,15 @@
         <item>Blossom</item>
     </string-array>
     <string-array name="theme_values_array">
-        <item>Theme.Default</item>
-        <item>Theme.Sailor</item>
-        <item>Theme.Royal</item>
-        <item>Theme.Mercury</item>
-        <item>Theme.Mocca</item>
-        <item>Theme.Creeper</item>
-        <item>Theme.Flamingo</item>
-        <item>Theme.Pilot</item>
-        <item>Theme.Coral</item>
-        <item>Theme.Blossom</item>
+        <item>@string/theme_default_name</item>
+        <item>@string/theme_sailor_name</item>
+        <item>@string/theme_royal_name</item>
+        <item>@string/theme_mercury_name</item>
+        <item>@string/theme_mocca_name</item>
+        <item>@string/theme_creeper_name</item>
+        <item>@string/theme_flamingo_name</item>
+        <item>@string/theme_pilot_name</item>
+        <item>@string/theme_coral_name</item>
+        <item>@string/theme_blossom_name</item>
     </string-array>
 </resources>

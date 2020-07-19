@@ -18,10 +18,7 @@ import androidx.preference.*
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
-import com.vmaier.taski.utils.Const
-import com.vmaier.taski.utils.RequestCode
-import com.vmaier.taski.utils.compress
-import com.vmaier.taski.utils.encodeTobase64
+import com.vmaier.taski.utils.*
 import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
 import kotlin.properties.Delegates
@@ -56,6 +53,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sharedPrefs = preferenceManager.sharedPreferences
         PICK_IMAGE_REQUEST_CODE = RequestCode.get(requireContext())
         ACCESS_CALENDAR_REQUEST_CODE = RequestCode.get(requireContext())
         val changeAvatar = preferenceScreen.findPreference(Const.Prefs.CHANGE_AVATAR) as Preference?
@@ -79,9 +77,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 .setTitle(getString(R.string.alert_reset_avatar))
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.action_proceed_with_reset)) { _, _ ->
-                    preferenceManager.sharedPreferences
-                        .edit().putString(Const.Prefs.USER_AVATAR, null)
-                        .apply()
+                    sharedPrefs.edit().putString(Const.Prefs.USER_AVATAR, null).apply()
                     MainActivity.avatarView.setImageDrawable(
                         getDrawable(requireContext(), R.mipmap.ic_launcher)
                     )
@@ -118,14 +114,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
             true
         }
         val appTheme = preferenceScreen.findPreference(Const.Prefs.APP_THEME) as ListPreference?
-        val selectedTheme = preferenceManager.sharedPreferences
-            .getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
-        val themeNames = resources.getStringArray(R.array.theme_names_array)
+        val selectedTheme = sharedPrefs.getString(Const.Prefs.APP_THEME,
+            getString(R.string.theme_default_name))
         val themeValues = resources.getStringArray(R.array.theme_values_array)
-        var index = themeNames.indexOf(selectedTheme)
-        if (index == -1) {
-            index = themeValues.indexOf(selectedTheme)
-        }
+        val index = themeValues.indexOf(selectedTheme)
         // preselect theme value
         appTheme?.setValueIndex(index)
     }
@@ -165,38 +157,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 val pref: ListPreference? = findPreference(key)
                 val selectedTheme = pref?.value
                 sharedPreferences.edit().putString(Const.Prefs.APP_THEME, selectedTheme).apply()
-                when (selectedTheme) {
-                    getString(R.string.theme_default_name) -> {
-                        activity?.setTheme(R.style.Theme_Default)
-                    }
-                    getString(R.string.theme_sailor_name) -> {
-                        activity?.setTheme(R.style.Theme_Sailor)
-                    }
-                    getString(R.string.theme_royal_name) -> {
-                        activity?.setTheme(R.style.Theme_Royal)
-                    }
-                    getString(R.string.theme_mercury_name) -> {
-                        activity?.setTheme(R.style.Theme_Mercury)
-                    }
-                    getString(R.string.theme_mocca_name) -> {
-                        activity?.setTheme(R.style.Theme_Mocca)
-                    }
-                    getString(R.string.theme_creeper_name) -> {
-                        activity?.setTheme(R.style.Theme_Creeper)
-                    }
-                    getString(R.string.theme_flamingo_name) -> {
-                        activity?.setTheme(R.style.Theme_Flamingo)
-                    }
-                    getString(R.string.theme_pilot_name) -> {
-                        activity?.setTheme(R.style.Theme_Pilot)
-                    }
-                    getString(R.string.theme_coral_name) -> {
-                        activity?.setTheme(R.style.Theme_Coral)
-                    }
-                    getString(R.string.theme_blossom_name) -> {
-                        activity?.setTheme(R.style.Theme_Blossom)
-                    }
-                }
                 activity?.recreate()
             }
         }

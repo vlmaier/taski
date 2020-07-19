@@ -38,6 +38,7 @@ import com.vmaier.taski.features.skills.*
 import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
 import com.vmaier.taski.features.tasks.*
 import com.vmaier.taski.utils.Const
+import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.utils.decodeBase64
 import timber.log.Timber
 
@@ -134,7 +135,28 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             }
         }
 
-        // --- Dark / Night mode Settings
+        // --- Theme Settings
+        val sharedPrefs = getDefaultSharedPreferences(this)
+        val selectedTheme = sharedPrefs.getString(Const.Prefs.APP_THEME,
+            getString(R.string.theme_default_name))
+        val selectedThemeId = Utils.getThemeByName(this, selectedTheme)
+        setTheme(selectedThemeId)
+
+        // --- Dark mode Settings
+        val isDarkModeOn = sharedPrefs.getBoolean(Const.Prefs.DARK_MODE, false)
+        if (isDarkModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            val darkModeFlags: Int = this.resources.configuration.uiMode and
+                    Configuration.UI_MODE_NIGHT_MASK
+            // check if dark mode is enabled by the system
+            // do not override by default
+            when (darkModeFlags) {
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
+        }
         val decorView = window.decorView
         when (this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
             Configuration.UI_MODE_NIGHT_YES -> {
@@ -149,6 +171,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             }
         }
 
+        // --- Status Bar Settings
+        this.window.statusBarColor = Utils.getThemeColor(this, R.attr.colorPrimary)
     }
 
     override fun onStart() {
@@ -378,61 +402,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     }
 
     override fun getTheme(): Theme? {
-
         val sharedPreferences = getDefaultSharedPreferences(this)
-        val isDarkModeOn = sharedPreferences.getBoolean(Const.Prefs.DARK_MODE, false)
-        if (isDarkModeOn) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            val darkModeFlags: Int = this.resources.configuration.uiMode and
-                    Configuration.UI_MODE_NIGHT_MASK
-            // check if dark mode is enabled by thedark system
-            // do not override by default
-            when (darkModeFlags) {
-                Configuration.UI_MODE_NIGHT_NO -> {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-            }
-        }
         val theme: Theme = super.getTheme()
         val selectedTheme = sharedPreferences.getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
-        if (selectedTheme == getString(R.string.theme_default_name)) {
-            theme.applyStyle(R.style.Theme_Default, true)
-        } else if (selectedTheme == getString(R.string.theme_sailor_name)) {
-            theme.applyStyle(R.style.Theme_Sailor, true)
-        }
-        when (selectedTheme) {
-            getString(R.string.theme_default_name) -> {
-                theme.applyStyle(R.style.Theme_Default, true)
-            }
-            getString(R.string.theme_sailor_name) -> {
-                theme.applyStyle(R.style.Theme_Sailor, true)
-            }
-            getString(R.string.theme_royal_name) -> {
-                theme.applyStyle(R.style.Theme_Royal, true)
-            }
-            getString(R.string.theme_mercury_name) -> {
-                theme.applyStyle(R.style.Theme_Mercury, true)
-            }
-            getString(R.string.theme_mocca_name) -> {
-                theme.applyStyle(R.style.Theme_Mocca, true)
-            }
-            getString(R.string.theme_creeper_name) -> {
-                theme.applyStyle(R.style.Theme_Creeper, true)
-            }
-            getString(R.string.theme_flamingo_name) -> {
-                theme.applyStyle(R.style.Theme_Flamingo, true)
-            }
-            getString(R.string.theme_pilot_name) -> {
-                theme.applyStyle(R.style.Theme_Pilot, true)
-            }
-            getString(R.string.theme_coral_name) -> {
-                theme.applyStyle(R.style.Theme_Coral, true)
-            }
-            getString(R.string.theme_blossom_name) -> {
-                theme.applyStyle(R.style.Theme_Blossom, true)
-            }
-        }
+        val selectedThemeId = Utils.getThemeByName(this, selectedTheme)
+        theme.applyStyle(selectedThemeId, true)
         return theme
     }
 
