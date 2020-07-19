@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -377,9 +378,24 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     }
 
     override fun getTheme(): Theme? {
+
+        val sharedPreferences = getDefaultSharedPreferences(this)
+        val isDarkModeOn = sharedPreferences.getBoolean(Const.Prefs.DARK_MODE, false)
+        if (isDarkModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            val darkModeFlags: Int = this.resources.configuration.uiMode and
+                    Configuration.UI_MODE_NIGHT_MASK
+            // check if dark mode is enabled by thedark system
+            // do not override by default
+            when (darkModeFlags) {
+                Configuration.UI_MODE_NIGHT_NO -> {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
+        }
         val theme: Theme = super.getTheme()
-        val selectedTheme = getDefaultSharedPreferences(this)
-            .getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
+        val selectedTheme = sharedPreferences.getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
         if (selectedTheme == getString(R.string.theme_default_name)) {
             theme.applyStyle(R.style.Theme_Default, true)
         } else if (selectedTheme == getString(R.string.theme_sailor_name)) {

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.requestPermissions
@@ -94,7 +95,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         }
         val username = preferenceScreen.findPreference(Const.Prefs.USER_NAME) as Preference?
         username?.setOnPreferenceClickListener {
-            val usernameValue = PreferenceManager.getDefaultSharedPreferences(requireContext())
+            val usernameValue = getDefaultSharedPreferences(requireContext())
                 .getString(Const.Prefs.USER_NAME, getString(R.string.app_name))
             val dialog = EditTextDialog.newInstance(
                 title = getString(R.string.heading_user_name),
@@ -143,6 +144,21 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 Timber.d(
                     "Calendar synchronization is %s.",
                     if (isCalendarSyncOn) "enabled" else "disabled"
+                )
+            }
+            Const.Prefs.DARK_MODE -> {
+                val pref: SwitchPreference? = findPreference(key)
+                val isDarkModeOn = pref?.isChecked ?: false
+                if (isDarkModeOn) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+                sharedPreferences
+                    .edit().putBoolean(Const.Prefs.DARK_MODE, isDarkModeOn)
+                    .apply()
+                Timber.d(
+                    "Dark mode is %s.", if (isDarkModeOn) "enabled" else "disabled"
                 )
             }
             Const.Prefs.APP_THEME -> {

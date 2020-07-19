@@ -22,6 +22,11 @@
                 android:key="app_theme"
                 android:summary="Select an application theme"
                 android:title="Theme" />
+        <androidx.preference.SwitchPreference
+                android:key="dark_mode"
+                android:summaryOff="Switch to dark mode"
+                android:summaryOn="Switch back to light mode"
+                android:title="Dark mode" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/heading_general_settings">

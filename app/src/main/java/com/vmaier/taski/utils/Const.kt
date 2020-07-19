@@ -16,6 +16,7 @@ class Const {
             const val RESET_AVATAR = "reset_avatar"
             const val USER_AVATAR = "user_avatar"
             const val APP_THEME = "app_theme"
+            const val DARK_MODE = "dark_mode"
             const val REQUEST_CODE_COUNTER = "request_code_counter"
         }
     }
