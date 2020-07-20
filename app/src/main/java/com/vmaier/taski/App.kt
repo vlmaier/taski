@@ -19,9 +19,10 @@ import java.util.*
 class App : Application() {
 
     companion object {
-        lateinit var iconPack: IconPack
         private const val DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm"
         val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN)
+
+        lateinit var iconPack: IconPack
 
         fun loadIconPack(context: Context) {
             val loader = IconPackLoader(context)

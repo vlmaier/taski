@@ -19,7 +19,7 @@ import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.utils.Utils
-import com.vmaier.taski.utils.hideKeyboard
+import com.vmaier.taski.hideKeyboard
 import kotlin.random.Random
 
 

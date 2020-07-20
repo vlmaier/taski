@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.chip.Chip
-import com.vmaier.taski.App
-import com.vmaier.taski.NotificationUtils
-import com.vmaier.taski.R
+import com.vmaier.taski.*
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.entity.Task
@@ -187,7 +185,7 @@ class TaskEditFragment : TaskFragment() {
             updateInCalendar(task, toUpdate)
             getString(R.string.event_task_updated).toast(requireContext())
             if (reminderUpdateRequired && toUpdate.dueAt != null) {
-                NotificationUtils.cancelReminder(requireActivity(), task.reminderRequestCode)
+                notificationService.cancelReminder(requireActivity(), task.reminderRequestCode)
                 val notifyAtInMs: Long = try {
                     // remind 15 minutes before the task is due (incl. duration)
                     val durationInMs: Long = duration.toLong() * 60 * 1000
@@ -199,7 +197,7 @@ class TaskEditFragment : TaskFragment() {
                     0
                 }
                 val taskReminderRequestCode = RequestCode.get(requireContext())
-                NotificationUtils.setReminder(
+                notificationService.setReminder(
                     notifyAtInMs,
                     toUpdate.goal,
                     "Due at ${toUpdate.dueAt.split(" ")[1]}",

@@ -18,13 +18,12 @@ import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
 import androidx.preference.*
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
-import com.vmaier.taski.Defaults
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
-import com.vmaier.taski.utils.Const
+import com.vmaier.taski.Constants
 import com.vmaier.taski.utils.RequestCode
-import com.vmaier.taski.utils.compress
-import com.vmaier.taski.utils.encodeTobase64
+import com.vmaier.taski.compress
+import com.vmaier.taski.encodeTobase64
 import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
 import java.util.*
@@ -63,7 +62,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val sharedPrefs = preferenceManager.sharedPreferences
         PICK_IMAGE_REQUEST_CODE = RequestCode.get(requireContext())
         ACCESS_CALENDAR_REQUEST_CODE = RequestCode.get(requireContext())
-        val changeAvatar = preferenceScreen.findPreference(Const.Prefs.CHANGE_AVATAR) as Preference?
+        val changeAvatar = preferenceScreen.findPreference(Constants.Prefs.CHANGE_AVATAR) as Preference?
         changeAvatar?.setOnPreferenceClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.type = "image/*"
@@ -77,14 +76,14 @@ class SettingsFragment : PreferenceFragmentCompat(),
             }
             true
         }
-        val resetAvatar = preferenceScreen.findPreference(Const.Prefs.RESET_AVATAR) as Preference?
+        val resetAvatar = preferenceScreen.findPreference(Constants.Prefs.RESET_AVATAR) as Preference?
         resetAvatar?.setOnPreferenceClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
                 .setTitle(getString(R.string.alert_reset_avatar))
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.action_proceed_with_reset)) { _, _ ->
-                    sharedPrefs.edit().putString(Const.Prefs.USER_AVATAR, null).apply()
+                    sharedPrefs.edit().putString(Constants.Prefs.USER_AVATAR, null).apply()
                     MainActivity.avatarView.setImageDrawable(
                         getDrawable(requireContext(), R.mipmap.ic_launcher)
                     )
@@ -96,10 +95,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialogBuilder.create().show()
             true
         }
-        val username = preferenceScreen.findPreference(Const.Prefs.USER_NAME) as Preference?
+        val username = preferenceScreen.findPreference(Constants.Prefs.USER_NAME) as Preference?
         username?.setOnPreferenceClickListener {
             val usernameValue = getDefaultSharedPreferences(requireContext())
-                .getString(Const.Prefs.USER_NAME, getString(R.string.app_name))
+                .getString(Constants.Prefs.USER_NAME, getString(R.string.app_name))
             val dialog = EditTextDialog.newInstance(
                 title = getString(R.string.heading_user_name),
                 hint = getString(R.string.hint_user_name),
@@ -109,7 +108,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialog.onPositiveButtonClicked = {
                 val textValue = dialog.editText.text.toString().trim()
                 getDefaultSharedPreferences(requireContext())
-                    .edit().putString(Const.Prefs.USER_NAME, textValue)
+                    .edit().putString(Constants.Prefs.USER_NAME, textValue)
                     .apply()
                 MainActivity.userNameView.text = textValue
                 Timber.d("Username changed.")
@@ -122,35 +121,37 @@ class SettingsFragment : PreferenceFragmentCompat(),
         }
         
         // preselect theme value
-        val appTheme = preferenceScreen.findPreference(Const.Prefs.APP_THEME) as ListPreference?
-        val selectedTheme = sharedPrefs.getString(Const.Prefs.APP_THEME, Defaults.THEME)
+        val appTheme = preferenceScreen.findPreference(Constants.Prefs.APP_THEME) as ListPreference?
+        val selectedTheme = sharedPrefs
+            .getString(Constants.Prefs.APP_THEME, Constants.Defaults.THEME)
         val themeValues = resources.getStringArray(R.array.theme_values_array)
         appTheme?.setValueIndex(themeValues.indexOf(selectedTheme))
         
         // preselect language value
-        val appLanguage = preferenceScreen.findPreference(Const.Prefs.APP_LANGUAGE) as ListPreference?
-        val selectedLanguage = sharedPrefs.getString(Const.Prefs.APP_LANGUAGE, Defaults.LANGUAGE)
+        val appLanguage = preferenceScreen.findPreference(Constants.Prefs.APP_LANGUAGE) as ListPreference?
+        val selectedLanguage = sharedPrefs
+            .getString(Constants.Prefs.APP_LANGUAGE, Constants.Defaults.LANGUAGE)
         val languageValues = resources.getStringArray(R.array.language_values_array)
         appLanguage?.setValueIndex(languageValues.indexOf(selectedLanguage))
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
-            Const.Prefs.CALENDAR_SYNC -> {
+            Constants.Prefs.CALENDAR_SYNC -> {
                 calendarSyncPref = findPreference(key)!!
                 isCalendarSyncOn = calendarSyncPref.isChecked
                 if (isCalendarSyncOn) {
                     setupCalendarPermissions()
                 }
                 sharedPreferences
-                    .edit().putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
+                    .edit().putBoolean(Constants.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
                     .apply()
                 Timber.d(
                     "Calendar synchronization is %s.",
                     if (isCalendarSyncOn) "enabled" else "disabled"
                 )
             }
-            Const.Prefs.DARK_MODE -> {
+            Constants.Prefs.DARK_MODE -> {
                 val pref: SwitchPreference? = findPreference(key)
                 val isDarkModeOn = pref?.isChecked ?: false
                 if (isDarkModeOn) {
@@ -159,21 +160,21 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
                 sharedPreferences
-                    .edit().putBoolean(Const.Prefs.DARK_MODE, isDarkModeOn)
+                    .edit().putBoolean(Constants.Prefs.DARK_MODE, isDarkModeOn)
                     .apply()
                 Timber.d("Dark mode is %s.", if (isDarkModeOn) "enabled" else "disabled")
             }
-            Const.Prefs.APP_THEME -> {
+            Constants.Prefs.APP_THEME -> {
                 val pref: ListPreference? = findPreference(key)
                 val selectedTheme = pref?.value
-                sharedPreferences.edit().putString(Const.Prefs.APP_THEME, selectedTheme).apply()
+                sharedPreferences.edit().putString(Constants.Prefs.APP_THEME, selectedTheme).apply()
                 activity?.recreate()
             }
-            Const.Prefs.APP_LANGUAGE -> {
+            Constants.Prefs.APP_LANGUAGE -> {
                 val pref: ListPreference? = findPreference(key)
                 val selectedLanguage = pref?.value!!
                 sharedPreferences
-                    .edit().putString(Const.Prefs.APP_LANGUAGE, selectedLanguage)
+                    .edit().putString(Constants.Prefs.APP_LANGUAGE, selectedLanguage)
                     .apply()
                 setLocale(Locale(selectedLanguage))
             }
@@ -247,7 +248,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 val compressedBitmap = bitmap.compress(10)
                 MainActivity.avatarView.setImageBitmap(compressedBitmap)
                 getDefaultSharedPreferences(context)
-                    .edit().putString(Const.Prefs.USER_AVATAR, compressedBitmap.encodeTobase64())
+                    .edit().putString(Constants.Prefs.USER_AVATAR, compressedBitmap.encodeTobase64())
                     .apply()
                 Timber.d("Avatar changed.")
             }

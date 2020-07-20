@@ -1,13 +1,14 @@
-package com.vmaier.taski
+package com.vmaier.taski.features.reminders
 
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.vmaier.taski.NotificationUtils.Companion.KEY_MESSAGE
-import com.vmaier.taski.NotificationUtils.Companion.KEY_NOTIFICATION_ID
-import com.vmaier.taski.NotificationUtils.Companion.KEY_TIMESTAMP
-import com.vmaier.taski.NotificationUtils.Companion.KEY_TITLE
+import com.vmaier.taski.service.NotificationService
+import com.vmaier.taski.service.NotificationService.Companion.KEY_MESSAGE
+import com.vmaier.taski.service.NotificationService.Companion.KEY_NOTIFICATION_ID
+import com.vmaier.taski.service.NotificationService.Companion.KEY_TIMESTAMP
+import com.vmaier.taski.service.NotificationService.Companion.KEY_TITLE
 import timber.log.Timber
 
 

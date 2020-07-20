@@ -15,7 +15,7 @@ import com.vmaier.taski.R
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.utils.Utils
-import com.vmaier.taski.utils.toBitmap
+import com.vmaier.taski.toBitmap
 
 
 /**

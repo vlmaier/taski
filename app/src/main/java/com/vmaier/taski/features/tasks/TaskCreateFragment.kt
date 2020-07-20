@@ -9,9 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
-import com.vmaier.taski.App
-import com.vmaier.taski.NotificationUtils
-import com.vmaier.taski.R
+import com.vmaier.taski.*
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentCreateTaskBinding
@@ -183,7 +181,7 @@ class TaskCreateFragment : TaskFragment() {
                 0
             }
             val taskReminderRequestCode = RequestCode.get(requireContext())
-            NotificationUtils.setReminder(
+            notificationService.setReminder(
                 notifyAtInMs,
                 task.goal,
                 "Due at ${dueAt.split(" ")[1]}",

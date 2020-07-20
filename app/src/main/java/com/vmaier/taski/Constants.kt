@@ -1,4 +1,4 @@
-package com.vmaier.taski.utils
+package com.vmaier.taski
 
 
 /**
@@ -6,7 +6,7 @@ package com.vmaier.taski.utils
  * on 13.05.2020
  * at 19:57
  */
-class Const {
+class Constants {
 
     class Prefs {
         companion object {
@@ -25,6 +25,13 @@ class Const {
     class Tag {
         companion object {
             const val ICON_DIALOG_TAG = "icon_dialog"
+        }
+    }
+
+    class Defaults {
+        companion object {
+            const val LANGUAGE = "en"
+            const val THEME = "Theme.Default"
         }
     }
 }

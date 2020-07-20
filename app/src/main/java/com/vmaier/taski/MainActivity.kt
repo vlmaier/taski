@@ -38,9 +38,7 @@ import com.vmaier.taski.features.settings.SettingsFragment
 import com.vmaier.taski.features.skills.*
 import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
 import com.vmaier.taski.features.tasks.*
-import com.vmaier.taski.utils.Const
 import com.vmaier.taski.utils.Utils
-import com.vmaier.taski.utils.decodeBase64
 import timber.log.Timber
 import java.util.*
 
@@ -75,7 +73,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // Language Settings
         val sharedPrefs = getDefaultSharedPreferences(this)
-        val selectedLanguage = sharedPrefs.getString(Const.Prefs.APP_LANGUAGE, Defaults.LANGUAGE)
+        val selectedLanguage = sharedPrefs
+            .getString(Constants.Prefs.APP_LANGUAGE, Constants.Defaults.LANGUAGE)
         val prefLocale = Locale(selectedLanguage)
         val currentLocale: Locale = resources.configuration.locale
         if (prefLocale != currentLocale) {
@@ -123,7 +122,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // --- Icon Dialog Settings
         iconDialog = supportFragmentManager
-            .findFragmentByTag(Const.Tag.ICON_DIALOG_TAG) as IconDialog?
+            .findFragmentByTag(Constants.Tag.ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())
 
         // --- Bottom Bar Settings
@@ -151,12 +150,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         }
 
         // --- Theme Settings
-        val selectedTheme = sharedPrefs.getString(Const.Prefs.APP_THEME, Defaults.THEME)
+        val selectedTheme = sharedPrefs
+            .getString(Constants.Prefs.APP_THEME, Constants.Defaults.THEME)
         val selectedThemeId = Utils.getThemeByName(this, selectedTheme)
         setTheme(selectedThemeId)
 
         // --- Dark mode Settings
-        val isDarkModeOn = sharedPrefs.getBoolean(Const.Prefs.DARK_MODE, false)
+        val isDarkModeOn = sharedPrefs.getBoolean(Constants.Prefs.DARK_MODE, false)
         if (isDarkModeOn) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
@@ -195,13 +195,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         // --- User name settings
         userNameView = headerView.findViewById(R.id.user_name) as TextView
         userNameView.text = getDefaultSharedPreferences(this)
-            .getString(Const.Prefs.USER_NAME, getString(R.string.app_name))
+            .getString(Constants.Prefs.USER_NAME, getString(R.string.app_name))
 
         // --- User avatar settings
         avatarView = headerView.findViewById(R.id.user_avatar)
         avatarView.clipToOutline = true
         val avatar = getDefaultSharedPreferences(this)
-            .getString(Const.Prefs.USER_AVATAR, null)
+            .getString(Constants.Prefs.USER_AVATAR, null)
         val fallbackImage = getDrawable(R.mipmap.ic_launcher)
         if (avatar != null) {
             val bitmap = avatar.decodeBase64()
@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     }
 
     fun selectIconButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
-        iconDialog.show(supportFragmentManager, Const.Tag.ICON_DIALOG_TAG)
+        iconDialog.show(supportFragmentManager, Constants.Tag.ICON_DIALOG_TAG)
     }
 
     override val iconDialogIconPack: IconPack?
@@ -417,7 +417,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     override fun getTheme(): Theme? {
         val sharedPreferences = getDefaultSharedPreferences(this)
         val theme: Theme = super.getTheme()
-        val selectedTheme = sharedPreferences.getString(Const.Prefs.APP_THEME, Defaults.THEME)
+        val selectedTheme = sharedPreferences
+            .getString(Constants.Prefs.APP_THEME, Constants.Defaults.THEME)
         val selectedThemeId = Utils.getThemeByName(this, selectedTheme)
         theme.applyStyle(selectedThemeId, true)
         return theme
@@ -434,7 +435,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                     SettingsFragment.isCalendarSyncOn = false
                     getDefaultSharedPreferences(applicationContext)
                         .edit()
-                        .putBoolean(Const.Prefs.CALENDAR_SYNC, SettingsFragment.isCalendarSyncOn)
+                        .putBoolean(Constants.Prefs.CALENDAR_SYNC, SettingsFragment.isCalendarSyncOn)
                         .apply()
                     SettingsFragment.calendarSyncPref.isChecked = false
                     Timber.d("Due to lack of permissions calendar synchronization was disabled")

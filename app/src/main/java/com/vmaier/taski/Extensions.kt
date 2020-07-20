@@ -1,4 +1,4 @@
-package com.vmaier.taski.utils
+package com.vmaier.taski
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -12,8 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.Toast
-import com.vmaier.taski.App
-import com.vmaier.taski.R
 import com.vmaier.taski.data.DurationUnit
 import com.vmaier.taski.data.entity.Task
 import java.io.ByteArrayOutputStream

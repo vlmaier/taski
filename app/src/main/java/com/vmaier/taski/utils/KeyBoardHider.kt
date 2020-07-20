@@ -2,6 +2,7 @@ package com.vmaier.taski.utils
 
 import android.view.View
 import android.view.View.OnFocusChangeListener
+import com.vmaier.taski.hideKeyboard
 
 
 /**

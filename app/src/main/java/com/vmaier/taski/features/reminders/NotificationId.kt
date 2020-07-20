@@ -1,4 +1,4 @@
-package com.vmaier.taski.utils
+package com.vmaier.taski.features.reminders
 
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * at 20:01
  */
 class NotificationId {
+
     companion object {
         private val c: AtomicInteger = AtomicInteger(1)
         fun getId(): Int {

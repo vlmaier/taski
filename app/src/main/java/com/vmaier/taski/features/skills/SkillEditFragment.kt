@@ -14,8 +14,8 @@ import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentEditSkillBinding
 import com.vmaier.taski.utils.KeyBoardHider
-import com.vmaier.taski.utils.hideKeyboard
-import com.vmaier.taski.utils.toast
+import com.vmaier.taski.hideKeyboard
+import com.vmaier.taski.toast
 import timber.log.Timber
 
 

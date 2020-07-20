@@ -12,7 +12,7 @@ import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.AssignedSkill
 import com.vmaier.taski.data.entity.Skill
-import com.vmaier.taski.utils.setIcon
+import com.vmaier.taski.setIcon
 import timber.log.Timber
 
 

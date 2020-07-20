@@ -13,7 +13,7 @@ import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentCreateSkillBinding
 import com.vmaier.taski.utils.KeyBoardHider
-import com.vmaier.taski.utils.hideKeyboard
+import com.vmaier.taski.hideKeyboard
 import timber.log.Timber
 
 

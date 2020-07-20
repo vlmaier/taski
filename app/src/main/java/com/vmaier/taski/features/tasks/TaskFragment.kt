@@ -31,12 +31,11 @@ import com.hootsuite.nachos.chip.ChipSpanChipCreator
 import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
-import com.vmaier.taski.App
-import com.vmaier.taski.MainActivity
-import com.vmaier.taski.R
+import com.vmaier.taski.*
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.service.NotificationService
 import com.vmaier.taski.utils.*
 import timber.log.Timber
 import java.text.ParseException
@@ -55,6 +54,8 @@ open class TaskFragment : Fragment() {
         lateinit var skillNames: List<String>
         lateinit var difficulty: String
         lateinit var db: AppDatabase
+
+        var notificationService = NotificationService()
 
         const val KEY_GOAL = "goal"
         const val KEY_DETAILS = "details"
@@ -215,7 +216,7 @@ open class TaskFragment : Fragment() {
 
     fun addToCalendar(task: Task?) {
         val sharedPrefs = getDefaultSharedPreferences(requireContext())
-        val isCalendarSyncOn = sharedPrefs.getBoolean(Const.Prefs.CALENDAR_SYNC, false)
+        val isCalendarSyncOn = sharedPrefs.getBoolean(Constants.Prefs.CALENDAR_SYNC, false)
         if (!isCalendarSyncOn) return
         if (task == null) return
         val calendarId = getCalendarId(requireContext()) ?: return
@@ -250,7 +251,7 @@ open class TaskFragment : Fragment() {
     fun updateInCalendar(before: Task, after: Task?) {
         if (after == null) return
         val sharedPrefs = getDefaultSharedPreferences(requireContext())
-        val isCalendarSyncOn = sharedPrefs.getBoolean(Const.Prefs.CALENDAR_SYNC, false)
+        val isCalendarSyncOn = sharedPrefs.getBoolean(Constants.Prefs.CALENDAR_SYNC, false)
         if (!isCalendarSyncOn) return
         if (after.eventId == null) {
             addToCalendar(after)

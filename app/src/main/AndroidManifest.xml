@@ -25,7 +25,7 @@
         </activity>
 
         <receiver
-                android:name=".ReminderReceiver"
+                android:name=".features.reminders.ReminderReceiver"
                 android:process=":remote">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
@@ -38,7 +38,7 @@
         </receiver>
 
         <service
-                android:name=".NotificationService"
+                android:name=".service.NotificationService"
                 android:exported="false" />
 
     </application>

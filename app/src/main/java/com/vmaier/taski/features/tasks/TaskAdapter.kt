@@ -15,10 +15,10 @@ import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
-import com.vmaier.taski.utils.getDateInAppFormat
-import com.vmaier.taski.utils.getHumanReadableDurationValue
-import com.vmaier.taski.utils.getSeekBarValue
-import com.vmaier.taski.utils.setIcon
+import com.vmaier.taski.getDateInAppFormat
+import com.vmaier.taski.getHumanReadableDurationValue
+import com.vmaier.taski.getSeekBarValue
+import com.vmaier.taski.setIcon
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
