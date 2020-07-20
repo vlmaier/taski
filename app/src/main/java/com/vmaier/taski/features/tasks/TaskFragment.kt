@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.ContentValues
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -50,6 +51,8 @@ import kotlin.random.Random
  */
 open class TaskFragment : Fragment() {
 
+    private lateinit var prefs: SharedPreferences
+
     companion object {
         lateinit var skillNames: List<String>
         lateinit var difficulty: String
@@ -77,6 +80,7 @@ open class TaskFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         db = AppDatabase(context)
+        prefs = getDefaultSharedPreferences(context)
     }
 
     override fun onCreateView(
@@ -123,18 +127,12 @@ open class TaskFragment : Fragment() {
                 chip.setShowIconOnLeft(true)
                 chip.setBackgroundColor(
                     ColorStateList.valueOf(
-                        Utils.getThemeColor(
-                            requireContext(),
-                            R.attr.colorControlHighlight
-                        )
+                        Utils.getThemeColor(requireContext(), R.attr.colorControlHighlight)
                     )
                 )
                 chip.setTextColor(Utils.getThemeColor(requireContext(), R.attr.colorOnSurface))
                 chip.setIconBackgroundColor(
-                    Utils.getThemeColor(
-                        requireContext(),
-                        R.attr.colorSecondary
-                    )
+                    Utils.getThemeColor(requireContext(), R.attr.colorSecondary)
                 )
             }
         }, ChipSpan::class.java)
@@ -215,8 +213,7 @@ open class TaskFragment : Fragment() {
     }
 
     fun addToCalendar(task: Task?) {
-        val sharedPrefs = getDefaultSharedPreferences(requireContext())
-        val isCalendarSyncOn = sharedPrefs.getBoolean(Constants.Prefs.CALENDAR_SYNC, false)
+        val isCalendarSyncOn = prefs.getBoolean(Constants.Prefs.CALENDAR_SYNC, false)
         if (!isCalendarSyncOn) return
         if (task == null) return
         val calendarId = getCalendarId(requireContext()) ?: return
@@ -250,8 +247,7 @@ open class TaskFragment : Fragment() {
 
     fun updateInCalendar(before: Task, after: Task?) {
         if (after == null) return
-        val sharedPrefs = getDefaultSharedPreferences(requireContext())
-        val isCalendarSyncOn = sharedPrefs.getBoolean(Constants.Prefs.CALENDAR_SYNC, false)
+        val isCalendarSyncOn = prefs.getBoolean(Constants.Prefs.CALENDAR_SYNC, false)
         if (!isCalendarSyncOn) return
         if (after.eventId == null) {
             addToCalendar(after)

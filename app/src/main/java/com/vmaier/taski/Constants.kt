@@ -15,9 +15,9 @@ class Constants {
             const val CHANGE_AVATAR = "change_avatar"
             const val RESET_AVATAR = "reset_avatar"
             const val USER_AVATAR = "user_avatar"
-            const val APP_THEME = "app_theme"
+            const val THEME = "app_theme"
             const val DARK_MODE = "dark_mode"
-            const val APP_LANGUAGE = "app_language"
+            const val LANGUAGE = "app_language"
             const val REQUEST_CODE_COUNTER = "request_code_counter"
         }
     }
@@ -30,8 +30,11 @@ class Constants {
 
     class Defaults {
         companion object {
-            const val LANGUAGE = "en"
+            const val CALENDAR_SYNC = false
+            const val USER_NAME = "Taski"
             const val THEME = "Theme.Default"
+            const val DARK_MODE = false
+            const val LANGUAGE = "en"
         }
     }
 }

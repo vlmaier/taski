@@ -1,5 +1,6 @@
 package com.vmaier.taski
 
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources.Theme
@@ -53,8 +54,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     private lateinit var navController: NavController
     private lateinit var iconDialog: IconDialog
     private lateinit var drawerNav: NavigationView
-    lateinit var binding: ActivityMainBinding
-    private var doubleBackToExitPressedOnce = false
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var prefs: SharedPreferences
+    private var backButtonPressedOnce = false
 
     companion object {
         lateinit var toolbar: Toolbar
@@ -70,22 +72,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        // Language Settings
-        val sharedPrefs = getDefaultSharedPreferences(this)
-        val selectedLanguage = sharedPrefs
-            .getString(Constants.Prefs.APP_LANGUAGE, Constants.Defaults.LANGUAGE)
-        val prefLocale = Locale(selectedLanguage)
-        val currentLocale: Locale = resources.configuration.locale
-        if (prefLocale != currentLocale) {
-            val metrics: DisplayMetrics = resources.displayMetrics
-            val config: Configuration = resources.configuration
-            config.locale = prefLocale
-            resources.updateConfiguration(config, metrics)
-        }
-
         super.onCreate(savedInstanceState)
+
         db = AppDatabase(this)
+        prefs = getDefaultSharedPreferences(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         // --- Fragment Navigation Settings
@@ -113,9 +103,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // --- Bottom Navigation Settings
         bottomNav = findViewById(R.id.bottom_nav)
-        bottomNav.setOnNavigationItemSelectedListener {
-            onNavigationItemSelected(it)
-        }
+        bottomNav.setOnNavigationItemSelectedListener { onNavigationItemSelected(it) }
         val taskAmount = db.taskDao().countByStatus(Status.OPEN)
         bottomNav.getOrCreateBadge(R.id.nav_tasks).number = taskAmount
         bottomNav.getOrCreateBadge(R.id.nav_tasks).isVisible = taskAmount > 0
@@ -150,13 +138,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         }
 
         // --- Theme Settings
-        val selectedTheme = sharedPrefs
-            .getString(Constants.Prefs.APP_THEME, Constants.Defaults.THEME)
-        val selectedThemeId = Utils.getThemeByName(this, selectedTheme)
-        setTheme(selectedThemeId)
+        val prefTheme = prefs.getString(Constants.Prefs.THEME, Constants.Defaults.THEME)
+        val prefThemeId = Utils.getThemeByName(this, prefTheme)
+        setTheme(prefThemeId)
 
         // --- Dark mode Settings
-        val isDarkModeOn = sharedPrefs.getBoolean(Constants.Prefs.DARK_MODE, false)
+        val isDarkModeOn = prefs.getBoolean(Constants.Prefs.DARK_MODE, Constants.Defaults.DARK_MODE)
         if (isDarkModeOn) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
@@ -186,6 +173,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // --- Status Bar Settings
         this.window.statusBarColor = Utils.getThemeColor(this, R.attr.colorPrimary)
+
+        // Language Settings
+        val prefLanguage = prefs.getString(Constants.Prefs.LANGUAGE, Constants.Defaults.LANGUAGE)
+        val prefLocale = Locale(prefLanguage)
+        val currentLocale: Locale = resources.configuration.locale
+        if (prefLocale != currentLocale) {
+            val metrics: DisplayMetrics = resources.displayMetrics
+            val config: Configuration = resources.configuration
+            config.locale = prefLocale
+            resources.updateConfiguration(config, metrics)
+        }
     }
 
     override fun onStart() {
@@ -194,14 +192,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // --- User name settings
         userNameView = headerView.findViewById(R.id.user_name) as TextView
-        userNameView.text = getDefaultSharedPreferences(this)
-            .getString(Constants.Prefs.USER_NAME, getString(R.string.app_name))
+        userNameView.text = prefs.getString(Constants.Prefs.USER_NAME, Constants.Defaults.USER_NAME)
 
         // --- User avatar settings
         avatarView = headerView.findViewById(R.id.user_avatar)
         avatarView.clipToOutline = true
-        val avatar = getDefaultSharedPreferences(this)
-            .getString(Constants.Prefs.USER_AVATAR, null)
+        val avatar = prefs.getString(Constants.Prefs.USER_AVATAR, null)
         val fallbackImage = getDrawable(R.mipmap.ic_launcher)
         if (avatar != null) {
             val bitmap = avatar.decodeBase64()
@@ -224,8 +220,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         iconDialog.show(supportFragmentManager, Constants.Tag.ICON_DIALOG_TAG)
     }
 
-    override val iconDialogIconPack: IconPack?
-        get() = App.iconPack
+    override val iconDialogIconPack: IconPack? get() = App.iconPack
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -345,11 +340,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     }
 
     override fun onBackPressed() {
-        if (doubleBackToExitPressedOnce) {
+        if (backButtonPressedOnce) {
+            // close app if back button was pressed twice in last 2 seconds
             finish()
         }
-        doubleBackToExitPressedOnce = true
-        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+        backButtonPressedOnce = true
+        Handler().postDelayed({ backButtonPressedOnce = false }, 2000)
 
         val count = supportFragmentManager.backStackEntryCount
         if (count == 0) {
@@ -370,7 +366,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                                     SkillEditFragment.binding.name.requestFocus()
                                     SkillEditFragment.binding.name.error =
                                         getString(R.string.error_too_short)
-                                } else if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
+                                } else if (foundSkill != null &&
+                                    foundSkill.id != SkillEditFragment.skill.id) {
                                     SkillEditFragment.binding.name.requestFocus()
                                     SkillEditFragment.binding.name.error =
                                         getString(R.string.error_skill_already_exists)
@@ -415,12 +412,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     }
 
     override fun getTheme(): Theme? {
-        val sharedPreferences = getDefaultSharedPreferences(this)
         val theme: Theme = super.getTheme()
-        val selectedTheme = sharedPreferences
-            .getString(Constants.Prefs.APP_THEME, Constants.Defaults.THEME)
-        val selectedThemeId = Utils.getThemeByName(this, selectedTheme)
-        theme.applyStyle(selectedThemeId, true)
+        val prefs = getDefaultSharedPreferences(this)
+        val prefTheme = prefs.getString(Constants.Prefs.THEME, Constants.Defaults.THEME)
+        val prefThemeId = Utils.getThemeByName(this, prefTheme)
+        theme.applyStyle(prefThemeId, true)
         return theme
     }
 
@@ -432,10 +428,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             SettingsFragment.ACCESS_CALENDAR_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Timber.d("Requested permission has been denied by user")
-                    SettingsFragment.isCalendarSyncOn = false
-                    getDefaultSharedPreferences(applicationContext)
-                        .edit()
-                        .putBoolean(Constants.Prefs.CALENDAR_SYNC, SettingsFragment.isCalendarSyncOn)
+                    val isCalendarSyncOn = prefs
+                        .getBoolean(Constants.Prefs.CALENDAR_SYNC, Constants.Defaults.CALENDAR_SYNC)
+                    prefs.edit()
+                        .putBoolean(Constants.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
                         .apply()
                     SettingsFragment.calendarSyncPref.isChecked = false
                     Timber.d("Due to lack of permissions calendar synchronization was disabled")

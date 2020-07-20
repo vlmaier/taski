@@ -21,9 +21,9 @@ object Utils {
         return value.data
     }
 
-    fun getThemeByName(context: Context, selectedTheme: String?): Int {
+    fun getThemeByName(context: Context, theme: String?): Int {
         val resources = context.resources
-        return when (selectedTheme) {
+        return when (theme) {
             resources.getString(R.string.theme_default_name) -> R.style.Theme_Default
             resources.getString(R.string.theme_sailor_name) -> R.style.Theme_Sailor
             resources.getString(R.string.theme_royal_name) -> R.style.Theme_Royal

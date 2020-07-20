@@ -15,12 +15,14 @@ class RequestCode {
 
     companion object {
         fun get(context: Context): Int {
-            val sharedPreferences = getDefaultSharedPreferences(context)
+            val prefs = getDefaultSharedPreferences(context)
             val current = AtomicInteger(
-                sharedPreferences.getInt(Constants.Prefs.REQUEST_CODE_COUNTER, 1)
+                prefs.getInt(Constants.Prefs.REQUEST_CODE_COUNTER, 1)
             )
             val next = current.incrementAndGet()
-            sharedPreferences.edit().putInt(Constants.Prefs.REQUEST_CODE_COUNTER, next).apply()
+            prefs.edit()
+                .putInt(Constants.Prefs.REQUEST_CODE_COUNTER, next)
+                .apply()
             return next
         }
     }
