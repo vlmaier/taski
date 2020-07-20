@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Taski</string>
-    <string name="language_default">en</string>
-    <string name="theme_default_name">Theme.Default</string>
-    <string name="theme_sailor_name">Theme.Sailor</string>
-    <string name="theme_royal_name">Theme.Royal</string>
-    <string name="theme_mercury_name">Theme.Mercury</string>
-    <string name="theme_mocca_name">Theme.Mocca</string>
-    <string name="theme_creeper_name">Theme.Creeper</string>
-    <string name="theme_flamingo_name">Theme.Flamingo</string>
-    <string name="theme_pilot_name">Theme.Pilot</string>
-    <string name="theme_coral_name">Theme.Coral</string>
-    <string name="theme_blossom_name">Theme.Blossom</string>
+    <string name="app_name" translatable="false">Taski</string>
     <string name="version">Version %s\n\n© 2020 Vladas Maier</string>
     <!-- Duration values -->
     <plurals name="duration_minute">
@@ -147,5 +136,15 @@
     <string name="content_user_avatar">user avatar</string>
     <string name="content_arrow_to_fab">arrow pointing to floating action button</string>
     <string name="content_tumbleweed_icon">tumbleweed icon</string>
-
+    <!-- Theme values -->
+    <string name="theme_default_name" translatable="false">Theme.Default</string>
+    <string name="theme_sailor_name" translatable="false">Theme.Sailor</string>
+    <string name="theme_royal_name" translatable="false">Theme.Royal</string>
+    <string name="theme_mercury_name" translatable="false">Theme.Mercury</string>
+    <string name="theme_mocca_name" translatable="false">Theme.Mocca</string>
+    <string name="theme_creeper_name" translatable="false">Theme.Creeper</string>
+    <string name="theme_flamingo_name" translatable="false">Theme.Flamingo</string>
+    <string name="theme_pilot_name" translatable="false">Theme.Pilot</string>
+    <string name="theme_coral_name" translatable="false">Theme.Coral</string>
+    <string name="theme_blossom_name" translatable="false">Theme.Blossom</string>
 </resources>
