@@ -173,14 +173,16 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     .putString(Constants.Prefs.THEME, prefTheme)
                     .apply()
                 activity?.recreate()
+                Timber.d("Theme changed to '%s'", prefTheme)
             }
             Constants.Prefs.LANGUAGE -> {
                 val pref: ListPreference? = findPreference(key)
-                val prefLanguage = pref?.value!!
+                val prefLanguage = pref?.value
                 prefs.edit()
                     .putString(Constants.Prefs.LANGUAGE, prefLanguage)
                     .apply()
                 setLocale(Locale(prefLanguage))
+                Timber.d("Language changed to '%s'", prefLanguage?.toUpperCase(Locale.getDefault()))
             }
         }
     }

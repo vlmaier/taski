@@ -72,10 +72,23 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        prefs = getDefaultSharedPreferences(this)
+
+        // Language Settings
+        val prefLanguage = prefs.getString(Constants.Prefs.LANGUAGE, Constants.Defaults.LANGUAGE)
+        val prefLocale = Locale(prefLanguage)
+        val currentLocale: Locale = resources.configuration.locale
+        if (prefLocale != currentLocale) {
+            val metrics: DisplayMetrics = resources.displayMetrics
+            val config: Configuration = resources.configuration
+            config.locale = prefLocale
+            resources.updateConfiguration(config, metrics)
+        }
+
         super.onCreate(savedInstanceState)
 
         db = AppDatabase(this)
-        prefs = getDefaultSharedPreferences(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         // --- Fragment Navigation Settings
@@ -173,17 +186,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // --- Status Bar Settings
         this.window.statusBarColor = Utils.getThemeColor(this, R.attr.colorPrimary)
-
-        // Language Settings
-        val prefLanguage = prefs.getString(Constants.Prefs.LANGUAGE, Constants.Defaults.LANGUAGE)
-        val prefLocale = Locale(prefLanguage)
-        val currentLocale: Locale = resources.configuration.locale
-        if (prefLocale != currentLocale) {
-            val metrics: DisplayMetrics = resources.displayMetrics
-            val config: Configuration = resources.configuration
-            config.locale = prefLocale
-            resources.updateConfiguration(config, metrics)
-        }
     }
 
     override fun onStart() {
