@@ -3,6 +3,7 @@
 
     <PreferenceCategory android:title="@string/heading_visual_prefs">
         <androidx.preference.Preference
+                android:icon="@drawable/ic_person_24"
                 android:key="user_name"
                 android:summary="@string/description_user_name"
                 android:title="@string/heading_user_name" />
@@ -17,11 +18,12 @@
         <androidx.preference.ListPreference
                 android:entries="@array/theme_names_array"
                 android:entryValues="@array/theme_values_array"
-                android:icon="@drawable/ic_theme"
+                android:icon="@drawable/ic_theme_24"
                 android:key="app_theme"
                 android:summary="Select an application theme"
                 android:title="Theme" />
         <androidx.preference.SwitchPreference
+                android:icon="@drawable/ic_dark_mode_24"
                 android:key="dark_mode"
                 android:summaryOff="Switch to dark mode"
                 android:summaryOn="Switch back to light mode"
