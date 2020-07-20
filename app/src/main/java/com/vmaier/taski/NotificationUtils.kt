@@ -18,13 +18,18 @@ import java.util.*
 class NotificationUtils {
 
     companion object {
+        const val KEY_TIMESTAMP = "timestamp"
+        const val KEY_TITLE = "title"
+        const val KEY_MESSAGE = "message"
+        const val KEY_NOTIFICATION_ID = "notificationId"
+
         fun setReminder(
             timeInMs: Long, title: String, message: String, activity: Activity, requestCode: Int
         ) {
             val intent = Intent(activity.applicationContext, ReminderReceiver::class.java)
-            intent.putExtra("timestamp", timeInMs)
-            intent.putExtra("title", title)
-            intent.putExtra("message", message)
+            intent.putExtra(KEY_TIMESTAMP, timeInMs)
+            intent.putExtra(KEY_TITLE, title)
+            intent.putExtra(KEY_NOTIFICATION_ID, message)
             val pendingIntent = PendingIntent.getBroadcast(
                 activity,
                 requestCode,

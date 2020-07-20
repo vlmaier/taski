@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!--Bottom Sheets-->
+    <!-- Bottom Sheets -->
     <style name="ThemeOverlay.Default.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -16,16 +16,19 @@
     <style name="Widget.Default.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="shapeAppearanceOverlay">?attr/shapeAppearanceLargeComponent</item>
     </style>
-    <!--Navigation Drawer-->
+
+    <!-- Navigation Drawer -->
     <style name="Widget.Default.NavigationView" parent="Widget.MaterialComponents.NavigationView">
         <item name="itemTextAppearance">?attr/textAppearanceBody2</item>
     </style>
-    <!--Action Bar-->
+
+    <!-- Action Bar -->
     <style name="Theme.Default.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <!--Chips-->
+
+    <!-- Chips -->
     <style name="Theme.Default.ChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/background_color_chip_state_list</item>
         <item name="android:textColor">@color/text_color_chip_state_list</item>

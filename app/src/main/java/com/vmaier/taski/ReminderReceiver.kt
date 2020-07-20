@@ -4,6 +4,10 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.vmaier.taski.NotificationUtils.Companion.KEY_MESSAGE
+import com.vmaier.taski.NotificationUtils.Companion.KEY_NOTIFICATION_ID
+import com.vmaier.taski.NotificationUtils.Companion.KEY_TIMESTAMP
+import com.vmaier.taski.NotificationUtils.Companion.KEY_TITLE
 import timber.log.Timber
 
 
@@ -18,16 +22,16 @@ class ReminderReceiver : BroadcastReceiver() {
         when (intent.action) {
             NotificationService.ACTION_DISMISS -> {
                 Timber.d("Dismiss pressed.")
-                val notificationId = intent.getIntExtra("notificationId", 1)
+                val notificationId = intent.getIntExtra(KEY_NOTIFICATION_ID, 1)
                 val notificationManager =
                     context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.cancel(notificationId)
             }
             else -> {
                 val service = Intent(context, NotificationService::class.java)
-                service.putExtra("timestamp", intent.getLongExtra("timestamp", 0))
-                service.putExtra("title", intent.getStringExtra("title"))
-                service.putExtra("message", intent.getStringExtra("message"))
+                service.putExtra(KEY_TIMESTAMP, intent.getLongExtra(KEY_TIMESTAMP, 0))
+                service.putExtra(KEY_TITLE, intent.getStringExtra(KEY_TITLE))
+                service.putExtra(KEY_MESSAGE, intent.getStringExtra(KEY_MESSAGE))
                 Timber.d("Reminder received: ${intent.extras.toString()}")
                 context.startService(service)
             }

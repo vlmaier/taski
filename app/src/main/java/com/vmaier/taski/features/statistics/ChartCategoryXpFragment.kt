@@ -54,7 +54,7 @@ class ChartCategoryXpFragment : SkillFragment() {
         val dataSet = PieDataSet(values, "")
         dataSet.setDrawIcons(true)
         dataSet.sliceSpace = 3f
-        dataSet.iconsOffset = MPPointF(30F, 0F)
+        dataSet.iconsOffset = MPPointF(30f, 0f)
         dataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
 
         val data = PieData(dataSet)
@@ -85,7 +85,7 @@ class ChartCategoryXpFragment : SkillFragment() {
         binding.chart.legend.isEnabled = true
         legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-        legend.formSize = 20F
+        legend.formSize = 20f
         legend.formToTextSpace = 5f
         legend.yOffset = 20f
         legend.form = Legend.LegendForm.CIRCLE

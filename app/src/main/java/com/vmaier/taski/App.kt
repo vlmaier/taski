@@ -20,7 +20,8 @@ class App : Application() {
 
     companion object {
         lateinit var iconPack: IconPack
-        val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMAN)
+        private const val DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm"
+        val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN)
 
         fun loadIconPack(context: Context) {
             val loader = IconPackLoader(context)

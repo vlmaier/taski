@@ -261,6 +261,7 @@
     <color name="colorOnBackgroundLightBlossom">@color/colorDarkBlossom</color>
     <color name="colorOnBackgroundDarkBlossom">@color/colorLightBlossom</color>
 
+    <color name="colorDivider">#C6C4C4</color>
     <color name="colorSwipeDone">#388E3C</color>
     <color name="colorSwipeCancel">#D32F2F</color>
     <color name="colorSwipeForeground">@color/colorLightDefault</color>

@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Things I Do For Loot</string>
-    <string name="language_default">en</string>
-    <string name="theme_default_name">Theme.Default</string>
-    <string name="theme_sailor_name">Theme.Sailor</string>
-    <string name="theme_royal_name">Theme.Royal</string>
-    <string name="theme_mercury_name">Theme.Mercury</string>
-    <string name="theme_mocca_name">Theme.Mocca</string>
-    <string name="theme_creeper_name">Theme.Creeper</string>
-    <string name="theme_flamingo_name">Theme.Flamingo</string>
-    <string name="theme_pilot_name">Theme.Pilot</string>
-    <string name="theme_coral_name">Theme.Coral</string>
-    <string name="theme_blossom_name">Theme.Blossom</string>
     <string name="version">Version %s\n\n© 2020 Vladas Maier</string>
+
     <!-- Duration values -->
     <plurals name="duration_minute">
         <item quantity="one">%d Minute</item>
@@ -31,16 +20,19 @@
         <item quantity="one">%d Woche</item>
         <item quantity="other">%d Wochen</item>
     </plurals>
+
     <!-- Difficulty values -->
     <string name="difficulty_trivial_value">leicht</string>
     <string name="difficulty_regular_value">normal</string>
     <string name="difficulty_hard_value">schwer</string>
     <string name="difficulty_insane_value">irre</string>
+
     <!-- Units -->
     <string name="unit_minute_short">%d Min</string>
     <string name="unit_hour_short">%d S</string>
     <string name="unit_day_short">%d T</string>
     <string name="unit_week_short">%d W</string>
+
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
     <string name="term_level_value">Level %d</string>
@@ -59,16 +51,19 @@
     <string name="term_friday_short">Fr.</string>
     <string name="term_saturday_short">Sa.</string>
     <string name="term_sunday_short">So.</string>
+
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Kann nicht leer sein</string>
     <string name="error_too_short">Muss mindestens 4 Zeichen lang sein</string>
     <string name="error_skill_already_exists">Fertigkeit mit solchem Namen existiert bereits</string>
+
     <!-- Event messages -->
     <string name="event_skill_updated">Fertigkeit aktualisiert</string>
     <string name="event_skill_deleted">Fertigkeit gelöscht</string>
     <string name="event_task_complete">Aufgabe abgeschlossen (+%d XP)</string>
     <string name="event_task_failed">Aufgabe fehlgeschlagen</string>
     <string name="event_task_updated">Aufgabe aktualisiert</string>
+
     <!-- Buttons -->
     <string name="action_ok">Ok</string>
     <string name="action_undo">Rückgängig</string>
@@ -79,6 +74,8 @@
     <string name="action_set">Setzen</string>
     <string name="action_proceed_with_reset">Zurücksetzen</string>
     <string name="action_copy">Kopieren</string>
+    <string name="action_dismiss">Verwerfen</string>
+
     <!-- Headings -->
     <string name="heading_create_skill">Neue Fertigkeit</string>
     <string name="heading_create_task">Neue Aufgabe</string>
@@ -113,6 +110,10 @@
     <string name="heading_change_avatar">Avatar ändern</string>
     <string name="heading_reset_avatar">Avatar zurücksetzen</string>
     <string name="heading_unassigned">Nicht zugewiesen</string>
+    <string name="heading_dark_mode">Nachtmodus</string>
+    <string name="heading_language">Sprache</string>
+    <string name="heading_theme">Thema</string>
+
     <!-- Hint messages -->
     <string name="hint_skill_name">Name der Fertigkeit</string>
     <string name="hint_skill_category">Kategorie</string>
@@ -124,12 +125,18 @@
     <string name="hint_no_tasks_in_rv">Es sind keine Aufgaben verfügbar\nKlicke auf + um eine hinzuzufügen</string>
     <string name="hint_no_skills_in_rv">Es sind keine Fertigkeiten verfügbar\nKlicke auf + um eine hinzuzufügen</string>
     <string name="hint_user_name">Gebe deinen Benutzernamen ein</string>
+
     <!-- Description messages -->
-    <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Tasks zu dem Standardkalender.</string>
-    <string name="description_user_name">Setze einen Namen, der im Navigationsmenü angezeigt wird.</string>
+    <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Tasks zu dem Standardkalender</string>
+    <string name="description_user_name">Setze einen Namen, der im Navigationsmenü angezeigt wird</string>
     <string name="description_change_avatar">Aktuellen Avatar ändern</string>
-    <string name="description_reset_avatar">Setze den aktuellen Avatar zurück.</string>
-    <string name="description_no_data">Keine Daten verfügbar.</string>
+    <string name="description_reset_avatar">Aktuellen Avatar zurücksetzen</string>
+    <string name="description_no_data">Keine Daten verfügbar</string>
+    <string name="description_select_language">Sprache auswählen</string>
+    <string name="description_select_theme">Thema auswählen</string>
+    <string name="description_switch_to_dark">Wechsel zum Nachtmodus</string>
+    <string name="description_switch_to_light">Wechsel zurück zum Tagesmodus</string>
+
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Fertigkeit löschen?</string>
     <string name="alert_reset_avatar">Avatar zurücksetzen?</string>
@@ -138,7 +145,8 @@
         <item quantity="other">%1$d Aufgaben sind der %2$s Fertigkeit zugewiesen</item>
     </plurals>
     <string name="alert_permission_required">Berechtigung erforderlich</string>
-    <string name="alert_calendar_access_required">Für die Aufgabensynchronisierung ist die Berechtigung zum Zugriff auf den Kalender erforderlich.</string>
+    <string name="alert_calendar_access_required">Für die Aufgabensynchronisierung ist die Berechtigung zum Zugriff auf den Kalender erforderlich</string>
+
     <!-- Content description -->
     <string name="content_task_icon">Aufgabensymbol</string>
     <string name="content_skill_icon">Fertingskeitssymbol</string>

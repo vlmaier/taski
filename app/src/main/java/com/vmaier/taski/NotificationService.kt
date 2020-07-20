@@ -6,10 +6,13 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.os.Build
-import android.os.Bundle
 import com.vmaier.taski.utils.NotificationId
 import com.vmaier.taski.utils.RequestCode
 import com.vmaier.taski.utils.Utils
+import com.vmaier.taski.NotificationUtils.Companion.KEY_MESSAGE
+import com.vmaier.taski.NotificationUtils.Companion.KEY_NOTIFICATION_ID
+import com.vmaier.taski.NotificationUtils.Companion.KEY_TIMESTAMP
+import com.vmaier.taski.NotificationUtils.Companion.KEY_TITLE
 import timber.log.Timber
 import java.util.*
 import kotlin.properties.Delegates
@@ -24,6 +27,15 @@ class NotificationService : IntentService("NotificationService") {
 
     private lateinit var notification: Notification
 
+    companion object {
+        const val CHANNEL_ID = "com.vmaier.taski.default.channel"
+        const val CHANNEL_NAME = "Task reminders"
+        const val ACTION_DISMISS = "taski.action.dismiss"
+
+        var ACTION_TAP_REQUEST_CODE by Delegates.notNull<Int>()
+        var ACTION_DISMISS_REQUEST_CODE by Delegates.notNull<Int>()
+    }
+
     private fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val context = this.applicationContext
@@ -35,38 +47,24 @@ class NotificationService : IntentService("NotificationService") {
             channel.setShowBadge(true)
             channel.enableLights(true)
             channel.lightColor = Utils.getThemeColor(context, R.attr.colorPrimary)
-            channel.description = "Task reminders"
+            channel.description = CHANNEL_NAME
             channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
             notificationManager.createNotificationChannel(channel)
         }
     }
 
-    companion object {
-        const val CHANNEL_ID = "com.vmaier.taski.default.channel"
-        const val CHANNEL_NAME = "Task reminders"
-        const val ACTION_DISMISS = "taski.action.dismiss"
-        var ACTION_TAP_REQUEST_CODE by Delegates.notNull<Int>()
-        var ACTION_DISMISS_REQUEST_CODE by Delegates.notNull<Int>()
-    }
-
     override fun onHandleIntent(intent: Intent?) {
         createChannel()
 
-        var timestamp: Long = 0
-        var title = ""
-        var message = ""
-        if (intent != null && intent.extras != null) {
-            val extras: Bundle = intent.extras!!
-            timestamp = extras.getLong("timestamp")
-            title = extras.getString("title", "")
-            message = extras.getString("message", "")
-        }
+        val timestamp = intent?.extras?.getLong(KEY_TIMESTAMP) ?: 0
+        val title = intent?.extras?.getString(KEY_TITLE, "") ?: ""
+        val message = intent?.extras?.getString(KEY_MESSAGE, "") ?: ""
 
         if (timestamp > 0) {
             val context = this.applicationContext
             val notifyIntent = Intent(this, MainActivity::class.java)
-            notifyIntent.putExtra("title", title)
-            notifyIntent.putExtra("message", message)
+            notifyIntent.putExtra(KEY_TITLE, title)
+            notifyIntent.putExtra(KEY_MESSAGE, message)
             notifyIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
             ACTION_TAP_REQUEST_CODE = RequestCode.get(context)
@@ -88,10 +86,10 @@ class NotificationService : IntentService("NotificationService") {
             val dismissIntent = Intent(this, ReminderReceiver::class.java).apply {
                 action = ACTION_DISMISS
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                putExtra("title", title)
-                putExtra("message", message)
-                putExtra("timestamp", timestamp)
-                putExtra("notificationId", notificationId)
+                putExtra(KEY_TITLE, title)
+                putExtra(KEY_MESSAGE, message)
+                putExtra(KEY_TIMESTAMP, timestamp)
+                putExtra(KEY_NOTIFICATION_ID, notificationId)
             }
             val dismissPendingIntent: PendingIntent =
                 PendingIntent.getBroadcast(
@@ -101,7 +99,7 @@ class NotificationService : IntentService("NotificationService") {
                     PendingIntent.FLAG_CANCEL_CURRENT
                 )
             val dismissAction: Notification.Action = Notification.Action.Builder(
-                R.drawable.ic_baseline_access_time_24, "Dismiss", dismissPendingIntent
+                R.drawable.ic_baseline_access_time_24, getString(R.string.action_dismiss), dismissPendingIntent
             )
                 .build()
 

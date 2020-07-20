@@ -3,6 +3,7 @@
 
     <string name="app_name" translatable="false">Taski</string>
     <string name="version">Version %s\n\n© 2020 Vladas Maier</string>
+
     <!-- Duration values -->
     <plurals name="duration_minute">
         <item quantity="one">%d minute</item>
@@ -20,16 +21,19 @@
         <item quantity="one">%d week</item>
         <item quantity="other">%d weeks</item>
     </plurals>
+
     <!-- Difficulty values -->
     <string name="difficulty_trivial_value">trivial</string>
     <string name="difficulty_regular_value">regular</string>
     <string name="difficulty_hard_value">hard</string>
     <string name="difficulty_insane_value">insane</string>
+
     <!-- Units -->
     <string name="unit_minute_short">%d min</string>
     <string name="unit_hour_short">%d h</string>
     <string name="unit_day_short">%d d</string>
     <string name="unit_week_short">%d w</string>
+
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
     <string name="term_level_value">Level %d</string>
@@ -48,16 +52,19 @@
     <string name="term_friday_short">FRI</string>
     <string name="term_saturday_short">SAT</string>
     <string name="term_sunday_short">SUN</string>
+
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Cannot be empty</string>
     <string name="error_too_short">Must be at least 4 characters long</string>
     <string name="error_skill_already_exists">Skill with such name already exists</string>
+
     <!-- Event messages -->
     <string name="event_skill_updated">Skill updated</string>
     <string name="event_skill_deleted">Skill deleted</string>
     <string name="event_task_complete">Task completed (+%d XP)</string>
     <string name="event_task_failed">Task failed</string>
     <string name="event_task_updated">Task updated</string>
+
     <!-- Buttons -->
     <string name="action_ok">OK</string>
     <string name="action_undo">Undo</string>
@@ -68,6 +75,8 @@
     <string name="action_set">Set</string>
     <string name="action_proceed_with_reset">Proceed</string>
     <string name="action_copy">Copy</string>
+    <string name="action_dismiss">Dismiss</string>
+
     <!-- Headings -->
     <string name="heading_create_skill">Create new skill</string>
     <string name="heading_create_task">Create new task</string>
@@ -102,6 +111,10 @@
     <string name="heading_change_avatar">Change avatar</string>
     <string name="heading_reset_avatar">Reset avatar</string>
     <string name="heading_unassigned">Unassigned</string>
+    <string name="heading_theme">Theme</string>
+    <string name="heading_dark_mode">Dark mode</string>
+    <string name="heading_language">Language</string>
+
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
     <string name="hint_skill_category">Skill category</string>
@@ -113,12 +126,18 @@
     <string name="hint_no_tasks_in_rv">No tasks are available\nclick + to add one</string>
     <string name="hint_no_skills_in_rv">No skills are available\nclick + to add one</string>
     <string name="hint_user_name">Type in your username</string>
+
     <!-- Description messages -->
-    <string name="description_calendar_sync">If selected the application will synchronize all tasks to default calendar.</string>
-    <string name="description_user_name">Set your name to be shown in navigation menu.</string>
+    <string name="description_calendar_sync">If selected the application will synchronize all tasks to default calendar</string>
+    <string name="description_user_name">Set your name to be shown in navigation menu</string>
     <string name="description_change_avatar">Change user avatar</string>
-    <string name="description_reset_avatar">Reset current avatar to default.</string>
-    <string name="description_no_data">No data available.</string>
+    <string name="description_reset_avatar">Reset current avatar to default</string>
+    <string name="description_no_data">No data available</string>
+    <string name="description_select_theme">Select theme</string>
+    <string name="description_switch_to_dark">Switch to dark mode</string>
+    <string name="description_switch_to_light">Switch back to light mode</string>
+    <string name="description_select_language">Select language</string>
+
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Delete skill?</string>
     <string name="alert_reset_avatar">Reset avatar?</string>
@@ -127,7 +146,8 @@
         <item quantity="other">%1$d tasks are assigned to %2$s skill</item>
     </plurals>
     <string name="alert_permission_required">Permission required</string>
-    <string name="alert_calendar_access_required">Permission to access calendar is required for task synchronization.</string>
+    <string name="alert_calendar_access_required">Permission to access calendar is required for task synchronization</string>
+
     <!-- Content description -->
     <string name="content_task_icon">task icon</string>
     <string name="content_skill_icon">skill icon</string>
@@ -136,6 +156,7 @@
     <string name="content_user_avatar">user avatar</string>
     <string name="content_arrow_to_fab">arrow pointing to floating action button</string>
     <string name="content_tumbleweed_icon">tumbleweed icon</string>
+
     <!-- Theme values -->
     <string name="theme_default_name" translatable="false">Theme.Default</string>
     <string name="theme_sailor_name" translatable="false">Theme.Sailor</string>
@@ -147,4 +168,5 @@
     <string name="theme_pilot_name" translatable="false">Theme.Pilot</string>
     <string name="theme_coral_name" translatable="false">Theme.Coral</string>
     <string name="theme_blossom_name" translatable="false">Theme.Blossom</string>
+
 </resources>

@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
 import androidx.preference.*
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.vmaier.taski.Defaults
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
 import com.vmaier.taski.utils.Const
@@ -122,15 +123,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
         
         // preselect theme value
         val appTheme = preferenceScreen.findPreference(Const.Prefs.APP_THEME) as ListPreference?
-        val selectedTheme = sharedPrefs
-            .getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
+        val selectedTheme = sharedPrefs.getString(Const.Prefs.APP_THEME, Defaults.THEME)
         val themeValues = resources.getStringArray(R.array.theme_values_array)
         appTheme?.setValueIndex(themeValues.indexOf(selectedTheme))
         
         // preselect language value
         val appLanguage = preferenceScreen.findPreference(Const.Prefs.APP_LANGUAGE) as ListPreference?
-        val selectedLanguage = sharedPrefs
-            .getString(Const.Prefs.APP_LANGUAGE, getString(R.string.language_default))
+        val selectedLanguage = sharedPrefs.getString(Const.Prefs.APP_LANGUAGE, Defaults.LANGUAGE)
         val languageValues = resources.getStringArray(R.array.language_values_array)
         appLanguage?.setValueIndex(languageValues.indexOf(selectedLanguage))
     }
@@ -162,9 +161,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 sharedPreferences
                     .edit().putBoolean(Const.Prefs.DARK_MODE, isDarkModeOn)
                     .apply()
-                Timber.d(
-                    "Dark mode is %s.", if (isDarkModeOn) "enabled" else "disabled"
-                )
+                Timber.d("Dark mode is %s.", if (isDarkModeOn) "enabled" else "disabled")
             }
             Const.Prefs.APP_THEME -> {
                 val pref: ListPreference? = findPreference(key)

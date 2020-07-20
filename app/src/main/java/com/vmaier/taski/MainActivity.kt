@@ -75,8 +75,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // Language Settings
         val sharedPrefs = getDefaultSharedPreferences(this)
-        val selectedLanguage = sharedPrefs
-            .getString(Const.Prefs.APP_LANGUAGE, getString(R.string.language_default))
+        val selectedLanguage = sharedPrefs.getString(Const.Prefs.APP_LANGUAGE, Defaults.LANGUAGE)
         val prefLocale = Locale(selectedLanguage)
         val currentLocale: Locale = resources.configuration.locale
         if (prefLocale != currentLocale) {
@@ -152,8 +151,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         }
 
         // --- Theme Settings
-        val selectedTheme = sharedPrefs
-            .getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
+        val selectedTheme = sharedPrefs.getString(Const.Prefs.APP_THEME, Defaults.THEME)
         val selectedThemeId = Utils.getThemeByName(this, selectedTheme)
         setTheme(selectedThemeId)
 
@@ -419,7 +417,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     override fun getTheme(): Theme? {
         val sharedPreferences = getDefaultSharedPreferences(this)
         val theme: Theme = super.getTheme()
-        val selectedTheme = sharedPreferences.getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
+        val selectedTheme = sharedPreferences.getString(Const.Prefs.APP_THEME, Defaults.THEME)
         val selectedThemeId = Utils.getThemeByName(this, selectedTheme)
         theme.applyStyle(selectedThemeId, true)
         return theme

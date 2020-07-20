@@ -35,6 +35,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
 
+        const val DB_NAME = "taski.db"
+
         @Volatile
         private var instance: AppDatabase? = null
         private val LOCK = Any()
@@ -47,14 +49,14 @@ abstract class AppDatabase : RoomDatabase() {
                     ).also { instance = it }
             }
 
-        val MIGRATION_1_2 = object : Migration(1, 2) {
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 database.execSQL("ALTER TABLE tasks ADD COLUMN reminder_request_code INTEGER")
             }
         }
 
         private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(context, AppDatabase::class.java, "taski.db")
+            Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
                 .allowMainThreadQueries()
                 .addMigrations(MIGRATION_1_2)
                 .build()

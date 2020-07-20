@@ -17,7 +17,7 @@
         <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#c6c4c4" />
+                android:background="@color/colorDivider" />
 
         <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewpager"

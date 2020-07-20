@@ -20,14 +20,14 @@
                 android:entryValues="@array/theme_values_array"
                 android:icon="@drawable/ic_theme_24"
                 android:key="app_theme"
-                android:summary="Select theme"
-                android:title="Theme" />
+                android:summary="@string/description_select_theme"
+                android:title="@string/heading_theme" />
         <androidx.preference.SwitchPreference
                 android:icon="@drawable/ic_dark_mode_24"
                 android:key="dark_mode"
-                android:summaryOff="Switch to dark mode"
-                android:summaryOn="Switch back to light mode"
-                android:title="Dark mode" />
+                android:summaryOff="@string/description_switch_to_dark"
+                android:summaryOn="@string/description_switch_to_light"
+                android:title="@string/heading_dark_mode" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/heading_general_settings">
@@ -42,8 +42,8 @@
                 android:entryValues="@array/language_values_array"
                 android:icon="@drawable/ic_language_24"
                 android:key="app_language"
-                android:summary="Select language"
-                android:title="Language" />
+                android:summary="@string/description_select_language"
+                android:title="@string/heading_language" />
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>
