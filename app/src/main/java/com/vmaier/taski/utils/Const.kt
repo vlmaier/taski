@@ -17,6 +17,7 @@ class Const {
             const val USER_AVATAR = "user_avatar"
             const val APP_THEME = "app_theme"
             const val DARK_MODE = "dark_mode"
+            const val APP_LANGUAGE = "app_language"
             const val REQUEST_CODE_COUNTER = "request_code_counter"
         }
     }

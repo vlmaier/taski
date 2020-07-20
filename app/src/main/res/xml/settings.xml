@@ -20,7 +20,7 @@
                 android:entryValues="@array/theme_values_array"
                 android:icon="@drawable/ic_theme_24"
                 android:key="app_theme"
-                android:summary="Select an application theme"
+                android:summary="Select theme"
                 android:title="Theme" />
         <androidx.preference.SwitchPreference
                 android:icon="@drawable/ic_dark_mode_24"
@@ -37,6 +37,13 @@
                 android:key="calendar_sync"
                 android:summary="@string/description_calendar_sync"
                 android:title="@string/heading_calendar_sync" />
+        <androidx.preference.ListPreference
+                android:entries="@array/language_names_array"
+                android:entryValues="@array/language_values_array"
+                android:icon="@drawable/ic_language_24"
+                android:key="app_language"
+                android:summary="Select language"
+                android:title="Language" />
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

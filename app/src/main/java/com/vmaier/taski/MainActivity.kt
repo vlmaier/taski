@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.os.Handler
+import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -41,6 +42,7 @@ import com.vmaier.taski.utils.Const
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.utils.decodeBase64
 import timber.log.Timber
+import java.util.*
 
 
 /**
@@ -70,6 +72,20 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        // Language Settings
+        val sharedPrefs = getDefaultSharedPreferences(this)
+        val selectedLanguage = sharedPrefs
+            .getString(Const.Prefs.APP_LANGUAGE, getString(R.string.language_default))
+        val prefLocale = Locale(selectedLanguage)
+        val currentLocale: Locale = resources.configuration.locale
+        if (prefLocale != currentLocale) {
+            val metrics: DisplayMetrics = resources.displayMetrics
+            val config: Configuration = resources.configuration
+            config.locale = prefLocale
+            resources.updateConfiguration(config, metrics)
+        }
+
         super.onCreate(savedInstanceState)
         db = AppDatabase(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -136,9 +152,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         }
 
         // --- Theme Settings
-        val sharedPrefs = getDefaultSharedPreferences(this)
-        val selectedTheme = sharedPrefs.getString(Const.Prefs.APP_THEME,
-            getString(R.string.theme_default_name))
+        val selectedTheme = sharedPrefs
+            .getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
         val selectedThemeId = Utils.getThemeByName(this, selectedTheme)
         setTheme(selectedThemeId)
 

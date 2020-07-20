@@ -24,4 +24,12 @@
         <item>@string/theme_coral_name</item>
         <item>@string/theme_blossom_name</item>
     </string-array>
+    <string-array name="language_names_array">
+        <item>English</item>
+        <item>Deutsch</item>
+    </string-array>
+    <string-array name="language_values_array">
+        <item>en</item>
+        <item>de</item>
+    </string-array>
 </resources>

@@ -5,8 +5,10 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.DisplayMetrics
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -18,9 +20,13 @@ import androidx.preference.*
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
-import com.vmaier.taski.utils.*
+import com.vmaier.taski.utils.Const
+import com.vmaier.taski.utils.RequestCode
+import com.vmaier.taski.utils.compress
+import com.vmaier.taski.utils.encodeTobase64
 import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
+import java.util.*
 import kotlin.properties.Delegates
 
 
@@ -113,13 +119,20 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialog.show(requireFragmentManager(), EditTextDialog::class.simpleName)
             true
         }
-        val appTheme = preferenceScreen.findPreference(Const.Prefs.APP_THEME) as ListPreference?
-        val selectedTheme = sharedPrefs.getString(Const.Prefs.APP_THEME,
-            getString(R.string.theme_default_name))
-        val themeValues = resources.getStringArray(R.array.theme_values_array)
-        val index = themeValues.indexOf(selectedTheme)
+        
         // preselect theme value
-        appTheme?.setValueIndex(index)
+        val appTheme = preferenceScreen.findPreference(Const.Prefs.APP_THEME) as ListPreference?
+        val selectedTheme = sharedPrefs
+            .getString(Const.Prefs.APP_THEME, getString(R.string.theme_default_name))
+        val themeValues = resources.getStringArray(R.array.theme_values_array)
+        appTheme?.setValueIndex(themeValues.indexOf(selectedTheme))
+        
+        // preselect language value
+        val appLanguage = preferenceScreen.findPreference(Const.Prefs.APP_LANGUAGE) as ListPreference?
+        val selectedLanguage = sharedPrefs
+            .getString(Const.Prefs.APP_LANGUAGE, getString(R.string.language_default))
+        val languageValues = resources.getStringArray(R.array.language_values_array)
+        appLanguage?.setValueIndex(languageValues.indexOf(selectedLanguage))
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -158,6 +171,14 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 val selectedTheme = pref?.value
                 sharedPreferences.edit().putString(Const.Prefs.APP_THEME, selectedTheme).apply()
                 activity?.recreate()
+            }
+            Const.Prefs.APP_LANGUAGE -> {
+                val pref: ListPreference? = findPreference(key)
+                val selectedLanguage = pref?.value!!
+                sharedPreferences
+                    .edit().putString(Const.Prefs.APP_LANGUAGE, selectedLanguage)
+                    .apply()
+                setLocale(Locale(selectedLanguage))
             }
         }
     }
@@ -199,6 +220,14 @@ class SettingsFragment : PreferenceFragmentCompat(),
             ),
             ACCESS_CALENDAR_REQUEST_CODE
         )
+    }
+
+    private fun setLocale(locale: Locale) {
+        val metrics: DisplayMetrics = resources.displayMetrics
+        val config: Configuration = resources.configuration
+        config.locale = locale
+        resources.updateConfiguration(config, metrics)
+        activity?.recreate()
     }
 
     override fun onResume() {

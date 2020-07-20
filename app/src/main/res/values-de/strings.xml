@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Things I Do For Loot</string>
+    <string name="language_default">en</string>
     <string name="theme_default_name">Theme.Default</string>
     <string name="theme_sailor_name">Theme.Sailor</string>
     <string name="theme_royal_name">Theme.Royal</string>
