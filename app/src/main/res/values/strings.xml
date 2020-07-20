@@ -113,6 +113,7 @@
     <string name="heading_unassigned">Unassigned</string>
     <string name="heading_theme">Theme</string>
     <string name="heading_dark_mode">Dark mode</string>
+    <string name="heading_light_mode">Light mode</string>
     <string name="heading_language">Language</string>
 
     <!-- Hint messages -->
@@ -135,7 +136,7 @@
     <string name="description_no_data">No data available</string>
     <string name="description_select_theme">Select theme</string>
     <string name="description_switch_to_dark">Switch to dark mode</string>
-    <string name="description_switch_to_light">Switch back to light mode</string>
+    <string name="description_switch_to_light">Switch to light mode</string>
     <string name="description_select_language">Select language</string>
 
     <!-- Dialog messages -->

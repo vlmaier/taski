@@ -23,7 +23,6 @@
                 android:summary="@string/description_select_theme"
                 android:title="@string/heading_theme" />
         <androidx.preference.SwitchPreference
-                android:icon="@drawable/ic_dark_mode_24"
                 android:key="dark_mode"
                 android:summaryOff="@string/description_switch_to_dark"
                 android:summaryOn="@string/description_switch_to_light"

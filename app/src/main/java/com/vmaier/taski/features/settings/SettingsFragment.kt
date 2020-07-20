@@ -18,12 +18,9 @@ import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.content.ContextCompat
 import androidx.preference.*
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
-import com.vmaier.taski.MainActivity
+import com.vmaier.taski.*
 import com.vmaier.taski.R
-import com.vmaier.taski.Constants
 import com.vmaier.taski.utils.RequestCode
-import com.vmaier.taski.compress
-import com.vmaier.taski.encodeTobase64
 import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
 import java.util.*
@@ -123,7 +120,15 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialog.show(requireFragmentManager(), EditTextDialog::class.simpleName)
             true
         }
-        
+        val darkMode = preferenceScreen.findPreference(Constants.Prefs.DARK_MODE) as SwitchPreference?
+
+        // preselect dark mode icon
+        val isDarkModeOn = prefs.getBoolean(Constants.Prefs.DARK_MODE, Constants.Defaults.DARK_MODE)
+        darkMode?.setIcon(
+            if (isDarkModeOn) R.drawable.ic_light_mode_24 else R.drawable.ic_dark_mode_24)
+        darkMode?.title = getString(
+            if (isDarkModeOn) R.string.heading_light_mode else R.string.heading_dark_mode)
+
         // preselect theme value
         val appTheme = preferenceScreen.findPreference(Constants.Prefs.THEME) as ListPreference?
         val prefTheme = prefs.getString(Constants.Prefs.THEME, Constants.Defaults.THEME)

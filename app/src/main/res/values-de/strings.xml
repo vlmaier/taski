@@ -111,6 +111,7 @@
     <string name="heading_reset_avatar">Avatar zurücksetzen</string>
     <string name="heading_unassigned">Nicht zugewiesen</string>
     <string name="heading_dark_mode">Nachtmodus</string>
+    <string name="heading_light_mode">Tagesmodus</string>
     <string name="heading_language">Sprache</string>
     <string name="heading_theme">Thema</string>
 
@@ -135,7 +136,7 @@
     <string name="description_select_language">Sprache auswählen</string>
     <string name="description_select_theme">Thema auswählen</string>
     <string name="description_switch_to_dark">Wechsel zum Nachtmodus</string>
-    <string name="description_switch_to_light">Wechsel zurück zum Tagesmodus</string>
+    <string name="description_switch_to_light">Wechsel zum Tagesmodus</string>
 
     <!-- Dialog messages -->
     <string name="alert_skill_delete">Fertigkeit löschen?</string>
