@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="theme_names_array">
-        <item>Default</item>
-        <item>Sailor</item>
-        <item>Royal</item>
-        <item>Mercury</item>
-        <item>Mocca</item>
-        <item>Creeper</item>
-        <item>Flamingo</item>
-        <item>Pilot</item>
-        <item>Coral</item>
-        <item>Blossom</item>
-    </string-array>
-    <string-array name="theme_values_array">
         <item>@string/theme_default_name</item>
         <item>@string/theme_sailor_name</item>
         <item>@string/theme_royal_name</item>
@@ -23,6 +11,18 @@
         <item>@string/theme_pilot_name</item>
         <item>@string/theme_coral_name</item>
         <item>@string/theme_blossom_name</item>
+    </string-array>
+    <string-array name="theme_values_array">
+        <item>@string/theme_default</item>
+        <item>@string/theme_sailor</item>
+        <item>@string/theme_royal</item>
+        <item>@string/theme_mercury</item>
+        <item>@string/theme_mocca</item>
+        <item>@string/theme_creeper</item>
+        <item>@string/theme_flamingo</item>
+        <item>@string/theme_pilot</item>
+        <item>@string/theme_coral</item>
+        <item>@string/theme_blossom</item>
     </string-array>
     <string-array name="language_names_array">
         <item>English</item>

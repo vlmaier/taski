@@ -3,6 +3,18 @@
 
     <string name="version">Version %s\n\n© 2020 Vladas Maier</string>
 
+    <!-- Theme names -->
+    <string name="theme_default_name">Standard</string>
+    <string name="theme_sailor_name">Matrose</string>
+    <string name="theme_royal_name">Majestät</string>
+    <string name="theme_mercury_name">Merkur</string>
+    <string name="theme_mocca_name">Mocca</string>
+    <string name="theme_creeper_name">Creeper</string>
+    <string name="theme_flamingo_name">Flamingo</string>
+    <string name="theme_pilot_name">Pilot</string>
+    <string name="theme_coral_name">Koralle</string>
+    <string name="theme_blossom_name">Blüte</string>
+
     <!-- Duration values -->
     <plurals name="duration_minute">
         <item quantity="one">%d Minute</item>
@@ -25,7 +37,7 @@
     <string name="difficulty_trivial_value">leicht</string>
     <string name="difficulty_regular_value">normal</string>
     <string name="difficulty_hard_value">schwer</string>
-    <string name="difficulty_insane_value">irre</string>
+    <string name="difficulty_insane_value">sehr schwer</string>
 
     <!-- Units -->
     <string name="unit_minute_short">%d Min</string>
@@ -35,10 +47,10 @@
 
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
-    <string name="term_level_value">Level %d</string>
+    <string name="term_level_value">Stufe %d</string>
     <plurals name="term_skill">
-        <item quantity="one">%d Skill</item>
-        <item quantity="other">%d Skills</item>
+        <item quantity="one">%d Fähigkeit</item>
+        <item quantity="other">%d Fähigkeiten</item>
     </plurals>
     <string name="term_overdue">Überfällig</string>
     <string name="term_due_today">Heute fällig</string>
@@ -55,11 +67,11 @@
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Kann nicht leer sein</string>
     <string name="error_too_short">Muss mindestens 4 Zeichen lang sein</string>
-    <string name="error_skill_already_exists">Fertigkeit mit solchem Namen existiert bereits</string>
+    <string name="error_skill_already_exists">Eine solche Fähigkeit existiert bereits</string>
 
     <!-- Event messages -->
-    <string name="event_skill_updated">Fertigkeit aktualisiert</string>
-    <string name="event_skill_deleted">Fertigkeit gelöscht</string>
+    <string name="event_skill_updated">Fähigkeit aktualisiert</string>
+    <string name="event_skill_deleted">Fähigkeit gelöscht</string>
     <string name="event_task_complete">Aufgabe abgeschlossen (+%d XP)</string>
     <string name="event_task_failed">Aufgabe fehlgeschlagen</string>
     <string name="event_task_updated">Aufgabe aktualisiert</string>
@@ -71,36 +83,36 @@
     <string name="action_cancel">Abbrechen</string>
     <string name="action_delete">Löschen</string>
     <string name="action_proceed_with_delete">Löschen</string>
-    <string name="action_set">Setzen</string>
+    <string name="action_set">Wählen</string>
     <string name="action_proceed_with_reset">Zurücksetzen</string>
     <string name="action_copy">Kopieren</string>
     <string name="action_dismiss">Verwerfen</string>
 
     <!-- Headings -->
-    <string name="heading_create_skill">Neue Fertigkeit</string>
+    <string name="heading_create_skill">Neue Fähigkeit</string>
     <string name="heading_create_task">Neue Aufgabe</string>
     <string name="heading_duration">Dauer</string>
     <string name="heading_difficulty">Schwierigkeit</string>
     <string name="heading_due_on">Fällig am</string>
     <string name="heading_due_at">um</string>
     <string name="heading_tasks">Aufgaben</string>
-    <string name="heading_skills">Fertigkeiten</string>
+    <string name="heading_skills">Fähigkeiten</string>
     <string name="heading_statistics">Statistiken</string>
     <string name="heading_settings">Einstellungen</string>
     <string name="heading_xp_gain">Erfahrungsgewinn</string>
     <string name="heading_task_info">Aufgabe</string>
-    <string name="heading_skill_info">Fertigkeit</string>
-    <string name="heading_skill_level">Level</string>
+    <string name="heading_skill_info">Fähigkeit</string>
+    <string name="heading_skill_level">Stufe</string>
     <string name="heading_skill_xp">Erfahrung</string>
-    <string name="heading_skill_xp_title">Fertigkeit Erfahrung</string>
+    <string name="heading_skill_xp_title">Fähigkeiten Erfahrung</string>
     <string name="heading_category_xp_title">Kategorie Erfahrung</string>
     <string name="heading_daily_xp_title">Tägliche Erfahrung</string>
     <string name="heading_weekly_xp_title">Wöchentliche Erfahrung</string>
     <string name="heading_weekly_tasks_title">Erledigte Aufgaben</string>
     <string name="heading_open_tasks">Anzahl offener Aufgaben</string>
     <string name="heading_done_tasks">Anzahl abgeschlossener Aufgaben</string>
-    <string name="heading_calendar_sync">Kalender synchronisation</string>
-    <string name="heading_user_name">Dein Name</string>
+    <string name="heading_calendar_sync">Kalendersynchronisation</string>
+    <string name="heading_user_name">Name</string>
     <string name="heading_select_image">Wähle ein Bild</string>
     <string name="heading_visual_prefs">Visuelle Einstellungen</string>
     <string name="heading_general_settings">Allgemeine Einstellungen</string>
@@ -109,27 +121,27 @@
     <string name="heading_version">Version</string>
     <string name="heading_change_avatar">Avatar ändern</string>
     <string name="heading_reset_avatar">Avatar zurücksetzen</string>
-    <string name="heading_unassigned">Nicht zugewiesen</string>
+    <string name="heading_unassigned">Sonstiges</string>
     <string name="heading_dark_mode">Nachtmodus</string>
     <string name="heading_light_mode">Tagesmodus</string>
     <string name="heading_language">Sprache</string>
     <string name="heading_theme">Thema</string>
 
     <!-- Hint messages -->
-    <string name="hint_skill_name">Name der Fertigkeit</string>
+    <string name="hint_skill_name">Bezeichnung</string>
     <string name="hint_skill_category">Kategorie</string>
     <string name="hint_task_goal">Verfolgtes Ziel</string>
     <string name="hint_task_details">Details</string>
     <string name="hint_task_due_date">Datum</string>
     <string name="hint_task_due_time">Uhrzeit</string>
-    <string name="hint_no_skills">Es wurden noch keine Fertigkeiten erstellt</string>
-    <string name="hint_no_tasks_in_rv">Es sind keine Aufgaben verfügbar\nKlicke auf + um eine hinzuzufügen</string>
-    <string name="hint_no_skills_in_rv">Es sind keine Fertigkeiten verfügbar\nKlicke auf + um eine hinzuzufügen</string>
+    <string name="hint_no_skills">Es wurden noch keine Fähigkeiten erstellt</string>
+    <string name="hint_no_tasks_in_rv">Es sind keine Aufgaben verfügbar\nKlicke auf + um welche hinzuzufügen</string>
+    <string name="hint_no_skills_in_rv">Es sind keine Fähigkeiten verfügbar\nKlicke auf + um welche hinzuzufügen</string>
     <string name="hint_user_name">Gebe deinen Benutzernamen ein</string>
 
     <!-- Description messages -->
-    <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Tasks zu dem Standardkalender</string>
-    <string name="description_user_name">Setze einen Namen, der im Navigationsmenü angezeigt wird</string>
+    <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Aufgaben zu dem Standardkalender</string>
+    <string name="description_user_name">Wähle einen Namen, der im Navigationsmenü angezeigt wird</string>
     <string name="description_change_avatar">Aktuellen Avatar ändern</string>
     <string name="description_reset_avatar">Aktuellen Avatar zurücksetzen</string>
     <string name="description_no_data">Keine Daten verfügbar</string>
@@ -139,22 +151,21 @@
     <string name="description_switch_to_light">Wechsel zum Tagesmodus</string>
 
     <!-- Dialog messages -->
-    <string name="alert_skill_delete">Fertigkeit löschen?</string>
+    <string name="alert_skill_delete">Fähigkeit löschen?</string>
     <string name="alert_reset_avatar">Avatar zurücksetzen?</string>
     <plurals name="alert_assigned_task">
-        <item quantity="one">%1$d Aufgabe ist der %2$s Fertigkeit zugewiesen</item>
-        <item quantity="other">%1$d Aufgaben sind der %2$s Fertigkeit zugewiesen</item>
+        <item quantity="one">%1$d Aufgabe ist der \"%2$s\" Fähigkeit zugewiesen</item>
+        <item quantity="other">%1$d Aufgaben sind der \"%2$s\" Fähigkeit zugewiesen</item>
     </plurals>
     <string name="alert_permission_required">Berechtigung erforderlich</string>
-    <string name="alert_calendar_access_required">Für die Aufgabensynchronisierung ist die Berechtigung zum Zugriff auf den Kalender erforderlich</string>
+    <string name="alert_calendar_access_required">Für die Aufgabensynchronisation ist die Berechtigung zum Zugriff auf den Kalender erforderlich</string>
 
     <!-- Content description -->
     <string name="content_task_icon">Aufgabensymbol</string>
-    <string name="content_skill_icon">Fertingskeitssymbol</string>
+    <string name="content_skill_icon">Fähigkeitssymbol</string>
     <string name="content_fab">schwebende Aktionstaste</string>
-    <string name="content_due_at_icon">Fällig-Am-Symbol</string>
-    <string name="content_user_avatar">Benutzeravatar</string>
-    <string name="content_arrow_to_fab">Pfeil, der auf schwebende Aktionstaste zeigt</string>
-    <string name="content_tumbleweed_icon">Steppenläufer</string>
+    <string name="content_due_at_icon">Fälligkeitsdatumsymbol</string>
+    <string name="content_user_avatar">Avatar</string>
+    <string name="content_empty_icon">Leere Kiste Symbol</string>
 
 </resources>

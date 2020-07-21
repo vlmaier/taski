@@ -4,6 +4,18 @@
     <string name="app_name" translatable="false">Taski</string>
     <string name="version">Version %s\n\n© 2020 Vladas Maier</string>
 
+    <!-- Theme names -->
+    <string name="theme_default_name">Default</string>
+    <string name="theme_sailor_name">Sailor</string>
+    <string name="theme_royal_name">Royal</string>
+    <string name="theme_mercury_name">Mercury</string>
+    <string name="theme_mocca_name">Mocca</string>
+    <string name="theme_creeper_name">Creeper</string>
+    <string name="theme_flamingo_name">Flamingo</string>
+    <string name="theme_pilot_name">Pilot</string>
+    <string name="theme_coral_name">Coral</string>
+    <string name="theme_blossom_name">Blossom</string>
+
     <!-- Duration values -->
     <plurals name="duration_minute">
         <item quantity="one">%d minute</item>
@@ -101,7 +113,7 @@
     <string name="heading_open_tasks">Amount of open tasks</string>
     <string name="heading_done_tasks">Amount of done tasks</string>
     <string name="heading_calendar_sync">Calendar synchronization</string>
-    <string name="heading_user_name">Your name</string>
+    <string name="heading_user_name">Name</string>
     <string name="heading_select_image">Select image</string>
     <string name="heading_visual_prefs">Visual preferences</string>
     <string name="heading_general_settings">General settings</string>
@@ -110,7 +122,7 @@
     <string name="heading_version">Version</string>
     <string name="heading_change_avatar">Change avatar</string>
     <string name="heading_reset_avatar">Reset avatar</string>
-    <string name="heading_unassigned">Unassigned</string>
+    <string name="heading_unassigned">Other</string>
     <string name="heading_theme">Theme</string>
     <string name="heading_dark_mode">Dark mode</string>
     <string name="heading_light_mode">Light mode</string>
@@ -143,8 +155,8 @@
     <string name="alert_skill_delete">Delete skill?</string>
     <string name="alert_reset_avatar">Reset avatar?</string>
     <plurals name="alert_assigned_task">
-        <item quantity="one">%1$d task is assigned to %2$s skill</item>
-        <item quantity="other">%1$d tasks are assigned to %2$s skill</item>
+        <item quantity="one">%1$d task is assigned to \"%2$s\" skill</item>
+        <item quantity="other">%1$d tasks are assigned to \"%2$s\" skill</item>
     </plurals>
     <string name="alert_permission_required">Permission required</string>
     <string name="alert_calendar_access_required">Permission to access calendar is required for task synchronization</string>
@@ -154,20 +166,19 @@
     <string name="content_skill_icon">skill icon</string>
     <string name="content_fab">floating action button</string>
     <string name="content_due_at_icon">due at icon</string>
-    <string name="content_user_avatar">user avatar</string>
-    <string name="content_arrow_to_fab">arrow pointing to floating action button</string>
-    <string name="content_tumbleweed_icon">tumbleweed icon</string>
+    <string name="content_user_avatar">avatar</string>
+    <string name="content_empty_icon">empty box icon</string>
 
     <!-- Theme values -->
-    <string name="theme_default_name" translatable="false">Theme.Default</string>
-    <string name="theme_sailor_name" translatable="false">Theme.Sailor</string>
-    <string name="theme_royal_name" translatable="false">Theme.Royal</string>
-    <string name="theme_mercury_name" translatable="false">Theme.Mercury</string>
-    <string name="theme_mocca_name" translatable="false">Theme.Mocca</string>
-    <string name="theme_creeper_name" translatable="false">Theme.Creeper</string>
-    <string name="theme_flamingo_name" translatable="false">Theme.Flamingo</string>
-    <string name="theme_pilot_name" translatable="false">Theme.Pilot</string>
-    <string name="theme_coral_name" translatable="false">Theme.Coral</string>
-    <string name="theme_blossom_name" translatable="false">Theme.Blossom</string>
+    <string name="theme_default" translatable="false">Theme.Default</string>
+    <string name="theme_sailor" translatable="false">Theme.Sailor</string>
+    <string name="theme_royal" translatable="false">Theme.Royal</string>
+    <string name="theme_mercury" translatable="false">Theme.Mercury</string>
+    <string name="theme_mocca" translatable="false">Theme.Mocca</string>
+    <string name="theme_creeper" translatable="false">Theme.Creeper</string>
+    <string name="theme_flamingo" translatable="false">Theme.Flamingo</string>
+    <string name="theme_pilot" translatable="false">Theme.Pilot</string>
+    <string name="theme_coral" translatable="false">Theme.Coral</string>
+    <string name="theme_blossom" translatable="false">Theme.Blossom</string>
 
 </resources>
