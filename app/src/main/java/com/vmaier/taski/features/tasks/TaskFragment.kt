@@ -36,7 +36,7 @@ import com.vmaier.taski.*
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Task
-import com.vmaier.taski.service.NotificationService
+import com.vmaier.taski.services.NotificationService
 import com.vmaier.taski.utils.*
 import timber.log.Timber
 import java.text.ParseException

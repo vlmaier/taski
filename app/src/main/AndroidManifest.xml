@@ -38,7 +38,7 @@
         </receiver>
 
         <service
-                android:name=".service.NotificationService"
+                android:name=".services.NotificationService"
                 android:exported="false" />
 
     </application>

@@ -1,4 +1,4 @@
-package com.vmaier.taski.service
+package com.vmaier.taski.services
 
 import android.app.*
 import android.content.Context
