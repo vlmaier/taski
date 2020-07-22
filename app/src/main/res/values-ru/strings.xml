@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="version">Версия %s\n\n© 2020 Владас Майер</string>
+
+    <!-- Theme names -->
+    <string name="theme_default_name">Стандарт</string>
+    <string name="theme_sailor_name">Матрос</string>
+    <string name="theme_royal_name">Монарх</string>
+    <string name="theme_mercury_name">Меркурий</string>
+    <string name="theme_mocca_name">Мокко</string>
+    <string name="theme_creeper_name">Крипер</string>
+    <string name="theme_flamingo_name">Фламинго</string>
+    <string name="theme_pilot_name">Пилот</string>
+    <string name="theme_coral_name">Коралл</string>
+    <string name="theme_blossom_name">Цветок</string>
+
+    <!-- Duration values -->
+    <plurals name="duration_minute">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+    </plurals>
+    <plurals name="duration_hour">
+        <item quantity="one">%d час</item>
+        <item quantity="few">%d часа</item>
+        <item quantity="many">%d часов</item>
+    </plurals>
+    <plurals name="duration_day">
+        <item quantity="one">%d день</item>
+        <item quantity="few">%d дня</item>
+        <item quantity="many">%d дней</item>
+    </plurals>
+    <plurals name="duration_week">
+        <item quantity="one">%d неделя</item>
+        <item quantity="few">%d недели</item>
+        <item quantity="many">%d недель</item>
+    </plurals>
+
+    <!-- Difficulty values -->
+    <string name="difficulty_trivial_value">банально</string>
+    <string name="difficulty_regular_value">обычно</string>
+    <string name="difficulty_hard_value">трудно</string>
+    <string name="difficulty_insane_value">безумно</string>
+
+    <!-- Units -->
+    <string name="unit_minute_short">%d мин</string>
+    <string name="unit_hour_short">%d ч</string>
+    <string name="unit_day_short">%d д</string>
+    <string name="unit_week_short">%d н</string>
+
+    <!-- Terms -->
+    <string name="term_xp_value">%d XP</string>
+    <string name="term_level_value">Уровень %d</string>
+    <plurals name="term_skill">
+        <item quantity="one">%d навык</item>
+        <item quantity="few">%d навыка</item>
+        <item quantity="many">%d навыков</item>
+    </plurals>
+    <string name="term_overdue">Просрочено</string>
+    <string name="term_due_today">На сегодня</string>
+    <string name="term_due_tomorrow">На завтра</string>
+    <string name="term_due_someday">Когда-нибудь</string>
+    <string name="term_monday_short">ПНД</string>
+    <string name="term_tuesday_short">ВТР</string>
+    <string name="term_wednesday_short">СРД</string>
+    <string name="term_thursday_short">ЧТВ</string>
+    <string name="term_friday_short">ПТН</string>
+    <string name="term_saturday_short">СБТ</string>
+    <string name="term_sunday_short">ВСК</string>
+
+    <!-- Error messages -->
+    <string name="error_cannot_be_empty">Не может быть пустым</string>
+    <string name="error_too_short">Не менее 4 символов</string>
+    <string name="error_skill_already_exists">Такой навык уже существует</string>
+
+    <!-- Event messages -->
+    <string name="event_skill_updated">Навык обновлен</string>
+    <string name="event_skill_deleted">Навык удален</string>
+    <string name="event_task_complete">Задача выполнена (+%d XP)</string>
+    <string name="event_task_failed">Задача не выполнена</string>
+    <string name="event_task_updated">Задача обновлена</string>
+
+    <!-- Buttons -->
+    <string name="action_ok">Окей</string>
+    <string name="action_undo">Отменить</string>
+    <string name="action_create">Создать</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_proceed_with_delete">Продолжить</string>
+    <string name="action_set">Выбрать</string>
+    <string name="action_proceed_with_reset">Продолжить</string>
+    <string name="action_copy">Создать копию</string>
+    <string name="action_dismiss">Отклонить</string>
+
+    <!-- Headings -->
+    <string name="heading_create_skill">Создать новый навык</string>
+    <string name="heading_create_task">Создать новую задачю</string>
+    <string name="heading_duration">Продолжительность</string>
+    <string name="heading_difficulty">Трудность</string>
+    <string name="heading_due_on">Выполнить к</string>
+    <string name="heading_due_at">в</string>
+    <string name="heading_tasks">Задачи</string>
+    <string name="heading_skills">Навыки</string>
+    <string name="heading_statistics">Статистика</string>
+    <string name="heading_settings">Настройки</string>
+    <string name="heading_xp_gain">Полученный опыт</string>
+    <string name="heading_task_info">Информация о задачи</string>
+    <string name="heading_skill_info">Информация о навыке</string>
+    <string name="heading_skill_level">Уровень навыка</string>
+    <string name="heading_skill_xp">Опыт навыка</string>
+    <string name="heading_skill_xp_title">Опыт навыков</string>
+    <string name="heading_category_xp_title">Опыт в категории</string>
+    <string name="heading_daily_xp_title">Ежедневный опыт</string>
+    <string name="heading_weekly_xp_title">Еженедельный опыт</string>
+    <string name="heading_weekly_tasks_title">Выполненные задачи</string>
+    <string name="heading_open_tasks">Количество не завершеных задач</string>
+    <string name="heading_done_tasks">Количество завершеных задач</string>
+    <string name="heading_calendar_sync">Синхронизация с календарем</string>
+    <string name="heading_user_name">Имя</string>
+    <string name="heading_select_image">Выберите картинку</string>
+    <string name="heading_visual_prefs">Визуальные настройки</string>
+    <string name="heading_general_settings">Общие настройки</string>
+    <string name="heading_help">Помощь</string>
+    <string name="heading_licenses">Лицензии</string>
+    <string name="heading_version">Версия</string>
+    <string name="heading_change_avatar">Сменить аватар</string>
+    <string name="heading_reset_avatar">Сбросить аватар</string>
+    <string name="heading_unassigned">Другие</string>
+    <string name="heading_dark_mode">Ночной режим</string>
+    <string name="heading_light_mode">Дневной режим</string>
+    <string name="heading_language">Язык</string>
+    <string name="heading_theme">Тема</string>
+
+    <!-- Hint messages -->
+    <string name="hint_skill_name">Наименование навыка</string>
+    <string name="hint_skill_category">Категория</string>
+    <string name="hint_task_goal">Преследуемая цель</string>
+    <string name="hint_task_details">Подробности</string>
+    <string name="hint_task_due_date">Дата</string>
+    <string name="hint_task_due_time">Время</string>
+    <string name="hint_no_skills">Навыки еще не созданы</string>
+    <string name="hint_no_tasks_in_rv">Нет доступных задач\nнажмите + чтобы добавить</string>
+    <string name="hint_no_skills_in_rv">Нет доступных навыков\nнажмите + чтобы добавить</string>
+    <string name="hint_user_name">Введите ваше имя пользователя</string>
+
+    <!-- Description messages -->
+    <string name="description_calendar_sync">Если включено, приложение будет синхронизировать все задачи с календарем по умолчанию</string>
+    <string name="description_user_name">Установите свое имя, которое будет отображаться в навигационном меню</string>
+    <string name="description_change_avatar">Изменить аватар пользователя</string>
+    <string name="description_reset_avatar">Сбросить текущий аватар на стандартный</string>
+    <string name="description_no_data">Нет данных</string>
+    <string name="description_select_language">Выберите язык</string>
+    <string name="description_select_theme">Выберите тему</string>
+    <string name="description_switch_to_dark">Переключиться в ночной режим</string>
+    <string name="description_switch_to_light">Переключиться в дневной режим</string>
+
+    <!-- Dialog messages -->
+    <string name="alert_skill_delete">Удалить навык?</string>
+    <string name="alert_reset_avatar">Сбросить аватар?</string>
+    <plurals name="alert_assigned_task">
+        <item quantity="one">%1$d задача связана с навыком \"%2$s\"</item>
+        <item quantity="few">%1$d задачи связана с навыком \"%2$s\"</item>
+        <item quantity="many">%1$d задач связана с навыком \"%2$s\"</item>
+    </plurals>
+    <string name="alert_permission_required">Требуется разрешение</string>
+    <string name="alert_calendar_access_required">Для синхронизации задач требуется разрешение на доступ к календарю</string>
+
+    <!-- Content description -->
+    <string name="content_task_icon">значок задачи</string>
+    <string name="content_skill_icon">значок навыка</string>
+    <string name="content_fab">кнопка с плавающим действием</string>
+    <string name="content_due_at_icon">значок подлежит исполнению</string>
+    <string name="content_user_avatar">аватар</string>
+    <string name="content_empty_icon">значок пустой коробки</string>
+    
+</resources>

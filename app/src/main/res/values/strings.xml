@@ -68,7 +68,7 @@
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Cannot be empty</string>
     <string name="error_too_short">Must be at least 4 characters long</string>
-    <string name="error_skill_already_exists">Skill with such name already exists</string>
+    <string name="error_skill_already_exists">Such skill already exists</string>
 
     <!-- Event messages -->
     <string name="event_skill_updated">Skill updated</string>
@@ -83,9 +83,9 @@
     <string name="action_create">Create</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
-    <string name="action_proceed_with_delete">Proceed</string>
+    <string name="action_proceed_with_delete">Continue</string>
     <string name="action_set">Set</string>
-    <string name="action_proceed_with_reset">Proceed</string>
+    <string name="action_proceed_with_reset">Continue</string>
     <string name="action_copy">Copy</string>
     <string name="action_dismiss">Dismiss</string>
 
@@ -141,7 +141,7 @@
     <string name="hint_user_name">Type in your username</string>
 
     <!-- Description messages -->
-    <string name="description_calendar_sync">If selected the application will synchronize all tasks to default calendar</string>
+    <string name="description_calendar_sync">If enabled the application will synchronize all tasks to default calendar</string>
     <string name="description_user_name">Set your name to be shown in navigation menu</string>
     <string name="description_change_avatar">Change user avatar</string>
     <string name="description_reset_avatar">Reset current avatar to default</string>
