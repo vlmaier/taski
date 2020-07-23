@@ -70,9 +70,9 @@ open class TaskFragment : Fragment() {
         const val KEY_DEADLINE_TIME = "deadline_time"
 
         fun setIcon(context: Context, icon: Icon, button: ImageButton) {
-            val drawable = IconDrawableLoader(context).loadDrawable(icon)
-            drawable?.clearColorFilter()
-            button.background = drawable
+            IconDrawableLoader(context).loadDrawable(icon)
+            icon.drawable?.clearColorFilter()
+            button.background = icon.drawable
             button.tag = icon.id
         }
     }

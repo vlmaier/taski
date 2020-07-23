@@ -8,7 +8,6 @@ import com.maltaisn.iconpack.defaultpack.createDefaultIconPack
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 import java.text.SimpleDateFormat
-import java.util.*
 
 
 /**

@@ -39,9 +39,9 @@ open class SkillFragment : Fragment() {
         const val KEY_ICON_ID = "icon_id"
 
         fun setIcon(context: Context, icon: Icon, button: ImageButton) {
-            val drawable = IconDrawableLoader(context).loadDrawable(icon)
-            drawable?.clearColorFilter()
-            button.background = drawable
+            IconDrawableLoader(context).loadDrawable(icon)
+            icon.drawable?.clearColorFilter()
+            button.background = icon.drawable
             button.tag = icon.id
         }
     }

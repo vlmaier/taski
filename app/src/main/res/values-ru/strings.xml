@@ -71,7 +71,7 @@
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Не может быть пустым</string>
-    <string name="error_too_short">Не менее 4 символов</string>
+    <string name="error_too_short">Не менее 4-х символов</string>
     <string name="error_skill_already_exists">Такой навык уже существует</string>
 
     <!-- Event messages -->
