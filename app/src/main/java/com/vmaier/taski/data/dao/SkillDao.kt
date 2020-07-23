@@ -50,7 +50,7 @@ interface SkillDao {
         """
         SELECT *
         FROM skills
-        WHERE name = :name
+        WHERE name = :name COLLATE NOCASE
     """
     )
     fun findByName(name: String): Skill?
@@ -59,7 +59,7 @@ interface SkillDao {
         """
         SELECT *
         FROM skills
-        WHERE name IN (:names)
+        WHERE name IN (:names) COLLATE NOCASE
     """
     )
     fun findByName(names: List<String>): List<Skill>
