@@ -206,7 +206,6 @@
                     android:adjustViewBounds="false"
                     android:backgroundTint="?attr/colorOnSurface"
                     android:contentDescription="@string/content_task_icon"
-                    android:onClick="selectIconButtonClicked"
                     android:scaleType="fitXY"
                     app:layout_constraintBottom_toBottomOf="@+id/details"
                     app:layout_constraintEnd_toEndOf="parent"

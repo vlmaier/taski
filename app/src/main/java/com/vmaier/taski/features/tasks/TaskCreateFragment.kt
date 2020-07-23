@@ -102,6 +102,10 @@ class TaskCreateFragment : TaskFragment() {
             it.findNavController().popBackStack()
             it.hideKeyboard()
         }
+        binding.iconButton.setOnClickListener {
+            val fragmentManager = requireActivity().supportFragmentManager
+            MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
+        }
 
         // --- Deadline settings
         binding.deadlineDate.editText?.setText(args?.getString(KEY_DEADLINE_DATE) ?: "")

@@ -52,13 +52,13 @@ import java.util.*
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, IconDialog.Callback {
 
     private lateinit var navController: NavController
-    private lateinit var iconDialog: IconDialog
     private lateinit var drawerNav: NavigationView
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: SharedPreferences
     private var backButtonPressedOnce = false
 
     companion object {
+        lateinit var iconDialog: IconDialog
         lateinit var toolbar: Toolbar
         lateinit var drawerLayout: DrawerLayout
         lateinit var bottomNav: BottomNavigationView
@@ -216,10 +216,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         levelCounterView = headerView.findViewById(R.id.level_counter) as TextView
         val level = xpValue.div(10000) + 1
         levelCounterView.text = getString(R.string.term_level_value, level)
-    }
-
-    fun selectIconButtonClicked(@Suppress("UNUSED_PARAMETER") view: View) {
-        iconDialog.show(supportFragmentManager, Constants.Tag.ICON_DIALOG_TAG)
     }
 
     override val iconDialogIconPack: IconPack? get() = App.iconPack

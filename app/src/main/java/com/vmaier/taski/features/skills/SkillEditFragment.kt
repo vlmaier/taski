@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.databinding.DataBindingUtil
-import com.vmaier.taski.R
+import com.vmaier.taski.*
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentEditSkillBinding
 import com.vmaier.taski.utils.KeyBoardHider
-import com.vmaier.taski.hideKeyboard
-import com.vmaier.taski.toast
 import timber.log.Timber
 
 
@@ -104,6 +102,10 @@ class SkillEditFragment : SkillFragment() {
             binding.deleteSkillButton, itemPosition,
             skill
         )
+        binding.iconButton.setOnClickListener {
+            val fragmentManager = requireActivity().supportFragmentManager
+            MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
+        }
 
         return binding.root
     }

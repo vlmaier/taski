@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import com.vmaier.taski.Constants
+import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
@@ -63,6 +65,10 @@ class SkillCreateFragment : SkillFragment() {
         binding.cancelButton.setOnClickListener {
             it.findNavController().popBackStack()
             it.hideKeyboard()
+        }
+        binding.iconButton.setOnClickListener {
+            val fragmentManager = requireActivity().supportFragmentManager
+            MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
         }
         return binding.root
     }

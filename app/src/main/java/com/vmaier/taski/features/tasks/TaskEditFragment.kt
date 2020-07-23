@@ -115,6 +115,10 @@ class TaskEditFragment : TaskFragment() {
         }
         setDeadlineDateOnClickListener(binding.deadlineDate.editText)
         setDeadlineTimeOnClickListener(binding.deadlineTime.editText)
+        binding.iconButton.setOnClickListener {
+            val fragmentManager = requireActivity().supportFragmentManager
+            MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
+        }
 
         return binding.root
     }
