@@ -137,6 +137,7 @@
     <string name="heading_light_mode">Дневной режим</string>
     <string name="heading_language">Язык</string>
     <string name="heading_theme">Тема</string>
+    <string name="heading_synchronize_to_calendar">Синхронизировать с календарем</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Наименование навыка</string>

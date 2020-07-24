@@ -20,7 +20,7 @@ import androidx.preference.*
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.vmaier.taski.*
 import com.vmaier.taski.R
-import com.vmaier.taski.utils.RequestCode
+import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
 import java.util.*
@@ -38,9 +38,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private lateinit var prefs: SharedPreferences
 
     companion object {
-        var PICK_IMAGE_REQUEST_CODE by Delegates.notNull<Int>()
-        var ACCESS_CALENDAR_REQUEST_CODE by Delegates.notNull<Int>()
-
         lateinit var calendarSyncPref: CheckBoxPreference
     }
 
@@ -59,8 +56,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prefs = getDefaultSharedPreferences(context)
-        PICK_IMAGE_REQUEST_CODE = RequestCode.get(requireContext())
-        ACCESS_CALENDAR_REQUEST_CODE = RequestCode.get(requireContext())
         val changeAvatar = preferenceScreen.findPreference(Constants.Prefs.CHANGE_AVATAR) as Preference?
         changeAvatar?.setOnPreferenceClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
@@ -70,7 +65,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     Intent.createChooser(
                         galleryIntent,
                         getString(R.string.heading_select_image)
-                    ), PICK_IMAGE_REQUEST_CODE
+                    ), PermissionUtils.PICK_IMAGE_REQUEST_CODE
                 )
             }
             true
@@ -148,7 +143,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 calendarSyncPref = findPreference(key)!!
                 val isCalendarSyncOn = calendarSyncPref.isChecked
                 if (isCalendarSyncOn) {
-                    setupCalendarPermissions()
+                    PermissionUtils.setupCalendarPermissions(requireContext())
                 }
                 prefs.edit()
                     .putBoolean(Constants.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
@@ -192,43 +187,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private fun setupCalendarPermissions() {
-        val context = requireContext()
-        val read = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR)
-        val write = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
-        if (read == PackageManager.PERMISSION_DENIED || write == PackageManager.PERMISSION_DENIED) {
-            Timber.d("Permission to access calendar is denied")
-            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(),
-                    Manifest.permission.WRITE_CALENDAR)
-            ) {
-                val builder = AlertDialog.Builder(requireContext())
-                builder
-                    .setMessage(getString(R.string.alert_calendar_access_required))
-                    .setTitle(getString(R.string.alert_permission_required))
-                    .setPositiveButton(getString(R.string.action_ok)) { _, _ ->
-                        requestCalendarPermissions()
-                    }
-                val dialog = builder.create()
-                dialog.show()
-            } else {
-                requestCalendarPermissions()
-            }
-        }
-        if (read == PackageManager.PERMISSION_GRANTED && write == PackageManager.PERMISSION_GRANTED) {
-            Timber.d("Permissions to access calendar are granted")
-        }
-    }
-
-    private fun requestCalendarPermissions() {
-        requestPermissions(
-            requireActivity(), arrayOf(
-                Manifest.permission.READ_CALENDAR,
-                Manifest.permission.WRITE_CALENDAR
-            ),
-            ACCESS_CALENDAR_REQUEST_CODE
-        )
-    }
-
     private fun setLocale(locale: Locale) {
         val metrics: DisplayMetrics = resources.displayMetrics
         val config: Configuration = resources.configuration
@@ -249,7 +207,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
-        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == PermissionUtils.PICK_IMAGE_REQUEST_CODE &&
+            resultCode == Activity.RESULT_OK) {
             if (intent != null && intent.data != null) {
                 val filePath = intent.data
                 val contentResolver = requireActivity().contentResolver

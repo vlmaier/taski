@@ -42,6 +42,7 @@ import com.vmaier.taski.features.settings.SettingsFragment
 import com.vmaier.taski.features.skills.*
 import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
 import com.vmaier.taski.features.tasks.*
+import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
@@ -489,7 +490,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            SettingsFragment.ACCESS_CALENDAR_REQUEST_CODE -> {
+            PermissionUtils.ACCESS_CALENDAR_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Timber.d("Requested permission has been denied by user")
                     val isCalendarSyncOn = prefs

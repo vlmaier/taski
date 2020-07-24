@@ -115,6 +115,15 @@ class TaskEditFragment : TaskFragment() {
         }
         setDeadlineDateOnClickListener(binding.deadlineDate.editText)
         setDeadlineTimeOnClickListener(binding.deadlineTime.editText)
+        setDeadlineDateOnTextChangedListener(binding.calendarSync, binding.deadlineDate.editText)
+        val isCalendarSyncEnabled = dueAt != null && dueAt.isNotBlank() && task.eventId != null
+        binding.calendarSync.isEnabled = isCalendarSyncEnabled
+        binding.calendarSync.isChecked = isCalendarSyncEnabled
+        binding.calendarSync.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                PermissionUtils.setupCalendarPermissions(requireContext())
+            }
+        }
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
             MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
@@ -178,7 +187,7 @@ class TaskEditFragment : TaskFragment() {
         val toUpdate = Task(
             id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,
             createdAt = task.createdAt, dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty),
-            eventId = task.eventId
+            eventId = task.eventId, reminderRequestCode = task.reminderRequestCode
         )
         if (task != toUpdate || assignedSkills != skillsToAssign) {
             val reminderUpdateRequired = task.dueAt != toUpdate.dueAt
@@ -186,7 +195,7 @@ class TaskEditFragment : TaskFragment() {
             Timber.d("Updated task with ID: ${task.id}.")
             TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
             TaskListFragment.taskAdapter.update()
-            updateInCalendar(task, toUpdate)
+            updateInCalendar(binding.calendarSync.isChecked, task, toUpdate)
             getString(R.string.event_task_updated).toast(requireContext())
             if (reminderUpdateRequired && toUpdate.dueAt != null) {
                 notificationService.cancelReminder(requireActivity(), task.reminderRequestCode)

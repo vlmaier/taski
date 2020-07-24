@@ -302,6 +302,19 @@
                     app:layout_constraintStart_toStartOf="@+id/difficulty"
                     app:layout_constraintTop_toBottomOf="@+id/duration_bar" />
 
+            <CheckBox
+                    android:id="@+id/calendar_sync"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/heading_synchronize_to_calendar"
+                    android:enabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/deadline_date" />
+
             <TextView
                     android:id="@+id/skills_text"
                     android:layout_width="wrap_content"
@@ -313,7 +326,7 @@
                     android:textSize="16sp"
                     app:autoSizeTextType="uniform"
                     app:layout_constraintStart_toStartOf="@+id/skills"
-                    app:layout_constraintTop_toBottomOf="@+id/deadline_date" />
+                    app:layout_constraintTop_toBottomOf="@+id/calendar_sync" />
 
             <TextView
                     android:id="@+id/xp_gain_text"

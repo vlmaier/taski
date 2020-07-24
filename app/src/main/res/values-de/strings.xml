@@ -132,6 +132,7 @@
     <string name="heading_light_mode">Tagesmodus</string>
     <string name="heading_language">Sprache</string>
     <string name="heading_theme">Thema</string>
+    <string name="heading_synchronize_to_calendar">Mit Kalender synchronisieren</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Bezeichnung</string>

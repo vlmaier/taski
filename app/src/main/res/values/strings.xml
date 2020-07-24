@@ -133,6 +133,7 @@
     <string name="heading_dark_mode">Dark mode</string>
     <string name="heading_light_mode">Light mode</string>
     <string name="heading_language">Language</string>
+    <string name="heading_synchronize_to_calendar">Synchronize to calendar</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>

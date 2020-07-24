@@ -112,7 +112,12 @@ class TaskCreateFragment : TaskFragment() {
         binding.deadlineTime.editText?.setText(args?.getString(KEY_DEADLINE_TIME) ?: "")
         setDeadlineDateOnClickListener(binding.deadlineDate.editText)
         setDeadlineTimeOnClickListener(binding.deadlineTime.editText)
-
+        setDeadlineDateOnTextChangedListener(binding.calendarSync, binding.deadlineDate.editText)
+        binding.calendarSync.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                PermissionUtils.setupCalendarPermissions(requireContext())
+            }
+        }
         return binding.root
     }
 
@@ -172,7 +177,7 @@ class TaskCreateFragment : TaskFragment() {
         Timber.d("Created new task. ID: $id returned.")
         task.id = id
         TaskListFragment.taskAdapter.notifyDataSetChanged()
-        addToCalendar(task)
+        addToCalendar(binding.calendarSync.isChecked, task)
         if (dueAt != null) {
             val notifyAtInMs: Long = try {
                 // remind 15 minutes before the task is due (incl. duration)

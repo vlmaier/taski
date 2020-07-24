@@ -1,6 +1,7 @@
 package com.vmaier.taski.features.tasks
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.ContentValues
@@ -13,13 +14,12 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.SeekBar
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
@@ -51,7 +51,7 @@ import kotlin.random.Random
  */
 open class TaskFragment : Fragment() {
 
-    private lateinit var prefs: SharedPreferences
+    lateinit var prefs: SharedPreferences
 
     companion object {
         lateinit var skillNames: List<String>
@@ -194,6 +194,23 @@ open class TaskFragment : Fragment() {
         }
     }
 
+    fun setDeadlineDateOnTextChangedListener(calendarSync: CheckBox, view: EditText?) {
+        view?.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                if (s.isNotEmpty()) {
+                    val isCalendarSyncOn = prefs.getBoolean(Constants.Prefs.CALENDAR_SYNC, false)
+                    calendarSync.isChecked = isCalendarSyncOn
+                    calendarSync.isEnabled = true
+                } else {
+                    calendarSync.isChecked = false
+                    calendarSync.isEnabled = false
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        })
+    }
+
     fun setDeadlineTimeOnClickListener(view: EditText?) {
         view?.setOnClickListener {
             it.hideKeyboard()
@@ -212,8 +229,8 @@ open class TaskFragment : Fragment() {
         }
     }
 
-    fun addToCalendar(task: Task?) {
-        val isCalendarSyncOn = prefs.getBoolean(Constants.Prefs.CALENDAR_SYNC, false)
+    @SuppressLint("MissingPermission")
+    fun addToCalendar(isCalendarSyncOn: Boolean, task: Task?) {
         if (!isCalendarSyncOn) return
         if (task == null) return
         val calendarId = getCalendarId(requireContext()) ?: return
@@ -245,12 +262,11 @@ open class TaskFragment : Fragment() {
         db.taskDao().updateEventId(task.id, eventId.toString())
     }
 
-    fun updateInCalendar(before: Task, after: Task?) {
+    fun updateInCalendar(isCalendarSyncOn: Boolean, before: Task, after: Task?) {
         if (after == null) return
-        val isCalendarSyncOn = prefs.getBoolean(Constants.Prefs.CALENDAR_SYNC, false)
         if (!isCalendarSyncOn) return
         if (after.eventId == null) {
-            addToCalendar(after)
+            addToCalendar(isCalendarSyncOn, after)
             return
         }
         val eventId: Uri? = Uri.parse(after.eventId)
