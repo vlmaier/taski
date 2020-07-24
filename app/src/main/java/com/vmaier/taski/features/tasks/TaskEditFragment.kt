@@ -99,6 +99,9 @@ class TaskEditFragment : TaskFragment() {
         binding.skills.chipTokenizer = getSkillsTokenizer()
         binding.skills.setText(
             saved?.getStringArrayList(KEY_SKILLS) ?: assignedSkills.map { it.name })
+        val amountOfSkills = assignedSkills.size
+        val linesNeeded = if (amountOfSkills <= 3) 1 else assignedSkills.size.div(3) + 1
+        binding.skills.setLines(linesNeeded)
 
         // --- Deadline settings
         val dueAt = task.dueAt
@@ -128,7 +131,6 @@ class TaskEditFragment : TaskFragment() {
             val fragmentManager = requireActivity().supportFragmentManager
             MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
         }
-
         return binding.root
     }
 
