@@ -84,21 +84,9 @@
                     app:srcCompat="@drawable/ic_time_24" />
 
             <ImageView
-                    android:id="@+id/skill_icon"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:layout_marginTop="4dp"
-                    android:backgroundTint="?attr/colorOnSurface"
-                    android:contentDescription="@string/content_skill_icon"
-                    app:layout_constraintEnd_toEndOf="@+id/time_icon"
-                    app:layout_constraintStart_toStartOf="@+id/time_icon"
-                    app:layout_constraintTop_toBottomOf="@+id/time_icon"
-                    app:srcCompat="@drawable/ic_skill_24" />
-
-            <ImageView
                     android:id="@+id/task_icon"
-                    android:layout_width="78dp"
-                    android:layout_height="78dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_margin="4dp"
                     android:layout_marginStart="2dp"
                     android:layout_marginTop="2dp"
@@ -125,19 +113,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linear_layout"
                     tools:text="540 XP" />
-
-            <TextView
-                    android:id="@+id/skill_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:singleLine="true"
-                    android:textSize="14sp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="@+id/skill_icon"
-                    app:layout_constraintEnd_toStartOf="@+id/skill_icon"
-                    app:layout_constraintTop_toTopOf="@+id/skill_icon"
-                    tools:text="1 skill" />
 
             <TextView
                     android:id="@+id/task_duration"
@@ -258,7 +233,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:singleLine="true"
-                    android:text="..."
+                    android:text="@string/three_dots"
                     android:textSize="18sp"
                     android:visibility="invisible"
                     app:autoSizeTextType="uniform"

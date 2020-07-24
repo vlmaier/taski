@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Taski</string>
+    <string name="three_dots" translatable="false">...</string>
     <string name="version">Version %s\n\n© 2020 Vladas Maier</string>
 
     <!-- Theme names -->
@@ -49,10 +50,6 @@
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
     <string name="term_level_value">Level %d</string>
-    <plurals name="term_skill">
-        <item quantity="one">%d skill</item>
-        <item quantity="other">%d skills</item>
-    </plurals>
     <string name="term_overdue">Overdue</string>
     <string name="term_due_today">Due today</string>
     <string name="term_due_tomorrow">Due tomorrow</string>

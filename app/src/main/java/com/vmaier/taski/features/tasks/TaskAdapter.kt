@@ -47,9 +47,7 @@ class TaskAdapter internal constructor(
         var detailsView: TextView = itemView.findViewById(R.id.task_details)
         var durationView: TextView = itemView.findViewById(R.id.task_duration)
         var xpView: TextView = itemView.findViewById(R.id.task_xp)
-        var skillsView: TextView = itemView.findViewById(R.id.skill_amount)
         var taskIconView: ImageView = itemView.findViewById(R.id.task_icon)
-        var skillIconView: ImageView = itemView.findViewById(R.id.skill_icon)
         var skillIcon1View: ImageView = itemView.findViewById(R.id.skill_icon_1)
         var skillIcon2View: ImageView = itemView.findViewById(R.id.skill_icon_2)
         var skillIcon3View: ImageView = itemView.findViewById(R.id.skill_icon_3)
@@ -109,15 +107,10 @@ class TaskAdapter internal constructor(
                     holder.xpView.text = context.getString(R.string.term_xp_value, task.xpValue)
 
                     // --- Skills settings
-                    val skills = db.skillDao().findAssignedSkills(task.id)
+                    val skills = db.skillDao().findAssignedSkills(task.id).sortedBy { it.name }
                     val skillsCount = skills.size
                     if (skillsCount > 0) {
-                        holder.skillsView.text = context.resources.getQuantityString(
-                            R.plurals.term_skill, skillsCount, skillsCount
-                        )
-                        holder.skillsView.visibility = View.VISIBLE
-                        holder.skillIconView.visibility = View.VISIBLE
-                        for (i in 1..skills.size) {
+                        for (i in 1..skillsCount) {
                             when(i) {
                                 1 -> {
                                     val icon = App.iconPack.getIconDrawable(
@@ -165,8 +158,6 @@ class TaskAdapter internal constructor(
                         }
                         if (skillsCount > 7) holder.tooMuchSkillsView.visibility = View.VISIBLE
                     } else {
-                        holder.skillsView.visibility = View.INVISIBLE
-                        holder.skillIconView.visibility = View.INVISIBLE
                         holder.skillIcon1View.visibility = View.INVISIBLE
                         holder.skillIcon2View.visibility = View.INVISIBLE
                         holder.skillIcon3View.visibility = View.INVISIBLE
