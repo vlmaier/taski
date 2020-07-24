@@ -78,6 +78,15 @@ interface SkillDao {
     @Query(
         """
         SELECT *
+        FROM skills
+        WHERE category_id = :categoryId 
+    """
+    )
+    fun findSkillsByCategoryId(categoryId: Long): List<Skill>
+
+    @Query(
+        """
+        SELECT *
         FROM assigned_skills
         WHERE skill_id = :skillId
     """
@@ -110,6 +119,15 @@ interface SkillDao {
     @Query(
         """
         SELECT COUNT(*)
+        FROM skills
+        WHERE category_id = :categoryId
+    """
+    )
+    fun countSkillsWithCategory(categoryId: Long): Int
+
+    @Query(
+        """
+        SELECT COUNT(*)
         FROM assigned_skills
         WHERE task_id = :taskId 
     """
@@ -132,6 +150,15 @@ interface SkillDao {
 
     @Update(entity = Skill::class, onConflict = OnConflictStrategy.REPLACE)
     fun update(skill: Skill)
+
+    @Query(
+        """
+        UPDATE skills
+        SET category_id = :categoryId
+        WHERE id = :skillId
+    """
+    )
+    fun updateCategoryId(skillId: Long, categoryId: Long)
 
     // ------------------------------------- DELETE QUERIES ------------------------------------- //
 

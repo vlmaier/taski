@@ -33,13 +33,17 @@ import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
+import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.databinding.ActivityMainBinding
+import com.vmaier.taski.features.categories.CategoryListFragment
+import com.vmaier.taski.features.categories.CategoryListFragmentDirections
 import com.vmaier.taski.features.settings.HelpFragment
 import com.vmaier.taski.features.settings.SettingsFragment
 import com.vmaier.taski.features.skills.*
 import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
 import com.vmaier.taski.features.tasks.*
 import com.vmaier.taski.utils.Utils
+import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
 import java.util.*
 
@@ -145,6 +149,27 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                             navController
                                 .navigate(R.id.action_skillListFragment_to_createSkillFragment)
                         }
+                        is CategoryListFragment -> {
+                            CategoryListFragment.categoryAdapter.closeMenu()
+                            val dialog = EditTextDialog.newInstance(
+                                title = getString(R.string.heading_create_category),
+                                hint = getString(R.string.hint_category_name),
+                                positiveButton = R.string.action_create
+                            )
+                            dialog.onPositiveButtonClicked = {
+                                val name = dialog.editText.text.toString().trim()
+                                val category = Category(name = name)
+                                val id = db.categoryDao().create(category)
+                                CategoryListFragment.categoryAdapter.categories.add(
+                                    Category(id = id, name = name))
+                                CategoryListFragment.categoryAdapter.notifyDataSetChanged()
+                                Timber.d("Category \"$name\" created.")
+                            }
+                            dialog.onNegativeButtonClicked = {
+                                dialog.dismiss()
+                            }
+                            dialog.show(supportFragmentManager, EditTextDialog::class.simpleName)
+                        }
                     }
                 }
             }
@@ -236,6 +261,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                                 .actionStatisticsFragmentToTaskListFragment()
                         )
                     }
+                    R.id.categoryListFragment -> {
+                        navController.navigate(
+                            CategoryListFragmentDirections
+                                .actionCategoryListFragmentToTaskListFragment()
+                        )
+                    }
                     else -> navController.navigate(R.id.taskListFragment)
                 }
             }
@@ -251,6 +282,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                         navController.navigate(
                             StatisticsFragmentDirections
                                 .actionStatisticsFragmentToSkillListFragment()
+                        )
+                    }
+                    R.id.categoryListFragment -> {
+                        navController.navigate(
+                            CategoryListFragmentDirections
+                                .actionCategoryListFragmentToSkillListFragment()
                         )
                     }
                     else -> navController.navigate(R.id.skillListFragment)
@@ -270,7 +307,36 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                                 .actionSkillListFragmentToStatisticsFragment()
                         )
                     }
+                    R.id.categoryListFragment -> {
+                        navController.navigate(
+                            CategoryListFragmentDirections
+                                .actionCategoryListFragmentToStatisticsFragment()
+                        )
+                    }
                     else -> navController.navigate(R.id.statisticsFragment)
+                }
+            }
+            R.id.nav_categories -> {
+                when (navController.currentDestination?.id) {
+                    R.id.taskListFragment -> {
+                        navController.navigate(
+                            TaskListFragmentDirections
+                                .actionTaskListFragmentToCategoryListFragment()
+                        )
+                    }
+                    R.id.skillListFragment -> {
+                        navController.navigate(
+                            SkillListFragmentDirections
+                                .actionSkillListFragmentToCategoryListFragment()
+                        )
+                    }
+                    R.id.statisticsFragment -> {
+                        navController.navigate(
+                            StatisticsFragmentDirections
+                                .actionStatisticsFragmentToCategoryListFragment()
+                        )
+                    }
+                    else -> navController.navigate(R.id.categoryListFragment)
                 }
             }
         }

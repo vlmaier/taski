@@ -51,7 +51,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
-                    android:id="@+id/empty_rv_tumbleweed"
+                    android:id="@+id/empty_rv_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="false"

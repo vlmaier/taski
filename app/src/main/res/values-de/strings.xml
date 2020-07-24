@@ -75,6 +75,7 @@
     <string name="event_task_complete">Aufgabe abgeschlossen (+%d XP)</string>
     <string name="event_task_failed">Aufgabe fehlgeschlagen</string>
     <string name="event_task_updated">Aufgabe aktualisiert</string>
+    <string name="event_category_deleted">Kategorie gelöscht</string>
 
     <!-- Buttons -->
     <string name="action_ok">Ok</string>
@@ -87,6 +88,8 @@
     <string name="action_proceed_with_reset">Zurücksetzen</string>
     <string name="action_copy">Kopieren</string>
     <string name="action_dismiss">Verwerfen</string>
+    <string name="action_pick_color">Farbe wählen</string>
+    <string name="action_edit_name">Name ändern</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Neue Fähigkeit</string>
@@ -97,6 +100,7 @@
     <string name="heading_due_at">um</string>
     <string name="heading_tasks">Aufgaben</string>
     <string name="heading_skills">Fähigkeiten</string>
+    <string name="heading_categories">Kategorien</string>
     <string name="heading_statistics">Statistiken</string>
     <string name="heading_settings">Einstellungen</string>
     <string name="heading_xp_gain">Erfahrungsgewinn</string>
@@ -113,6 +117,8 @@
     <string name="heading_done_tasks">Anzahl abgeschlossener Aufgaben</string>
     <string name="heading_calendar_sync">Kalendersynchronisation</string>
     <string name="heading_user_name">Name</string>
+    <string name="heading_edit_category_name">Kategoriename ändern</string>
+    <string name="heading_create_category">Erstelle eine neue Fähigkeitskategorie</string>
     <string name="heading_select_image">Wähle ein Bild</string>
     <string name="heading_visual_prefs">Visuelle Einstellungen</string>
     <string name="heading_general_settings">Allgemeine Einstellungen</string>
@@ -137,7 +143,9 @@
     <string name="hint_no_skills">Es wurden noch keine Fähigkeiten erstellt</string>
     <string name="hint_no_tasks_in_rv">Es sind keine Aufgaben verfügbar\nKlicke auf + um welche hinzuzufügen</string>
     <string name="hint_no_skills_in_rv">Es sind keine Fähigkeiten verfügbar\nKlicke auf + um welche hinzuzufügen</string>
+    <string name="hint_no_categories_in_rv">Es sind keine Kategorien verfügbar\nKlicke auf + um welche hinzuzufügen</string>
     <string name="hint_user_name">Gebe deinen Benutzernamen ein</string>
+    <string name="hint_category_name">Gebe einen Kategorienamen ein</string>
 
     <!-- Description messages -->
     <string name="description_calendar_sync">Wenn diese Option ausgewählt ist, synchronisiert die App alle Aufgaben zu dem Standardkalender</string>
@@ -151,6 +159,7 @@
     <string name="description_switch_to_light">Wechsel zum Tagesmodus</string>
 
     <!-- Dialog messages -->
+    <string name="pick_a_color">Wähle eine Kategoriefarbe</string>
     <string name="alert_skill_delete">Fähigkeit löschen?</string>
     <string name="alert_reset_avatar">Avatar zurücksetzen?</string>
     <plurals name="alert_assigned_task">
@@ -159,6 +168,11 @@
     </plurals>
     <string name="alert_permission_required">Berechtigung erforderlich</string>
     <string name="alert_calendar_access_required">Für die Aufgabensynchronisation ist die Berechtigung zum Zugriff auf den Kalender erforderlich</string>
+    <string name="alert_category_delete">Kategorie löschen?</string>
+    <plurals name="alert_assigned_skill">
+        <item quantity="one">%1$d Fähigkeit ist der \"%2$s\" Kategorie zugewiesen</item>
+        <item quantity="other">%1$d Fähigkeiten sind der \"%2$s\" Kategorie zugewiesen</item>
+    </plurals>
 
     <!-- Content description -->
     <string name="content_task_icon">Aufgabensymbol</string>
@@ -166,6 +180,10 @@
     <string name="content_fab">schwebende Aktionstaste</string>
     <string name="content_due_at_icon">Fälligkeitsdatumsymbol</string>
     <string name="content_user_avatar">Avatar</string>
-    <string name="content_empty_icon">Leere Kiste Symbol</string>
+    <string name="content_empty_icon">"Leere Kiste" Symbol</string>
+    <string name="content_category_color">Kategoriefarbe</string>
+    <string name="content_pick_color_icon">"Wähle eine Farbe" Symbol</string>
+    <string name="content_edit_name_icon">"Name ändern" Symbol</string>
+    <string name="content_delete_icon">"Löschen" Symbol</string>
 
 </resources>

@@ -44,10 +44,19 @@ class ChartCategoryXpFragment : SkillFragment() {
 
         val categories = db.categoryDao().findAll()
         val values = ArrayList<PieEntry>()
+        val colors = mutableListOf<Int>()
         categories.forEach {
-            val xpValue = db.categoryDao().countCategoryXpValue(it.id)
+            val category = it
+            val xpValue = db.categoryDao().countCategoryXpValue(category.id)
             if (xpValue > 0) {
-                values.add(PieEntry(xpValue.toFloat(), it.name))
+                values.add(PieEntry(xpValue.toFloat(), category.name))
+                if (category.color != null) {
+                    // set category color in pie chart
+                    colors.add(Color.parseColor(category.color))
+                } else {
+                    // otherwise take a random color if category is colorless
+                    colors.add(Utils.getRandomMaterialColor(requireContext()))
+                }
             }
         }
 
@@ -55,7 +64,7 @@ class ChartCategoryXpFragment : SkillFragment() {
         dataSet.setDrawIcons(true)
         dataSet.sliceSpace = 3f
         dataSet.iconsOffset = MPPointF(30f, 0f)
-        dataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+        dataSet.colors = colors
 
         val data = PieData(dataSet)
         data.setValueTextSize(14f)

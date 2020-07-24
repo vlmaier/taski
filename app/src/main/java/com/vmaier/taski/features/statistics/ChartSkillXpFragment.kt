@@ -13,7 +13,6 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.vmaier.taski.App
@@ -61,7 +60,7 @@ class ChartSkillXpFragment : SkillFragment() {
         dataSet.setDrawIcons(true)
         dataSet.sliceSpace = 3f
         dataSet.iconsOffset = MPPointF(30f, 0f)
-        dataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+        dataSet.colors = Utils.getMaterialColors(requireContext()).toMutableList()
 
         val data = PieData(dataSet)
         data.setValueTextSize(14f)

@@ -32,7 +32,7 @@
     <PreferenceCategory android:title="@string/heading_general_settings">
         <androidx.preference.CheckBoxPreference
                 android:defaultValue="false"
-                android:icon="@drawable/ic_baseline_calendar_today_24"
+                android:icon="@drawable/ic_calendar_24"
                 android:key="calendar_sync"
                 android:summary="@string/description_calendar_sync"
                 android:title="@string/heading_calendar_sync" />

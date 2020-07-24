@@ -1,6 +1,7 @@
 package com.vmaier.taski.features.skills
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.AssignedSkill
+import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.setIcon
+import kotlinx.android.synthetic.main.item_skill.view.*
 import timber.log.Timber
 
 
@@ -44,19 +47,23 @@ class SkillAdapter internal constructor(
 
         val db = AppDatabase(context)
         val skill: Skill = skills[position]
+        val category: Category? = if (skill.categoryId != null)
+            db.categoryDao().findById(skill.categoryId) else null
 
         // --- Name settings
         holder.nameView.text = skill.name
         holder.nameView.isSelected = true
 
         // --- Category settings
-        val categoryName = if (skill.categoryId == null) {
-            ""
-        } else {
-            db.categoryDao().findNameById(skill.categoryId)
-        }
+        val categoryName = category?.name ?: ""
         holder.categoryView.text = categoryName
         holder.categoryView.isSelected = true
+        if (category?.color != null) {
+            holder.itemView.cv.strokeColor = Color.parseColor(category.color)
+        } else {
+            // set transparent
+            holder.itemView.cv.strokeColor = 0x00000000
+        }
 
         // --- Icon settings
         holder.iconView.setIcon(skill.iconId)

@@ -3,17 +3,19 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
+            app:strokeWidth="1.5dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp"
             app:cardMaxElevation="5dp"
             app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true">
+            app:cardUseCompatPadding="true"
+            tools:strokeColor="#42BD41">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -99,10 +101,10 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/ic_baseline_book_24" />
+                    tools:srcCompat="@drawable/ic_book_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

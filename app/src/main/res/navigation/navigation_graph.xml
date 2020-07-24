@@ -45,6 +45,13 @@
                 app:exitAnim="@anim/fade_in"
                 app:popEnterAnim="@anim/fade_out"
                 app:popExitAnim="@anim/fade_in" />
+        <action
+                android:id="@+id/action_taskListFragment_to_categoryListFragment"
+                app:destination="@id/categoryListFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
     </fragment>
 
     <fragment
@@ -95,6 +102,13 @@
         <action
                 android:id="@+id/action_skillListFragment_to_statisticsFragment"
                 app:destination="@id/statisticsFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
+        <action
+                android:id="@+id/action_skillListFragment_to_categoryListFragment"
+                app:destination="@id/categoryListFragment"
                 app:enterAnim="@anim/fade_out"
                 app:exitAnim="@anim/fade_in"
                 app:popEnterAnim="@anim/fade_out"
@@ -176,6 +190,41 @@
         <action
                 android:id="@+id/action_statisticsFragment_to_taskListFragment"
                 app:destination="@id/taskListFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
+        <action
+                android:id="@+id/action_statisticsFragment_to_categoryListFragment"
+                app:destination="@id/categoryListFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
+    </fragment>
+
+    <fragment
+            android:id="@+id/categoryListFragment"
+            android:name="com.vmaier.taski.features.categories.CategoryListFragment"
+            android:label="CategoryListFragment"
+            tools:layout="@layout/fragment_category_list" >
+        <action
+                android:id="@+id/action_categoryListFragment_to_taskListFragment"
+                app:destination="@id/taskListFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
+        <action
+                android:id="@+id/action_categoryListFragment_to_skillListFragment"
+                app:destination="@id/skillListFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
+        <action
+                android:id="@+id/action_categoryListFragment_to_statisticsFragment"
+                app:destination="@id/statisticsFragment"
                 app:enterAnim="@anim/fade_out"
                 app:exitAnim="@anim/fade_in"
                 app:popEnterAnim="@anim/fade_out"

@@ -1,9 +1,6 @@
 package com.vmaier.taski.data.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.vmaier.taski.data.entity.Category
 
 
@@ -21,6 +18,15 @@ interface CategoryDao {
     fun create(category: Category): Long
 
     // -------------------------------------  READ QUERIES  ------------------------------------- //
+
+    @Query(
+        """
+        SELECT *
+        FROM categories
+        WHERE id = :categoryId
+    """
+    )
+    fun findById(categoryId: Long): Category
 
     @Query(
         """
@@ -64,7 +70,26 @@ interface CategoryDao {
 
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 
+    @Query(
+        """
+        UPDATE categories
+        SET name = :name
+        WHERE id = :categoryId
+    """
+    )
+    fun updateName(categoryId: Long, name: String)
+
+    @Query(
+        """
+        UPDATE categories
+        SET color = :color
+        WHERE id = :categoryId
+    """
+    )
+    fun updateColor(categoryId: Long, color: String?)
 
     // ------------------------------------- DELETE QUERIES ------------------------------------- //
 
+    @Delete
+    fun delete(category: Category)
 }

@@ -81,7 +81,7 @@
                     android:contentDescription="@string/content_due_at_icon"
                     app:layout_constraintEnd_toEndOf="@+id/task_xp"
                     app:layout_constraintTop_toTopOf="@+id/linear_layout"
-                    app:srcCompat="@drawable/ic_baseline_access_time_24" />
+                    app:srcCompat="@drawable/ic_time_24" />
 
             <ImageView
                     android:id="@+id/skill_icon"
@@ -93,7 +93,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/time_icon"
                     app:layout_constraintStart_toStartOf="@+id/time_icon"
                     app:layout_constraintTop_toBottomOf="@+id/time_icon"
-                    app:srcCompat="@drawable/ic_baseline_style_24" />
+                    app:srcCompat="@drawable/ic_skill_24" />
 
             <ImageView
                     android:id="@+id/task_icon"
@@ -110,7 +110,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/ic_baseline_assignment_24" />
+                    tools:srcCompat="@drawable/ic_task_24" />
 
             <TextView
                     android:id="@+id/task_xp"

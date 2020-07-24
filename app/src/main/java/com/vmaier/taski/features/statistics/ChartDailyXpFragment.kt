@@ -12,7 +12,6 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.vmaier.taski.App
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
@@ -72,7 +71,7 @@ class ChartDailyXpFragment : TaskFragment() {
 
         val dataSet = BarDataSet(values, "")
         dataSet.barBorderWidth = 0.9f
-        dataSet.setColors(*ColorTemplate.COLORFUL_COLORS)
+        dataSet.colors = Utils.getMaterialColors(requireContext()).toMutableList()
 
         val data = BarData(dataSet)
         data.barWidth = 0.9f

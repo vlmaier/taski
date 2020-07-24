@@ -1,6 +1,7 @@
 package com.vmaier.taski.utils
 
 import android.content.Context
+import android.graphics.Color
 import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
@@ -19,6 +20,25 @@ object Utils {
         val value = TypedValue()
         context.theme.resolveAttribute(attributeColor, value, true)
         return value.data
+    }
+
+    fun getMaterialColors(context: Context): IntArray {
+        val colors = context.resources.obtainTypedArray(R.array.md_colors_300)
+        val colorInts = mutableListOf<Int>()
+        for (i in 0 until colors.length()) {
+            colorInts.add(colors.getColor(i, Color.BLACK))
+        }
+        colors.recycle()
+        return colorInts.toIntArray()
+    }
+
+    @ColorInt
+    fun getRandomMaterialColor(context: Context): Int {
+        val colors = context.resources.obtainTypedArray(R.array.md_colors_300)
+        val index = (Math.random() * colors.length()).toInt()
+        val randomColor = colors.getColor(index, Color.BLACK);
+        colors.recycle()
+        return randomColor
     }
 
     fun getThemeByName(context: Context, theme: String?): Int {

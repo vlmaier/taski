@@ -80,6 +80,7 @@
     <string name="event_task_complete">Задача выполнена (+%d XP)</string>
     <string name="event_task_failed">Задача не выполнена</string>
     <string name="event_task_updated">Задача обновлена</string>
+    <string name="event_category_deleted">Категория удалена</string>
 
     <!-- Buttons -->
     <string name="action_ok">Окей</string>
@@ -92,6 +93,8 @@
     <string name="action_proceed_with_reset">Продолжить</string>
     <string name="action_copy">Создать копию</string>
     <string name="action_dismiss">Отклонить</string>
+    <string name="action_pick_color">Выбрать цвет</string>
+    <string name="action_edit_name">Сменить название</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Создать новый навык</string>
@@ -102,6 +105,7 @@
     <string name="heading_due_at">в</string>
     <string name="heading_tasks">Задачи</string>
     <string name="heading_skills">Навыки</string>
+    <string name="heading_categories">Категории</string>
     <string name="heading_statistics">Статистика</string>
     <string name="heading_settings">Настройки</string>
     <string name="heading_xp_gain">Полученный опыт</string>
@@ -118,6 +122,8 @@
     <string name="heading_done_tasks">Количество завершеных задач</string>
     <string name="heading_calendar_sync">Синхронизация с календарем</string>
     <string name="heading_user_name">Имя</string>
+    <string name="heading_edit_category_name">Изменить название категории</string>
+    <string name="heading_create_category">Создать новую категорию навыков</string>
     <string name="heading_select_image">Выберите картинку</string>
     <string name="heading_visual_prefs">Визуальные настройки</string>
     <string name="heading_general_settings">Общие настройки</string>
@@ -142,7 +148,9 @@
     <string name="hint_no_skills">Навыки еще не созданы</string>
     <string name="hint_no_tasks_in_rv">Нет доступных задач\nнажмите + чтобы добавить</string>
     <string name="hint_no_skills_in_rv">Нет доступных навыков\nнажмите + чтобы добавить</string>
+    <string name="hint_no_categories_in_rv">Нет доступных категорий\nнажмите + чтобы добавить</string>
     <string name="hint_user_name">Введите ваше имя пользователя</string>
+    <string name="hint_category_name">Введите название категории</string>
 
     <!-- Description messages -->
     <string name="description_calendar_sync">Если включено, приложение будет синхронизировать все задачи с календарем по умолчанию</string>
@@ -156,6 +164,7 @@
     <string name="description_switch_to_light">Переключиться в дневной режим</string>
 
     <!-- Dialog messages -->
+    <string name="pick_a_color">Выберите цвет категории</string>
     <string name="alert_skill_delete">Удалить навык?</string>
     <string name="alert_reset_avatar">Сбросить аватар?</string>
     <plurals name="alert_assigned_task">
@@ -165,6 +174,12 @@
     </plurals>
     <string name="alert_permission_required">Требуется разрешение</string>
     <string name="alert_calendar_access_required">Для синхронизации задач требуется разрешение на доступ к календарю</string>
+    <string name="alert_category_delete">Удалить категорию?</string>
+    <plurals name="alert_assigned_skill">
+        <item quantity="one">%1$d навык связан с категорией \"%2$s\"</item>
+        <item quantity="few">%1$d навыка связана с категорией \"%2$s\"</item>
+        <item quantity="many">%1$d навыков связана с категорией \"%2$s\"</item>
+    </plurals>
 
     <!-- Content description -->
     <string name="content_task_icon">значок задачи</string>
@@ -173,5 +188,9 @@
     <string name="content_due_at_icon">значок подлежит исполнению</string>
     <string name="content_user_avatar">аватар</string>
     <string name="content_empty_icon">значок пустой коробки</string>
+    <string name="content_category_color">цвет категории</string>
+    <string name="content_pick_color_icon">значок "выбрать цвет"</string>
+    <string name="content_edit_name_icon">значок "изменить название"</string>
+    <string name="content_delete_icon">значок "удалить"</string>
     
 </resources>

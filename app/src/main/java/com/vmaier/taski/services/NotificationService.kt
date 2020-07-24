@@ -81,7 +81,7 @@ class NotificationService : IntentService("NotificationService") {
                 PendingIntent.FLAG_CANCEL_CURRENT
             )
             val dismissAction: Notification.Action = Notification.Action.Builder(
-                R.drawable.ic_baseline_access_time_24, getString(R.string.action_dismiss),
+                R.drawable.ic_time_24, getString(R.string.action_dismiss),
                 dismissPendingIntent
             ).build()
 

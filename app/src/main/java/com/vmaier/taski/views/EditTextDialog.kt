@@ -5,10 +5,10 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowManager
-import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.textfield.TextInputEditText
 import com.vmaier.taski.R
 
 
@@ -47,7 +47,7 @@ class EditTextDialog : DialogFragment() {
         }
     }
 
-    lateinit var editText: EditText
+    lateinit var editText: TextInputEditText
     lateinit var alertDialog: AlertDialog
     var onPositiveButtonClicked: (() -> Unit)? = null
     var onNegativeButtonClicked: (() -> Unit)? = null
@@ -80,8 +80,10 @@ class EditTextDialog : DialogFragment() {
                 onNegativeButtonClicked?.invoke()
             }
         alertDialog = builder.create()
-        if (TextUtils.isEmpty(text)) {
-            alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = false
+        alertDialog.setOnShowListener {
+            if (TextUtils.isEmpty(text)) {
+                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = false
+            }
         }
         editText.doOnTextChanged { value, _, _, _ ->
             alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)

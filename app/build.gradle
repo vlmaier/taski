@@ -80,6 +80,7 @@ dependencies {
     implementation 'com.hootsuite.android:nachos:1.1.1'
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'dev.sasikanth:colorsheet:1.0.1'
     implementation "com.mikepenz:aboutlibraries:$latestAboutLibsRelease"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

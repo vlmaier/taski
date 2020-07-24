@@ -23,7 +23,7 @@ import com.vmaier.taski.data.entity.Task
  */
 @Database(
     entities = [Task::class, Skill::class, Category::class, AssignedSkill::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -35,7 +35,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
 
-        const val DB_NAME = "taski.db"
+        private const val DB_NAME = "taski.db"
 
         @Volatile
         private var instance: AppDatabase? = null
@@ -55,10 +55,16 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE categories ADD COLUMN color TEXT")
+            }
+        }
+
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
                 .allowMainThreadQueries()
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build()
     }
 }

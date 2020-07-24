@@ -23,7 +23,7 @@ import com.vmaier.taski.toBitmap
  * on 06/02/2020
  * at 19:09
  */
-class SwipeCallbackHandler :
+class TaskItemSwipeHandler :
     SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     override fun onMove(
@@ -35,12 +35,12 @@ class SwipeCallbackHandler :
     }
 
     override fun getSwipeDirs(
-        recyclerView: RecyclerView,
+        rv: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
         // disable swiping on section items
         if (viewHolder is TaskAdapter.TaskSectionViewHolder) return 0
-        return super.getSwipeDirs(recyclerView, viewHolder)
+        return super.getSwipeDirs(rv, viewHolder)
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -90,7 +90,7 @@ class SwipeCallbackHandler :
                 val background = RectF(left, top, dX, bottom)
                 c.drawRect(background, paint)
                 icon = AppCompatResources.getDrawable(
-                    context, R.drawable.ic_outline_cancel_24
+                    context, R.drawable.ic_cancel_24
                 )?.toBitmap()
                 val destination = RectF(
                     left + width, top + width,
@@ -103,7 +103,7 @@ class SwipeCallbackHandler :
                 val background = RectF(right + dX, top, right, bottom)
                 c.drawRect(background, paint)
                 icon = AppCompatResources.getDrawable(
-                    context, R.drawable.ic_baseline_done_24
+                    context, R.drawable.ic_done_24
                 )?.toBitmap()
                 val destination = RectF(
                     right - 2 * width, top + width,
