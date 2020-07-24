@@ -10,15 +10,11 @@ import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.vmaier.taski.MainActivity
-import com.vmaier.taski.R
+import com.maltaisn.icondialog.pack.IconDrawableLoader
+import com.vmaier.taski.*
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
-import com.vmaier.taski.getDateInAppFormat
-import com.vmaier.taski.getHumanReadableDurationValue
-import com.vmaier.taski.getSeekBarValue
-import com.vmaier.taski.setIcon
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,6 +50,14 @@ class TaskAdapter internal constructor(
         var skillsView: TextView = itemView.findViewById(R.id.skill_amount)
         var taskIconView: ImageView = itemView.findViewById(R.id.task_icon)
         var skillIconView: ImageView = itemView.findViewById(R.id.skill_icon)
+        var skillIcon1View: ImageView = itemView.findViewById(R.id.skill_icon_1)
+        var skillIcon2View: ImageView = itemView.findViewById(R.id.skill_icon_2)
+        var skillIcon3View: ImageView = itemView.findViewById(R.id.skill_icon_3)
+        var skillIcon4View: ImageView = itemView.findViewById(R.id.skill_icon_4)
+        var skillIcon5View: ImageView = itemView.findViewById(R.id.skill_icon_5)
+        var skillIcon6View: ImageView = itemView.findViewById(R.id.skill_icon_6)
+        var skillIcon7View: ImageView = itemView.findViewById(R.id.skill_icon_7)
+        var tooMuchSkillsView: TextView = itemView.findViewById(R.id.too_much_skills)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -105,16 +109,72 @@ class TaskAdapter internal constructor(
                     holder.xpView.text = context.getString(R.string.term_xp_value, task.xpValue)
 
                     // --- Skills settings
-                    val skillsCount = db.skillDao().countAssignedSkills(task.id)
+                    val skills = db.skillDao().findAssignedSkills(task.id)
+                    val skillsCount = skills.size
                     if (skillsCount > 0) {
                         holder.skillsView.text = context.resources.getQuantityString(
                             R.plurals.term_skill, skillsCount, skillsCount
                         )
-                        holder.skillIconView.visibility = View.VISIBLE
                         holder.skillsView.visibility = View.VISIBLE
+                        holder.skillIconView.visibility = View.VISIBLE
+                        for (i in 1..skills.size) {
+                            when(i) {
+                                1 -> {
+                                    val icon = App.iconPack.getIconDrawable(
+                                        skills[i - 1].iconId, IconDrawableLoader(context))
+                                    holder.skillIcon1View.background = icon
+                                    holder.skillIcon1View.visibility = View.VISIBLE
+                                }
+                                2 -> {
+                                    val icon = App.iconPack.getIconDrawable(
+                                        skills[i - 1].iconId, IconDrawableLoader(context))
+                                    holder.skillIcon2View.background = icon
+                                    holder.skillIcon2View.visibility = View.VISIBLE
+                                }
+                                3 -> {
+                                    val icon = App.iconPack.getIconDrawable(
+                                        skills[i - 1].iconId, IconDrawableLoader(context))
+                                    holder.skillIcon3View.background = icon
+                                    holder.skillIcon3View.visibility = View.VISIBLE
+                                }
+                                4 -> {
+                                    val icon = App.iconPack.getIconDrawable(
+                                        skills[i - 1].iconId, IconDrawableLoader(context))
+                                    holder.skillIcon4View.background = icon
+                                    holder.skillIcon4View.visibility = View.VISIBLE
+                                }
+                                5 -> {
+                                    val icon = App.iconPack.getIconDrawable(
+                                        skills[i - 1].iconId, IconDrawableLoader(context))
+                                    holder.skillIcon5View.background = icon
+                                    holder.skillIcon5View.visibility = View.VISIBLE
+                                }
+                                6 -> {
+                                    val icon = App.iconPack.getIconDrawable(
+                                        skills[i - 1].iconId, IconDrawableLoader(context))
+                                    holder.skillIcon6View.background = icon
+                                    holder.skillIcon6View.visibility = View.VISIBLE
+                                }
+                                7 -> {
+                                    val icon = App.iconPack.getIconDrawable(
+                                        skills[i - 1].iconId, IconDrawableLoader(context))
+                                    holder.skillIcon7View.background = icon
+                                    holder.skillIcon7View.visibility = View.VISIBLE
+                                }
+                            }
+                        }
+                        if (skillsCount > 7) holder.tooMuchSkillsView.visibility = View.VISIBLE
                     } else {
-                        holder.skillIconView.visibility = View.INVISIBLE
                         holder.skillsView.visibility = View.INVISIBLE
+                        holder.skillIconView.visibility = View.INVISIBLE
+                        holder.skillIcon1View.visibility = View.INVISIBLE
+                        holder.skillIcon2View.visibility = View.INVISIBLE
+                        holder.skillIcon3View.visibility = View.INVISIBLE
+                        holder.skillIcon4View.visibility = View.INVISIBLE
+                        holder.skillIcon5View.visibility = View.INVISIBLE
+                        holder.skillIcon6View.visibility = View.INVISIBLE
+                        holder.skillIcon7View.visibility = View.INVISIBLE
+                        holder.tooMuchSkillsView.visibility = View.INVISIBLE
                     }
 
                     // --- Icon settings
