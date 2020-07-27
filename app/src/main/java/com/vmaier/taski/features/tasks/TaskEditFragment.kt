@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
 import com.vmaier.taski.*
 import com.vmaier.taski.data.Difficulty
@@ -27,6 +28,7 @@ import java.util.*
 class TaskEditFragment : TaskFragment() {
 
     private var itemPosition: Int = 0
+    private var isCanceled = false
 
     companion object {
         lateinit var binding: FragmentEditTaskBinding
@@ -127,16 +129,24 @@ class TaskEditFragment : TaskFragment() {
                 PermissionUtils.setupCalendarPermissions(requireContext())
             }
         }
+
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
             MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
+        }
+        binding.cancelButton.setOnClickListener {
+            it.findNavController().popBackStack()
+            it.hideKeyboard()
+            isCanceled = true
         }
         return binding.root
     }
 
     override fun onPause() {
         super.onPause()
-        saveChangesOnTask()
+        if (!isCanceled) {
+            saveChangesOnTask()
+        }
         binding.goal.hideKeyboard()
         binding.details.hideKeyboard()
     }
