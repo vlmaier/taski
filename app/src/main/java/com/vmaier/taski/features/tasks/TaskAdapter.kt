@@ -117,36 +117,57 @@ class TaskAdapter internal constructor(
                                         skills[i - 1].iconId, IconDrawableLoader(context))
                                     holder.skillIcon1View.background = icon
                                     holder.skillIcon1View.visibility = View.VISIBLE
+                                    holder.skillIcon2View.visibility = View.INVISIBLE
+                                    holder.skillIcon3View.visibility = View.INVISIBLE
+                                    holder.skillIcon4View.visibility = View.INVISIBLE
+                                    holder.skillIcon5View.visibility = View.INVISIBLE
+                                    holder.skillIcon6View.visibility = View.INVISIBLE
+                                    holder.skillIcon7View.visibility = View.INVISIBLE
                                 }
                                 2 -> {
                                     val icon = App.iconPack.getIconDrawable(
                                         skills[i - 1].iconId, IconDrawableLoader(context))
                                     holder.skillIcon2View.background = icon
                                     holder.skillIcon2View.visibility = View.VISIBLE
+                                    holder.skillIcon3View.visibility = View.INVISIBLE
+                                    holder.skillIcon4View.visibility = View.INVISIBLE
+                                    holder.skillIcon5View.visibility = View.INVISIBLE
+                                    holder.skillIcon6View.visibility = View.INVISIBLE
+                                    holder.skillIcon7View.visibility = View.INVISIBLE
                                 }
                                 3 -> {
                                     val icon = App.iconPack.getIconDrawable(
                                         skills[i - 1].iconId, IconDrawableLoader(context))
                                     holder.skillIcon3View.background = icon
                                     holder.skillIcon3View.visibility = View.VISIBLE
+                                    holder.skillIcon4View.visibility = View.INVISIBLE
+                                    holder.skillIcon5View.visibility = View.INVISIBLE
+                                    holder.skillIcon6View.visibility = View.INVISIBLE
+                                    holder.skillIcon7View.visibility = View.INVISIBLE
                                 }
                                 4 -> {
                                     val icon = App.iconPack.getIconDrawable(
                                         skills[i - 1].iconId, IconDrawableLoader(context))
                                     holder.skillIcon4View.background = icon
                                     holder.skillIcon4View.visibility = View.VISIBLE
+                                    holder.skillIcon5View.visibility = View.INVISIBLE
+                                    holder.skillIcon6View.visibility = View.INVISIBLE
+                                    holder.skillIcon7View.visibility = View.INVISIBLE
                                 }
                                 5 -> {
                                     val icon = App.iconPack.getIconDrawable(
                                         skills[i - 1].iconId, IconDrawableLoader(context))
                                     holder.skillIcon5View.background = icon
                                     holder.skillIcon5View.visibility = View.VISIBLE
+                                    holder.skillIcon6View.visibility = View.INVISIBLE
+                                    holder.skillIcon7View.visibility = View.INVISIBLE
                                 }
                                 6 -> {
                                     val icon = App.iconPack.getIconDrawable(
                                         skills[i - 1].iconId, IconDrawableLoader(context))
                                     holder.skillIcon6View.background = icon
                                     holder.skillIcon6View.visibility = View.VISIBLE
+                                    holder.skillIcon7View.visibility = View.INVISIBLE
                                 }
                                 7 -> {
                                     val icon = App.iconPack.getIconDrawable(
