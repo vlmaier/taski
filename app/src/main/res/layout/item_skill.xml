@@ -101,7 +101,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/ic_book_24" />
+                    tools:srcCompat="@drawable/ic_category_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

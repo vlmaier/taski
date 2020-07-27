@@ -104,7 +104,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/category"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/name"
-                    tools:background="@drawable/ic_task_24" />
+                    tools:background="@drawable/ic_tasks_24" />
 
             <Button
                     android:id="@+id/create_skill_button"

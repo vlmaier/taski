@@ -38,7 +38,7 @@
                         android:layout_height="32dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
-                        android:src="@drawable/ic_theme_24"
+                        android:src="@drawable/ic_color_24"
                         app:tint="?attr/colorOnPrimary"
                         android:contentDescription="@string/content_pick_color_icon" />
 

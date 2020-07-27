@@ -3,11 +3,11 @@
     <group>
         <item
                 android:id="@+id/nav_tasks"
-                android:icon="@drawable/ic_task_24"
+                android:icon="@drawable/ic_tasks_24"
                 android:title="@string/heading_tasks" />
         <item
                 android:id="@+id/nav_skills"
-                android:icon="@drawable/ic_skill_24"
+                android:icon="@drawable/ic_skills_24"
                 android:title="@string/heading_skills" />
         <item
                 android:id="@+id/nav_categories"

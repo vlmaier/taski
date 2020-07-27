@@ -210,7 +210,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/details"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/goal"
-                    tools:background="@drawable/ic_task_24" />
+                    tools:background="@drawable/ic_tasks_24" />
 
             <TextView
                     android:id="@+id/duration_text"
