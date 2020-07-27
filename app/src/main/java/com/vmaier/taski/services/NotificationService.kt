@@ -132,7 +132,7 @@ class NotificationService : IntentService("NotificationService") {
         val intent = Intent(activity.applicationContext, ReminderReceiver::class.java)
         intent.putExtra(KEY_TIMESTAMP, timeInMs)
         intent.putExtra(KEY_TITLE, title)
-        intent.putExtra(KEY_NOTIFICATION_ID, message)
+        intent.putExtra(KEY_MESSAGE, message)
         val pendingIntent = PendingIntent.getBroadcast(
             activity,
             requestCode,
