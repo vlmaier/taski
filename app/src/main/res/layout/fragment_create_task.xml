@@ -86,10 +86,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:importantForAutofill="no"
-                        android:inputType="textCapSentences|textAutoCorrect"
-                        android:maxLength="36"
+                        android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+                        android:maxLength="100"
                         android:padding="12dp"
-                        android:singleLine="true"
+                        android:singleLine="false"
                         android:textSize="16sp"
                         app:autoSizeTextType="uniform" />
 
