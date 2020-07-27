@@ -90,7 +90,7 @@ class TaskListFragment : Fragment() {
         val db = AppDatabase(requireContext())
         val tasks = db.taskDao().findByStatus(Status.OPEN)
         Timber.d("${tasks.size} task(s) found.")
-        taskAdapter.fill(tasks)
+        taskAdapter.setTasks(tasks)
         binding.rv.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = taskAdapter

@@ -206,7 +206,6 @@ class TaskEditFragment : TaskFragment() {
             db.taskDao().updateTask(toUpdate, skillsToAssign)
             Timber.d("Updated task with ID: ${task.id}.")
             TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
-            TaskListFragment.taskAdapter.update()
             updateInCalendar(binding.calendarSync.isChecked, task, toUpdate)
             getString(R.string.event_task_updated).toast(requireContext())
             if (reminderUpdateRequired && toUpdate.dueAt != null) {

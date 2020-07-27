@@ -34,15 +34,6 @@ class TaskItemSwipeHandler :
         return false
     }
 
-    override fun getSwipeDirs(
-        rv: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
-    ): Int {
-        // disable swiping on section items
-        if (viewHolder is TaskAdapter.TaskSectionViewHolder) return 0
-        return super.getSwipeDirs(rv, viewHolder)
-    }
-
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.adapterPosition
         val itemView = viewHolder.itemView
@@ -60,7 +51,7 @@ class TaskItemSwipeHandler :
         val snackbar = Snackbar.make(MainActivity.fab, message, Snackbar.LENGTH_LONG)
             .setAction(context.getString(R.string.action_undo)) {
                 // undo is selected, restore the deleted item
-                TaskListFragment.taskAdapter.restoreItem(taskToRestore)
+                TaskListFragment.taskAdapter.restoreItem(taskToRestore, position)
             }
             .setActionTextColor(Utils.getThemeColor(context, R.attr.colorSecondary))
         snackbar.view.setOnClickListener { snackbar.dismiss() }

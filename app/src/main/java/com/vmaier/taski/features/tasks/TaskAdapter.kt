@@ -16,7 +16,6 @@ import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
 import timber.log.Timber
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -27,22 +26,12 @@ import java.util.*
  */
 class TaskAdapter internal constructor(
     private val context: Context
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var sections: MutableMap<Int, String> = mutableMapOf()
-    var tasks: MutableMap<Int, Task> = mutableMapOf()
+    var tasks: MutableList<Task> = mutableListOf()
 
-    enum class ItemViewType(val value: Int) {
-        SECTION(0),
-        TASK(1)
-    }
-
-    inner class TaskSectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var sectionView: TextView = itemView.findViewById(R.id.header)
-    }
-
-    inner class TaskItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var goalView: TextView = itemView.findViewById(R.id.task_goal)
         var detailsView: TextView = itemView.findViewById(R.id.task_details)
         var durationView: TextView = itemView.findViewById(R.id.task_duration)
@@ -58,268 +47,191 @@ class TaskAdapter internal constructor(
         var tooMuchSkillsView: TextView = itemView.findViewById(R.id.too_much_skills)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (sections[position] != null) {
-            ItemViewType.SECTION.value
-        } else {
-            ItemViewType.TASK.value
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+        val itemView = inflater.inflate(R.layout.item_task, parent, false)
+        return TaskViewHolder(itemView)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            ItemViewType.SECTION.value -> {
-                val itemView = inflater.inflate(R.layout.item_task_section, parent, false)
-                TaskSectionViewHolder(itemView)
-            }
-            else -> {
-                val itemView = inflater.inflate(R.layout.item_task, parent, false)
-                TaskItemViewHolder(itemView)
-            }
-        }
-    }
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        val db = AppDatabase(context)
+        val task: Task? = tasks[position]
+        if (task != null) {
+            // --- Goal settings
+            holder.goalView.text = task.goal
+            holder.goalView.isSelected = true
 
-    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        when (viewHolder.itemViewType) {
-            ItemViewType.SECTION.value -> {
-                val holder = viewHolder as TaskSectionViewHolder
+            // --- Details settings
+            holder.detailsView.text = task.details
+            holder.detailsView.isSelected = true
 
-                // --- Section header
-                holder.sectionView.text = sections[position]
-            }
-            ItemViewType.TASK.value -> {
-                val holder = viewHolder as TaskItemViewHolder
-                val db = AppDatabase(context)
-                val task: Task? = tasks[position]
-                if (task != null) {
-                    // --- Goal settings
-                    holder.goalView.text = task.goal
-                    holder.goalView.isSelected = true
+            // --- Duration settings
+            holder.durationView.text = task.getHumanReadableDurationValue(context)
 
-                    // --- Details settings
-                    holder.detailsView.text = task.details
-                    holder.detailsView.isSelected = true
+            // --- XP value settings
+            holder.xpView.text = context.getString(R.string.term_xp_value, task.xpValue)
 
-                    // --- Duration settings
-                    holder.durationView.text = task.getHumanReadableDurationValue(context)
-
-                    // --- XP value settings
-                    holder.xpView.text = context.getString(R.string.term_xp_value, task.xpValue)
-
-                    // --- Skills settings
-                    val skills = db.skillDao().findAssignedSkills(task.id).sortedBy { it.name }
-                    val skillsCount = skills.size
-                    if (skillsCount > 0) {
-                        for (i in 1..skillsCount) {
-                            when(i) {
-                                1 -> {
-                                    val icon = App.iconPack.getIconDrawable(
-                                        skills[i - 1].iconId, IconDrawableLoader(context))
-                                    holder.skillIcon1View.background = icon
-                                    holder.skillIcon1View.visibility = View.VISIBLE
-                                    holder.skillIcon2View.visibility = View.INVISIBLE
-                                    holder.skillIcon3View.visibility = View.INVISIBLE
-                                    holder.skillIcon4View.visibility = View.INVISIBLE
-                                    holder.skillIcon5View.visibility = View.INVISIBLE
-                                    holder.skillIcon6View.visibility = View.INVISIBLE
-                                    holder.skillIcon7View.visibility = View.INVISIBLE
-                                }
-                                2 -> {
-                                    val icon = App.iconPack.getIconDrawable(
-                                        skills[i - 1].iconId, IconDrawableLoader(context))
-                                    holder.skillIcon2View.background = icon
-                                    holder.skillIcon2View.visibility = View.VISIBLE
-                                    holder.skillIcon3View.visibility = View.INVISIBLE
-                                    holder.skillIcon4View.visibility = View.INVISIBLE
-                                    holder.skillIcon5View.visibility = View.INVISIBLE
-                                    holder.skillIcon6View.visibility = View.INVISIBLE
-                                    holder.skillIcon7View.visibility = View.INVISIBLE
-                                }
-                                3 -> {
-                                    val icon = App.iconPack.getIconDrawable(
-                                        skills[i - 1].iconId, IconDrawableLoader(context))
-                                    holder.skillIcon3View.background = icon
-                                    holder.skillIcon3View.visibility = View.VISIBLE
-                                    holder.skillIcon4View.visibility = View.INVISIBLE
-                                    holder.skillIcon5View.visibility = View.INVISIBLE
-                                    holder.skillIcon6View.visibility = View.INVISIBLE
-                                    holder.skillIcon7View.visibility = View.INVISIBLE
-                                }
-                                4 -> {
-                                    val icon = App.iconPack.getIconDrawable(
-                                        skills[i - 1].iconId, IconDrawableLoader(context))
-                                    holder.skillIcon4View.background = icon
-                                    holder.skillIcon4View.visibility = View.VISIBLE
-                                    holder.skillIcon5View.visibility = View.INVISIBLE
-                                    holder.skillIcon6View.visibility = View.INVISIBLE
-                                    holder.skillIcon7View.visibility = View.INVISIBLE
-                                }
-                                5 -> {
-                                    val icon = App.iconPack.getIconDrawable(
-                                        skills[i - 1].iconId, IconDrawableLoader(context))
-                                    holder.skillIcon5View.background = icon
-                                    holder.skillIcon5View.visibility = View.VISIBLE
-                                    holder.skillIcon6View.visibility = View.INVISIBLE
-                                    holder.skillIcon7View.visibility = View.INVISIBLE
-                                }
-                                6 -> {
-                                    val icon = App.iconPack.getIconDrawable(
-                                        skills[i - 1].iconId, IconDrawableLoader(context))
-                                    holder.skillIcon6View.background = icon
-                                    holder.skillIcon6View.visibility = View.VISIBLE
-                                    holder.skillIcon7View.visibility = View.INVISIBLE
-                                }
-                                7 -> {
-                                    val icon = App.iconPack.getIconDrawable(
-                                        skills[i - 1].iconId, IconDrawableLoader(context))
-                                    holder.skillIcon7View.background = icon
-                                    holder.skillIcon7View.visibility = View.VISIBLE
-                                }
-                            }
+            // --- Skills settings
+            val skills = db.skillDao().findAssignedSkills(task.id).sortedBy { it.name }
+            val skillsCount = skills.size
+            if (skillsCount > 0) {
+                for (i in 1..skillsCount) {
+                    when (i) {
+                        1 -> {
+                            val icon = App.iconPack.getIconDrawable(
+                                skills[i - 1].iconId, IconDrawableLoader(context)
+                            )
+                            holder.skillIcon1View.background = icon
+                            holder.skillIcon1View.visibility = View.VISIBLE
+                            holder.skillIcon2View.visibility = View.INVISIBLE
+                            holder.skillIcon3View.visibility = View.INVISIBLE
+                            holder.skillIcon4View.visibility = View.INVISIBLE
+                            holder.skillIcon5View.visibility = View.INVISIBLE
+                            holder.skillIcon6View.visibility = View.INVISIBLE
+                            holder.skillIcon7View.visibility = View.INVISIBLE
                         }
-                        if (skillsCount > 7) holder.tooMuchSkillsView.visibility = View.VISIBLE
-                    } else {
-                        holder.skillIcon1View.visibility = View.INVISIBLE
-                        holder.skillIcon2View.visibility = View.INVISIBLE
-                        holder.skillIcon3View.visibility = View.INVISIBLE
-                        holder.skillIcon4View.visibility = View.INVISIBLE
-                        holder.skillIcon5View.visibility = View.INVISIBLE
-                        holder.skillIcon6View.visibility = View.INVISIBLE
-                        holder.skillIcon7View.visibility = View.INVISIBLE
-                        holder.tooMuchSkillsView.visibility = View.INVISIBLE
-                    }
-
-                    // --- Icon settings
-                    holder.taskIconView.setIcon(task.iconId)
-
-                    holder.itemView.setOnClickListener {
-                        it.findNavController().navigate(
-                            TaskListFragmentDirections
-                                .actionTaskListFragmentToEditTaskFragment(task, position)
-                        )
-                    }
-
-                    holder.itemView.setOnLongClickListener { it ->
-                        val menu = PopupMenu(it.context, it)
-                        menu.inflate(R.menu.task_context_menu)
-                        menu.setOnMenuItemClickListener { item ->
-                            when (item.itemId) {
-                                R.id.copy -> {
-                                    val taskSkills = db.skillDao().findAssignedSkills(task.id)
-                                    val bundle = Bundle()
-                                    bundle.putString(TaskFragment.KEY_GOAL, task.goal)
-                                    bundle.putString(TaskFragment.KEY_DETAILS, task.details)
-                                    bundle.putString(
-                                        TaskFragment.KEY_DIFFICULTY,
-                                        task.difficulty.value.toUpperCase(Locale.getDefault())
-                                    )
-                                    bundle.putInt(TaskFragment.KEY_DURATION, task.getSeekBarValue())
-                                    bundle.putStringArray(
-                                        TaskFragment.KEY_SKILLS,
-                                        taskSkills.map { skill -> skill.name }.toTypedArray()
-                                    )
-                                    bundle.putInt(TaskFragment.KEY_ICON_ID, task.iconId)
-                                    if (task.dueAt != null) {
-                                        val dueAtParts = task.dueAt.split(" ")
-                                        bundle.putString(
-                                            TaskFragment.KEY_DEADLINE_DATE,
-                                            dueAtParts[0]
-                                        )
-                                        bundle.putString(
-                                            TaskFragment.KEY_DEADLINE_TIME,
-                                            dueAtParts[1]
-                                        )
-                                    }
-                                    it.findNavController().navigate(
-                                        R.id.action_taskListFragment_to_createTaskFragment, bundle
-                                    )
-                                }
-                            }
-                            true
+                        2 -> {
+                            val icon = App.iconPack.getIconDrawable(
+                                skills[i - 1].iconId, IconDrawableLoader(context)
+                            )
+                            holder.skillIcon2View.background = icon
+                            holder.skillIcon2View.visibility = View.VISIBLE
+                            holder.skillIcon3View.visibility = View.INVISIBLE
+                            holder.skillIcon4View.visibility = View.INVISIBLE
+                            holder.skillIcon5View.visibility = View.INVISIBLE
+                            holder.skillIcon6View.visibility = View.INVISIBLE
+                            holder.skillIcon7View.visibility = View.INVISIBLE
                         }
-                        menu.show()
-                        true
+                        3 -> {
+                            val icon = App.iconPack.getIconDrawable(
+                                skills[i - 1].iconId, IconDrawableLoader(context)
+                            )
+                            holder.skillIcon3View.background = icon
+                            holder.skillIcon3View.visibility = View.VISIBLE
+                            holder.skillIcon4View.visibility = View.INVISIBLE
+                            holder.skillIcon5View.visibility = View.INVISIBLE
+                            holder.skillIcon6View.visibility = View.INVISIBLE
+                            holder.skillIcon7View.visibility = View.INVISIBLE
+                        }
+                        4 -> {
+                            val icon = App.iconPack.getIconDrawable(
+                                skills[i - 1].iconId, IconDrawableLoader(context)
+                            )
+                            holder.skillIcon4View.background = icon
+                            holder.skillIcon4View.visibility = View.VISIBLE
+                            holder.skillIcon5View.visibility = View.INVISIBLE
+                            holder.skillIcon6View.visibility = View.INVISIBLE
+                            holder.skillIcon7View.visibility = View.INVISIBLE
+                        }
+                        5 -> {
+                            val icon = App.iconPack.getIconDrawable(
+                                skills[i - 1].iconId, IconDrawableLoader(context)
+                            )
+                            holder.skillIcon5View.background = icon
+                            holder.skillIcon5View.visibility = View.VISIBLE
+                            holder.skillIcon6View.visibility = View.INVISIBLE
+                            holder.skillIcon7View.visibility = View.INVISIBLE
+                        }
+                        6 -> {
+                            val icon = App.iconPack.getIconDrawable(
+                                skills[i - 1].iconId, IconDrawableLoader(context)
+                            )
+                            holder.skillIcon6View.background = icon
+                            holder.skillIcon6View.visibility = View.VISIBLE
+                            holder.skillIcon7View.visibility = View.INVISIBLE
+                        }
+                        7 -> {
+                            val icon = App.iconPack.getIconDrawable(
+                                skills[i - 1].iconId, IconDrawableLoader(context)
+                            )
+                            holder.skillIcon7View.background = icon
+                            holder.skillIcon7View.visibility = View.VISIBLE
+                        }
                     }
                 }
+                if (skillsCount > 7) holder.tooMuchSkillsView.visibility = View.VISIBLE
+            } else {
+                holder.skillIcon1View.visibility = View.INVISIBLE
+                holder.skillIcon2View.visibility = View.INVISIBLE
+                holder.skillIcon3View.visibility = View.INVISIBLE
+                holder.skillIcon4View.visibility = View.INVISIBLE
+                holder.skillIcon5View.visibility = View.INVISIBLE
+                holder.skillIcon6View.visibility = View.INVISIBLE
+                holder.skillIcon7View.visibility = View.INVISIBLE
+                holder.tooMuchSkillsView.visibility = View.INVISIBLE
+            }
+
+            // --- Icon settings
+            holder.taskIconView.setIcon(task.iconId)
+
+            holder.itemView.setOnClickListener {
+                it.findNavController().navigate(
+                    TaskListFragmentDirections
+                        .actionTaskListFragmentToEditTaskFragment(task, position)
+                )
+            }
+
+            // --- Copy task button
+            holder.itemView.setOnLongClickListener { it ->
+                val menu = PopupMenu(it.context, it)
+                menu.inflate(R.menu.task_context_menu)
+                menu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.copy -> {
+                            val taskSkills = db.skillDao().findAssignedSkills(task.id)
+                            val bundle = Bundle()
+                            bundle.putString(TaskFragment.KEY_GOAL, task.goal)
+                            bundle.putString(TaskFragment.KEY_DETAILS, task.details)
+                            bundle.putString(
+                                TaskFragment.KEY_DIFFICULTY,
+                                task.difficulty.value.toUpperCase(Locale.getDefault())
+                            )
+                            bundle.putInt(TaskFragment.KEY_DURATION, task.getSeekBarValue())
+                            bundle.putStringArray(
+                                TaskFragment.KEY_SKILLS,
+                                taskSkills.map { skill -> skill.name }.toTypedArray()
+                            )
+                            bundle.putInt(TaskFragment.KEY_ICON_ID, task.iconId)
+                            if (task.dueAt != null) {
+                                val dueAtParts = task.dueAt.split(" ")
+                                bundle.putString(
+                                    TaskFragment.KEY_DEADLINE_DATE,
+                                    dueAtParts[0]
+                                )
+                                bundle.putString(
+                                    TaskFragment.KEY_DEADLINE_TIME,
+                                    dueAtParts[1]
+                                )
+                            }
+                            it.findNavController().navigate(
+                                R.id.action_taskListFragment_to_createTaskFragment, bundle
+                            )
+                        }
+                    }
+                    true
+                }
+                menu.show()
+                true
             }
         }
     }
 
-    internal fun fill(all: List<Task>) {
-        sections.clear()
-        tasks.clear()
-        if (all.isNotEmpty()) buildView(all)
+    internal fun setTasks(tasks: List<Task>) {
+        this.tasks = tasks.toMutableList()
         notifyDataSetChanged()
     }
 
-    internal fun update() {
-        val allTasks = tasks.map { it.value }
-        sections.clear()
-        tasks.clear()
-        if (allTasks.isNotEmpty()) buildView(allTasks)
-        notifyDataSetChanged()
-    }
-
-    private fun buildView(all: List<Task>) {
-        val overdue: MutableList<Task> = mutableListOf()
-        val dueToday: MutableList<Task> = mutableListOf()
-        val dueTomorrow: MutableList<Task> = mutableListOf()
-        val dueSomeday: MutableList<Task> = mutableListOf()
-        all.forEach { task: Task ->
-            if (task.dueAt != null) {
-                val calendar = Calendar.getInstance()
-                val today = calendar.time.getDateInAppFormat()
-                calendar.add(Calendar.DAY_OF_YEAR, 1)
-                val tomorrow = calendar.time.getDateInAppFormat()
-                when (val dueAt = task.dueAt.split(" ")[0]) {
-                    today -> dueToday.add(task)
-                    tomorrow -> dueTomorrow.add(task)
-                    else -> {
-                        val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-                        val dueAtDate = sdf.parse(dueAt)
-                        if (dueAtDate != null) {
-                            if (dueAtDate < sdf.parse(today)) overdue.add(task)
-                            else dueSomeday.add(task)
-                        } else dueSomeday.add(task)
-                    }
-                }
-            } else dueSomeday.add(task)
-        }
-        var index = 0
-        if (overdue.isNotEmpty()) {
-            sections[index++] = context.getString(R.string.term_overdue)
-            for (task in overdue) tasks[index++] = task
-        }
-        if (dueToday.isNotEmpty()) {
-            sections[index++] = context.getString(R.string.term_due_today)
-            for (task in dueToday) tasks[index++] = task
-        }
-        if (dueTomorrow.isNotEmpty()) {
-            sections[index++] = context.getString(R.string.term_due_tomorrow)
-            for (task in dueTomorrow) tasks[index++] = task
-        }
-        if (dueSomeday.isNotEmpty()) {
-            sections[index++] = context.getString(R.string.term_due_someday)
-            for (task in dueSomeday) tasks[index++] = task
-        }
-        Timber.d("[ ${overdue.size}, ${dueToday.size}, ${dueTomorrow.size}, ${dueSomeday.size} ]")
-    }
-
-    override fun getItemCount(): Int = sections.size + tasks.size
+    override fun getItemCount(): Int = tasks.size
 
     fun removeItem(position: Int, status: Status): Task {
-        val task = tasks.getValue(position)
-        tasks.remove(position)
-        update()
-        Timber.d("Task removed.")
+        val task = tasks.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, tasks.size)
         return updateTaskStatus(task, status)
     }
 
-    fun restoreItem(task: Task) {
-        val tasks = tasks.map { it.value } as MutableList
-        tasks.add(task)
-        fill(tasks)
-        Timber.d("Task restored.")
+    fun restoreItem(task: Task, position: Int) {
+        tasks.add(position, task)
+        notifyItemInserted(position)
         updateTaskStatus(task, Status.OPEN)
     }
 
