@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
@@ -48,9 +49,10 @@ class EditTextDialog : DialogFragment() {
     }
 
     lateinit var editText: TextInputEditText
-    lateinit var alertDialog: AlertDialog
+
     var onPositiveButtonClicked: (() -> Unit)? = null
     var onNegativeButtonClicked: (() -> Unit)? = null
+    var onPositiveButtonListener: (() -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val title = arguments?.getString(EXTRA_TITLE)
@@ -79,10 +81,16 @@ class EditTextDialog : DialogFragment() {
             .setNegativeButton(negativeButton) { _, _ ->
                 onNegativeButtonClicked?.invoke()
             }
-        alertDialog = builder.create()
+        val alertDialog = builder.create()
         alertDialog.setOnShowListener {
+            val button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
             if (TextUtils.isEmpty(text)) {
-                alertDialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = false
+                button.isEnabled = false
+            }
+            if (onPositiveButtonListener != null) {
+                button.setOnClickListener {
+                    onPositiveButtonListener?.invoke()
+                }
             }
         }
         editText.doOnTextChanged { value, _, _, _ ->

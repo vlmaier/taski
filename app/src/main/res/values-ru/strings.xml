@@ -68,6 +68,7 @@
     <string name="error_cannot_be_empty">Не может быть пустым</string>
     <string name="error_too_short">Не менее 4-х символов</string>
     <string name="error_skill_already_exists">Такой навык уже существует</string>
+    <string name="error_category_already_exists">Такая категория уже существует</string>
 
     <!-- Event messages -->
     <string name="event_skill_updated">Навык обновлен</string>
@@ -118,7 +119,7 @@
     <string name="heading_calendar_sync">Синхронизация с календарем</string>
     <string name="heading_user_name">Имя</string>
     <string name="heading_edit_category_name">Изменить название категории</string>
-    <string name="heading_create_category">Создать новую категорию навыков</string>
+    <string name="heading_create_category">Создать категорию навыков</string>
     <string name="heading_select_image">Выберите картинку</string>
     <string name="heading_visual_prefs">Визуальные настройки</string>
     <string name="heading_general_settings">Общие настройки</string>

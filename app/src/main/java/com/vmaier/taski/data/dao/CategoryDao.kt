@@ -41,7 +41,7 @@ interface CategoryDao {
         """
         SELECT *
         FROM categories
-        WHERE name = :name
+        WHERE name = :name COLLATE NOCASE
     """
     )
     fun findByName(name: String): Category?

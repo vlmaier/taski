@@ -66,6 +66,7 @@
     <string name="error_cannot_be_empty">Cannot be empty</string>
     <string name="error_too_short">Must be at least 4 characters long</string>
     <string name="error_skill_already_exists">Such skill already exists</string>
+    <string name="error_category_already_exists">Such category already exists</string>
 
     <!-- Event messages -->
     <string name="event_skill_updated">Skill updated</string>

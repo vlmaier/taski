@@ -157,14 +157,27 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                                 hint = getString(R.string.hint_category_name),
                                 positiveButton = R.string.action_create
                             )
-                            dialog.onPositiveButtonClicked = {
+                            dialog.onPositiveButtonListener = {
                                 val name = dialog.editText.text.toString().trim()
-                                val category = Category(name = name)
-                                val id = db.categoryDao().create(category)
-                                CategoryListFragment.categoryAdapter.categories.add(
-                                    Category(id = id, name = name))
-                                CategoryListFragment.categoryAdapter.notifyDataSetChanged()
-                                Timber.d("Category \"$name\" created.")
+                                if (name.length < 4) {
+                                    dialog.editText.requestFocus()
+                                    dialog.editText.error = getString(R.string.error_too_short)
+                                } else {
+                                    val foundCategory = db.categoryDao().findByName(name)
+                                    if (foundCategory != null) {
+                                        dialog.editText.requestFocus()
+                                        dialog.editText.error =
+                                            getString(R.string.error_category_already_exists)
+                                    } else {
+                                        val category = Category(name = name)
+                                        val id = db.categoryDao().create(category)
+                                        CategoryListFragment.categoryAdapter.categories.add(
+                                            Category(id = id, name = name))
+                                        CategoryListFragment.categoryAdapter.notifyDataSetChanged()
+                                        Timber.d("Category \"$name\" created.")
+                                        dialog.dismiss()
+                                    }
+                                }
                             }
                             dialog.onNegativeButtonClicked = {
                                 dialog.dismiss()

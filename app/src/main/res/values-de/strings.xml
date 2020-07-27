@@ -63,7 +63,8 @@
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Kann nicht leer sein</string>
     <string name="error_too_short">Muss mindestens 4 Zeichen lang sein</string>
-    <string name="error_skill_already_exists">Eine solche Fähigkeit existiert bereits</string>
+    <string name="error_skill_already_exists">Solche Fähigkeit existiert bereits</string>
+    <string name="error_category_already_exists">Solche Kategorie existiert bereits</string>
 
     <!-- Event messages -->
     <string name="event_skill_updated">Fähigkeit aktualisiert</string>
@@ -114,7 +115,7 @@
     <string name="heading_calendar_sync">Kalendersynchronisation</string>
     <string name="heading_user_name">Name</string>
     <string name="heading_edit_category_name">Kategoriename ändern</string>
-    <string name="heading_create_category">Erstelle eine neue Fähigkeitskategorie</string>
+    <string name="heading_create_category">Erstelle eine neue Kategorie</string>
     <string name="heading_select_image">Wähle ein Bild</string>
     <string name="heading_visual_prefs">Visuelle Einstellungen</string>
     <string name="heading_general_settings">Allgemeine Einstellungen</string>
