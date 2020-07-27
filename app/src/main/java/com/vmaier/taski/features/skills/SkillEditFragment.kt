@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.vmaier.taski.*
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentEditSkillBinding
+import com.vmaier.taski.features.tasks.TaskEditFragment
 import com.vmaier.taski.utils.KeyBoardHider
 import timber.log.Timber
 
@@ -25,6 +27,7 @@ import timber.log.Timber
 class SkillEditFragment : SkillFragment() {
 
     private var itemPosition: Int = 0
+    private var isCanceled = false
 
     companion object {
         lateinit var binding: FragmentEditSkillBinding
@@ -106,19 +109,21 @@ class SkillEditFragment : SkillFragment() {
             val fragmentManager = requireActivity().supportFragmentManager
             MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
         }
-
+        binding.cancelButton.setOnClickListener {
+            it.findNavController().popBackStack()
+            it.hideKeyboard()
+            isCanceled = true
+        }
         return binding.root
     }
 
     override fun onPause() {
         super.onPause()
-
         // check if the skill was not deleted
-        if (db.skillDao().findById(
-                skill.id
-            ) != null
-        ) {
-            saveChangesOnSkill()
+        if (db.skillDao().findById(skill.id) != null) {
+            if (!isCanceled) {
+                saveChangesOnSkill()
+            }
         }
         binding.name.hideKeyboard()
         binding.category.hideKeyboard()
