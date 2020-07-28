@@ -61,6 +61,14 @@
     <string name="term_friday_short">FRI</string>
     <string name="term_saturday_short">SAT</string>
     <string name="term_sunday_short">SUN</string>
+    <string name="term_sort_created_at">creation date</string>
+    <string name="term_sort_goal">goal</string>
+    <string name="term_sort_duration">duration</string>
+    <string name="term_sort_xp_gain">experience gain</string>
+    <string name="term_sort_due_on">due on</string>
+    <string name="term_sort_by">Sorted by : %1$s (%2$s)</string>
+    <string name="term_sort_asc">ascending</string>
+    <string name="term_sort_desc">descending</string>
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Cannot be empty</string>
@@ -132,6 +140,8 @@
     <string name="heading_light_mode">Light mode</string>
     <string name="heading_language">Language</string>
     <string name="heading_synchronize_to_calendar">Synchronize to calendar</string>
+    <string name="heading_sort_tasks_by">Sort by</string>
+    <string name="heading_sort_order">Sort order</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>

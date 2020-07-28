@@ -63,6 +63,14 @@
     <string name="term_friday_short">ПТН</string>
     <string name="term_saturday_short">СБТ</string>
     <string name="term_sunday_short">ВСК</string>
+    <string name="term_sort_created_at">дата создания</string>
+    <string name="term_sort_goal">цель</string>
+    <string name="term_sort_duration">продолжительность</string>
+    <string name="term_sort_xp_gain">полученный опыт</string>
+    <string name="term_sort_due_on">дата выполнения</string>
+    <string name="term_sort_by">Отсортировано : %1$s (%2$s)</string>
+    <string name="term_sort_asc">по возрастанию</string>
+    <string name="term_sort_desc">по убыванию</string>
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Не может быть пустым</string>
@@ -134,6 +142,8 @@
     <string name="heading_language">Язык</string>
     <string name="heading_theme">Тема</string>
     <string name="heading_synchronize_to_calendar">Синхронизировать с календарем</string>
+    <string name="heading_sort_tasks_by">Сортировать по</string>
+    <string name="heading_sort_order">Порядок сортировки</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Наименование навыка</string>

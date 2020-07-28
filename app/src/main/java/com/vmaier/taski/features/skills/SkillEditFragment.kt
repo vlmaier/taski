@@ -14,7 +14,6 @@ import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentEditSkillBinding
-import com.vmaier.taski.features.tasks.TaskEditFragment
 import com.vmaier.taski.utils.KeyBoardHider
 import timber.log.Timber
 
@@ -107,7 +106,7 @@ class SkillEditFragment : SkillFragment() {
         )
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
-            MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
+            MainActivity.iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
         }
         binding.cancelButton.setOnClickListener {
             it.findNavController().popBackStack()

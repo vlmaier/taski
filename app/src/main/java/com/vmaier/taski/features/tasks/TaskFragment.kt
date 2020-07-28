@@ -198,7 +198,7 @@ open class TaskFragment : Fragment() {
         view?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 if (s.isNotEmpty()) {
-                    val isCalendarSyncOn = prefs.getBoolean(Constants.Prefs.CALENDAR_SYNC, false)
+                    val isCalendarSyncOn = prefs.getBoolean(Const.Prefs.CALENDAR_SYNC, false)
                     calendarSync.isChecked = isCalendarSyncOn
                     calendarSync.isEnabled = true
                 } else {

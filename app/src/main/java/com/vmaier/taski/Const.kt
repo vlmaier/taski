@@ -6,7 +6,7 @@ package com.vmaier.taski
  * on 13.05.2020
  * at 19:57
  */
-class Constants {
+class Const {
 
     class Prefs {
         companion object {
@@ -15,14 +15,16 @@ class Constants {
             const val CHANGE_AVATAR = "change_avatar"
             const val RESET_AVATAR = "reset_avatar"
             const val USER_AVATAR = "user_avatar"
+            const val REQUEST_CODE_COUNTER = "request_code_counter"
             const val THEME = "app_theme"
             const val DARK_MODE = "dark_mode"
             const val LANGUAGE = "app_language"
-            const val REQUEST_CODE_COUNTER = "request_code_counter"
+            const val SORT_TASKS = "sort_tasks"
+            const val SORT_TASKS_ORDER = "sort_tasks_order"
         }
     }
 
-    class Tag {
+    class Tags {
         companion object {
             const val ICON_DIALOG_TAG = "icon_dialog"
         }
@@ -35,6 +37,8 @@ class Constants {
             const val THEME = "Theme.Default"
             const val DARK_MODE = false
             const val LANGUAGE = "en"
+            const val SORT_TASKS = "created_at"
+            const val SORT_TASKS_ORDER = "asc"
         }
     }
 }

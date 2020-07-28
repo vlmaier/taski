@@ -59,6 +59,14 @@
     <string name="term_friday_short">Fr.</string>
     <string name="term_saturday_short">Sa.</string>
     <string name="term_sunday_short">So.</string>
+    <string name="term_sort_created_at">Erstellungsdatum</string>
+    <string name="term_sort_goal">Ziel</string>
+    <string name="term_sort_duration">Dauer</string>
+    <string name="term_sort_xp_gain">Erfahrungsgewinn</string>
+    <string name="term_sort_due_on">Fällig am</string>
+    <string name="term_sort_by">Sortiert nach : %1$s (%2$s)</string>
+    <string name="term_sort_asc">aufsteigend</string>
+    <string name="term_sort_desc">absteigend</string>
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Kann nicht leer sein</string>
@@ -130,6 +138,8 @@
     <string name="heading_language">Sprache</string>
     <string name="heading_theme">Thema</string>
     <string name="heading_synchronize_to_calendar">Mit Kalender synchronisieren</string>
+    <string name="heading_sort_tasks_by">Sortiere nach</string>
+    <string name="heading_sort_order">Sortierreihenfolge</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Bezeichnung</string>

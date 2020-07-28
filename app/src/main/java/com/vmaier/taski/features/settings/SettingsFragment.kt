@@ -1,10 +1,8 @@
 package com.vmaier.taski.features.settings
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,9 +11,6 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.content.ContextCompat
 import androidx.preference.*
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.vmaier.taski.*
@@ -24,7 +19,6 @@ import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
 import java.util.*
-import kotlin.properties.Delegates
 
 
 /**
@@ -56,7 +50,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         prefs = getDefaultSharedPreferences(context)
-        val changeAvatar = preferenceScreen.findPreference(Constants.Prefs.CHANGE_AVATAR) as Preference?
+        val changeAvatar = preferenceScreen.findPreference(Const.Prefs.CHANGE_AVATAR) as Preference?
         changeAvatar?.setOnPreferenceClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.type = "image/*"
@@ -70,7 +64,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             }
             true
         }
-        val resetAvatar = preferenceScreen.findPreference(Constants.Prefs.RESET_AVATAR) as Preference?
+        val resetAvatar = preferenceScreen.findPreference(Const.Prefs.RESET_AVATAR) as Preference?
         resetAvatar?.setOnPreferenceClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
@@ -78,7 +72,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.action_proceed_with_reset)) { _, _ ->
                     prefs.edit()
-                        .putString(Constants.Prefs.USER_AVATAR, null)
+                        .putString(Const.Prefs.USER_AVATAR, null)
                         .apply()
                     MainActivity.avatarView.setImageDrawable(
                         getDrawable(requireContext(), R.mipmap.ic_launcher)
@@ -91,10 +85,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialogBuilder.create().show()
             true
         }
-        val username = preferenceScreen.findPreference(Constants.Prefs.USER_NAME) as Preference?
+        val username = preferenceScreen.findPreference(Const.Prefs.USER_NAME) as Preference?
         username?.setOnPreferenceClickListener {
             val usernameValue = prefs
-                .getString(Constants.Prefs.USER_NAME, getString(R.string.app_name))
+                .getString(Const.Prefs.USER_NAME, getString(R.string.app_name))
             val dialog = EditTextDialog.newInstance(
                 title = getString(R.string.heading_user_name),
                 hint = getString(R.string.hint_user_name),
@@ -104,7 +98,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialog.onPositiveButtonClicked = {
                 val textValue = dialog.editText.text.toString().trim()
                 prefs.edit()
-                    .putString(Constants.Prefs.USER_NAME, textValue)
+                    .putString(Const.Prefs.USER_NAME, textValue)
                     .apply()
                 MainActivity.userNameView.text = textValue
                 Timber.d("Username changed.")
@@ -115,45 +109,45 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialog.show(requireFragmentManager(), EditTextDialog::class.simpleName)
             true
         }
-        val darkMode = preferenceScreen.findPreference(Constants.Prefs.DARK_MODE) as SwitchPreference?
+        val darkMode = preferenceScreen.findPreference(Const.Prefs.DARK_MODE) as SwitchPreference?
 
         // preselect dark mode icon
-        val isDarkModeOn = prefs.getBoolean(Constants.Prefs.DARK_MODE, Constants.Defaults.DARK_MODE)
+        val isDarkModeOn = prefs.getBoolean(Const.Prefs.DARK_MODE, Const.Defaults.DARK_MODE)
         darkMode?.setIcon(
             if (isDarkModeOn) R.drawable.ic_light_mode_24 else R.drawable.ic_dark_mode_24)
         darkMode?.title = getString(
             if (isDarkModeOn) R.string.heading_light_mode else R.string.heading_dark_mode)
 
         // preselect theme value
-        val appTheme = preferenceScreen.findPreference(Constants.Prefs.THEME) as ListPreference?
-        val prefTheme = prefs.getString(Constants.Prefs.THEME, Constants.Defaults.THEME)
+        val appTheme = preferenceScreen.findPreference(Const.Prefs.THEME) as ListPreference?
+        val prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME)
         val themeValues = resources.getStringArray(R.array.theme_values_array)
         appTheme?.setValueIndex(themeValues.indexOf(prefTheme))
         
         // preselect language value
-        val appLanguage = preferenceScreen.findPreference(Constants.Prefs.LANGUAGE) as ListPreference?
-        val prefLanguage = prefs.getString(Constants.Prefs.LANGUAGE, Constants.Defaults.LANGUAGE)
+        val appLanguage = preferenceScreen.findPreference(Const.Prefs.LANGUAGE) as ListPreference?
+        val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)
         val languageValues = resources.getStringArray(R.array.language_values_array)
         appLanguage?.setValueIndex(languageValues.indexOf(prefLanguage))
     }
 
     override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
         when (key) {
-            Constants.Prefs.CALENDAR_SYNC -> {
+            Const.Prefs.CALENDAR_SYNC -> {
                 calendarSyncPref = findPreference(key)!!
                 val isCalendarSyncOn = calendarSyncPref.isChecked
                 if (isCalendarSyncOn) {
                     PermissionUtils.setupCalendarPermissions(requireContext())
                 }
                 prefs.edit()
-                    .putBoolean(Constants.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
+                    .putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
                     .apply()
                 Timber.d(
                     "Calendar synchronization is %s.",
                     if (isCalendarSyncOn) "enabled" else "disabled"
                 )
             }
-            Constants.Prefs.DARK_MODE -> {
+            Const.Prefs.DARK_MODE -> {
                 val pref: SwitchPreference? = findPreference(key)
                 val isDarkModeOn = pref?.isChecked ?: false
                 if (isDarkModeOn) {
@@ -162,24 +156,24 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
                 prefs.edit()
-                    .putBoolean(Constants.Prefs.DARK_MODE, isDarkModeOn)
+                    .putBoolean(Const.Prefs.DARK_MODE, isDarkModeOn)
                     .apply()
                 Timber.d("Dark mode is %s.", if (isDarkModeOn) "enabled" else "disabled")
             }
-            Constants.Prefs.THEME -> {
+            Const.Prefs.THEME -> {
                 val pref: ListPreference? = findPreference(key)
                 val prefTheme = pref?.value
                 prefs.edit()
-                    .putString(Constants.Prefs.THEME, prefTheme)
+                    .putString(Const.Prefs.THEME, prefTheme)
                     .apply()
                 activity?.recreate()
                 Timber.d("Theme changed to '%s'", prefTheme)
             }
-            Constants.Prefs.LANGUAGE -> {
+            Const.Prefs.LANGUAGE -> {
                 val pref: ListPreference? = findPreference(key)
                 val prefLanguage = pref?.value
                 prefs.edit()
-                    .putString(Constants.Prefs.LANGUAGE, prefLanguage)
+                    .putString(Const.Prefs.LANGUAGE, prefLanguage)
                     .apply()
                 setLocale(Locale(prefLanguage))
                 Timber.d("Language changed to '%s'", prefLanguage?.toUpperCase(Locale.getDefault()))
@@ -216,7 +210,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 val compressedBitmap = bitmap.compress(10)
                 MainActivity.avatarView.setImageBitmap(compressedBitmap)
                 prefs.edit()
-                    .putString(Constants.Prefs.USER_AVATAR, compressedBitmap.encodeTobase64())
+                    .putString(Const.Prefs.USER_AVATAR, compressedBitmap.encodeTobase64())
                     .apply()
                 Timber.d("Avatar changed.")
             }

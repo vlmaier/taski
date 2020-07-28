@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         prefs = getDefaultSharedPreferences(this)
 
         // Language Settings
-        val prefLanguage = prefs.getString(Constants.Prefs.LANGUAGE, Constants.Defaults.LANGUAGE)
+        val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)
         val prefLocale = Locale(prefLanguage)
         val currentLocale: Locale = resources.configuration.locale
         if (prefLocale != currentLocale) {
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // --- Icon Dialog Settings
         iconDialog = supportFragmentManager
-            .findFragmentByTag(Constants.Tag.ICON_DIALOG_TAG) as IconDialog?
+            .findFragmentByTag(Const.Tags.ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())
 
         // --- Bottom Bar Settings
@@ -190,12 +190,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         }
 
         // --- Theme Settings
-        val prefTheme = prefs.getString(Constants.Prefs.THEME, Constants.Defaults.THEME)
+        val prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME)
         val prefThemeId = Utils.getThemeByName(this, prefTheme)
         setTheme(prefThemeId)
 
         // --- Dark mode Settings
-        val isDarkModeOn = prefs.getBoolean(Constants.Prefs.DARK_MODE, Constants.Defaults.DARK_MODE)
+        val isDarkModeOn = prefs.getBoolean(Const.Prefs.DARK_MODE, Const.Defaults.DARK_MODE)
         if (isDarkModeOn) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
@@ -233,12 +233,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // --- User name settings
         userNameView = headerView.findViewById(R.id.user_name) as TextView
-        userNameView.text = prefs.getString(Constants.Prefs.USER_NAME, Constants.Defaults.USER_NAME)
+        userNameView.text = prefs.getString(Const.Prefs.USER_NAME, Const.Defaults.USER_NAME)
 
         // --- User avatar settings
         avatarView = headerView.findViewById(R.id.user_avatar)
         avatarView.clipToOutline = true
-        val avatar = prefs.getString(Constants.Prefs.USER_AVATAR, null)
+        val avatar = prefs.getString(Const.Prefs.USER_AVATAR, null)
         val fallbackImage = getDrawable(R.mipmap.ic_launcher)
         if (avatar != null) {
             val bitmap = avatar.decodeBase64()
@@ -365,7 +365,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.options_menu, menu)
+        inflater.inflate(R.menu.basic_options_menu, menu)
         return true
     }
 
@@ -492,7 +492,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     override fun getTheme(): Theme? {
         val theme: Theme = super.getTheme()
         val prefs = getDefaultSharedPreferences(this)
-        val prefTheme = prefs.getString(Constants.Prefs.THEME, Constants.Defaults.THEME)
+        val prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME)
         val prefThemeId = Utils.getThemeByName(this, prefTheme)
         theme.applyStyle(prefThemeId, true)
         return theme
@@ -507,9 +507,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Timber.d("Requested permission has been denied by user")
                     val isCalendarSyncOn = prefs
-                        .getBoolean(Constants.Prefs.CALENDAR_SYNC, Constants.Defaults.CALENDAR_SYNC)
+                        .getBoolean(Const.Prefs.CALENDAR_SYNC, Const.Defaults.CALENDAR_SYNC)
                     prefs.edit()
-                        .putBoolean(Constants.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
+                        .putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
                         .apply()
                     SettingsFragment.calendarSyncPref.isChecked = false
                     Timber.d("Due to lack of permissions calendar synchronization was disabled")

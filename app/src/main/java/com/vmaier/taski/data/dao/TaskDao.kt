@@ -51,7 +51,7 @@ interface TaskDao {
         WHERE status = :status
     """
     )
-    fun findByStatus(status: Status): List<Task>
+    fun findByStatus(status: Status): MutableList<Task>
 
     @Query(
         """

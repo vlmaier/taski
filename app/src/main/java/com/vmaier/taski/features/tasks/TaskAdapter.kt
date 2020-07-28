@@ -251,6 +251,8 @@ class TaskAdapter internal constructor(
             MainActivity.levelCounterView.text =
                 context.getString(R.string.term_level_value, levelValue)
         }
+        TaskListFragment.taskAdapter.notifyDataSetChanged()
+        TaskListFragment.updateSortedByHeader(context, tasks)
         return db.taskDao().findById(task.id)
     }
 }

@@ -132,7 +132,7 @@ class TaskEditFragment : TaskFragment() {
 
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
-            MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
+            MainActivity.iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
         }
         binding.cancelButton.setOnClickListener {
             it.findNavController().popBackStack()
@@ -206,6 +206,8 @@ class TaskEditFragment : TaskFragment() {
             db.taskDao().updateTask(toUpdate, skillsToAssign)
             Timber.d("Updated task with ID: ${task.id}.")
             TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
+            TaskListFragment.sortTasks(requireContext(), TaskListFragment.taskAdapter.tasks)
+            TaskListFragment.taskAdapter.notifyDataSetChanged()
             updateInCalendar(binding.calendarSync.isChecked, task, toUpdate)
             getString(R.string.event_task_updated).toast(requireContext())
             if (reminderUpdateRequired && toUpdate.dueAt != null) {

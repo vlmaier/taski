@@ -104,7 +104,7 @@ class TaskCreateFragment : TaskFragment() {
         }
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
-            MainActivity.iconDialog.show(fragmentManager, Constants.Tag.ICON_DIALOG_TAG)
+            MainActivity.iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
         }
 
         // --- Deadline settings
