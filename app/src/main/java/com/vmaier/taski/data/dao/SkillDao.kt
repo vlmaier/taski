@@ -27,7 +27,7 @@ interface SkillDao {
         FROM skills
     """
     )
-    fun findAll(): List<Skill>
+    fun findAll(): MutableList<Skill>
 
     @Query(
         """

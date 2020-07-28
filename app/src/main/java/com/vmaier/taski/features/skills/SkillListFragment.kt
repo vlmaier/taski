@@ -50,8 +50,7 @@ class SkillListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        skillAdapter =
-            SkillAdapter(requireContext())
+        skillAdapter = SkillAdapter(requireContext())
         skillAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
@@ -76,6 +75,7 @@ class SkillListFragment : Fragment() {
         val db = AppDatabase(requireContext())
         val skills = db.skillDao().findAll()
         Timber.d("${skills.size} skill(s) found.")
+        skills.sortBy { it.name }
         skillAdapter.setSkills(skills)
         binding.rv.apply {
             layoutManager = GridLayoutManager(activity, 2)

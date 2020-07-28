@@ -52,7 +52,7 @@ interface CategoryDao {
         FROM categories
     """
     )
-    fun findAll(): List<Category>
+    fun findAll(): MutableList<Category>
 
     @Query(
         """

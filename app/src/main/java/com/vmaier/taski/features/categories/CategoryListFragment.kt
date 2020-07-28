@@ -76,6 +76,7 @@ class CategoryListFragment : Fragment() {
         val db = AppDatabase(requireContext())
         val categories = db.categoryDao().findAll()
         Timber.d("${categories.size} categor${if (categories.size > 1) "ies" else "y"} found.")
+        categories.sortBy { it.name }
         categoryAdapter.setCategories(categories)
         binding.rv.apply {
             layoutManager = LinearLayoutManager(activity)
