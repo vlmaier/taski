@@ -100,6 +100,18 @@ interface SkillDao {
         FROM assigned_skills 
         INNER JOIN tasks
           ON task_id = tasks.id
+        WHERE skill_id = :skillId
+          AND status != 'failed'
+    """
+    )
+    fun countTasksWithSkill(skillId: Long): Int
+
+    @Query(
+        """
+        SELECT COUNT(*)
+        FROM assigned_skills 
+        INNER JOIN tasks
+          ON task_id = tasks.id
         WHERE skill_id = :skillId 
           AND status = :status 
     """
@@ -117,17 +129,6 @@ interface SkillDao {
     """
     )
     fun findTasksWithSkillByStatus(skillId: Long, status: Status): MutableList<Task>
-
-    @Query(
-        """
-        SELECT COUNT(*)
-        FROM assigned_skills 
-        INNER JOIN tasks
-          ON task_id = tasks.id
-        WHERE skill_id = :skillId
-    """
-    )
-    fun countTasksWithSkillByStatus(skillId: Long): Int
 
     @Query(
         """

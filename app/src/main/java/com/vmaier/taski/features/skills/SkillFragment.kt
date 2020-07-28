@@ -77,7 +77,7 @@ open class SkillFragment : Fragment() {
 
     fun setDeleteButtonOnClickListener(view: Button, position: Int, skill: Skill) {
         view.setOnClickListener {
-            val countTasks = db.skillDao().countTasksWithSkillByStatus(skill.id)
+            val countTasks = db.skillDao().countTasksWithSkill(skill.id)
             if (countTasks > 0) {
                 val dialogBuilder = AlertDialog.Builder(requireContext())
                 dialogBuilder
