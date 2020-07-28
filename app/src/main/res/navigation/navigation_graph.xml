@@ -69,8 +69,8 @@
                 android:name="task"
                 app:argType="com.vmaier.taski.data.entity.Task" />
         <argument
-                android:name="itemPosition"
-                app:argType="integer" />
+                android:name="cameFromTaskList"
+                app:argType="boolean" />
     </fragment>
 
     <fragment
@@ -132,6 +132,13 @@
         <argument
                 android:name="itemPosition"
                 app:argType="integer" />
+        <action
+                android:id="@+id/action_skillEditFragment_to_editTaskFragment"
+                app:destination="@id/editTaskFragment"
+                app:enterAnim="@anim/fade_out"
+                app:exitAnim="@anim/fade_in"
+                app:popEnterAnim="@anim/fade_out"
+                app:popExitAnim="@anim/fade_in" />
     </fragment>
 
     <fragment

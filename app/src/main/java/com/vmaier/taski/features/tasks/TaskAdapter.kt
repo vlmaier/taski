@@ -166,7 +166,7 @@ class TaskAdapter internal constructor(
             holder.itemView.setOnClickListener {
                 it.findNavController().navigate(
                     TaskListFragmentDirections
-                        .actionTaskListFragmentToEditTaskFragment(task, position)
+                        .actionTaskListFragmentToEditTaskFragment(task, cameFromTaskList = true)
                 )
             }
 

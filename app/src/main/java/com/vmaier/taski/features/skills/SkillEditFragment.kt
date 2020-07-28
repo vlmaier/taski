@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.vmaier.taski.*
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
@@ -30,7 +31,10 @@ class SkillEditFragment : SkillFragment() {
 
     companion object {
         lateinit var binding: FragmentEditSkillBinding
+        lateinit var taskAdapter: AssignedTaskAdapter
         lateinit var skill: Skill
+
+        fun isTaskAdapterInitialized() = ::taskAdapter.isInitialized
     }
 
     override fun onCreateView(
@@ -67,18 +71,18 @@ class SkillEditFragment : SkillFragment() {
             ) ?: categoryName
         )
         binding.category.onFocusChangeListener = KeyBoardHider()
-        val adapter = ArrayAdapter(
+        val arrayAdapter = ArrayAdapter(
             requireContext(), R.layout.support_simple_spinner_dropdown_item,
             categoryNames
         )
         val autoCompleteCategory = binding.category.editText as AppCompatAutoCompleteTextView
-        autoCompleteCategory.setAdapter(adapter)
+        autoCompleteCategory.setAdapter(arrayAdapter)
 
         // --- Open tasks settings
         val openTasksAmount = db.skillDao().countTasksWithSkillByStatus(
             skill.id, Status.OPEN
         )
-        binding.skillOpenTasksValue.text = "$openTasksAmount"
+        binding.skillOpenTasksText.visibility = if (openTasksAmount > 0) View.VISIBLE else View.GONE
 
         // --- Done tasks settings
         val doneTasksAmount = db.skillDao().countTasksWithSkillByStatus(
@@ -112,6 +116,16 @@ class SkillEditFragment : SkillFragment() {
             it.findNavController().popBackStack()
             it.hideKeyboard()
             isCanceled = true
+        }
+        val db = AppDatabase(requireContext())
+        val tasks = db.skillDao().findTasksWithSkillByStatus(skill.id, Status.OPEN)
+        Timber.d("${tasks.size} task(s) found.")
+        tasks.sortBy { it.goal }
+        taskAdapter = AssignedTaskAdapter(requireContext())
+        taskAdapter.setTasks(tasks)
+        binding.rv.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = taskAdapter
         }
         return binding.root
     }

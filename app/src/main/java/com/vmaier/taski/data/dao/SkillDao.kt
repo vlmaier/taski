@@ -4,6 +4,7 @@ import androidx.room.*
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.AssignedSkill
 import com.vmaier.taski.data.entity.Skill
+import com.vmaier.taski.data.entity.Task
 
 
 /**
@@ -104,6 +105,18 @@ interface SkillDao {
     """
     )
     fun countTasksWithSkillByStatus(skillId: Long, status: Status): Long
+
+    @Query(
+        """
+        SELECT tasks.*
+        FROM assigned_skills 
+        INNER JOIN tasks
+          ON task_id = tasks.id
+        WHERE skill_id = :skillId 
+          AND status = :status 
+    """
+    )
+    fun findTasksWithSkillByStatus(skillId: Long, status: Status): MutableList<Task>
 
     @Query(
         """

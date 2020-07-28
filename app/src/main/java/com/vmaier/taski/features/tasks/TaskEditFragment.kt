@@ -13,6 +13,7 @@ import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentEditTaskBinding
+import com.vmaier.taski.features.skills.SkillEditFragment
 import com.vmaier.taski.utils.*
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import timber.log.Timber
@@ -27,7 +28,7 @@ import java.util.*
  */
 class TaskEditFragment : TaskFragment() {
 
-    private var itemPosition: Int = 0
+    private var cameFromTaskList: Boolean = true
     private var isCanceled = false
 
     companion object {
@@ -51,7 +52,7 @@ class TaskEditFragment : TaskFragment() {
         // Get arguments from bundle
         val args = TaskEditFragmentArgs.fromBundle(this.requireArguments())
         task = args.task
-        itemPosition = args.itemPosition
+        cameFromTaskList = args.cameFromTaskList
 
         // --- Goal settings
         binding.goal.editText?.setText(saved?.getString(KEY_GOAL) ?: task.goal)
@@ -205,7 +206,24 @@ class TaskEditFragment : TaskFragment() {
             val reminderUpdateRequired = task.dueAt != toUpdate.dueAt
             db.taskDao().updateTask(toUpdate, skillsToAssign)
             Timber.d("Updated task with ID: ${task.id}.")
-            TaskListFragment.taskAdapter.tasks[itemPosition] = toUpdate
+            for (i in 0..TaskListFragment.taskAdapter.tasks.size) {
+                if (TaskListFragment.taskAdapter.tasks[i].id == task.id) {
+                    TaskListFragment.taskAdapter.tasks[i] = toUpdate
+                    break
+                }
+            }
+            if (!cameFromTaskList && SkillEditFragment.isTaskAdapterInitialized()) {
+                for (i in 0..SkillEditFragment.taskAdapter.tasks.size) {
+                    if (SkillEditFragment.taskAdapter.tasks[i].id == task.id) {
+                        if (skillsToAssign.contains(SkillEditFragment.skill)) {
+                            SkillEditFragment.taskAdapter.tasks[i] = toUpdate
+                        } else {
+                            SkillEditFragment.taskAdapter.tasks.remove(task)
+                        }
+                        break
+                    }
+                }
+            }
             TaskListFragment.sortTasks(requireContext(), TaskListFragment.taskAdapter.tasks)
             TaskListFragment.taskAdapter.notifyDataSetChanged()
             updateInCalendar(binding.calendarSync.isChecked, task, toUpdate)
