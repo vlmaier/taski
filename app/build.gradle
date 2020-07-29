@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'dev.sasikanth:colorsheet:1.0.1'
     implementation 'com.robinhood.ticker:ticker:2.0.2'
+    implementation 'com.github.AppIntro:AppIntro:6.0.0'
     implementation "com.mikepenz:aboutlibraries:$latestAboutLibsRelease"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

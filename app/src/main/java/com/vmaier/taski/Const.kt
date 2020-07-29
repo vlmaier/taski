@@ -21,6 +21,7 @@ class Const {
             const val LANGUAGE = "app_language"
             const val SORT_TASKS = "sort_tasks"
             const val SORT_TASKS_ORDER = "sort_tasks_order"
+            const val ONBOARDING = "onboarding"
         }
     }
 
@@ -39,6 +40,7 @@ class Const {
             const val LANGUAGE = "en"
             const val SORT_TASKS = "created_at"
             const val SORT_TASKS_ORDER = "asc"
+            const val ONBOARDING = true
         }
     }
 }

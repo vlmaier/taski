@@ -1,5 +1,6 @@
 package com.vmaier.taski
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -42,6 +43,7 @@ import com.vmaier.taski.features.settings.SettingsFragment
 import com.vmaier.taski.features.skills.*
 import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
 import com.vmaier.taski.features.tasks.*
+import com.vmaier.taski.intro.Onboarding
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.Utils
@@ -81,6 +83,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     override fun onCreate(savedInstanceState: Bundle?) {
 
         prefs = getDefaultSharedPreferences(this)
+        val firstStart = prefs.getBoolean(Const.Prefs.ONBOARDING, Const.Defaults.ONBOARDING)
+        if (firstStart) {
+            val intent = Intent(this, Onboarding::class.java)
+            startActivity(intent)
+        }
 
         // Language Settings
         val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)
