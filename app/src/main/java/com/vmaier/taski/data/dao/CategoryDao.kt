@@ -56,7 +56,7 @@ interface CategoryDao {
 
     @Query(
         """
-        SELECT SUM(xp_value)
+        SELECT SUM(tasks.xp_value)
         FROM assigned_skills 
         INNER JOIN tasks
           ON task_id = tasks.id
@@ -66,7 +66,7 @@ interface CategoryDao {
           AND status = 'done'
     """
     )
-    fun countCategoryXpValue(categoryId: Long): Long
+    fun countCategoryXp(categoryId: Long): Long
 
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 

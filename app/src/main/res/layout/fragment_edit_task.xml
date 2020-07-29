@@ -265,7 +265,7 @@
                     tools:text="15 minutes" />
 
             <TextView
-                    android:id="@+id/xp_gain_value"
+                    android:id="@+id/xp_gain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"

@@ -45,13 +45,13 @@ class ChartWeeklyXpFragment : TaskFragment() {
         )
 
         val daysOfWeekWithValue = ArrayList<Float>()
-        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.MONDAY))
-        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.TUESDAY))
-        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.WEDNESDAY))
-        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.THURSDAY))
-        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.FRIDAY))
-        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.SATURDAY))
-        daysOfWeekWithValue.add(getXpValueForDayOfTheWeek(Calendar.SUNDAY))
+        daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.MONDAY))
+        daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.TUESDAY))
+        daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.WEDNESDAY))
+        daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.THURSDAY))
+        daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.FRIDAY))
+        daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.SATURDAY))
+        daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.SUNDAY))
         val values = ArrayList<Entry>()
         if (daysOfWeekWithValue.sum() > 0) {
             for (i in 0..6) {
@@ -122,10 +122,10 @@ class ChartWeeklyXpFragment : TaskFragment() {
         return binding.root
     }
 
-    private fun getXpValueForDayOfTheWeek(day: Int): Float {
+    private fun getXpForDayOfTheWeek(day: Int): Float {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_WEEK, day)
         val closedAtDay = App.dateFormat.format(calendar.time).split(" ")[0]
-        return db.taskDao().countDailyXpValue("%$closedAtDay%").toFloat()
+        return db.taskDao().countDailyXp("%$closedAtDay%").toFloat()
     }
 }

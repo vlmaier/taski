@@ -59,7 +59,7 @@ class TaskCreateFragment : TaskFragment() {
         binding.durationBar.progress = args?.getInt(KEY_DURATION) ?: 3
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
         binding.durationBar.setOnSeekBarChangeListener(
-            getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
+            getDurationBarListener(binding.durationValue, binding.xpGain, binding.durationBar)
         )
 
         // --- Difficulty settings
@@ -71,7 +71,7 @@ class TaskCreateFragment : TaskFragment() {
             }
             difficultyChip = chipGroup.findViewById(chipId)
             difficulty = difficultyChip.tag.toString().toUpperCase(Locale.getDefault())
-            updateXpGain(binding.xpGainValue, binding.durationBar)
+            updateXpGain(binding.xpGain, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
             args?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name

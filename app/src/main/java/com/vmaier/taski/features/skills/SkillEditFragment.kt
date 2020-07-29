@@ -15,6 +15,7 @@ import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentEditSkillBinding
+import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.utils.KeyBoardHider
 import timber.log.Timber
 
@@ -28,6 +29,7 @@ class SkillEditFragment : SkillFragment() {
 
     private var itemPosition: Int = 0
     private var isCanceled = false
+    private lateinit var levelService: LevelService
 
     companion object {
         lateinit var binding: FragmentEditSkillBinding
@@ -41,6 +43,7 @@ class SkillEditFragment : SkillFragment() {
         inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
+        levelService = LevelService(requireContext())
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_edit_skill, container, false
         )
@@ -91,14 +94,11 @@ class SkillEditFragment : SkillFragment() {
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
 
         // --- XP settings
-        val xpValue = db.skillDao().countSkillXpValue(
-            skill.id
-        )
-        binding.skillXpValue.text = getString(R.string.term_xp_value, xpValue)
+        binding.skillXp.text = getString(R.string.term_xp_value, skill.xp)
 
         // --- Level settings
-        val level = xpValue.div(1000) + 1
-        binding.skillLevelValue.text = level.toString()
+        val skillLevel = levelService.getSkillLevel(skill)
+        binding.skillLevel.text = skillLevel.toString()
 
         // --- Icon settings
         setSkillIcon(saved, binding.iconButton, skill.iconId)
@@ -155,7 +155,6 @@ class SkillEditFragment : SkillFragment() {
     }
 
     private fun saveChangesOnSkill() {
-
         val name = binding.name.editText?.text.toString().trim()
         if (name.isBlank()) {
             binding.name.requestFocus()
@@ -183,7 +182,7 @@ class SkillEditFragment : SkillFragment() {
             categoryId = null
         }
         val toUpdate = Skill(
-            id = skill.id, name = name, categoryId = categoryId, iconId = iconId
+            id = skill.id, name = name, categoryId = categoryId, xp = skill.xp, iconId = iconId
         )
         if (skill != toUpdate) {
             db.skillDao().update(toUpdate)

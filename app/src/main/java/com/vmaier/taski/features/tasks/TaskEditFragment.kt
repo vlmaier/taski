@@ -69,7 +69,7 @@ class TaskEditFragment : TaskFragment() {
         binding.durationBar.progress = saved?.getInt(KEY_DURATION) ?: task.getSeekBarValue()
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
         binding.durationBar.setOnSeekBarChangeListener(
-            getDurationBarListener(binding.durationValue, binding.xpGainValue, binding.durationBar)
+            getDurationBarListener(binding.durationValue, binding.xpGain, binding.durationBar)
         )
 
         // --- Difficulty settings
@@ -81,7 +81,7 @@ class TaskEditFragment : TaskFragment() {
             }
             difficultyChip = chipGroup.findViewById(chipId)
             difficulty = difficultyChip.tag.toString().toUpperCase(Locale.getDefault())
-            updateXpGain(binding.xpGainValue, binding.durationBar)
+            updateXpGain(binding.xpGain, binding.durationBar)
         }
         val selectedDifficulty = Difficulty.valueOf(
             saved?.getString(KEY_DIFFICULTY) ?: task.difficulty.name

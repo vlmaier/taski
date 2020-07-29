@@ -42,6 +42,7 @@ import com.vmaier.taski.features.settings.SettingsFragment
 import com.vmaier.taski.features.skills.*
 import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
 import com.vmaier.taski.features.tasks.*
+import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.views.EditTextDialog
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
     private lateinit var drawerNav: NavigationView
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: SharedPreferences
+    private lateinit var levelService: LevelService
     private var backButtonPressedOnce = false
 
     companion object {
@@ -69,8 +71,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         lateinit var bottomNav: BottomNavigationView
         lateinit var bottomBar: BottomAppBar
         lateinit var fab: FloatingActionButton
-        lateinit var xpCounterView: TextView
-        lateinit var levelCounterView: TextView
+        lateinit var xpView: TextView
+        lateinit var levelView: TextView
         lateinit var userNameView: TextView
         lateinit var avatarView: ImageView
         lateinit var db: AppDatabase
@@ -94,6 +96,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         super.onCreate(savedInstanceState)
 
         db = AppDatabase(this)
+        levelService = LevelService(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         // --- Fragment Navigation Settings
@@ -246,15 +249,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             else avatarView.setImageDrawable(fallbackImage)
         } else avatarView.setImageDrawable(fallbackImage)
 
-        // --- XP value settings
-        xpCounterView = headerView.findViewById(R.id.xp_counter) as TextView
-        val xpValue = db.taskDao().countOverallXpValue()
-        xpCounterView.text = getString(R.string.term_xp_value, xpValue)
+        // --- XP settings
+        xpView = headerView.findViewById(R.id.xp_counter) as TextView
+        val overallXp = db.taskDao().countOverallXp()
+        xpView.text = getString(R.string.term_xp_value, overallXp)
 
         // --- Level settings
-        levelCounterView = headerView.findViewById(R.id.level_counter) as TextView
-        val level = xpValue.div(10000) + 1
-        levelCounterView.text = getString(R.string.term_level_value, level)
+        levelView = headerView.findViewById(R.id.level_counter) as TextView
+        val overallLevel = levelService.getOverallLevel(overallXp)
+        levelView.text = getString(R.string.term_level_value, overallLevel)
     }
 
     override val iconDialogIconPack: IconPack? get() = App.iconPack

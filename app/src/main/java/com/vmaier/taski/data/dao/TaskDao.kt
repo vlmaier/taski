@@ -78,7 +78,7 @@ interface TaskDao {
         WHERE status = 'done'        
     """
     )
-    fun countOverallXpValue(): Long
+    fun countOverallXp(): Long
 
     @Query(
         """
@@ -87,7 +87,7 @@ interface TaskDao {
         WHERE status = 'done' AND closed_at LIKE :closedAt
     """
     )
-    fun countDailyXpValue(closedAt: String): Long
+    fun countDailyXp(closedAt: String): Long
 
     @Query(
         """

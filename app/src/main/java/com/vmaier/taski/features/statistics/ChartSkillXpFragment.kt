@@ -47,12 +47,11 @@ class ChartSkillXpFragment : SkillFragment() {
         val skills = db.skillDao().findAll()
         val values = ArrayList<PieEntry>()
         skills.forEach {
-            val xpValue = db.skillDao().countSkillXpValue(it.id)
-            if (xpValue > 0) {
+            if (it.xp > 0) {
                 val icon = App.iconPack
                     .getIconDrawable(it.iconId, IconDrawableLoader(requireContext()))
                 icon?.setTint(ContextCompat.getColor(requireContext(), R.color.colorLightDefault))
-                values.add(PieEntry(xpValue.toFloat(), it.name, icon))
+                values.add(PieEntry(it.xp.toFloat(), it.name, icon))
             }
         }
 

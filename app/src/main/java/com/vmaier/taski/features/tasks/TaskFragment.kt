@@ -154,14 +154,14 @@ open class TaskFragment : Fragment() {
     }
 
     fun getDurationBarListener(
-        durationValue: TextView, xpGainValue: TextView, durationBar: SeekBar
+        durationValue: TextView, xpGain: TextView, durationBar: SeekBar
     ): SeekBar.OnSeekBarChangeListener {
         return object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
                 durationValue.text = seek.getHumanReadableValue()
                 // do not allow the seek bar going beyond 1
                 if (progress <= 1) seek.progress = 1
-                updateXpGain(xpGainValue, durationBar)
+                updateXpGain(xpGain, durationBar)
             }
 
             override fun onStartTrackingTouch(seek: SeekBar) = Unit
@@ -169,10 +169,10 @@ open class TaskFragment : Fragment() {
         }
     }
 
-    fun updateXpGain(xpGainValue: TextView, durationBar: SeekBar) {
-        val xpValue = Difficulty.valueOf(difficulty)
+    fun updateXpGain(xpGain: TextView, durationBar: SeekBar) {
+        val xp = Difficulty.valueOf(difficulty)
             .factor.times(durationBar.getDurationInMinutes()).toInt()
-        xpGainValue.text = resources.getString(R.string.term_xp_value, xpValue)
+        xpGain.text = resources.getString(R.string.term_xp_value, xp)
     }
 
     fun setDeadlineDateOnClickListener(view: EditText?) {

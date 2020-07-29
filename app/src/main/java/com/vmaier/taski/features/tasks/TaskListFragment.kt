@@ -42,7 +42,7 @@ class TaskListFragment : Fragment() {
                     Sort.CREATED_AT.value -> tasks.sortBy { it.createdAt }
                     Sort.GOAL.value -> tasks.sortBy { it.goal }
                     Sort.DURATION.value -> tasks.sortBy { it.duration }
-                    Sort.XP_GAIN.value -> tasks.sortBy { it.xpValue }
+                    Sort.XP_GAIN.value -> tasks.sortBy { it.xp }
                     Sort.DUE_ON.value -> tasks.sortBy { it.dueAt }
                 }
             } else {
@@ -50,7 +50,7 @@ class TaskListFragment : Fragment() {
                     Sort.CREATED_AT.value -> tasks.sortByDescending { it.createdAt }
                     Sort.GOAL.value -> tasks.sortByDescending { it.goal }
                     Sort.DURATION.value -> tasks.sortByDescending { it.duration }
-                    Sort.XP_GAIN.value -> tasks.sortByDescending { it.xpValue }
+                    Sort.XP_GAIN.value -> tasks.sortByDescending { it.xp }
                     Sort.DUE_ON.value -> tasks.sortByDescending { it.dueAt }
                 }
             }

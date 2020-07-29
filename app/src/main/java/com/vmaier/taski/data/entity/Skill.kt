@@ -44,6 +44,9 @@ data class Skill(
     @ColumnInfo(name = "category_id")
     val categoryId: Long? = null,
 
+    @ColumnInfo(name = "xp_value")
+    val xp: Long = 0,
+
     @ColumnInfo(name = "icon_id")
     val iconId: Int
 ) : Parcelable

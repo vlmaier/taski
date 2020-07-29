@@ -61,7 +61,7 @@ data class Task(
     val difficulty: Difficulty = Difficulty.REGULAR,
 
     @ColumnInfo(name = "xp_value")
-    val xpValue: Int = difficulty.factor.times(duration).toInt(),
+    val xp: Int = difficulty.factor.times(duration).toInt(),
 
     @ColumnInfo(name = "icon_id")
     val iconId: Int,

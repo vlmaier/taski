@@ -157,7 +157,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/category" />
 
             <TextView
-                    android:id="@+id/skill_xp_value"
+                    android:id="@+id/skill_xp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
@@ -171,7 +171,7 @@
                     tools:text="1500 XP" />
 
             <TextView
-                    android:id="@+id/skill_level_value"
+                    android:id="@+id/skill_level"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"

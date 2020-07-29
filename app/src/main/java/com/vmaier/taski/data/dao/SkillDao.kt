@@ -148,18 +148,6 @@ interface SkillDao {
     )
     fun countAssignedSkills(taskId: Long): Int
 
-    @Query(
-        """
-        SELECT SUM(xp_value)
-        FROM assigned_skills 
-        INNER JOIN tasks
-          ON task_id = tasks.id
-        WHERE skill_id = :skillId 
-          AND status = 'done'
-    """
-    )
-    fun countSkillXpValue(skillId: Long): Long
-
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 
     @Update(entity = Skill::class, onConflict = OnConflictStrategy.REPLACE)
@@ -173,6 +161,15 @@ interface SkillDao {
     """
     )
     fun updateCategoryId(skillId: Long, categoryId: Long)
+
+    @Query(
+        """
+        UPDATE skills
+        SET xp_value = xp_value + :xp
+        WHERE id = :skillId
+    """
+    )
+    fun updateXp(skillId: Long, xp: Int)
 
     // ------------------------------------- DELETE QUERIES ------------------------------------- //
 

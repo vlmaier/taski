@@ -14,6 +14,7 @@ import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.AssignedSkill
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
+import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.setIcon
 import kotlinx.android.synthetic.main.item_skill.view.*
 import timber.log.Timber
@@ -30,6 +31,7 @@ class SkillAdapter internal constructor(
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     var skills: MutableList<Skill> = mutableListOf()
+    var levelService = LevelService(context)
 
     inner class SkillViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nameView: TextView = itemView.findViewById(R.id.skill_name)
@@ -69,9 +71,8 @@ class SkillAdapter internal constructor(
         holder.iconView.setIcon(skill.iconId)
 
         // --- Level settings
-        val xpValue = db.skillDao().countSkillXpValue(skill.id)
-        val levelValue = xpValue.div(1000) + 1
-        holder.levelView.text = context.getString(R.string.term_level_value, levelValue)
+        val skillLevel = levelService.getSkillLevel(skill)
+        holder.levelView.text = context.getString(R.string.term_level_value, skillLevel)
 
         holder.itemView.setOnClickListener {
             it.findNavController().navigate(

@@ -23,7 +23,7 @@ import com.vmaier.taski.data.entity.Task
  */
 @Database(
     entities = [Task::class, Skill::class, Category::class, AssignedSkill::class],
-    version = 3,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -61,10 +61,16 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE skills ADD COLUMN xp_value INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
                 .allowMainThreadQueries()
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                 .build()
     }
 }

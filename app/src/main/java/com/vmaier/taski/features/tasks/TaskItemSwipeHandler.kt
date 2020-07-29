@@ -42,7 +42,7 @@ class TaskItemSwipeHandler :
         lateinit var taskToRestore: Task
         if (direction == ItemTouchHelper.LEFT) {
             taskToRestore = TaskListFragment.taskAdapter.removeItem(position, Status.DONE)
-            message = context.getString(R.string.event_task_complete, taskToRestore.xpValue)
+            message = context.getString(R.string.event_task_complete, taskToRestore.xp)
         } else {
             taskToRestore = TaskListFragment.taskAdapter.removeItem(position, Status.FAILED)
             message = context.getString(R.string.event_task_failed)

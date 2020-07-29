@@ -12,7 +12,6 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
@@ -47,9 +46,9 @@ class ChartCategoryXpFragment : SkillFragment() {
         val colors = mutableListOf<Int>()
         categories.forEach {
             val category = it
-            val xpValue = db.categoryDao().countCategoryXpValue(category.id)
-            if (xpValue > 0) {
-                values.add(PieEntry(xpValue.toFloat(), category.name))
+            val categoryXp = db.categoryDao().countCategoryXp(category.id)
+            if (categoryXp > 0) {
+                values.add(PieEntry(categoryXp.toFloat(), category.name))
                 if (category.color != null) {
                     // set category color in pie chart
                     colors.add(Color.parseColor(category.color))

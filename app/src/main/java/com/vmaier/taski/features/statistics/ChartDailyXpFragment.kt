@@ -45,27 +45,27 @@ class ChartDailyXpFragment : TaskFragment() {
 
         val closedAt = App.dateFormat.format(Date()).split(" ")[0]
         val tasks = db.taskDao().findByClosedAt("%$closedAt%")
-        var skillWithXpValue: MutableMap<String, Long> = mutableMapOf()
+        var skillWithXp: MutableMap<String, Long> = mutableMapOf()
         val values = ArrayList<BarEntry>()
         tasks.forEach { task ->
             val assignedSkills = db.skillDao().findAssignedSkills(task.id)
             if (assignedSkills.isEmpty()) {
-                fillSkillWithXpValue(
-                    skillWithXpValue,
-                    getString(R.string.heading_unassigned), task.xpValue.toLong()
+                fillSkillWithXp(
+                    skillWithXp,
+                    getString(R.string.heading_unassigned), task.xp.toLong()
                 )
             } else {
                 assignedSkills.forEach { skill ->
-                    fillSkillWithXpValue(skillWithXpValue, skill.name, task.xpValue.toLong())
+                    fillSkillWithXp(skillWithXp, skill.name, task.xp.toLong())
                 }
             }
         }
         // sort asc by value
-        skillWithXpValue = skillWithXpValue
+        skillWithXp = skillWithXp
             .toList().sortedBy { (_, value) -> value }
             .toMap().toMutableMap()
         var i = 0f
-        skillWithXpValue.forEach {
+        skillWithXp.forEach {
             values.add(BarEntry(i++, it.value.toFloat()))
         }
 
@@ -86,7 +86,7 @@ class ChartDailyXpFragment : TaskFragment() {
         val xAxis = binding.chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
-        val captions = skillWithXpValue.keys
+        val captions = skillWithXp.keys
         val formatter = IndexAxisValueFormatter(captions)
         xAxis.valueFormatter = formatter
         xAxis.textSize = 14f
@@ -119,14 +119,14 @@ class ChartDailyXpFragment : TaskFragment() {
         return binding.root
     }
 
-    private fun fillSkillWithXpValue(
-        skillWithXpValue: MutableMap<String, Long>, skillName: String, xpValue: Long
+    private fun fillSkillWithXp(
+        skillWithXp: MutableMap<String, Long>, skillName: String, xp: Long
     ) {
-        val entry = skillWithXpValue[skillName]
+        val entry = skillWithXp[skillName]
         if (entry != null) {
-            skillWithXpValue[skillName] = entry + xpValue
+            skillWithXp[skillName] = entry + xp
         } else {
-            skillWithXpValue[skillName] = xpValue
+            skillWithXp[skillName] = xp
         }
     }
 }

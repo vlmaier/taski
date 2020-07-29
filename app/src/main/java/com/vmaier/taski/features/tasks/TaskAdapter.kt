@@ -15,7 +15,7 @@ import com.vmaier.taski.*
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
-import timber.log.Timber
+import com.vmaier.taski.services.LevelService
 import java.util.*
 
 
@@ -30,6 +30,7 @@ class TaskAdapter internal constructor(
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     var tasks: MutableList<Task> = mutableListOf()
+    var levelService = LevelService(context)
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var goalView: TextView = itemView.findViewById(R.id.task_goal)
@@ -67,8 +68,8 @@ class TaskAdapter internal constructor(
             // --- Duration settings
             holder.durationView.text = task.getHumanReadableDurationValue(context)
 
-            // --- XP value settings
-            holder.xpView.text = context.getString(R.string.term_xp_value, task.xpValue)
+            // --- XP settings
+            holder.xpView.text = context.getString(R.string.term_xp_value, task.xp)
 
             // --- Skills settings
             val skills = db.skillDao().findAssignedSkills(task.id).sortedBy { it.name }
@@ -236,20 +237,31 @@ class TaskAdapter internal constructor(
     }
 
     private fun updateTaskStatus(task: Task, status: Status): Task {
-
         val db = AppDatabase(context)
-        Timber.d("Status for task with ID ${task.id} updated: ${task.status} ---> $status")
+        val assignedSkills = db.skillDao().findAssignedSkills(task.id)
+        val xpPerSkill =
+            if (assignedSkills.size > 2) task.xp
+            else task.xp.div(assignedSkills.size)
         if (status != Status.OPEN) {
+            if (status == Status.DONE) {
+                for (skill in assignedSkills) {
+                    db.skillDao().updateXp(skill.id, xpPerSkill)
+                    levelService.checkForSkillLevelUp(skill, xpPerSkill)
+                }
+                levelService.checkForOverallLevelUp(task.xp)
+            }
             db.taskDao().close(task.id, status)
         } else {
+            for (skill in assignedSkills) {
+                db.skillDao().updateXp(skill.id, -xpPerSkill)
+            }
             db.taskDao().reopen(task.id)
         }
         if (status != Status.FAILED) {
-            val xpValue = db.taskDao().countOverallXpValue()
-            val levelValue = xpValue.div(10000) + 1
-            MainActivity.xpCounterView.text = context.getString(R.string.term_xp_value, xpValue)
-            MainActivity.levelCounterView.text =
-                context.getString(R.string.term_level_value, levelValue)
+            val overallXp = db.taskDao().countOverallXp()
+            val overallLevel = levelService.getOverallLevel(overallXp)
+            MainActivity.xpView.text = context.getString(R.string.term_xp_value, overallXp)
+            MainActivity.levelView.text = context.getString(R.string.term_level_value, overallLevel)
         }
         TaskListFragment.taskAdapter.notifyDataSetChanged()
         TaskListFragment.updateSortedByHeader(context, tasks)
