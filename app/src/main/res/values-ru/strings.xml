@@ -99,7 +99,6 @@
     <string name="action_dismiss">Отклонить</string>
     <string name="action_pick_color">Выбрать цвет</string>
     <string name="action_edit_name">Сменить название</string>
-    <string name="action_done">Завершить</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Создать новый навык</string>

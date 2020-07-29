@@ -97,7 +97,6 @@
     <string name="action_dismiss">Dismiss</string>
     <string name="action_pick_color">Pick color</string>
     <string name="action_edit_name">Edit name</string>
-    <string name="action_done">Done</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Create new skill</string>

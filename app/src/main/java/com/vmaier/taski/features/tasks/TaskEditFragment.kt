@@ -8,10 +8,8 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
 import com.vmaier.taski.*
 import com.vmaier.taski.data.Difficulty
-import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentEditTaskBinding
@@ -31,7 +29,7 @@ import java.util.*
 class TaskEditFragment : TaskFragment() {
 
     private var cameFromTaskList: Boolean = true
-    private var buttonPressed = false
+    private var isCanceled = false
 
     companion object {
         lateinit var binding: FragmentEditTaskBinding
@@ -140,43 +138,14 @@ class TaskEditFragment : TaskFragment() {
         binding.cancelButton.setOnClickListener {
             it.findNavController().popBackStack()
             it.hideKeyboard()
-            buttonPressed = true
-        }
-        binding.completeTaskButton.setOnClickListener {
-            val context = requireContext()
-            var position = 0
-            for (i in 0..TaskListFragment.taskAdapter.tasks.size) {
-                if (TaskListFragment.taskAdapter.tasks[i].id == task.id) {
-                    position = i
-                    break
-                }
-            }
-            val taskToRestore = TaskListFragment.taskAdapter.removeItem(position, Status.DONE)
-            val message = context.getString(R.string.event_task_complete, taskToRestore.xpValue)
-            // showing snack bar with undo option
-            val snackbar = Snackbar.make(MainActivity.fab, message, Snackbar.LENGTH_LONG)
-                .setAction(context.getString(R.string.action_undo)) {
-                    // undo is selected, restore the deleted item
-                    TaskListFragment.taskAdapter.restoreItem(taskToRestore, position)
-                    if (!cameFromTaskList && SkillEditFragment.isTaskAdapterInitialized()) {
-                        SkillEditFragment.taskAdapter.tasks.add(taskToRestore)
-                        SkillEditFragment.taskAdapter.tasks.sortBy { task -> task.goal }
-                        SkillEditFragment.taskAdapter.notifyDataSetChanged()
-                    }
-                }
-                .setActionTextColor(Utils.getThemeColor(context, R.attr.colorSecondary))
-            snackbar.view.setOnClickListener { snackbar.dismiss() }
-            it.findNavController().popBackStack()
-            it.hideKeyboard()
-            snackbar.show()
-            buttonPressed = true
+            isCanceled = true
         }
         return binding.root
     }
 
     override fun onPause() {
         super.onPause()
-        if (!buttonPressed) {
+        if (!isCanceled) {
             saveChangesOnTask()
         }
         binding.goal.hideKeyboard()

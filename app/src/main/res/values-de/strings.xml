@@ -95,7 +95,6 @@
     <string name="action_dismiss">Verwerfen</string>
     <string name="action_pick_color">Farbe wählen</string>
     <string name="action_edit_name">Name ändern</string>
-    <string name="action_done">Fertig</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Neue Fähigkeit</string>
