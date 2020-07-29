@@ -135,10 +135,10 @@
         <action
                 android:id="@+id/action_skillEditFragment_to_editTaskFragment"
                 app:destination="@id/editTaskFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:enterAnim="@anim/enter_from_right"
+                app:exitAnim="@anim/exit_to_left"
+                app:popEnterAnim="@anim/enter_from_left"
+                app:popExitAnim="@anim/exit_to_right" />
     </fragment>
 
     <fragment
