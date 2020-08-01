@@ -10,6 +10,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.vmaier.taski.App
 import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
@@ -39,19 +40,19 @@ class TaskListFragment : Fragment() {
             val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             if (order == SortOrder.ASC.value) {
                 when (sort) {
-                    Sort.CREATED_AT.value -> tasks.sortBy { it.createdAt }
+                    Sort.CREATED_AT.value -> tasks.sortBy { App.dateFormat.parse(it.createdAt).time }
                     Sort.GOAL.value -> tasks.sortBy { it.goal }
                     Sort.DURATION.value -> tasks.sortBy { it.duration }
                     Sort.XP_GAIN.value -> tasks.sortBy { it.xp }
-                    Sort.DUE_ON.value -> tasks.sortBy { it.dueAt }
+                    Sort.DUE_ON.value -> tasks.sortBy { App.dateFormat.parse(it.dueAt).time }
                 }
             } else {
                 when (sort) {
-                    Sort.CREATED_AT.value -> tasks.sortByDescending { it.createdAt }
+                    Sort.CREATED_AT.value -> tasks.sortByDescending { App.dateFormat.parse(it.createdAt).time }
                     Sort.GOAL.value -> tasks.sortByDescending { it.goal }
                     Sort.DURATION.value -> tasks.sortByDescending { it.duration }
                     Sort.XP_GAIN.value -> tasks.sortByDescending { it.xp }
-                    Sort.DUE_ON.value -> tasks.sortByDescending { it.dueAt }
+                    Sort.DUE_ON.value -> tasks.sortByDescending { App.dateFormat.parse(it.dueAt).time }
                 }
             }
             updateSortedByHeader(context, tasks)
