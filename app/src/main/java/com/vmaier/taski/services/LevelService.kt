@@ -30,7 +30,7 @@ class LevelService(val context: Context) {
         val nextLevel = calculateLevel(skill.xp + xp)
         if (previousLevel != nextLevel) {
             Handler().postDelayed({
-                val title = "${skill.name} level increased"
+                val title = context.getString(R.string.term_skill_level_increased, skill.name)
                 showDialog(title, previousLevel, nextLevel, skill.iconId)
             }, 1000)
         }
@@ -42,7 +42,7 @@ class LevelService(val context: Context) {
         val nextLevel = calculateLevel(overallXpValue + xpValue)
         if (previousLevel != nextLevel) {
             Handler().postDelayed({
-                val title = "Overall level increased"
+                val title = context.getString(R.string.term_overall_level_increased)
                 showDialog(title, previousLevel, nextLevel)
             }, 1000)
         }

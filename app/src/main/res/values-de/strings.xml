@@ -67,6 +67,8 @@
     <string name="term_sort_by">Sortiert nach : %1$s (%2$s)</string>
     <string name="term_sort_asc">aufsteigend</string>
     <string name="term_sort_desc">absteigend</string>
+    <string name="term_skill_level_increased">%s-Stufe erhöht</string>
+    <string name="term_overall_level_increased">Gesamtstufe erhöht</string>
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Kann nicht leer sein</string>
@@ -140,6 +142,7 @@
     <string name="heading_synchronize_to_calendar">Mit Kalender synchronisieren</string>
     <string name="heading_sort_tasks_by">Sortiere nach</string>
     <string name="heading_sort_order">Sortierreihenfolge</string>
+    <string name="heading_select_theme">Wähle ein Thema</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Bezeichnung</string>
@@ -193,5 +196,19 @@
     <string name="content_pick_color_icon">"Wähle eine Farbe" Symbol</string>
     <string name="content_edit_name_icon">"Name ändern" Symbol</string>
     <string name="content_delete_icon">"Löschen" Symbol</string>
+
+    <!-- Onboarding description -->
+    <string name="intro_slide_1_top">Willkommen zu Taski</string>
+    <string name="intro_slide_1_bottom">deinem gamifizierten Aufgabenplaner.</string>
+    <string name="intro_slide_2_top">Erstelle Fähigkeiten</string>
+    <string name="intro_slide_2_bottom">an denen du arbeiten willst.</string>
+    <string name="intro_slide_3_top">Erstelle Aufgaben</string>
+    <string name="intro_slide_3_bottom">um deine Ziele zu erreichen.</string>
+    <string name="intro_slide_4_top">Weise Fähigkeiten der Aufgaben zu</string>
+    <string name="intro_slide_4_bottom">und sehe den Fortschritt nach der Erfüllung.</string>
+    <string name="intro_slide_5_top">Verfolge deinen Fortschritt</string>
+    <string name="intro_slide_5_bottom">mit verschiedenen Diagrammen und Grafiken.</string>
+    <string name="intro_slide_6_top">Viel Spaß bei der Auswahl</string>
+    <string name="intro_slide_6_bottom">von zahlreichen handverlesenen Themen.</string>
 
 </resources>

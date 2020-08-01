@@ -118,6 +118,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             val dialogView = (context as Activity).layoutInflater
                 .inflate(R.layout.select_theme_dialog, null)
             val radioGroup = dialogView.findViewById(R.id.radio_group) as RadioGroupPlus
+
             // preselect theme value
             val radioButton: RadioButton = when (prefTheme) {
                 getString(R.string.theme_default) -> {
@@ -154,7 +155,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             }
             radioButton.isChecked = true
             val builder = AlertDialog.Builder(requireContext())
-                .setTitle("Select theme")
+                .setTitle(getString(R.string.heading_select_theme))
                 .setView(dialogView)
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.action_set)) { _, _ ->

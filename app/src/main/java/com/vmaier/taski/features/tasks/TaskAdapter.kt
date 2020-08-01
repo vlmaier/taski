@@ -240,8 +240,8 @@ class TaskAdapter internal constructor(
         val db = AppDatabase(context)
         val assignedSkills = db.skillDao().findAssignedSkills(task.id)
         val xpPerSkill =
-            if (assignedSkills.size > 2) task.xp
-            else task.xp.div(assignedSkills.size)
+            if (assignedSkills.size > 2) task.xp.div(assignedSkills.size)
+            else task.xp
         if (status != Status.OPEN) {
             if (status == Status.DONE) {
                 for (skill in assignedSkills) {

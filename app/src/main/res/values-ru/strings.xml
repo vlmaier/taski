@@ -71,6 +71,8 @@
     <string name="term_sort_by">Отсортировано : %1$s (%2$s)</string>
     <string name="term_sort_asc">по возрастанию</string>
     <string name="term_sort_desc">по убыванию</string>
+    <string name="term_skill_level_increased">%s уровень увеличился</string>
+    <string name="term_overall_level_increased">Общий уровень увеличился</string>
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Не может быть пустым</string>
@@ -144,6 +146,7 @@
     <string name="heading_synchronize_to_calendar">Синхронизировать с календарем</string>
     <string name="heading_sort_tasks_by">Сортировать по</string>
     <string name="heading_sort_order">Порядок сортировки</string>
+    <string name="heading_select_theme">Выберите тему</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Наименование навыка</string>
@@ -199,5 +202,19 @@
     <string name="content_pick_color_icon">значок "выбрать цвет"</string>
     <string name="content_edit_name_icon">значок "изменить название"</string>
     <string name="content_delete_icon">значок "удалить"</string>
+
+    <!-- Onboarding description -->
+    <string name="intro_slide_1_top">Добро пожаловать в Taski</string>
+    <string name="intro_slide_1_bottom">твой геймифицированный планировщик задач.</string>
+    <string name="intro_slide_2_top">Создавай навыки</string>
+    <string name="intro_slide_2_bottom">чтобы отражать твои личные способности.</string>
+    <string name="intro_slide_3_top">Создавай задачи</string>
+    <string name="intro_slide_3_bottom">чтобы достичь ваших целей.</string>
+    <string name="intro_slide_4_top">Присваивай навыки задачам</string>
+    <string name="intro_slide_4_bottom">и следи за прогрессом при выполнении.</string>
+    <string name="intro_slide_5_top">Следите за прогрессом</string>
+    <string name="intro_slide_5_bottom">с различными диаграммами и графиками.</string>
+    <string name="intro_slide_6_top">Наслаждайтесь выбором</string>
+    <string name="intro_slide_6_bottom">из множества подобранных тем.</string>
     
 </resources>

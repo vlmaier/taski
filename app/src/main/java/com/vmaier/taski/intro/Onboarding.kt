@@ -18,40 +18,40 @@ class Onboarding : AppIntro() {
         setImmersiveMode()
 
         addSlide(AppIntroFragment.newInstance(
-            title = "Welcome to Taski",
+            title = resources.getString(R.string.intro_slide_1_top),
             imageDrawable = R.drawable.ic_octopus,
             backgroundColor = resources.getColor(R.color.colorPrimaryLightDefault),
-            description = "your gamified task scheduler."
+            description = resources.getString(R.string.intro_slide_1_bottom)
         ))
         addSlide(AppIntroFragment.newInstance(
-            title = "Create skills",
+            title = resources.getString(R.string.intro_slide_2_top),
             imageDrawable = R.drawable.ic_skills_200,
             backgroundColor = resources.getColor(R.color.colorPrimaryLightSailor),
-            description = "to represent your personal abilities."
+            description = resources.getString(R.string.intro_slide_2_bottom)
         ))
         addSlide(AppIntroFragment.newInstance(
-            title = "Create tasks",
+            title = resources.getString(R.string.intro_slide_3_top),
             imageDrawable = R.drawable.ic_tasks_200,
             backgroundColor = resources.getColor(R.color.colorPrimaryVariantLightRoyal),
-            description = "to accomplish your goals."
+            description = resources.getString(R.string.intro_slide_3_bottom)
         ))
         addSlide(AppIntroFragment.newInstance(
-            title = "Assign skills to tasks",
+            title = resources.getString(R.string.intro_slide_4_top),
             imageDrawable = R.drawable.ic_progress_200,
             backgroundColor = resources.getColor(R.color.colorPrimaryDarkPilot),
-            description = "and see the progress while accomplishing."
+            description = resources.getString(R.string.intro_slide_4_bottom)
         ))
         addSlide(AppIntroFragment.newInstance(
-            title = "Keep track of your progress",
+            title = resources.getString(R.string.intro_slide_5_top),
             imageDrawable = R.drawable.ic_statistics_200,
             backgroundColor = resources.getColor(R.color.colorPrimaryVariantLightCreeper),
-            description = "with various charts and graphs."
+            description = resources.getString(R.string.intro_slide_5_bottom)
         ))
         addSlide(AppIntroFragment.newInstance(
-            title = "Enjoy the selection",
+            title = resources.getString(R.string.intro_slide_6_top),
             imageDrawable = R.drawable.ic_theme_200,
             backgroundColor = resources.getColor(R.color.colorSecondaryCoral),
-            description = "of numerous hand-picked themes"
+            description = resources.getString(R.string.intro_slide_6_bottom)
         ))
     }
 
