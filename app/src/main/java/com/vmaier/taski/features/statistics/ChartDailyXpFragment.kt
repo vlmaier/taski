@@ -89,7 +89,7 @@ class ChartDailyXpFragment : TaskFragment() {
         val captions = skillWithXp.keys
         val formatter = IndexAxisValueFormatter(captions)
         xAxis.valueFormatter = formatter
-        xAxis.textSize = 14f
+        xAxis.textSize = 12f
         xAxis.textColor = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
 
         val yAxis = binding.chart.axisLeft
