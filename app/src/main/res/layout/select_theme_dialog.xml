@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="utf-8"?>
+<worker8.com.github.radiogroupplus.RadioGroupPlus xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/radio_group"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="?dialogPreferredPadding"
+        android:paddingRight="?dialogPreferredPadding">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RadioButton
+                android:id="@+id/button_default"
+                android:drawableEnd="@color/colorDivider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_default_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_default"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/color_primary_light_default"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightDefault"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_default"
+                app:layout_constraintStart_toEndOf="@+id/button_default"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_primary_dark_default"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkDefault"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_default"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_default"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_default"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_default"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_default"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryDefault"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_default"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_default"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_default"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_default"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_variant_default"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantDefault"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_default"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_default"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_default"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RadioButton
+                android:id="@+id/button_sailor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_sailor_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_sailor"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/color_primary_light_sailor"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightSailor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_sailor"
+                app:layout_constraintStart_toEndOf="@+id/button_sailor"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_primary_dark_sailor"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkSailor"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_sailor"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_sailor"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_sailor"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_sailor"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_sailor"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondarySailor"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_sailor"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_sailor"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_sailor"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_sailor"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_variant_sailor"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantSailor"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_sailor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_sailor"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_sailor"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RadioButton
+                android:id="@+id/button_royal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_royal_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_royal"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/color_primary_light_royal"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightRoyal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_royal"
+                app:layout_constraintStart_toEndOf="@+id/button_royal"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_primary_dark_royal"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkRoyal"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_royal"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_royal"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_royal"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_royal"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_royal"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryRoyal"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_royal"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_royal"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_royal"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_royal"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_variant_royal"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantRoyal"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_royal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_royal"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_royal"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RadioButton
+                android:id="@+id/button_mercury"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_mercury_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_mercury"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/color_primary_light_mercury"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightMercury"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_mercury"
+                app:layout_constraintStart_toEndOf="@+id/button_mercury"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_primary_dark_mercury"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkMercury"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_mercury"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_mercury"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_mercury"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_mercury"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_mercury"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryMercury"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_mercury"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_mercury"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_mercury"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_mercury"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_variant_mercury"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantMercury"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_mercury"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_mercury"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_mercury"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RadioButton
+                android:id="@+id/button_mocca"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_mocca_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_mocca"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/color_primary_light_mocca"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightMocca"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_mocca"
+                app:layout_constraintStart_toEndOf="@+id/button_mocca"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_primary_dark_mocca"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkMocca"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_mocca"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_mocca"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_mocca"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_mocca"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_mocca"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryMocca"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_mocca"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_mocca"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_mocca"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_mocca"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_variant_mocca"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantMocca"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_mocca"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_mocca"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_mocca"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RadioButton
+                android:id="@+id/button_creeper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_creeper_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_creeper"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/color_primary_light_creeper"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightCreeper"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_creeper"
+                app:layout_constraintStart_toEndOf="@+id/button_creeper"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_primary_dark_creeper"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkCreeper"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_creeper"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_creeper"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_creeper"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_creeper"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_creeper"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryCreeper"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_creeper"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_creeper"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_creeper"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_creeper"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_variant_creeper"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantCreeper"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_creeper"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_creeper"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_creeper"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RadioButton
+                android:id="@+id/button_flamingo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_flamingo_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_flamingo"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/color_primary_light_flamingo"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightFlamingo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_flamingo"
+                app:layout_constraintStart_toEndOf="@+id/button_flamingo"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_primary_dark_flamingo"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkFlamingo"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_flamingo"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_flamingo"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_flamingo"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_flamingo"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_flamingo"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryFlamingo"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_flamingo"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_flamingo"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_flamingo"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_flamingo"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_variant_flamingo"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantFlamingo"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_flamingo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_flamingo"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_flamingo"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RadioButton
+                android:id="@+id/button_pilot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_pilot_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_pilot"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/color_primary_light_pilot"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightPilot"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_pilot"
+                app:layout_constraintStart_toEndOf="@+id/button_pilot"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_primary_dark_pilot"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkPilot"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_pilot"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_pilot"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_pilot"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_pilot"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_pilot"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryPilot"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_pilot"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_pilot"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_pilot"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_pilot"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_variant_pilot"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantPilot"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_pilot"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_pilot"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_pilot"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RadioButton
+                android:id="@+id/button_coral"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_coral_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_coral"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/color_primary_light_coral"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightCoral"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_coral"
+                app:layout_constraintStart_toEndOf="@+id/button_coral"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_primary_dark_coral"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkCoral"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_coral"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_coral"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_coral"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_coral"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_coral"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryCoral"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_coral"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_coral"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_coral"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_coral"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_variant_coral"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantCoral"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_coral"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_coral"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_coral"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RadioButton
+                android:id="@+id/button_blossom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_blossom_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_blossom"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+                android:id="@+id/color_primary_light_blossom"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightBlossom"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_blossom"
+                app:layout_constraintStart_toEndOf="@+id/button_blossom"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_primary_dark_blossom"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkBlossom"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_blossom"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_blossom"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_blossom"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_blossom"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_blossom"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryBlossom"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_blossom"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_blossom"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_blossom"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_blossom"
+                tools:ignore="ContentDescription" />
+
+        <ImageView
+                android:id="@+id/color_secondary_variant_blossom"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantBlossom"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_blossom"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_blossom"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_blossom"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</worker8.com.github.radiogroupplus.RadioGroupPlus>

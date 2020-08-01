@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.View
+import android.widget.RadioButton
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
@@ -18,6 +19,7 @@ import com.vmaier.taski.R
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
+import worker8.com.github.radiogroupplus.RadioGroupPlus
 import java.util.*
 
 
@@ -33,6 +35,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     companion object {
         lateinit var calendarSyncPref: CheckBoxPreference
+        lateinit var prefTheme: String
     }
 
     override fun onStart() {
@@ -77,7 +80,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     MainActivity.avatarView.setImageDrawable(
                         getDrawable(requireContext(), R.mipmap.ic_launcher)
                     )
-                    Timber.d("Avatar resetted")
+                    Timber.d("Avatar reset")
                 }
                 .setNegativeButton(getString(R.string.action_cancel)) { dialog, _ ->
                     dialog.cancel()
@@ -109,6 +112,80 @@ class SettingsFragment : PreferenceFragmentCompat(),
             dialog.show(requireFragmentManager(), EditTextDialog::class.simpleName)
             true
         }
+        val theme = preferenceScreen.findPreference(Const.Prefs.THEME) as Preference?
+        theme?.setOnPreferenceClickListener {
+            prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME) ?: Const.Defaults.THEME
+            val dialogView = (context as Activity).layoutInflater
+                .inflate(R.layout.select_theme_dialog, null)
+            val radioGroup = dialogView.findViewById(R.id.radio_group) as RadioGroupPlus
+            // preselect theme value
+            val radioButton: RadioButton = when (prefTheme) {
+                getString(R.string.theme_default) -> {
+                    dialogView.findViewById(R.id.button_default) as RadioButton
+                }
+                getString(R.string.theme_sailor) -> {
+                    dialogView.findViewById(R.id.button_sailor) as RadioButton
+                }
+                getString(R.string.theme_royal) -> {
+                    dialogView.findViewById(R.id.button_royal) as RadioButton
+                }
+                getString(R.string.theme_mercury) -> {
+                    dialogView.findViewById(R.id.button_mercury) as RadioButton
+                }
+                getString(R.string.theme_mocca) -> {
+                    dialogView.findViewById(R.id.button_mocca) as RadioButton
+                }
+                getString(R.string.theme_creeper) -> {
+                    dialogView.findViewById(R.id.button_creeper) as RadioButton
+                }
+                getString(R.string.theme_flamingo) -> {
+                    dialogView.findViewById(R.id.button_flamingo) as RadioButton
+                }
+                getString(R.string.theme_pilot) -> {
+                    dialogView.findViewById(R.id.button_pilot) as RadioButton
+                }
+                getString(R.string.theme_coral) -> {
+                    dialogView.findViewById(R.id.button_coral) as RadioButton
+                }
+                getString(R.string.theme_blossom) -> {
+                    dialogView.findViewById(R.id.button_blossom) as RadioButton
+                }
+                else -> dialogView.findViewById(R.id.button_default) as RadioButton
+            }
+            radioButton.isChecked = true
+            val builder = AlertDialog.Builder(requireContext())
+                .setTitle("Select theme")
+                .setView(dialogView)
+                .setCancelable(true)
+                .setPositiveButton(getString(R.string.action_set)) { _, _ ->
+                    prefs.edit()
+                        .putString(Const.Prefs.THEME, prefTheme)
+                        .apply()
+                    activity?.recreate()
+                    Timber.d("Theme changed to '%s'", prefTheme)
+                }
+                .setNegativeButton(getString(R.string.action_cancel)) { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
+            val alertDialog = builder.create()
+            radioGroup.setOnCheckedChangeListener { _, checkedId ->
+                prefTheme = when (checkedId) {
+                    R.id.button_default -> getString(R.string.theme_default)
+                    R.id.button_sailor -> getString(R.string.theme_sailor)
+                    R.id.button_royal -> getString(R.string.theme_royal)
+                    R.id.button_mercury -> getString(R.string.theme_mercury)
+                    R.id.button_mocca -> getString(R.string.theme_mocca)
+                    R.id.button_creeper -> getString(R.string.theme_creeper)
+                    R.id.button_flamingo -> getString(R.string.theme_flamingo)
+                    R.id.button_pilot -> getString(R.string.theme_pilot)
+                    R.id.button_coral -> getString(R.string.theme_coral)
+                    R.id.button_blossom -> getString(R.string.theme_blossom)
+                    else -> getString(R.string.theme_default)
+                }
+            }
+            alertDialog.show()
+            true
+        }
         val darkMode = preferenceScreen.findPreference(Const.Prefs.DARK_MODE) as SwitchPreference?
 
         // preselect dark mode icon
@@ -118,12 +195,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
         darkMode?.title = getString(
             if (isDarkModeOn) R.string.heading_light_mode else R.string.heading_dark_mode)
 
-        // preselect theme value
-        val appTheme = preferenceScreen.findPreference(Const.Prefs.THEME) as ListPreference?
-        val prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME)
-        val themeValues = resources.getStringArray(R.array.theme_values_array)
-        appTheme?.setValueIndex(themeValues.indexOf(prefTheme))
-        
         // preselect language value
         val appLanguage = preferenceScreen.findPreference(Const.Prefs.LANGUAGE) as ListPreference?
         val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)
@@ -159,15 +230,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     .putBoolean(Const.Prefs.DARK_MODE, isDarkModeOn)
                     .apply()
                 Timber.d("Dark mode is %s.", if (isDarkModeOn) "enabled" else "disabled")
-            }
-            Const.Prefs.THEME -> {
-                val pref: ListPreference? = findPreference(key)
-                val prefTheme = pref?.value
-                prefs.edit()
-                    .putString(Const.Prefs.THEME, prefTheme)
-                    .apply()
-                activity?.recreate()
-                Timber.d("Theme changed to '%s'", prefTheme)
             }
             Const.Prefs.LANGUAGE -> {
                 val pref: ListPreference? = findPreference(key)

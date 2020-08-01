@@ -15,9 +15,7 @@
                 android:key="reset_avatar"
                 android:summary="@string/description_reset_avatar"
                 android:title="@string/heading_reset_avatar" />
-        <androidx.preference.ListPreference
-                android:entries="@array/theme_names_array"
-                android:entryValues="@array/theme_values_array"
+        <androidx.preference.Preference
                 android:icon="@drawable/ic_theme_24"
                 android:key="app_theme"
                 android:summary="@string/description_select_theme"

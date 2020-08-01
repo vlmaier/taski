@@ -7,7 +7,7 @@
     <color name="colorPrimaryVariantDarkDefault">#3F51B5</color>
     <color name="colorPrimaryVariantLightDefault">#C5CAE9</color>
     <color name="colorSecondaryDefault">#FF5722</color>
-    <color name="colorSecondaryVariantDefault">#FF5722</color>
+    <color name="colorSecondaryVariantDefault">#FF8A50</color>
     <color name="colorErrorDarkDefault">#CF6679</color>
     <color name="colorErrorLightDefault">#B00020</color>
     <color name="colorLightDefault">#FFFFFF</color>
@@ -33,7 +33,7 @@
     <color name="colorPrimaryVariantDarkSailor">#1976D2</color>
     <color name="colorPrimaryVariantLightSailor">#BBDEFB</color>
     <color name="colorSecondarySailor">#FF4081</color>
-    <color name="colorSecondaryVariantSailor">#FF4081</color>
+    <color name="colorSecondaryVariantSailor">#FF79B0</color>
     <color name="colorErrorDarkSailor">#CF6679</color>
     <color name="colorErrorLightSailor">#B00020</color>
     <color name="colorLightSailor">#FFFFFF</color>
