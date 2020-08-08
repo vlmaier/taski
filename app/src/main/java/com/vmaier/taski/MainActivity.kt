@@ -28,6 +28,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
+import com.kobakei.ratethisapp.RateThisApp
 import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
@@ -235,6 +236,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // --- Status Bar Settings
         this.window.statusBarColor = Utils.getThemeColor(this, R.attr.colorPrimary)
+
+        val config = RateThisApp.Config()
+        config.setTitle(R.string.heading_rate_app);
+        config.setMessage(R.string.description_rate_app);
+        config.setYesButtonText(R.string.action_rate_now);
+        config.setNoButtonText(R.string.action_no_thanks);
+        config.setCancelButtonText(R.string.action_later);
+        RateThisApp.init(config)
+        RateThisApp.onCreate(this);
+        RateThisApp.showRateDialogIfNeeded(this);
     }
 
     override fun onStart() {

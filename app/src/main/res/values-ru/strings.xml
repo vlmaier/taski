@@ -101,6 +101,9 @@
     <string name="action_dismiss">Отклонить</string>
     <string name="action_pick_color">Выбрать цвет</string>
     <string name="action_edit_name">Сменить название</string>
+    <string name="action_rate_now">Оценить</string>
+    <string name="action_no_thanks">Нет, спасибо</string>
+    <string name="action_later">Позже</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Создать новый навык</string>
@@ -147,6 +150,7 @@
     <string name="heading_sort_tasks_by">Сортировать по</string>
     <string name="heading_sort_order">Порядок сортировки</string>
     <string name="heading_select_theme">Выберите тему</string>
+    <string name="heading_rate_app">Оцени приложение</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Наименование навыка</string>
@@ -172,6 +176,7 @@
     <string name="description_select_theme">Выберите тему</string>
     <string name="description_switch_to_dark">Переключиться в ночной режим</string>
     <string name="description_switch_to_light">Переключиться в дневной режим</string>
+    <string name="description_rate_app">Если тебе нравится использовать это приложение, не мог бы ты уделить время, чтобы оценить его? Твой отзыв мне очень поможет. Спасибо за поддержку!</string>
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Выберите цвет категории</string>

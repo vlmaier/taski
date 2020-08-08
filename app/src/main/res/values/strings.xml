@@ -99,6 +99,9 @@
     <string name="action_dismiss">Dismiss</string>
     <string name="action_pick_color">Pick color</string>
     <string name="action_edit_name">Edit name</string>
+    <string name="action_rate_now">Rate now</string>
+    <string name="action_no_thanks">No, thanks</string>
+    <string name="action_later">Later</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Create new skill</string>
@@ -145,6 +148,7 @@
     <string name="heading_sort_tasks_by">Sort by</string>
     <string name="heading_sort_order">Sort order</string>
     <string name="heading_select_theme">Select theme</string>
+    <string name="heading_rate_app">Rate this app</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
@@ -170,6 +174,7 @@
     <string name="description_switch_to_dark">Switch to dark mode</string>
     <string name="description_switch_to_light">Switch to light mode</string>
     <string name="description_select_language">Select language</string>
+    <string name="description_rate_app">If you enjoy using this app, would you mind taking a moment to rate it? Your feedback will help me a lot. Thank you for your support!</string>
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Pick a category color</string>
