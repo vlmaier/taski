@@ -177,7 +177,7 @@ class TaskCreateFragment : TaskFragment() {
         Timber.d("Created new task. ID: $id returned.")
         task.id = id
         TaskListFragment.taskAdapter.notifyDataSetChanged()
-        addToCalendar(binding.calendarSync.isChecked, task)
+        calendarService.addToCalendar(binding.calendarSync.isChecked, task)
         if (dueAt != null) {
             val notifyAtInMs: Long = try {
                 // remind 15 minutes before the task is due (incl. duration)

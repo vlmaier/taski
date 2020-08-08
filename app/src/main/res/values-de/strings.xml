@@ -147,6 +147,8 @@
     <string name="heading_sort_order">Sortierreihenfolge</string>
     <string name="heading_select_theme">Wähle ein Thema</string>
     <string name="heading_rate_app">Bewerte die App</string>
+    <string name="heading_calendar_settings">Kalendereinstellungen</string>
+    <string name="heading_delete_completed_tasks">Abgeschlossene Aufgaben löschen</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Bezeichnung</string>
@@ -173,6 +175,7 @@
     <string name="description_switch_to_dark">Wechsel zum Nachtmodus</string>
     <string name="description_switch_to_light">Wechsel zum Tagesmodus</string>
     <string name="description_rate_app">Wenn du diese App gerne nutzt, würde es dir etwas ausmachen, sich einen Moment Zeit zu nehmen, um sie zu bewerten? Dein Feedback wird mir sehr helfen. Danke für deine Unterstützung!</string>
+    <string name="description_delete_completed_tasks">Lösche Aufgaben aus dem Kalender, wenn diese abgeschlossen sind</string>
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Wähle eine Kategoriefarbe</string>

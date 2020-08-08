@@ -201,6 +201,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)
         val languageValues = resources.getStringArray(R.array.language_values_array)
         appLanguage?.setValueIndex(languageValues.indexOf(prefLanguage))
+
+        val calendarTasksPref: CheckBoxPreference? = findPreference(
+            Const.Prefs.DELETE_COMPLETED_TASKS)
+        calendarTasksPref?.isEnabled = prefs.getBoolean(
+            Const.Prefs.CALENDAR_SYNC, Const.Defaults.CALENDAR_SYNC)
     }
 
     override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
@@ -218,6 +223,19 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     "Calendar synchronization is %s.",
                     if (isCalendarSyncOn) "enabled" else "disabled"
                 )
+                val calendarTasksPref: CheckBoxPreference? = findPreference(
+                    Const.Prefs.DELETE_COMPLETED_TASKS)
+                calendarTasksPref?.isEnabled = isCalendarSyncOn
+            }
+            Const.Prefs.DELETE_COMPLETED_TASKS -> {
+                val pref: CheckBoxPreference = findPreference(key)!!
+                val calendarSyncPref: CheckBoxPreference? = findPreference(Const.Prefs.CALENDAR_SYNC)
+                val isCalendarSyncOn = calendarSyncPref?.isChecked ?: false
+                if (isCalendarSyncOn) {
+                    prefs.edit()
+                        .putBoolean(Const.Prefs.DELETE_COMPLETED_TASKS, pref.isChecked)
+                        .apply()
+                }
             }
             Const.Prefs.DARK_MODE -> {
                 val pref: SwitchPreference? = findPreference(key)

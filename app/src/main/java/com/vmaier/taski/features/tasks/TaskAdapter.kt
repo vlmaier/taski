@@ -9,12 +9,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.vmaier.taski.*
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.services.CalendarService
 import com.vmaier.taski.services.LevelService
 import java.util.*
 
@@ -29,8 +31,9 @@ class TaskAdapter internal constructor(
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private var levelService = LevelService(context)
+    private var calendarService = CalendarService(context)
     var tasks: MutableList<Task> = mutableListOf()
-    var levelService = LevelService(context)
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var goalView: TextView = itemView.findViewById(R.id.task_goal)
@@ -240,7 +243,7 @@ class TaskAdapter internal constructor(
         val db = AppDatabase(context)
         val assignedSkills = db.skillDao().findAssignedSkills(task.id)
         val xpPerSkill =
-            if (assignedSkills.size > 2) task.xp.div(assignedSkills.size)
+            if (assignedSkills.size >= 2) task.xp.div(assignedSkills.size)
             else task.xp
         if (status != Status.OPEN) {
             if (status == Status.DONE) {
@@ -251,6 +254,11 @@ class TaskAdapter internal constructor(
                 levelService.checkForOverallLevelUp(task.xp)
             }
             db.taskDao().close(task.id, status)
+            val deleteCompletedTasks = PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(Const.Prefs.DELETE_COMPLETED_TASKS, Const.Defaults.DELETE_COMPLETED_TASKS)
+            if (task.eventId != null && deleteCompletedTasks) {
+                calendarService.deleteCalendarEvent(task)
+            }
         } else {
             for (skill in assignedSkills) {
                 db.skillDao().updateXp(skill.id, -xpPerSkill)

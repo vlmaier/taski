@@ -125,7 +125,7 @@ interface TaskDao {
         WHERE id = :taskId
     """
     )
-    fun updateEventId(taskId: Long, eventId: String)
+    fun updateEventId(taskId: Long, eventId: String?)
 
     @Query(
         """

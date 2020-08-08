@@ -149,6 +149,8 @@
     <string name="heading_sort_order">Sort order</string>
     <string name="heading_select_theme">Select theme</string>
     <string name="heading_rate_app">Rate this app</string>
+    <string name="heading_calendar_settings">Calendar settings</string>
+    <string name="heading_delete_completed_tasks">Delete completed tasks</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
@@ -175,6 +177,7 @@
     <string name="description_switch_to_light">Switch to light mode</string>
     <string name="description_select_language">Select language</string>
     <string name="description_rate_app">If you enjoy using this app, would you mind taking a moment to rate it? Your feedback will help me a lot. Thank you for your support!</string>
+    <string name="description_delete_completed_tasks">Delete tasks from the calendar when they have been completed</string>
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Pick a category color</string>

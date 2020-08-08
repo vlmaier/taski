@@ -226,7 +226,7 @@ class TaskEditFragment : TaskFragment() {
             }
             TaskListFragment.sortTasks(requireContext(), TaskListFragment.taskAdapter.tasks)
             TaskListFragment.taskAdapter.notifyDataSetChanged()
-            updateInCalendar(binding.calendarSync.isChecked, task, toUpdate)
+            calendarService.updateInCalendar(binding.calendarSync.isChecked, task, toUpdate)
             getString(R.string.event_task_updated).toast(requireContext())
             if (reminderUpdateRequired && toUpdate.dueAt != null) {
                 notificationService.cancelReminder(requireActivity(), task.reminderRequestCode)

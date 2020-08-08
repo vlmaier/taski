@@ -1,26 +1,19 @@
 package com.vmaier.taski.features.tasks
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
-import android.provider.CalendarContract
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
@@ -35,11 +28,9 @@ import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.vmaier.taski.*
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Difficulty
-import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.services.CalendarService
 import com.vmaier.taski.services.NotificationService
 import com.vmaier.taski.utils.*
-import timber.log.Timber
-import java.text.ParseException
 import java.util.*
 import kotlin.random.Random
 
@@ -52,6 +43,7 @@ import kotlin.random.Random
 open class TaskFragment : Fragment() {
 
     lateinit var prefs: SharedPreferences
+    lateinit var calendarService: CalendarService
 
     companion object {
         lateinit var skillNames: List<String>
@@ -81,6 +73,7 @@ open class TaskFragment : Fragment() {
         super.onAttach(context)
         db = AppDatabase(context)
         prefs = getDefaultSharedPreferences(context)
+        calendarService = CalendarService(context)
     }
 
     override fun onCreateView(
@@ -227,128 +220,5 @@ open class TaskFragment : Fragment() {
                 true
             ).show()
         }
-    }
-
-    @SuppressLint("MissingPermission")
-    fun addToCalendar(isCalendarSyncOn: Boolean, task: Task?) {
-        if (!isCalendarSyncOn) return
-        if (task == null) return
-        val calendarId = getCalendarId(requireContext()) ?: return
-        Timber.d("Picked calendar with ID $calendarId.")
-        val eventId: Uri?
-        val startTimeMs = if (task.dueAt != null) {
-            try {
-                App.dateFormat.parse(task.dueAt)?.time
-            } catch (e: ParseException) {
-                null
-            }
-        } else {
-            null
-        }
-        val event = ContentValues()
-        event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
-        event.put(CalendarContract.Events.TITLE, task.goal)
-        event.put(CalendarContract.Events.DESCRIPTION, task.details)
-        if (startTimeMs != null) {
-            event.put(CalendarContract.Events.DTSTART, startTimeMs)
-            event.put(CalendarContract.Events.DTEND, startTimeMs + task.duration * 60 * 1000)
-        }
-        val timeZone = TimeZone.getDefault().id
-        event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
-        eventId = requireContext()
-            .contentResolver.insert(CalendarContract.Events.CONTENT_URI, event)
-        Timber.d("Created new event in calendar.")
-        Timber.d("Event ID: $eventId")
-        db.taskDao().updateEventId(task.id, eventId.toString())
-    }
-
-    fun updateInCalendar(isCalendarSyncOn: Boolean, before: Task, after: Task?) {
-        if (after == null) return
-        if (!isCalendarSyncOn) return
-        if (after.eventId == null) {
-            addToCalendar(isCalendarSyncOn, after)
-            return
-        }
-        val eventId: Uri? = Uri.parse(after.eventId)
-        if (eventId != null) {
-            val calendarId = getCalendarId(requireContext()) ?: return
-            Timber.d("Picked calendar with ID $calendarId.")
-            val event = updateEvent(calendarId, before, after)
-            requireContext().contentResolver.update(eventId, event, null, null)
-            Timber.d("Updated event in calendar.")
-            Timber.d("Event ID: $eventId")
-            db.taskDao().updateEventId(before.id, eventId.toString())
-        }
-    }
-
-    private fun updateEvent(calendarId: Long, before: Task, after: Task): ContentValues {
-        val event = ContentValues()
-        event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
-        if (before.goal != after.goal) {
-            event.put(CalendarContract.Events.TITLE, after.goal)
-        }
-        if (before.details != after.details) {
-            event.put(CalendarContract.Events.DESCRIPTION, after.details)
-        }
-        if (before.duration != after.duration || before.dueAt != after.dueAt) {
-            val startTimeMs = if (after.dueAt != null) {
-                try {
-                    App.dateFormat.parse(after.dueAt)?.time
-                } catch (e: ParseException) {
-                    null
-                }
-            } else {
-                null
-            }
-            if (startTimeMs != null) {
-                event.put(CalendarContract.Events.DTSTART, startTimeMs)
-                event.put(
-                    CalendarContract.Events.DTEND,
-                    startTimeMs + before.duration * 60 * 1000
-                )
-            }
-            val timeZone = TimeZone.getDefault().id
-            event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
-        }
-        return event
-    }
-
-    private fun getCalendarId(context: Context): Long? {
-        val projection = arrayOf(
-            CalendarContract.Calendars._ID,
-            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME
-        )
-
-        // check permission
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            return null
-        }
-        var cursor = context.contentResolver.query(
-            CalendarContract.Calendars.CONTENT_URI,
-            projection,
-            CalendarContract.Calendars.VISIBLE + " = 1 AND " +
-                    CalendarContract.Calendars.IS_PRIMARY + " = 1",
-            null,
-            CalendarContract.Calendars._ID + " ASC"
-        )
-        if (cursor != null && cursor.count <= 0) {
-            cursor = context.contentResolver.query(
-                CalendarContract.Calendars.CONTENT_URI,
-                projection,
-                CalendarContract.Calendars.VISIBLE + " = 1",
-                null,
-                CalendarContract.Calendars._ID + " ASC"
-            )
-        }
-        if (cursor != null && cursor.moveToFirst()) {
-            val calId: String
-            val idCol = cursor.getColumnIndex(projection[0])
-            calId = cursor.getString(idCol)
-            cursor.close()
-            return calId.toLong()
-        }
-        return null
     }
 }

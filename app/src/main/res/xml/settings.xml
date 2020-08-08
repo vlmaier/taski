@@ -27,13 +27,22 @@
                 android:title="@string/heading_dark_mode" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/heading_general_settings">
+    <PreferenceCategory android:title="@string/heading_calendar_settings">
         <androidx.preference.CheckBoxPreference
                 android:defaultValue="false"
                 android:icon="@drawable/ic_calendar_24"
                 android:key="calendar_sync"
                 android:summary="@string/description_calendar_sync"
                 android:title="@string/heading_calendar_sync" />
+        <androidx.preference.CheckBoxPreference
+                android:enabled="false"
+                android:defaultValue="false"
+                android:key="delete_completed_tasks"
+                android:summary="@string/description_delete_completed_tasks"
+                android:title="@string/heading_delete_completed_tasks" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/heading_general_settings">
         <androidx.preference.ListPreference
                 android:entries="@array/language_names_array"
                 android:entryValues="@array/language_values_array"
