@@ -444,7 +444,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             finish()
         }
         backButtonPressedOnce = true
-        Handler().postDelayed({ backButtonPressedOnce = false }, 2000)
+        Handler().postDelayed({ backButtonPressedOnce = false }, 500)
 
         val count = supportFragmentManager.backStackEntryCount
         if (count == 0) {
