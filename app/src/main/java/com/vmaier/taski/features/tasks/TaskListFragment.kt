@@ -44,7 +44,15 @@ class TaskListFragment : Fragment() {
                     Sort.GOAL.value -> tasks.sortBy { it.goal }
                     Sort.DURATION.value -> tasks.sortBy { it.duration }
                     Sort.XP_GAIN.value -> tasks.sortBy { it.xp }
-                    Sort.DUE_ON.value -> tasks.sortBy { App.dateFormat.parse(it.dueAt).time }
+                    Sort.DUE_ON.value -> {
+                        tasks.sortBy {
+                            if (it.dueAt != null) {
+                                App.dateFormat.parse(it.dueAt).time
+                            } else {
+                                App.dateFormat.parse(it.createdAt).time
+                            }
+                        }
+                    }
                 }
             } else {
                 when (sort) {
@@ -52,7 +60,13 @@ class TaskListFragment : Fragment() {
                     Sort.GOAL.value -> tasks.sortByDescending { it.goal }
                     Sort.DURATION.value -> tasks.sortByDescending { it.duration }
                     Sort.XP_GAIN.value -> tasks.sortByDescending { it.xp }
-                    Sort.DUE_ON.value -> tasks.sortByDescending { App.dateFormat.parse(it.dueAt).time }
+                    Sort.DUE_ON.value -> tasks.sortByDescending {
+                        if (it.dueAt != null) {
+                            App.dateFormat.parse(it.dueAt).time
+                        } else {
+                            App.dateFormat.parse(it.createdAt).time
+                        }
+                    }
                 }
             }
             updateSortedByHeader(context, tasks)
