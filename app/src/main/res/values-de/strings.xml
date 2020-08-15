@@ -79,8 +79,8 @@
     <!-- Event messages -->
     <string name="event_skill_updated">Fähigkeit aktualisiert</string>
     <string name="event_skill_deleted">Fähigkeit gelöscht</string>
-    <string name="event_task_complete">Aufgabe abgeschlossen (+%d XP)</string>
-    <string name="event_task_failed">Aufgabe fehlgeschlagen</string>
+    <string name="event_task_complete">Aufgabe erledigt (+%d XP)</string>
+    <string name="event_task_failed">Aufgabe gescheitert</string>
     <string name="event_task_updated">Aufgabe aktualisiert</string>
     <string name="event_category_deleted">Kategorie gelöscht</string>
 
