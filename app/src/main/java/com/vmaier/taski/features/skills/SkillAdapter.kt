@@ -14,6 +14,7 @@ import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.AssignedSkill
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
+import com.vmaier.taski.features.tasks.TaskListFragment
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.setIcon
 import kotlinx.android.synthetic.main.item_skill.view.*
@@ -93,6 +94,7 @@ class SkillAdapter internal constructor(
         val skill = skills.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, skills.size)
+        SkillListFragment.updateSortedByHeader(context, skills)
         val db = AppDatabase(this.inflater.context)
         val foundAssignments = db.skillDao().findAssignments(skill.id)
         db.skillDao().delete(skill)
@@ -103,6 +105,7 @@ class SkillAdapter internal constructor(
     fun restoreItem(toRestore: Pair<Skill, List<AssignedSkill>>, position: Int) {
         skills.add(position, toRestore.first)
         notifyItemInserted(position)
+        SkillListFragment.updateSortedByHeader(context, skills)
         val db = AppDatabase(this.inflater.context)
         db.skillDao().create(toRestore.first)
         toRestore.second.forEach {

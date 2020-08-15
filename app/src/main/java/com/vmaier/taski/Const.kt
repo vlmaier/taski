@@ -21,6 +21,8 @@ class Const {
             const val LANGUAGE = "app_language"
             const val SORT_TASKS = "sort_tasks"
             const val SORT_TASKS_ORDER = "sort_tasks_order"
+            const val SORT_SKILLS = "sort_tasks"
+            const val SORT_SKILLS_ORDER = "sort_tasks_order"
             const val ONBOARDING = "onboarding"
             const val DELETE_COMPLETED_TASKS = "delete_completed_tasks"
         }
@@ -41,6 +43,8 @@ class Const {
             const val LANGUAGE = "en"
             const val SORT_TASKS = "created_at"
             const val SORT_TASKS_ORDER = "asc"
+            const val SORT_SKILLS = "name"
+            const val SORT_SKILLS_ORDER = "asc"
             const val ONBOARDING = true
             const val DELETE_COMPLETED_TASKS = false
         }

@@ -1,17 +1,22 @@
 package com.vmaier.taski.features.skills
 
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.vmaier.taski.App
+import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
+import com.vmaier.taski.data.SortSkills
+import com.vmaier.taski.data.SortOrder
+import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentSkillListBinding
 import timber.log.Timber
 
@@ -26,6 +31,71 @@ class SkillListFragment : Fragment() {
     companion object {
         lateinit var skillAdapter: SkillAdapter
         lateinit var binding: FragmentSkillListBinding
+
+        fun sortSkills(context: Context, skills: MutableList<Skill>) {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            val sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
+            val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
+            if (order == SortOrder.ASC.value) {
+                when (sort) {
+                    SortSkills.NAME.value -> skills.sortBy { it.name }
+                    SortSkills.XP.value -> skills.sortBy { it.xp }
+                    SortSkills.CATEGORY.value -> {
+                        skills.sortBy {
+                            val db = AppDatabase(context)
+                            if (it.categoryId != null) {
+                                db.categoryDao().findById(it.categoryId).name
+                            } else {
+                                ""
+                            }
+                        }
+                    }
+                }
+            } else {
+                when (sort) {
+                    SortSkills.NAME.value -> skills.sortByDescending { it.name }
+                    SortSkills.XP.value -> skills.sortByDescending { it.xp }
+                    SortSkills.CATEGORY.value -> {
+                        skills.sortByDescending {
+                            val db = AppDatabase(context)
+                            if (it.categoryId != null) {
+                                db.categoryDao().findById(it.categoryId).name
+                            } else {
+                                ""
+                            }
+                        }
+                    }
+                }
+            }
+            updateSortedByHeader(context, skills)
+        }
+
+        fun updateSortedByHeader(context: Context, tasks: MutableList<Skill>) {
+            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+            val sort = prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)
+            val order = prefs.getString(Const.Prefs.SORT_SKILLS_ORDER, Const.Defaults.SORT_SKILLS_ORDER)
+            val sortString = when (sort) {
+                SortSkills.NAME.value -> context.getString(R.string.term_sort_name)
+                SortSkills.XP.value -> context.getString(R.string.term_sort_xp)
+                SortSkills.CATEGORY.value -> context.getString(R.string.term_sort_category)
+                else -> context.getString(R.string.term_sort_name)
+            }
+            val orderString =
+                if (order == SortOrder.ASC.value) context.getString(R.string.term_sort_asc)
+                else context.getString(R.string.term_sort_desc)
+            if (tasks.isNotEmpty()) {
+                binding.header.visibility = View.VISIBLE
+                binding.header.text = context.getString(R.string.term_sort_by, sortString, orderString)
+            } else {
+                binding.header.visibility = View.GONE
+                binding.header.text = ""
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -74,6 +144,7 @@ class SkillListFragment : Fragment() {
         })
         val db = AppDatabase(requireContext())
         val skills = db.skillDao().findAll()
+        sortSkills(requireContext(), skills)
         Timber.d("${skills.size} skill(s) found.")
         skills.sortBy { it.name }
         skillAdapter.setSkills(skills)
@@ -96,5 +167,62 @@ class SkillListFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.skill_sort_menu, menu)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val menuItemId = when (prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)) {
+            SortSkills.NAME.value -> R.id.sort_name
+            SortSkills.XP.value -> R.id.sort_xp
+            SortSkills.CATEGORY.value -> R.id.sort_category
+            else -> R.id.sort_name
+        }
+        val sortItem = menu.findItem(menuItemId)
+        sortItem.isChecked = true
+        val sortOrderItem = menu.findItem(R.id.sort_skills_order)
+        val order = prefs.getString(Const.Prefs.SORT_SKILLS_ORDER, Const.Defaults.SORT_SKILLS_ORDER)
+        if (order == SortOrder.ASC.value) {
+
+            sortOrderItem.setIcon(R.drawable.ic_sort_order_asc_24)
+        } else {
+            sortOrderItem.setIcon(R.drawable.ic_sort_order_desc_24)
+        }
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        if (item.itemId == R.id.sort_skills_order) {
+            val savedOrder = prefs.getString(Const.Prefs.SORT_SKILLS_ORDER, Const.Defaults.SORT_SKILLS_ORDER)
+            val newOrder = if (savedOrder == SortOrder.ASC.value) {
+                item.setIcon(R.drawable.ic_sort_order_desc_24)
+                SortOrder.DESC.value
+            } else {
+                item.setIcon(R.drawable.ic_sort_order_asc_24)
+                SortOrder.ASC.value
+            }
+            prefs.edit()
+                .putString(Const.Prefs.SORT_SKILLS_ORDER, newOrder)
+                .apply()
+            sortSkills(requireContext(), skillAdapter.skills)
+            skillAdapter.notifyDataSetChanged()
+        } else {
+            item.isChecked = true
+            var sort = prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)
+                ?: SortSkills.NAME.value
+            when (item.itemId) {
+                R.id.sort_name -> sort = SortSkills.NAME.value
+                R.id.sort_xp -> sort = SortSkills.XP.value
+                R.id.sort_category -> sort = SortSkills.CATEGORY.value
+                else -> super.onOptionsItemSelected(item)
+            }
+            prefs.edit()
+                .putString(Const.Prefs.SORT_SKILLS, sort)
+                .apply()
+            sortSkills(requireContext(), skillAdapter.skills)
+            skillAdapter.notifyDataSetChanged()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

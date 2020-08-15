@@ -71,6 +71,9 @@
     <string name="term_sort_desc">descending</string>
     <string name="term_skill_level_increased">%s level increased</string>
     <string name="term_overall_level_increased">Overall level increased</string>
+    <string name="term_sort_name">name</string>
+    <string name="term_sort_xp">experience</string>
+    <string name="term_sort_category">category</string>
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Cannot be empty</string>
@@ -145,7 +148,7 @@
     <string name="heading_light_mode">Light mode</string>
     <string name="heading_language">Language</string>
     <string name="heading_synchronize_to_calendar">Synchronize to calendar</string>
-    <string name="heading_sort_tasks_by">Sort by</string>
+    <string name="heading_sort_by">Sort by</string>
     <string name="heading_sort_order">Sort order</string>
     <string name="heading_select_theme">Select theme</string>
     <string name="heading_rate_app">Rate this app</string>

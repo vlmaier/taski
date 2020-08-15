@@ -73,6 +73,9 @@
     <string name="term_sort_desc">по убыванию</string>
     <string name="term_skill_level_increased">%s уровень увеличился</string>
     <string name="term_overall_level_increased">Общий уровень увеличился</string>
+    <string name="term_sort_name">Наименование</string>
+    <string name="term_sort_xp">Опыт</string>
+    <string name="term_sort_category">Категория</string>
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Не может быть пустым</string>
@@ -147,7 +150,7 @@
     <string name="heading_language">Язык</string>
     <string name="heading_theme">Тема</string>
     <string name="heading_synchronize_to_calendar">Синхронизировать с календарем</string>
-    <string name="heading_sort_tasks_by">Сортировать по</string>
+    <string name="heading_sort_by">Сортировать по</string>
     <string name="heading_sort_order">Порядок сортировки</string>
     <string name="heading_select_theme">Выберите тему</string>
     <string name="heading_rate_app">Оцени приложение</string>

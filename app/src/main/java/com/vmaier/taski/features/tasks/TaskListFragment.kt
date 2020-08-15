@@ -15,7 +15,7 @@ import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
-import com.vmaier.taski.data.Sort
+import com.vmaier.taski.data.SortTasks
 import com.vmaier.taski.data.SortOrder
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
@@ -40,11 +40,11 @@ class TaskListFragment : Fragment() {
             val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             if (order == SortOrder.ASC.value) {
                 when (sort) {
-                    Sort.CREATED_AT.value -> tasks.sortBy { App.dateFormat.parse(it.createdAt).time }
-                    Sort.GOAL.value -> tasks.sortBy { it.goal }
-                    Sort.DURATION.value -> tasks.sortBy { it.duration }
-                    Sort.XP_GAIN.value -> tasks.sortBy { it.xp }
-                    Sort.DUE_ON.value -> {
+                    SortTasks.CREATED_AT.value -> tasks.sortBy { App.dateFormat.parse(it.createdAt).time }
+                    SortTasks.GOAL.value -> tasks.sortBy { it.goal }
+                    SortTasks.DURATION.value -> tasks.sortBy { it.duration }
+                    SortTasks.XP_GAIN.value -> tasks.sortBy { it.xp }
+                    SortTasks.DUE_ON.value -> {
                         tasks.sortBy {
                             if (it.dueAt != null) {
                                 App.dateFormat.parse(it.dueAt).time
@@ -56,11 +56,11 @@ class TaskListFragment : Fragment() {
                 }
             } else {
                 when (sort) {
-                    Sort.CREATED_AT.value -> tasks.sortByDescending { App.dateFormat.parse(it.createdAt).time }
-                    Sort.GOAL.value -> tasks.sortByDescending { it.goal }
-                    Sort.DURATION.value -> tasks.sortByDescending { it.duration }
-                    Sort.XP_GAIN.value -> tasks.sortByDescending { it.xp }
-                    Sort.DUE_ON.value -> tasks.sortByDescending {
+                    SortTasks.CREATED_AT.value -> tasks.sortByDescending { App.dateFormat.parse(it.createdAt).time }
+                    SortTasks.GOAL.value -> tasks.sortByDescending { it.goal }
+                    SortTasks.DURATION.value -> tasks.sortByDescending { it.duration }
+                    SortTasks.XP_GAIN.value -> tasks.sortByDescending { it.xp }
+                    SortTasks.DUE_ON.value -> tasks.sortByDescending {
                         if (it.dueAt != null) {
                             App.dateFormat.parse(it.dueAt).time
                         } else {
@@ -77,11 +77,11 @@ class TaskListFragment : Fragment() {
             val sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
             val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             val sortString = when (sort) {
-                Sort.CREATED_AT.value -> context.getString(R.string.term_sort_created_at)
-                Sort.GOAL.value -> context.getString(R.string.term_sort_goal)
-                Sort.DURATION.value -> context.getString(R.string.term_sort_duration)
-                Sort.XP_GAIN.value -> context.getString(R.string.term_sort_xp_gain)
-                Sort.DUE_ON.value -> context.getString(R.string.term_sort_due_on)
+                SortTasks.CREATED_AT.value -> context.getString(R.string.term_sort_created_at)
+                SortTasks.GOAL.value -> context.getString(R.string.term_sort_goal)
+                SortTasks.DURATION.value -> context.getString(R.string.term_sort_duration)
+                SortTasks.XP_GAIN.value -> context.getString(R.string.term_sort_xp_gain)
+                SortTasks.DUE_ON.value -> context.getString(R.string.term_sort_due_on)
                 else -> context.getString(R.string.term_sort_created_at)
             }
             val orderString =
@@ -187,14 +187,14 @@ class TaskListFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.sort_menu, menu)
+        inflater.inflate(R.menu.task_sort_menu, menu)
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val menuItemId = when (prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)) {
-            Sort.CREATED_AT.value -> R.id.sort_created_at
-            Sort.GOAL.value -> R.id.sort_goal
-            Sort.DURATION.value -> R.id.sort_duration
-            Sort.XP_GAIN.value -> R.id.sort_xp_gain
-            Sort.DUE_ON.value -> R.id.sort_due_on
+            SortTasks.CREATED_AT.value -> R.id.sort_created_at
+            SortTasks.GOAL.value -> R.id.sort_goal
+            SortTasks.DURATION.value -> R.id.sort_duration
+            SortTasks.XP_GAIN.value -> R.id.sort_xp_gain
+            SortTasks.DUE_ON.value -> R.id.sort_due_on
             else -> R.id.sort_created_at
         }
         val sortItem = menu.findItem(menuItemId)
@@ -229,13 +229,13 @@ class TaskListFragment : Fragment() {
         } else {
             item.isChecked = true
             var sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
-                ?: Sort.CREATED_AT.value
+                ?: SortTasks.CREATED_AT.value
             when (item.itemId) {
-                R.id.sort_created_at -> sort = Sort.CREATED_AT.value
-                R.id.sort_goal -> sort = Sort.GOAL.value
-                R.id.sort_duration -> sort = Sort.DURATION.value
-                R.id.sort_xp_gain -> sort = Sort.XP_GAIN.value
-                R.id.sort_due_on -> sort = Sort.DUE_ON.value
+                R.id.sort_created_at -> sort = SortTasks.CREATED_AT.value
+                R.id.sort_goal -> sort = SortTasks.GOAL.value
+                R.id.sort_duration -> sort = SortTasks.DURATION.value
+                R.id.sort_xp_gain -> sort = SortTasks.XP_GAIN.value
+                R.id.sort_due_on -> sort = SortTasks.DUE_ON.value
                 else -> super.onOptionsItemSelected(item)
             }
             prefs.edit()

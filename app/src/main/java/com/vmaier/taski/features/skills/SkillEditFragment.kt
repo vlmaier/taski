@@ -15,6 +15,7 @@ import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentEditSkillBinding
+import com.vmaier.taski.features.tasks.TaskListFragment
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.utils.KeyBoardHider
 import timber.log.Timber
@@ -188,7 +189,8 @@ class SkillEditFragment : SkillFragment() {
             db.skillDao().update(toUpdate)
             Timber.d("Updated skill with ID: ${skill.id}.")
             SkillListFragment.skillAdapter.skills[itemPosition] = toUpdate
-            SkillListFragment.skillAdapter.notifyItemChanged(itemPosition)
+            SkillListFragment.sortSkills(requireContext(), SkillListFragment.skillAdapter.skills)
+            SkillListFragment.skillAdapter.notifyDataSetChanged()
             getString(R.string.event_skill_updated).toast(requireContext())
         }
     }
