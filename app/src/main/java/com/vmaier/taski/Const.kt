@@ -25,6 +25,7 @@ class Const {
             const val SORT_SKILLS_ORDER = "sort_tasks_order"
             const val ONBOARDING = "onboarding"
             const val DELETE_COMPLETED_TASKS = "delete_completed_tasks"
+            const val APP_LAUNCH_COUNTER = "app_starts_counter"
         }
     }
 
@@ -47,6 +48,8 @@ class Const {
             const val SORT_SKILLS_ORDER = "asc"
             const val ONBOARDING = true
             const val DELETE_COMPLETED_TASKS = false
+            const val APP_LAUNCH_COUNTER = 0
+            const val APP_LAUNCH_COUNTER_FOR_REVIEW = 10
         }
     }
 }

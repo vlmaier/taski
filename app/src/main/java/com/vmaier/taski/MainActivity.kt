@@ -28,7 +28,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
-import com.kobakei.ratethisapp.RateThisApp
+import com.google.android.play.core.review.ReviewInfo
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.tasks.Task
 import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
@@ -194,27 +197,33 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
         // "Status Bar" settings
         this.window.statusBarColor = Utils.getThemeColor(this, R.attr.colorPrimary)
-
-        val config = RateThisApp.Config()
-        config.setTitle(R.string.heading_rate_app);
-        config.setMessage(R.string.description_rate_app);
-        config.setYesButtonText(R.string.action_rate_now);
-        config.setNoButtonText(R.string.action_no_thanks);
-        config.setCancelButtonText(R.string.action_later);
-        RateThisApp.init(config)
-        RateThisApp.onCreate(this);
-        RateThisApp.showRateDialogIfNeeded(this);
+        var launchCounter = prefs.getInt(Const.Prefs.APP_LAUNCH_COUNTER, Const.Defaults.APP_LAUNCH_COUNTER)
+        launchCounter++
+        prefs.edit()
+            .putInt(Const.Prefs.APP_LAUNCH_COUNTER, launchCounter)
+            .apply()
+        if (launchCounter == Const.Defaults.APP_LAUNCH_COUNTER_FOR_REVIEW) {
+            val manager: ReviewManager = ReviewManagerFactory.create(this)
+            val request: Task<ReviewInfo> = manager.requestReviewFlow()
+            request.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val reviewInfo: ReviewInfo = task.result
+                    val flow: Task<Void> = manager.launchReviewFlow(this, reviewInfo)
+                    flow.addOnCompleteListener { }
+                }
+            }
+        }
     }
 
     override fun onStart() {
         super.onStart()
         val headerView = drawerNav.getHeaderView(0)
 
-        // --- User name settings
+        // "User name" settings
         userNameView = headerView.findViewById(R.id.user_name) as TextView
         userNameView.text = prefs.getString(Const.Prefs.USER_NAME, Const.Defaults.USER_NAME)
 
-        // --- User avatar settings
+        // "User avatar" settings
         avatarView = headerView.findViewById(R.id.user_avatar)
         avatarView.clipToOutline = true
         val avatar = prefs.getString(Const.Prefs.USER_AVATAR, null)
@@ -225,12 +234,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             else avatarView.setImageDrawable(fallbackImage)
         } else avatarView.setImageDrawable(fallbackImage)
 
-        // --- XP settings
+        // XP settings
         xpView = headerView.findViewById(R.id.xp_counter) as TextView
         val overallXp = db.taskDao().countOverallXp()
         xpView.text = getString(R.string.term_xp_value, overallXp)
 
-        // --- Level settings
+        // Level settings
         levelView = headerView.findViewById(R.id.level_counter) as TextView
         val overallLevel = levelService.getOverallLevel(overallXp)
         levelView.text = getString(R.string.term_level_value, overallLevel)

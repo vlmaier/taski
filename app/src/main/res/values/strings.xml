@@ -102,9 +102,6 @@
     <string name="action_dismiss">Dismiss</string>
     <string name="action_pick_color">Pick color</string>
     <string name="action_edit_name">Edit name</string>
-    <string name="action_rate_now">Rate now</string>
-    <string name="action_no_thanks">No, thanks</string>
-    <string name="action_later">Later</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Create new skill</string>
@@ -151,7 +148,6 @@
     <string name="heading_sort_by">Sort by</string>
     <string name="heading_sort_order">Sort order</string>
     <string name="heading_select_theme">Select theme</string>
-    <string name="heading_rate_app">Rate this app</string>
     <string name="heading_calendar_settings">Calendar settings</string>
     <string name="heading_delete_completed_tasks">Delete completed tasks</string>
 

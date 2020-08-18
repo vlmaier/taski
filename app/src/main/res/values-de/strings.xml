@@ -100,9 +100,6 @@
     <string name="action_dismiss">Verwerfen</string>
     <string name="action_pick_color">Farbe wählen</string>
     <string name="action_edit_name">Name ändern</string>
-    <string name="action_rate_now">Bewerten</string>
-    <string name="action_no_thanks">Nein, danke</string>
-    <string name="action_later">Später</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Neue Fähigkeit</string>
@@ -149,7 +146,6 @@
     <string name="heading_sort_by">Sortiere nach</string>
     <string name="heading_sort_order">Sortierreihenfolge</string>
     <string name="heading_select_theme">Wähle ein Thema</string>
-    <string name="heading_rate_app">Bewerte die App</string>
     <string name="heading_calendar_settings">Kalendereinstellungen</string>
     <string name="heading_delete_completed_tasks">Abgeschlossene Aufgaben löschen</string>
 

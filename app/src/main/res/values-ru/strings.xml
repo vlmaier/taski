@@ -104,9 +104,6 @@
     <string name="action_dismiss">Отклонить</string>
     <string name="action_pick_color">Выбрать цвет</string>
     <string name="action_edit_name">Сменить название</string>
-    <string name="action_rate_now">Оценить</string>
-    <string name="action_no_thanks">Нет, спасибо</string>
-    <string name="action_later">Позже</string>
 
     <!-- Headings -->
     <string name="heading_create_skill">Создать новый навык</string>
@@ -153,7 +150,6 @@
     <string name="heading_sort_by">Сортировать по</string>
     <string name="heading_sort_order">Порядок сортировки</string>
     <string name="heading_select_theme">Выберите тему</string>
-    <string name="heading_rate_app">Оцени приложение</string>
     <string name="heading_calendar_settings">Настройки календаря</string>
     <string name="heading_delete_completed_tasks">Удаление выполненных задач</string>
 
