@@ -10,12 +10,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
+import com.vmaier.taski.MainActivity.Companion.iconDialog
 import com.vmaier.taski.R
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentCreateSkillBinding
-import com.vmaier.taski.utils.KeyBoardHider
+import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
 import com.vmaier.taski.hideKeyboard
+import com.vmaier.taski.utils.KeyBoardHider
 import timber.log.Timber
 
 
@@ -30,19 +32,15 @@ class SkillCreateFragment : SkillFragment() {
         lateinit var binding: FragmentCreateSkillBinding
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         super.onCreateView(inflater, container, saved)
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_create_skill, container, false
-        )
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_skill, container, false)
 
-        // --- Name settings
+        // Name settings
         binding.name.editText?.setText(saved?.getString(KEY_NAME) ?: "")
         binding.name.onFocusChangeListener = KeyBoardHider()
 
-        // --- Category settings
+        // Category settings
         binding.category.editText?.setText(saved?.getString(KEY_CATEGORY) ?: "")
         val adapter = ArrayAdapter(
             requireContext(), R.layout.support_simple_spinner_dropdown_item,
@@ -52,10 +50,10 @@ class SkillCreateFragment : SkillFragment() {
         autoCompleteCategory.setAdapter(adapter)
         binding.category.onFocusChangeListener = KeyBoardHider()
 
-        // -- Icon settings
+        // Icon settings
         setSkillIcon(saved, binding.iconButton)
 
-        // --- Action buttons settings
+        // Action buttons settings
         binding.createSkillButton.setOnClickListener {
             if (createSkillButtonClicked()) {
                 it.findNavController().popBackStack()
@@ -68,7 +66,7 @@ class SkillCreateFragment : SkillFragment() {
         }
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
-            MainActivity.iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
+            iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
         }
         return binding.root
     }
@@ -83,11 +81,7 @@ class SkillCreateFragment : SkillFragment() {
         super.onSaveInstanceState(out)
         out.putString(KEY_NAME, binding.name.editText?.text.toString())
         out.putString(KEY_CATEGORY, binding.category.editText?.text.toString())
-        out.putInt(
-            KEY_ICON_ID, Integer.parseInt(
-                binding.iconButton.tag.toString()
-            )
-        )
+        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
     }
 
     private fun createSkillButtonClicked(): Boolean {
@@ -118,13 +112,13 @@ class SkillCreateFragment : SkillFragment() {
                 categoryId = foundCategory.id
             } else {
                 categoryId = db.categoryDao().create(Category(name = categoryName))
-                Timber.d("Created new category. ID: $categoryId returned.")
+                Timber.d("Category ($categoryId) created.")
             }
         }
         val skill = Skill(name = name, categoryId = categoryId, iconId = iconId)
         val id = db.skillDao().create(skill)
-        Timber.d("Created new skill. ID: $id returned.")
-        SkillListFragment.skillAdapter.notifyDataSetChanged()
+        Timber.d("Skill ($id) created.")
+        skillAdapter.notifyDataSetChanged()
         return true
     }
 }

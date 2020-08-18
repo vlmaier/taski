@@ -10,10 +10,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
 import com.vmaier.taski.*
+import com.vmaier.taski.MainActivity.Companion.iconDialog
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentCreateTaskBinding
-import com.vmaier.taski.utils.*
+import com.vmaier.taski.features.tasks.TaskListFragment.Companion.taskAdapter
+import com.vmaier.taski.utils.KeyBoardHider
+import com.vmaier.taski.utils.PermissionUtils
+import com.vmaier.taski.utils.RequestCode
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import timber.log.Timber
 import java.text.ParseException
@@ -32,37 +36,33 @@ class TaskCreateFragment : TaskFragment() {
         lateinit var difficultyChip: Chip
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         super.onCreateView(inflater, container, saved)
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_create_task, container, false
-        )
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_task, container, false)
 
         // Get arguments from bundle
         val args = saved ?: this.arguments
 
-        // --- Goal settings
+        // Goal settings
         binding.goal.editText?.setText(args?.getString(KEY_GOAL) ?: "")
         binding.goal.onFocusChangeListener = KeyBoardHider()
         binding.goal.requestFocus()
 
-        // --- Details settings
+        // Details settings
         binding.details.editText?.setText(args?.getString(KEY_DETAILS) ?: "")
         binding.details.onFocusChangeListener = KeyBoardHider()
 
-        // --- Icon settings
+        // Icon settings
         setTaskIcon(args, binding.iconButton)
 
-        // --- Duration settings
+        // Duration settings
         binding.durationBar.progress = args?.getInt(KEY_DURATION) ?: 3
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
         binding.durationBar.setOnSeekBarChangeListener(
             getDurationBarListener(binding.durationValue, binding.xpGain, binding.durationBar)
         )
 
-        // --- Difficulty settings
+        // Difficulty settings
         binding.difficulty.setOnCheckedChangeListener { chipGroup, chipId ->
             if (chipId == NO_ID) {
                 // do not allow to unselect a chip
@@ -81,7 +81,7 @@ class TaskCreateFragment : TaskFragment() {
         binding.difficulty.hard.isChecked = selectedDifficulty == Difficulty.HARD
         binding.difficulty.insane.isChecked = selectedDifficulty == Difficulty.INSANE
 
-        // --- Skills settings
+        // Skills settings
         val adapter = ArrayAdapter(
             requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
         )
@@ -91,7 +91,7 @@ class TaskCreateFragment : TaskFragment() {
         binding.skills.chipTokenizer = getSkillsTokenizer()
         binding.skills.setText(args?.getStringArray(KEY_SKILLS)?.toList())
 
-        // --- Action buttons settings
+        // Action buttons settings
         binding.createTaskButton.setOnClickListener {
             if (createTaskButtonClicked()) {
                 it.findNavController().popBackStack()
@@ -104,19 +104,17 @@ class TaskCreateFragment : TaskFragment() {
         }
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
-            MainActivity.iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
+            iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
         }
 
-        // --- Deadline settings
+        // Deadline settings
         binding.deadlineDate.editText?.setText(args?.getString(KEY_DEADLINE_DATE) ?: "")
         binding.deadlineTime.editText?.setText(args?.getString(KEY_DEADLINE_TIME) ?: "")
         setDeadlineDateOnClickListener(binding.deadlineDate.editText)
         setDeadlineTimeOnClickListener(binding.deadlineTime.editText)
         setDeadlineDateOnTextChangedListener(binding.calendarSync, binding.deadlineDate.editText)
         binding.calendarSync.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                PermissionUtils.setupCalendarPermissions(requireContext())
-            }
+            if (isChecked) PermissionUtils.setupCalendarPermissions(requireContext())
         }
         return binding.root
     }
@@ -174,9 +172,9 @@ class TaskCreateFragment : TaskFragment() {
             dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty)
         )
         val id = db.taskDao().createTask(task, skillsToAssign)
-        Timber.d("Created new task. ID: $id returned.")
+        Timber.d("Task ($id) created.")
         task.id = id
-        TaskListFragment.taskAdapter.notifyDataSetChanged()
+        taskAdapter.notifyDataSetChanged()
         calendarService.addToCalendar(binding.calendarSync.isChecked, task)
         if (dueAt != null) {
             val notifyAtInMs: Long = try {

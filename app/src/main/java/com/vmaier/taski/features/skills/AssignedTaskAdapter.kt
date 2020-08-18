@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.setIcon
 
@@ -31,23 +30,25 @@ class AssignedTaskAdapter internal constructor(
         var iconView: ImageView = itemView.findViewById(R.id.task_icon)
     }
 
+    internal fun setTasks(tasks: List<Task>) {
+        this.tasks = tasks.toMutableList()
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AssignedTaskViewHolder {
         val itemView = inflater.inflate(R.layout.item_assigned_task, parent, false)
         return AssignedTaskViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: AssignedTaskViewHolder, position: Int) {
-
-        val db = AppDatabase(context)
         val task: Task? = tasks[position]
         if (task != null) {
-            // --- Goal settings
+            // setup "Goal" view
             holder.goalView.text = task.goal
             holder.goalView.isSelected = true
 
-            // --- Icon settings
+            // setup "Icon" view
             holder.iconView.setIcon(task.iconId)
-
             holder.itemView.setOnClickListener {
                 it.findNavController().navigate(
                     SkillEditFragmentDirections
@@ -55,11 +56,6 @@ class AssignedTaskAdapter internal constructor(
                 )
             }
         }
-    }
-
-    internal fun setTasks(tasks: List<Task>) {
-        this.tasks = tasks.toMutableList()
-        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = tasks.size

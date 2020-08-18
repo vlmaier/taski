@@ -26,10 +26,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="20dp"
                     android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackground"
                     app:layout_constraintEnd_toStartOf="@+id/category_edit_name"
                     app:layout_constraintStart_toStartOf="parent">
 
@@ -38,9 +38,9 @@
                         android:layout_height="32dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
+                        android:contentDescription="@string/content_pick_color_icon"
                         android:src="@drawable/ic_color_24"
-                        app:tint="?attr/colorOnPrimary"
-                        android:contentDescription="@string/content_pick_color_icon" />
+                        app:tint="?attr/colorOnPrimary" />
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -48,8 +48,8 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="2dp"
                         android:text="@string/action_pick_color"
-                        android:textSize="12sp"
-                        android:textColor="?attr/colorOnPrimary" />
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -58,10 +58,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackground"
                     app:layout_constraintEnd_toStartOf="@+id/category_delete"
                     app:layout_constraintStart_toEndOf="@+id/category_pick_color">
 
@@ -70,9 +70,9 @@
                         android:layout_height="32dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="5dp"
+                        android:contentDescription="@string/content_edit_name_icon"
                         android:src="@drawable/ic_edit_24"
-                        app:tint="?attr/colorOnPrimary"
-                        android:contentDescription="@string/content_edit_name_icon" />
+                        app:tint="?attr/colorOnPrimary" />
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -80,8 +80,8 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="2dp"
                         android:text="@string/action_edit_name"
-                        android:textSize="12sp"
-                        android:textColor="?attr/colorOnPrimary" />
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -91,10 +91,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="20dp"
                     android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:focusable="true"
                     android:gravity="center"
                     android:orientation="vertical"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackground"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/category_edit_name">
 
@@ -102,17 +102,17 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_marginTop="5dp"
+                        android:contentDescription="@string/content_delete_icon"
                         android:src="@drawable/ic_delete_24"
-                        app:tint="?attr/colorOnPrimary"
-                        android:contentDescription="@string/content_delete_icon" />
+                        app:tint="?attr/colorOnPrimary" />
 
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="@string/action_delete"
-                        android:textSize="12sp"
-                        android:textColor="?attr/colorOnPrimary" />
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textSize="12sp" />
 
             </LinearLayout>
 

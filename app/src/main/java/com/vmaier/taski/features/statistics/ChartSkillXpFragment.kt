@@ -16,7 +16,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.MPPointF
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.vmaier.taski.App
-import com.vmaier.taski.MainActivity
+import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentChartSkillXpBinding
 import com.vmaier.taski.features.skills.SkillFragment
@@ -35,21 +35,16 @@ class ChartSkillXpFragment : SkillFragment() {
         lateinit var binding: FragmentChartSkillXpBinding
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         super.onCreateView(inflater, container, saved)
-        MainActivity.toolbar.title = getString(R.string.heading_statistics)
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_chart_skill_xp, container, false
-        )
+        toolbar.title = getString(R.string.heading_statistics)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_skill_xp, container, false)
 
         val skills = db.skillDao().findAll()
         val values = ArrayList<PieEntry>()
         skills.forEach {
             if (it.xp > 0) {
-                val icon = App.iconPack
-                    .getIconDrawable(it.iconId, IconDrawableLoader(requireContext()))
+                val icon = App.iconPack.getIconDrawable(it.iconId, IconDrawableLoader(requireContext()))
                 icon?.setTint(ContextCompat.getColor(requireContext(), R.color.colorLightDefault))
                 values.add(PieEntry(it.xp.toFloat(), it.name, icon))
             }
@@ -70,9 +65,7 @@ class ChartSkillXpFragment : SkillFragment() {
             }
         })
 
-        if (values.isNotEmpty()) {
-            binding.chart.data = data
-        }
+        if (values.isNotEmpty()) binding.chart.data = data
 
         binding.chart.setDrawCenterText(false)
         binding.chart.setExtraOffsets(10f, 0f, 10f, 0f)

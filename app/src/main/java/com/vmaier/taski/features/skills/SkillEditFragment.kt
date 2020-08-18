@@ -10,12 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vmaier.taski.*
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentEditSkillBinding
-import com.vmaier.taski.features.tasks.TaskListFragment
+import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
+import com.vmaier.taski.features.skills.SkillListFragment.Companion.sortSkills
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.utils.KeyBoardHider
 import timber.log.Timber
@@ -36,20 +36,15 @@ class SkillEditFragment : SkillFragment() {
         lateinit var binding: FragmentEditSkillBinding
         lateinit var taskAdapter: AssignedTaskAdapter
         lateinit var skill: Skill
-
         fun isTaskAdapterInitialized() = ::taskAdapter.isInitialized
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         super.onCreateView(inflater, container, saved)
         levelService = LevelService(requireContext())
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_edit_skill, container, false
-        )
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_skill, container, false)
 
-        // Focus header, so it's not one of the edit texts
+        // Focus header, so it's not one of the edit text views
         binding.header.isFocusable = true
 
         // Get arguments from bundle
@@ -57,23 +52,14 @@ class SkillEditFragment : SkillFragment() {
         skill = args.skill
         itemPosition = args.itemPosition
 
-        // --- Name settings
-        binding.name.editText?.setText(
-            saved?.getString(
-                KEY_NAME
-            ) ?: skill.name
-        )
+        // Name settings
+        binding.name.editText?.setText(saved?.getString(KEY_NAME) ?: skill.name)
         binding.name.onFocusChangeListener = KeyBoardHider()
 
-        // --- Category settings
+        // Category settings
         val categoryId = skill.categoryId
-        val categoryName =
-            if (categoryId != null) db.categoryDao().findNameById(categoryId) else null
-        binding.category.editText?.setText(
-            saved?.getString(
-                KEY_CATEGORY
-            ) ?: categoryName
-        )
+        val categoryName = if (categoryId != null) db.categoryDao().findNameById(categoryId) else null
+        binding.category.editText?.setText(saved?.getString(KEY_CATEGORY) ?: categoryName)
         binding.category.onFocusChangeListener = KeyBoardHider()
         val arrayAdapter = ArrayAdapter(
             requireContext(), R.layout.support_simple_spinner_dropdown_item,
@@ -82,33 +68,26 @@ class SkillEditFragment : SkillFragment() {
         val autoCompleteCategory = binding.category.editText as AppCompatAutoCompleteTextView
         autoCompleteCategory.setAdapter(arrayAdapter)
 
-        // --- Open tasks settings
-        val openTasksAmount = db.skillDao().countTasksWithSkillByStatus(
-            skill.id, Status.OPEN
-        )
+        // "Open tasks" settings
+        val openTasksAmount = db.skillDao().countTasksWithSkillByStatus(skill.id, Status.OPEN)
         binding.skillOpenTasksText.visibility = if (openTasksAmount > 0) View.VISIBLE else View.GONE
 
-        // --- Done tasks settings
-        val doneTasksAmount = db.skillDao().countTasksWithSkillByStatus(
-            skill.id, Status.DONE
-        )
+        // "Done tasks" settings
+        val doneTasksAmount = db.skillDao().countTasksWithSkillByStatus(skill.id, Status.DONE)
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
 
-        // --- XP settings
+        // XP settings
         binding.skillXp.text = getString(R.string.term_xp_value, skill.xp)
 
-        // --- Level settings
+        // Level settings
         val skillLevel = levelService.getSkillLevel(skill)
         binding.skillLevel.text = skillLevel.toString()
 
-        // --- Icon settings
+        // Icon settings
         setSkillIcon(saved, binding.iconButton, skill.iconId)
 
-        // --- Action buttons settings
-        setDeleteButtonOnClickListener(
-            binding.deleteSkillButton, itemPosition,
-            skill
-        )
+        // Action buttons settings
+        setDeleteButtonOnClickListener(binding.deleteSkillButton, itemPosition, skill)
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
             MainActivity.iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
@@ -118,7 +97,6 @@ class SkillEditFragment : SkillFragment() {
             it.hideKeyboard()
             isCanceled = true
         }
-        val db = AppDatabase(requireContext())
         val tasks = db.skillDao().findTasksWithSkillByStatus(skill.id, Status.OPEN)
         Timber.d("${tasks.size} task(s) found.")
         tasks.sortBy { it.goal }
@@ -134,10 +112,8 @@ class SkillEditFragment : SkillFragment() {
     override fun onPause() {
         super.onPause()
         // check if the skill was not deleted
-        if (db.skillDao().findById(skill.id) != null) {
-            if (!isCanceled) {
-                saveChangesOnSkill()
-            }
+        if (db.skillDao().findById(skill.id) != null && !isCanceled) {
+            saveChangesOnSkill()
         }
         binding.name.hideKeyboard()
         binding.category.hideKeyboard()
@@ -147,11 +123,7 @@ class SkillEditFragment : SkillFragment() {
         super.onSaveInstanceState(out)
         out.putString(KEY_NAME, binding.name.editText?.text.toString())
         out.putString(KEY_CATEGORY, binding.category.editText?.text.toString())
-        out.putInt(
-            KEY_ICON_ID, Integer.parseInt(
-                binding.iconButton.tag.toString()
-            )
-        )
+        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
         saveChangesOnSkill()
     }
 
@@ -169,7 +141,6 @@ class SkillEditFragment : SkillFragment() {
         }
         val categoryName = binding.category.editText?.text.toString().trim()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        val db = AppDatabase(requireContext())
         val categoryId: Long?
         if (categoryName.isNotBlank()) {
             val foundCategory = db.categoryDao().findByName(categoryName)
@@ -177,20 +148,18 @@ class SkillEditFragment : SkillFragment() {
                 categoryId = foundCategory.id
             } else {
                 categoryId = db.categoryDao().create(Category(name = categoryName))
-                Timber.d("Created new category. ID: $categoryId returned.")
+                Timber.d("Category ($categoryId) created.")
             }
         } else {
             categoryId = null
         }
-        val toUpdate = Skill(
-            id = skill.id, name = name, categoryId = categoryId, xp = skill.xp, iconId = iconId
-        )
+        val toUpdate = Skill(id = skill.id, name = name, categoryId = categoryId, xp = skill.xp, iconId = iconId)
         if (skill != toUpdate) {
             db.skillDao().update(toUpdate)
-            Timber.d("Updated skill with ID: ${skill.id}.")
-            SkillListFragment.skillAdapter.skills[itemPosition] = toUpdate
-            SkillListFragment.sortSkills(requireContext(), SkillListFragment.skillAdapter.skills)
-            SkillListFragment.skillAdapter.notifyDataSetChanged()
+            Timber.d("Skill (${skill.id}) updated.")
+            skillAdapter.skills[itemPosition] = toUpdate
+            sortSkills(requireContext(), skillAdapter.skills)
+            skillAdapter.notifyDataSetChanged()
             getString(R.string.event_skill_updated).toast(requireContext())
         }
     }

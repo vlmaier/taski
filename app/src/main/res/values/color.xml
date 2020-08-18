@@ -26,7 +26,7 @@
     <color name="colorOnSecondaryDarkDefault">@color/colorLightDefault</color>
     <color name="colorOnBackgroundLightDefault">@color/colorDarkDefault</color>
     <color name="colorOnBackgroundDarkDefault">@color/colorLightDefault</color>
-    
+
     <!-- Color palette for Sailor theme -->
     <color name="colorPrimaryDarkSailor">#BBDEFB</color>
     <color name="colorPrimaryLightSailor">#1976D2</color>
@@ -52,7 +52,7 @@
     <color name="colorOnSecondaryDarkSailor">@color/colorDarkSailor</color>
     <color name="colorOnBackgroundLightSailor">@color/colorDarkSailor</color>
     <color name="colorOnBackgroundDarkSailor">@color/colorLightSailor</color>
-    
+
     <!-- Color palette for Royal theme -->
     <color name="colorPrimaryDarkRoyal">#446786</color>
     <color name="colorPrimaryLightRoyal">#143D59</color>

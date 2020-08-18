@@ -10,7 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.mikepenz.aboutlibraries.LibsBuilder
 import com.vmaier.taski.BuildConfig
-import com.vmaier.taski.MainActivity
+import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
+import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentHelpBinding
 
@@ -32,13 +33,9 @@ class HelpFragment : Fragment() {
         saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
-        MainActivity.toolbar.title = getString(R.string.heading_help)
-        MainActivity.fab.hide()
-        MainActivity.bottomNav.visibility = View.GONE
-        MainActivity.bottomBar.visibility = View.GONE
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_help, container, false
-        )
+        toolbar.title = getString(R.string.heading_help)
+        toggleBottomMenu(false, View.GONE)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_help, container, false)
         binding.licensesButton.setOnClickListener {
             val fragment = LibsBuilder()
                 .withAboutVersionShown(false)
@@ -68,7 +65,7 @@ class HelpFragment : Fragment() {
                 .addToBackStack(backStateName)
                 .commit()
         }
-        MainActivity.toolbar.title = getString(R.string.heading_licenses)
+        toolbar.title = getString(R.string.heading_licenses)
         binding.licensesButton.visibility = View.GONE
         binding.versionButton.visibility = View.GONE
     }

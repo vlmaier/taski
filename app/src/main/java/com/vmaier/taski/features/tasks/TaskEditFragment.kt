@@ -9,12 +9,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
 import com.vmaier.taski.*
+import com.vmaier.taski.MainActivity.Companion.iconDialog
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentEditTaskBinding
 import com.vmaier.taski.features.skills.SkillEditFragment
-import com.vmaier.taski.utils.*
+import com.vmaier.taski.utils.KeyBoardHider
+import com.vmaier.taski.utils.PermissionUtils
+import com.vmaier.taski.utils.RequestCode
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import timber.log.Timber
 import java.text.ParseException
@@ -38,13 +41,9 @@ class TaskEditFragment : TaskFragment() {
         lateinit var assignedSkills: List<Skill>
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         super.onCreateView(inflater, container, saved)
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_edit_task, container, false
-        )
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_task, container, false)
 
         // Focus header, so it's not one of the edit texts
         binding.header.isFocusable = true
@@ -54,25 +53,25 @@ class TaskEditFragment : TaskFragment() {
         task = args.task
         cameFromTaskList = args.cameFromTaskList
 
-        // --- Goal settings
+        // Goal settings
         binding.goal.editText?.setText(saved?.getString(KEY_GOAL) ?: task.goal)
         binding.goal.onFocusChangeListener = KeyBoardHider()
 
-        // --- Details settings
+        // Details settings
         binding.details.editText?.setText(saved?.getString(KEY_DETAILS) ?: task.details)
         binding.details.onFocusChangeListener = KeyBoardHider()
 
-        // --- Icon settings
+        // Icon settings
         setTaskIcon(saved, binding.iconButton, task.iconId)
 
-        // --- Duration settings
+        // Duration settings
         binding.durationBar.progress = saved?.getInt(KEY_DURATION) ?: task.getSeekBarValue()
         binding.durationValue.text = binding.durationBar.getHumanReadableValue()
         binding.durationBar.setOnSeekBarChangeListener(
             getDurationBarListener(binding.durationValue, binding.xpGain, binding.durationBar)
         )
 
-        // --- Difficulty settings
+        // Difficulty settings
         binding.difficulty.setOnCheckedChangeListener { chipGroup, chipId ->
             if (chipId == View.NO_ID) {
                 // do not allow to unselect chip
@@ -91,7 +90,7 @@ class TaskEditFragment : TaskFragment() {
         binding.difficulty.hard.isChecked = selectedDifficulty == Difficulty.HARD
         binding.difficulty.insane.isChecked = selectedDifficulty == Difficulty.INSANE
 
-        // --- Skills settings
+        // Skills settings
         val adapter = ArrayAdapter(
             requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
         )
@@ -100,23 +99,20 @@ class TaskEditFragment : TaskFragment() {
         binding.skills.hint = if (skillNames.isEmpty()) getString(R.string.hint_no_skills) else ""
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
-        binding.skills.setText(
-            saved?.getStringArrayList(KEY_SKILLS) ?: assignedSkills.map { it.name })
+        binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: assignedSkills.map { it.name })
         val amountOfSkills = assignedSkills.size
         val linesNeeded = if (amountOfSkills <= 3) 1 else assignedSkills.size.div(3) + 1
         binding.skills.setLines(linesNeeded)
 
-        // --- Deadline settings
+        // Deadline settings
         val dueAt = task.dueAt
         if (dueAt != null && dueAt.isNotBlank()) {
             val dueAtParts = dueAt.split(" ")
             binding.deadlineDate.editText?.setText(
-                saved?.getString(KEY_DEADLINE_DATE)
-                    ?: if (dueAtParts.isNotEmpty()) dueAtParts[0] else ""
+                saved?.getString(KEY_DEADLINE_DATE) ?: if (dueAtParts.isNotEmpty()) dueAtParts[0] else ""
             )
             binding.deadlineTime.editText?.setText(
-                saved?.getString(KEY_DEADLINE_TIME)
-                    ?: if (dueAtParts.isNotEmpty()) dueAtParts[1] else ""
+                saved?.getString(KEY_DEADLINE_TIME) ?: if (dueAtParts.isNotEmpty()) dueAtParts[1] else ""
             )
         }
         setDeadlineDateOnClickListener(binding.deadlineDate.editText)
@@ -126,14 +122,12 @@ class TaskEditFragment : TaskFragment() {
         binding.calendarSync.isEnabled = isCalendarSyncEnabled
         binding.calendarSync.isChecked = isCalendarSyncEnabled
         binding.calendarSync.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                PermissionUtils.setupCalendarPermissions(requireContext())
-            }
+            if (isChecked) PermissionUtils.setupCalendarPermissions(requireContext())
         }
 
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
-            MainActivity.iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
+            iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
         }
         binding.cancelButton.setOnClickListener {
             it.findNavController().popBackStack()
@@ -145,16 +139,13 @@ class TaskEditFragment : TaskFragment() {
 
     override fun onPause() {
         super.onPause()
-        if (!isCanceled) {
-            saveChangesOnTask()
-        }
+        if (!isCanceled) saveChangesOnTask()
         binding.goal.hideKeyboard()
         binding.details.hideKeyboard()
     }
 
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-
         out.putString(KEY_GOAL, binding.goal.editText?.text.toString())
         out.putString(KEY_DETAILS, binding.goal.editText?.text.toString())
         out.putString(KEY_DIFFICULTY, difficulty)
@@ -163,7 +154,6 @@ class TaskEditFragment : TaskFragment() {
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
         out.putString(KEY_DEADLINE_DATE, binding.deadlineDate.editText?.text.toString())
         out.putString(KEY_DEADLINE_TIME, binding.deadlineTime.editText?.text.toString())
-
         saveChangesOnTask()
     }
 
@@ -206,24 +196,7 @@ class TaskEditFragment : TaskFragment() {
             val reminderUpdateRequired = task.dueAt != toUpdate.dueAt
             db.taskDao().updateTask(toUpdate, skillsToAssign)
             Timber.d("Updated task with ID: ${task.id}.")
-            for (i in 0..TaskListFragment.taskAdapter.tasks.size) {
-                if (TaskListFragment.taskAdapter.tasks[i].id == task.id) {
-                    TaskListFragment.taskAdapter.tasks[i] = toUpdate
-                    break
-                }
-            }
-            if (!cameFromTaskList && SkillEditFragment.isTaskAdapterInitialized()) {
-                for (i in 0..SkillEditFragment.taskAdapter.tasks.size) {
-                    if (SkillEditFragment.taskAdapter.tasks[i].id == task.id) {
-                        if (skillsToAssign.contains(SkillEditFragment.skill)) {
-                            SkillEditFragment.taskAdapter.tasks[i] = toUpdate
-                        } else {
-                            SkillEditFragment.taskAdapter.tasks.remove(task)
-                        }
-                        break
-                    }
-                }
-            }
+            updateInAdapter(toUpdate, skillsToAssign)
             TaskListFragment.sortTasks(requireContext(), TaskListFragment.taskAdapter.tasks)
             TaskListFragment.taskAdapter.notifyDataSetChanged()
             calendarService.updateInCalendar(binding.calendarSync.isChecked, task, toUpdate)
@@ -249,6 +222,27 @@ class TaskEditFragment : TaskFragment() {
                     taskReminderRequestCode
                 )
                 db.taskDao().updateAlarmRequestCode(task.id, taskReminderRequestCode)
+            }
+        }
+    }
+
+    private fun updateInAdapter(task: Task, skills: List<Skill>) {
+        for (i in 0..TaskListFragment.taskAdapter.tasks.size) {
+            if (TaskListFragment.taskAdapter.tasks[i].id == task.id) {
+                TaskListFragment.taskAdapter.tasks[i] = task
+                break
+            }
+        }
+        if (!cameFromTaskList && SkillEditFragment.isTaskAdapterInitialized()) {
+            for (i in 0..SkillEditFragment.taskAdapter.tasks.size) {
+                if (SkillEditFragment.taskAdapter.tasks[i].id == task.id) {
+                    if (skills.contains(SkillEditFragment.skill)) {
+                        SkillEditFragment.taskAdapter.tasks[i] = task
+                    } else {
+                        SkillEditFragment.taskAdapter.tasks.remove(task)
+                    }
+                    break
+                }
             }
         }
     }

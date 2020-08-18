@@ -170,5 +170,5 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
     </style>
-    
+
 </resources>

@@ -11,7 +11,6 @@ import com.vmaier.taski.App
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Skill
-import com.vmaier.taski.setIcon
 import com.vmaier.taski.utils.Utils
 import kotlin.math.pow
 
@@ -24,6 +23,15 @@ import kotlin.math.pow
 class LevelService(val context: Context) {
 
     val db = AppDatabase(context)
+    private val delay = 1000L
+
+    internal fun getOverallLevel(xp: Long = db.taskDao().countOverallXp()): Int {
+        return calculateLevel(xp)
+    }
+
+    internal fun getSkillLevel(skill: Skill): Int {
+        return calculateLevel(skill.xp)
+    }
 
     fun checkForSkillLevelUp(skill: Skill, xp: Int) {
         val previousLevel = getSkillLevel(skill)
@@ -32,7 +40,7 @@ class LevelService(val context: Context) {
             Handler().postDelayed({
                 val title = context.getString(R.string.term_skill_level_increased, skill.name)
                 showDialog(title, previousLevel, nextLevel, skill.iconId)
-            }, 1000)
+            }, delay)
         }
     }
 
@@ -44,13 +52,12 @@ class LevelService(val context: Context) {
             Handler().postDelayed({
                 val title = context.getString(R.string.term_overall_level_increased)
                 showDialog(title, previousLevel, nextLevel)
-            }, 1000)
+            }, delay)
         }
     }
 
     private fun showDialog(title: String, previousLevel: Int, nextLevel: Int, iconId: Int? = null) {
-        val dialogView = (context as Activity).layoutInflater
-            .inflate(R.layout.level_up_dialog, null)
+        val dialogView = (context as Activity).layoutInflater.inflate(R.layout.level_up_dialog, null)
         val ticker: TickerView = dialogView.findViewById(R.id.ticker)
         ticker.animationInterpolator = AnticipateOvershootInterpolator()
         ticker.setCharacterLists(TickerUtils.provideNumberList())
@@ -72,15 +79,6 @@ class LevelService(val context: Context) {
         for (level in previousLevel..nextLevel) {
             ticker.text = "$level"
         }
-    }
-
-    internal fun getOverallLevel(
-        xp: Long = db.taskDao().countOverallXp()): Int {
-        return calculateLevel(xp)
-    }
-
-    internal fun getSkillLevel(skill: Skill): Int {
-        return calculateLevel(skill.xp)
     }
 
     private fun calculateLevel(xp: Long): Int {

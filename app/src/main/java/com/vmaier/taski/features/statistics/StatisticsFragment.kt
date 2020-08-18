@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.vmaier.taski.MainActivity
+import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
+import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentStatisticsBinding
 
@@ -24,15 +25,9 @@ class StatisticsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
-        MainActivity.toolbar.title = getString(
-            R.string.heading_statistics
-        )
-        MainActivity.fab.hide()
-        MainActivity.bottomNav.visibility = View.GONE
-        MainActivity.bottomBar.visibility = View.GONE
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_statistics, container, false
-        )
+        toolbar.title = getString(R.string.heading_statistics)
+        toggleBottomMenu(false, View.GONE)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_statistics, container, false)
         setupViewPager()
         return binding.root
     }
@@ -40,16 +35,10 @@ class StatisticsFragment : Fragment() {
     private fun setupViewPager() {
         val adapter = StatisticsPagerAdapter(childFragmentManager)
         adapter.addFragment(ChartSkillXpFragment(), getString(R.string.heading_skill_xp_title))
-        adapter.addFragment(
-            ChartCategoryXpFragment(),
-            getString(R.string.heading_category_xp_title)
-        )
+        adapter.addFragment(ChartCategoryXpFragment(), getString(R.string.heading_category_xp_title))
         adapter.addFragment(ChartDailyXpFragment(), getString(R.string.heading_daily_xp_title))
         adapter.addFragment(ChartWeeklyXpFragment(), getString(R.string.heading_weekly_xp_title))
-        adapter.addFragment(
-            ChartWeeklyTasksFragment(),
-            getString(R.string.heading_weekly_tasks_title)
-        )
+        adapter.addFragment(ChartWeeklyTasksFragment(), getString(R.string.heading_weekly_tasks_title))
         binding.viewpager.adapter = adapter
         binding.tabs.setupWithViewPager(binding.viewpager)
     }

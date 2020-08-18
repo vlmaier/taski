@@ -9,12 +9,12 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            app:strokeWidth="1.5dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="5dp"
             app:cardMaxElevation="5dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="true"
+            app:strokeWidth="1.5dp"
             tools:strokeColor="#42BD41">
 
         <androidx.constraintlayout.widget.ConstraintLayout

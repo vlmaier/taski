@@ -14,8 +14,9 @@ import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
-import com.vmaier.taski.utils.Utils
+import com.vmaier.taski.features.tasks.TaskListFragment.Companion.taskAdapter
 import com.vmaier.taski.toBitmap
+import com.vmaier.taski.utils.Utils
 
 
 /**
@@ -35,23 +36,23 @@ class TaskItemSwipeHandler :
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val position = viewHolder.adapterPosition
+        val position = viewHolder.absoluteAdapterPosition
         val itemView = viewHolder.itemView
         val context = itemView.context
         lateinit var message: String
         lateinit var taskToRestore: Task
         if (direction == ItemTouchHelper.LEFT) {
-            taskToRestore = TaskListFragment.taskAdapter.removeItem(position, Status.DONE)
+            taskToRestore = taskAdapter.removeItem(position, Status.DONE)
             message = context.getString(R.string.event_task_complete, taskToRestore.xp)
         } else {
-            taskToRestore = TaskListFragment.taskAdapter.removeItem(position, Status.FAILED)
+            taskToRestore = taskAdapter.removeItem(position, Status.FAILED)
             message = context.getString(R.string.event_task_failed)
         }
-        // showing snack bar with undo option
+        // show snackbar with "Undo" option
         val snackbar = Snackbar.make(MainActivity.fab, message, Snackbar.LENGTH_LONG)
             .setAction(context.getString(R.string.action_undo)) {
-                // undo is selected, restore the deleted item
-                TaskListFragment.taskAdapter.restoreItem(taskToRestore, position)
+                // "Undo" is selected -> restore the deleted item
+                taskAdapter.restoreItem(taskToRestore, position)
             }
             .setActionTextColor(Utils.getThemeColor(context, R.attr.colorSecondary))
         snackbar.view.setOnClickListener { snackbar.dismiss() }

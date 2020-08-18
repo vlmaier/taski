@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vmaier.taski.MainActivity
+import com.vmaier.taski.MainActivity.Companion.bottomNav
+import com.vmaier.taski.MainActivity.Companion.drawerLayout
+import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
+import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.databinding.FragmentCategoryListBinding
@@ -34,18 +38,14 @@ class CategoryListFragment : Fragment() {
         saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
-        MainActivity.toolbar.title = getString(R.string.heading_categories)
-        MainActivity.fab.show()
-        MainActivity.bottomNav.visibility = View.INVISIBLE
-        MainActivity.bottomBar.visibility = View.INVISIBLE
-        val foundItem = MainActivity.bottomNav.menu.findItem(R.id.nav_categories)
+        toolbar.title = getString(R.string.heading_categories)
+        toggleBottomMenu(true, View.INVISIBLE)
+        val foundItem = bottomNav.menu.findItem(R.id.nav_categories)
         if (foundItem != null) {
             foundItem.isChecked = true
         }
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_category_list, container, false
-        )
-        MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_category_list, container, false)
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         return binding.root
     }
 
@@ -86,26 +86,15 @@ class CategoryListFragment : Fragment() {
             val fab = MainActivity.fab
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 if (categoryAdapter.isMenuShown()) categoryAdapter.closeMenu()
-                if (dy < 0 && !fab.isShown) fab.show()
-                else if (dy > 0 && fab.isShown) fab.hide()
+                if (dy < 0 && !fab.isShown) {
+                    toggleBottomMenu(true, View.VISIBLE)
+                } else if (dy > 0 && fab.isShown) {
+                    toggleBottomMenu(false, View.GONE)
+                }
             }
         })
         val simpleItemTouchCallback = CategoryItemSwipeHandler()
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(binding.rv)
-        binding.rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            val fab = MainActivity.fab
-            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                if (dy < 0 && !fab.isShown) {
-                    fab.show()
-                    MainActivity.bottomNav.visibility = View.VISIBLE
-                    MainActivity.bottomBar.visibility = View.VISIBLE
-                } else if (dy > 0 && fab.isShown) {
-                    fab.hide()
-                    MainActivity.bottomNav.visibility = View.GONE
-                    MainActivity.bottomBar.visibility = View.GONE
-                }
-            }
-        })
     }
 }

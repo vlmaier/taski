@@ -14,7 +14,7 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.vmaier.taski.App
-import com.vmaier.taski.MainActivity
+import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentChartWeeklyXpBinding
 import com.vmaier.taski.features.tasks.TaskFragment
@@ -35,14 +35,10 @@ class ChartWeeklyXpFragment : TaskFragment() {
         lateinit var binding: FragmentChartWeeklyXpBinding
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         super.onCreateView(inflater, container, saved)
-        MainActivity.toolbar.title = getString(R.string.heading_statistics)
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_chart_weekly_xp, container, false
-        )
+        toolbar.title = getString(R.string.heading_statistics)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_weekly_xp, container, false)
 
         val daysOfWeekWithValue = ArrayList<Float>()
         daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.MONDAY))
@@ -103,9 +99,7 @@ class ChartWeeklyXpFragment : TaskFragment() {
 
         binding.chart.axisRight.isEnabled = false
 
-        if (values.isNotEmpty()) {
-            binding.chart.data = data
-        }
+        if (values.isNotEmpty()) binding.chart.data = data
 
         binding.chart.setExtraOffsets(20f, 20f, 35f, 20f)
         binding.chart.description.isEnabled = false

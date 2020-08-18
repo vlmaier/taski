@@ -14,7 +14,7 @@ import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.AssignedSkill
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
-import com.vmaier.taski.features.tasks.TaskListFragment
+import com.vmaier.taski.features.skills.SkillListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.setIcon
 import kotlinx.android.synthetic.main.item_skill.view.*
@@ -33,12 +33,18 @@ class SkillAdapter internal constructor(
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     var skills: MutableList<Skill> = mutableListOf()
     var levelService = LevelService(context)
+    val db = AppDatabase(context)
 
     inner class SkillViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nameView: TextView = itemView.findViewById(R.id.skill_name)
         var categoryView: TextView = itemView.findViewById(R.id.skill_category)
         var levelView: TextView = itemView.findViewById(R.id.skill_level)
         var iconView: ImageView = itemView.findViewById(R.id.skill_icon)
+    }
+
+    internal fun setSkills(skills: List<Skill>) {
+        this.skills = skills.toMutableList()
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SkillViewHolder {
@@ -48,18 +54,15 @@ class SkillAdapter internal constructor(
 
     override fun onBindViewHolder(holder: SkillViewHolder, position: Int) {
 
-        val db = AppDatabase(context)
         val skill: Skill = skills[position]
-        val category: Category? = if (skill.categoryId != null)
-            db.categoryDao().findById(skill.categoryId) else null
 
-        // --- Name settings
+        // setup "Name" view
         holder.nameView.text = skill.name
         holder.nameView.isSelected = true
 
-        // --- Category settings
-        val categoryName = category?.name ?: ""
-        holder.categoryView.text = categoryName
+        // setup "Category" view
+        val category: Category? = if (skill.categoryId != null) db.categoryDao().findById(skill.categoryId) else null
+        holder.categoryView.text = category?.name ?: ""
         holder.categoryView.isSelected = true
         if (category?.color != null) {
             holder.itemView.cv.strokeColor = Color.parseColor(category.color)
@@ -68,10 +71,10 @@ class SkillAdapter internal constructor(
             holder.itemView.cv.strokeColor = 0x00000000
         }
 
-        // --- Icon settings
+        // setup "Icon" view
         holder.iconView.setIcon(skill.iconId)
 
-        // --- Level settings
+        // setup "Level" view
         val skillLevel = levelService.getSkillLevel(skill)
         holder.levelView.text = context.getString(R.string.term_level_value, skillLevel)
 
@@ -83,34 +86,27 @@ class SkillAdapter internal constructor(
         }
     }
 
-    internal fun setSkills(skills: List<Skill>) {
-        this.skills = skills.toMutableList()
-        notifyDataSetChanged()
-    }
-
     override fun getItemCount(): Int = skills.size
 
     fun removeItem(position: Int): Pair<Skill, List<AssignedSkill>> {
         val skill = skills.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, skills.size)
-        SkillListFragment.updateSortedByHeader(context, skills)
-        val db = AppDatabase(this.inflater.context)
+        updateSortedByHeader(context, skills)
         val foundAssignments = db.skillDao().findAssignments(skill.id)
         db.skillDao().delete(skill)
-        Timber.d("Skill removed.")
+        Timber.d("Skill (${skill.id}) removed.")
         return Pair(skill, foundAssignments)
     }
 
     fun restoreItem(toRestore: Pair<Skill, List<AssignedSkill>>, position: Int) {
         skills.add(position, toRestore.first)
         notifyItemInserted(position)
-        SkillListFragment.updateSortedByHeader(context, skills)
-        val db = AppDatabase(this.inflater.context)
+        updateSortedByHeader(context, skills)
         db.skillDao().create(toRestore.first)
         toRestore.second.forEach {
             db.taskDao().assignSkill(it)
         }
-        Timber.d("Skill restored.")
+        Timber.d("Skill (${toRestore.first.id}) restored.")
     }
 }

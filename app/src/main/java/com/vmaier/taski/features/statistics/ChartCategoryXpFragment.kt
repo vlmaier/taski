@@ -13,7 +13,7 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.MPPointF
-import com.vmaier.taski.MainActivity
+import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentChartCategoryXpBinding
 import com.vmaier.taski.features.skills.SkillFragment
@@ -32,14 +32,10 @@ class ChartCategoryXpFragment : SkillFragment() {
         lateinit var binding: FragmentChartCategoryXpBinding
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         super.onCreateView(inflater, container, saved)
-        MainActivity.toolbar.title = getString(R.string.heading_statistics)
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_chart_category_xp, container, false
-        )
+        toolbar.title = getString(R.string.heading_statistics)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_category_xp, container, false)
 
         val categories = db.categoryDao().findAll()
         val values = ArrayList<PieEntry>()
@@ -74,9 +70,7 @@ class ChartCategoryXpFragment : SkillFragment() {
             }
         })
 
-        if (values.isNotEmpty()) {
-            binding.chart.data = data
-        }
+        if (values.isNotEmpty()) binding.chart.data = data
 
         binding.chart.setDrawCenterText(false)
         binding.chart.setExtraOffsets(10f, 0f, 10f, 0f)

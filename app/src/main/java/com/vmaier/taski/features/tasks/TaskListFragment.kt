@@ -13,10 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vmaier.taski.App
 import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
+import com.vmaier.taski.MainActivity.Companion.bottomNav
+import com.vmaier.taski.MainActivity.Companion.drawerLayout
+import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
+import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
-import com.vmaier.taski.data.SortTasks
 import com.vmaier.taski.data.SortOrder
+import com.vmaier.taski.data.SortTasks
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentTaskListBinding
@@ -38,33 +42,33 @@ class TaskListFragment : Fragment() {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
             val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
-            if (order == SortOrder.ASC.value) {
-                when (sort) {
-                    SortTasks.CREATED_AT.value -> tasks.sortBy { App.dateFormat.parse(it.createdAt).time }
-                    SortTasks.GOAL.value -> tasks.sortBy { it.goal }
-                    SortTasks.DURATION.value -> tasks.sortBy { it.duration }
-                    SortTasks.XP_GAIN.value -> tasks.sortBy { it.xp }
-                    SortTasks.DUE_ON.value -> {
-                        tasks.sortBy {
-                            if (it.dueAt != null) {
-                                App.dateFormat.parse(it.dueAt).time
-                            } else {
-                                App.dateFormat.parse(it.createdAt).time
-                            }
-                        }
-                    }
+            when (sort) {
+                SortTasks.CREATED_AT.value -> tasks.apply {
+                    if (order == SortOrder.ASC.value) sortBy { App.dateFormat.parse(it.createdAt).time }
+                    else sortByDescending { App.dateFormat.parse(it.createdAt).time }
                 }
-            } else {
-                when (sort) {
-                    SortTasks.CREATED_AT.value -> tasks.sortByDescending { App.dateFormat.parse(it.createdAt).time }
-                    SortTasks.GOAL.value -> tasks.sortByDescending { it.goal }
-                    SortTasks.DURATION.value -> tasks.sortByDescending { it.duration }
-                    SortTasks.XP_GAIN.value -> tasks.sortByDescending { it.xp }
-                    SortTasks.DUE_ON.value -> tasks.sortByDescending {
-                        if (it.dueAt != null) {
-                            App.dateFormat.parse(it.dueAt).time
-                        } else {
-                            App.dateFormat.parse(it.createdAt).time
+                SortTasks.GOAL.value -> tasks.apply {
+                    if (order == SortOrder.ASC.value) sortBy { it.goal }
+                    else sortByDescending { it.goal }
+                }
+                SortTasks.DURATION.value -> tasks.apply {
+                    if (order == SortOrder.ASC.value) sortBy { it.duration }
+                    else sortByDescending { it.duration }
+                }
+                SortTasks.XP_GAIN.value -> tasks.apply {
+                    if (order == SortOrder.ASC.value) sortBy { it.xp }
+                    else sortByDescending { it.xp }
+                }
+                SortTasks.DUE_ON.value -> tasks.apply {
+                    if (order == SortOrder.ASC.value) {
+                        sortBy {
+                            if (it.dueAt != null) App.dateFormat.parse(it.dueAt).time
+                            else App.dateFormat.parse(it.createdAt).time
+                        }
+                    } else {
+                        sortByDescending {
+                            if (it.dueAt != null) App.dateFormat.parse(it.dueAt).time
+                            else App.dateFormat.parse(it.createdAt).time
                         }
                     }
                 }
@@ -102,23 +106,14 @@ class TaskListFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         super.onCreateView(inflater, container, saved)
-        MainActivity.toolbar.title = getString(R.string.heading_tasks)
-        MainActivity.fab.show()
-        MainActivity.bottomNav.visibility = View.VISIBLE
-        MainActivity.bottomBar.visibility = View.VISIBLE
-        val foundItem = MainActivity.bottomNav.menu.findItem(R.id.nav_tasks)
-        if (foundItem != null) {
-            foundItem.isChecked = true
-        }
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_task_list, container, false
-        )
-        MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        toolbar.title = getString(R.string.heading_tasks)
+        toggleBottomMenu(true, View.VISIBLE)
+        val foundItem = bottomNav.menu.findItem(R.id.nav_tasks)
+        if (foundItem != null) foundItem.isChecked = true
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_task_list, container, false)
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         return binding.root
     }
 
@@ -152,9 +147,9 @@ class TaskListFragment : Fragment() {
             fun updateBadge() {
                 val size = taskAdapter.tasks.size
                 if (size > 0) {
-                    MainActivity.bottomNav.getOrCreateBadge(R.id.nav_tasks).number = size
+                    bottomNav.getOrCreateBadge(R.id.nav_tasks).number = size
                 } else {
-                    MainActivity.bottomNav.removeBadge(R.id.nav_tasks)
+                    bottomNav.removeBadge(R.id.nav_tasks)
                 }
             }
         })
@@ -171,13 +166,9 @@ class TaskListFragment : Fragment() {
             val fab = MainActivity.fab
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 if (dy < 0 && !fab.isShown) {
-                    fab.show()
-                    MainActivity.bottomNav.visibility = View.VISIBLE
-                    MainActivity.bottomBar.visibility = View.VISIBLE
+                    toggleBottomMenu(true, View.VISIBLE)
                 } else if (dy > 0 && fab.isShown) {
-                    fab.hide()
-                    MainActivity.bottomNav.visibility = View.GONE
-                    MainActivity.bottomBar.visibility = View.GONE
+                    toggleBottomMenu(false, View.GONE)
                 }
             }
         })
@@ -202,7 +193,6 @@ class TaskListFragment : Fragment() {
         val sortOrderItem = menu.findItem(R.id.sort_tasks_order)
         val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
         if (order == SortOrder.ASC.value) {
-
             sortOrderItem.setIcon(R.drawable.ic_sort_order_asc_24)
         } else {
             sortOrderItem.setIcon(R.drawable.ic_sort_order_desc_24)

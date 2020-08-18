@@ -7,11 +7,11 @@ import android.graphics.BitmapFactory
 import android.media.RingtoneManager
 import android.os.Build
 import com.vmaier.taski.MainActivity
+import com.vmaier.taski.R
 import com.vmaier.taski.features.reminders.NotificationId
+import com.vmaier.taski.features.reminders.ReminderReceiver
 import com.vmaier.taski.utils.RequestCode
 import com.vmaier.taski.utils.Utils
-import com.vmaier.taski.R
-import com.vmaier.taski.features.reminders.ReminderReceiver
 import timber.log.Timber
 import java.util.*
 import kotlin.properties.Delegates
@@ -126,9 +126,7 @@ class NotificationService : IntentService("NotificationService") {
         }
     }
 
-    fun setReminder(
-        timeInMs: Long, title: String, message: String, activity: Activity, requestCode: Int
-    ) {
+    fun setReminder(timeInMs: Long, title: String, message: String, activity: Activity, requestCode: Int) {
         val intent = Intent(activity.applicationContext, ReminderReceiver::class.java)
         intent.putExtra(KEY_TIMESTAMP, timeInMs)
         intent.putExtra(KEY_TITLE, title)

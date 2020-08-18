@@ -3,22 +3,22 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/radio_group"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="?dialogPreferredPadding"
         android:paddingRight="?dialogPreferredPadding">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp">
 
         <RadioButton
                 android:id="@+id/button_default"
-                android:drawableEnd="@color/colorDivider"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:drawableEnd="@color/colorDivider"
                 android:text="@string/theme_default_name"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
@@ -59,10 +58,8 @@ class EditTextDialog : DialogFragment() {
         val text = arguments?.getString(EXTRA_TEXT)
         val message = arguments?.getString(EXTRA_MESSAGE)
         val hint = arguments?.getString(EXTRA_HINT)
-        val positiveButton: Int =
-            arguments?.getInt(EXTRA_POSITIVE_BUTTON) ?: android.R.string.ok
-        val negativeButton: Int =
-            arguments?.getInt(EXTRA_NEGATIVE_BUTTON) ?: android.R.string.cancel
+        val positiveButton: Int = arguments?.getInt(EXTRA_POSITIVE_BUTTON) ?: android.R.string.ok
+        val negativeButton: Int = arguments?.getInt(EXTRA_NEGATIVE_BUTTON) ?: android.R.string.cancel
 
         val view = requireActivity().layoutInflater.inflate(R.layout.edit_text_dialog, null)
 
@@ -75,18 +72,12 @@ class EditTextDialog : DialogFragment() {
             .setMessage(message)
             .setView(view)
             .setCancelable(false)
-            .setPositiveButton(positiveButton) { _, _ ->
-                onPositiveButtonClicked?.invoke()
-            }
-            .setNegativeButton(negativeButton) { _, _ ->
-                onNegativeButtonClicked?.invoke()
-            }
+            .setPositiveButton(positiveButton) { _, _ -> onPositiveButtonClicked?.invoke() }
+            .setNegativeButton(negativeButton) { _, _ -> onNegativeButtonClicked?.invoke() }
         val alertDialog = builder.create()
         alertDialog.setOnShowListener {
             val button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE)
-            if (TextUtils.isEmpty(text)) {
-                button.isEnabled = false
-            }
+            if (TextUtils.isEmpty(text)) button.isEnabled = false
             if (onPositiveButtonListener != null) {
                 button.setOnClickListener {
                     onPositiveButtonListener?.invoke()

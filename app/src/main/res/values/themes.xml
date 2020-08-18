@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.Default" parent="Base.Theme.Default" />
+
     <style name="Base.Theme.Default" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightDefault</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightDefault</item>
@@ -18,6 +19,7 @@
     </style>
 
     <style name="Theme.Sailor" parent="Base.Theme.Sailor" />
+
     <style name="Base.Theme.Sailor" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightSailor</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightSailor</item>
@@ -34,6 +36,7 @@
     </style>
 
     <style name="Theme.Royal" parent="Base.Theme.Royal" />
+
     <style name="Base.Theme.Royal" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightRoyal</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightRoyal</item>
@@ -50,6 +53,7 @@
     </style>
 
     <style name="Theme.Mercury" parent="Base.Theme.Mercury" />
+
     <style name="Base.Theme.Mercury" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightMercury</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightMercury</item>
@@ -66,6 +70,7 @@
     </style>
 
     <style name="Theme.Mocca" parent="Base.Theme.Mocca" />
+
     <style name="Base.Theme.Mocca" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightMocca</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightMocca</item>
@@ -82,6 +87,7 @@
     </style>
 
     <style name="Theme.Creeper" parent="Base.Theme.Creeper" />
+
     <style name="Base.Theme.Creeper" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightCreeper</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightCreeper</item>
@@ -98,6 +104,7 @@
     </style>
 
     <style name="Theme.Flamingo" parent="Base.Theme.Flamingo" />
+
     <style name="Base.Theme.Flamingo" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightFlamingo</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightFlamingo</item>
@@ -114,6 +121,7 @@
     </style>
 
     <style name="Theme.Pilot" parent="Base.Theme.Pilot" />
+
     <style name="Base.Theme.Pilot" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightPilot</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightPilot</item>
@@ -130,6 +138,7 @@
     </style>
 
     <style name="Theme.Coral" parent="Base.Theme.Coral" />
+
     <style name="Base.Theme.Coral" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightCoral</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightCoral</item>
@@ -146,6 +155,7 @@
     </style>
 
     <style name="Theme.Blossom" parent="Base.Theme.Blossom" />
+
     <style name="Base.Theme.Blossom" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/colorPrimaryLightBlossom</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightBlossom</item>

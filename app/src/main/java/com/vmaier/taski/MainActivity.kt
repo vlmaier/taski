@@ -38,6 +38,7 @@ import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.databinding.ActivityMainBinding
 import com.vmaier.taski.features.categories.CategoryListFragment
+import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
 import com.vmaier.taski.features.categories.CategoryListFragmentDirections
 import com.vmaier.taski.features.settings.HelpFragment
 import com.vmaier.taski.features.settings.SettingsFragment
@@ -79,18 +80,26 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         lateinit var userNameView: TextView
         lateinit var avatarView: ImageView
         lateinit var db: AppDatabase
+
+        fun toggleBottomMenu(showFab: Boolean = false, visibility: Int = View.GONE) {
+            if (showFab) fab.show() else fab.hide()
+            bottomNav.visibility = visibility
+            bottomBar.visibility = visibility
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         prefs = getDefaultSharedPreferences(this)
+
+        // Onboarding settings
         val firstStart = prefs.getBoolean(Const.Prefs.ONBOARDING, Const.Defaults.ONBOARDING)
         if (firstStart) {
             val intent = Intent(this, Onboarding::class.java)
             startActivity(intent)
         }
 
-        // Language Settings
+        // Language settings
         val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)
         val prefLocale = Locale(prefLanguage)
         val currentLocale: Locale = resources.configuration.locale
@@ -107,17 +116,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         levelService = LevelService(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        // --- Fragment Navigation Settings
+        // "Fragment Navigation" settings
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // --- Toolbar Settings
+        // Toolbar settings
         toolbar = findViewById(R.id.toolbar)
         toolbar.title = getString(R.string.heading_tasks)
         setSupportActionBar(toolbar)
 
-        // --- Drawer Settings
+        // Drawer settings
         drawerLayout = findViewById(R.id.drawer_layout)
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
@@ -126,86 +135,35 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        // --- Drawer Navigation Settings
+        // "Drawer Navigation" settings
         drawerNav = findViewById(R.id.drawer_nav)
         drawerNav.setNavigationItemSelectedListener(this)
 
-        // --- Bottom Navigation Settings
+        // "Bottom Navigation" settings
         bottomNav = findViewById(R.id.bottom_nav)
         bottomNav.setOnNavigationItemSelectedListener { onNavigationItemSelected(it) }
         val taskAmount = db.taskDao().countByStatus(Status.OPEN)
         bottomNav.getOrCreateBadge(R.id.nav_tasks).number = taskAmount
         bottomNav.getOrCreateBadge(R.id.nav_tasks).isVisible = taskAmount > 0
 
-        // --- Icon Dialog Settings
+        // "Icon Dialog" settings
         iconDialog = supportFragmentManager
             .findFragmentByTag(Const.Tags.ICON_DIALOG_TAG) as IconDialog?
             ?: IconDialog.newInstance(IconDialogSettings())
 
-        // --- Bottom Bar Settings
+        // "Bottom Bar" settings
         bottomBar = findViewById(R.id.bottom_bar)
 
-        // --- Floating Action Button Settings
+        // "Floating Action Button" settings
         fab = findViewById(R.id.fab)
-        fab.setOnClickListener {
-            val fragment = supportFragmentManager.primaryNavigationFragment
-            if (fragment != null) {
-                val fragments = fragment.childFragmentManager.fragments
-                fragments.forEach {
-                    when (it) {
-                        is TaskListFragment -> {
-                            navController
-                                .navigate(R.id.action_taskListFragment_to_createTaskFragment)
-                        }
-                        is SkillListFragment -> {
-                            navController
-                                .navigate(R.id.action_skillListFragment_to_createSkillFragment)
-                        }
-                        is CategoryListFragment -> {
-                            CategoryListFragment.categoryAdapter.closeMenu()
-                            val dialog = EditTextDialog.newInstance(
-                                title = getString(R.string.heading_create_category),
-                                hint = getString(R.string.hint_category_name),
-                                positiveButton = R.string.action_create
-                            )
-                            dialog.onPositiveButtonListener = {
-                                val name = dialog.editText.text.toString().trim()
-                                if (name.length < 4) {
-                                    dialog.editText.requestFocus()
-                                    dialog.editText.error = getString(R.string.error_too_short)
-                                } else {
-                                    val foundCategory = db.categoryDao().findByName(name)
-                                    if (foundCategory != null) {
-                                        dialog.editText.requestFocus()
-                                        dialog.editText.error =
-                                            getString(R.string.error_category_already_exists)
-                                    } else {
-                                        val category = Category(name = name)
-                                        val id = db.categoryDao().create(category)
-                                        CategoryListFragment.categoryAdapter.categories.add(
-                                            Category(id = id, name = name))
-                                        CategoryListFragment.categoryAdapter.notifyDataSetChanged()
-                                        Timber.d("Category \"$name\" created.")
-                                        dialog.dismiss()
-                                    }
-                                }
-                            }
-                            dialog.onNegativeButtonClicked = {
-                                dialog.dismiss()
-                            }
-                            dialog.show(supportFragmentManager, EditTextDialog::class.simpleName)
-                        }
-                    }
-                }
-            }
-        }
+        setFabOnClickListener()
 
-        // --- Theme Settings
+        // Theme settings
         val prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME)
         val prefThemeId = Utils.getThemeByName(this, prefTheme)
         setTheme(prefThemeId)
 
-        // --- Dark mode Settings
+        // "Dark mode" settings
         val isDarkModeOn = prefs.getBoolean(Const.Prefs.DARK_MODE, Const.Defaults.DARK_MODE)
         if (isDarkModeOn) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
@@ -234,7 +192,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             }
         }
 
-        // --- Status Bar Settings
+        // "Status Bar" settings
         this.window.statusBarColor = Utils.getThemeColor(this, R.attr.colorPrimary)
 
         val config = RateThisApp.Config()
@@ -377,9 +335,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         }
         // update selected menu item in bottom navigation as well
         val foundItem = bottomNav.menu.findItem(item.itemId)
-        if (foundItem != null) {
-            foundItem.isChecked = true
-        }
+        if (foundItem != null) foundItem.isChecked = true
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
@@ -413,24 +369,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 fragments.forEach {
                     when (it) {
                         is TaskCreateFragment -> {
-                            TaskFragment.setIcon(
-                                this, selectedIcon, TaskCreateFragment.binding.iconButton
-                            )
+                            TaskFragment.setIcon(this, selectedIcon, TaskCreateFragment.binding.iconButton)
                         }
                         is TaskEditFragment -> {
-                            TaskFragment.setIcon(
-                                this, selectedIcon, TaskEditFragment.binding.iconButton
-                            )
+                            TaskFragment.setIcon(this, selectedIcon, TaskEditFragment.binding.iconButton)
                         }
                         is SkillCreateFragment -> {
-                            SkillFragment.setIcon(
-                                this, selectedIcon, SkillCreateFragment.binding.iconButton
-                            )
+                            SkillFragment.setIcon(this, selectedIcon, SkillCreateFragment.binding.iconButton)
                         }
                         is SkillEditFragment -> {
-                            SkillFragment.setIcon(
-                                this, selectedIcon, SkillEditFragment.binding.iconButton
-                            )
+                            SkillFragment.setIcon(this, selectedIcon, SkillEditFragment.binding.iconButton)
                         }
                     }
                 }
@@ -453,52 +401,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 val fragments = fragment.childFragmentManager.fragments
                 fragments.forEach {
                     when (it) {
-                        is SkillEditFragment -> {
-                            val name = SkillEditFragment.binding.name.editText?.text.toString()
-                            if (name.isBlank()) {
-                                SkillEditFragment.binding.name.requestFocus()
-                                SkillEditFragment.binding.name.error =
-                                    getString(R.string.error_cannot_be_empty)
-                            } else {
-                                val foundSkill = db.skillDao().findByName(name)
-                                if (name.length < 4) {
-                                    SkillEditFragment.binding.name.requestFocus()
-                                    SkillEditFragment.binding.name.error =
-                                        getString(R.string.error_too_short)
-                                } else if (foundSkill != null &&
-                                    foundSkill.id != SkillEditFragment.skill.id) {
-                                    SkillEditFragment.binding.name.requestFocus()
-                                    SkillEditFragment.binding.name.error =
-                                        getString(R.string.error_skill_already_exists)
-                                } else {
-                                    super.onBackPressed()
-                                }
-                            }
-                        }
-                        is TaskEditFragment -> {
-                            val goal = TaskEditFragment.binding.goal.editText?.text.toString()
-                            when {
-                                goal.isBlank() -> {
-                                    TaskEditFragment.binding.goal.requestFocus()
-                                    TaskEditFragment.binding.goal.error =
-                                        getString(R.string.error_cannot_be_empty)
-                                }
-                                goal.length < 4 -> {
-                                    TaskEditFragment.binding.goal.requestFocus()
-                                    TaskEditFragment.binding.goal.error =
-                                        getString(R.string.error_too_short)
-                                }
-                                else -> {
-                                    super.onBackPressed()
-                                }
-                            }
-                        }
-                        is HelpFragment -> {
-                            toolbar.title = getString(R.string.heading_help)
-                            HelpFragment.binding.licensesButton.visibility = View.VISIBLE
-                            HelpFragment.binding.versionButton.visibility = View.VISIBLE
-                            super.onBackPressed()
-                        }
+                        is SkillEditFragment -> onBackPressedSkillEditFragment()
+                        is TaskEditFragment -> onBackPressedTaskEditFragment()
+                        is HelpFragment -> onBackPressedHelpFragment()
                         else -> {
                             super.onBackPressed()
                         }
@@ -519,9 +424,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         return theme
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             PermissionUtils.ACCESS_CALENDAR_REQUEST_CODE -> {
@@ -539,5 +442,101 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 }
             }
         }
+    }
+
+    private fun onBackPressedSkillEditFragment() {
+        val name = SkillEditFragment.binding.name.editText?.text.toString()
+        if (name.isBlank()) {
+            SkillEditFragment.binding.name.requestFocus()
+            SkillEditFragment.binding.name.error = getString(R.string.error_cannot_be_empty)
+        } else {
+            val foundSkill = db.skillDao().findByName(name)
+            if (name.length < 4) {
+                SkillEditFragment.binding.name.requestFocus()
+                SkillEditFragment.binding.name.error = getString(R.string.error_too_short)
+            } else if (foundSkill != null &&
+                foundSkill.id != SkillEditFragment.skill.id
+            ) {
+                SkillEditFragment.binding.name.requestFocus()
+                SkillEditFragment.binding.name.error = getString(R.string.error_skill_already_exists)
+            } else {
+                super.onBackPressed()
+            }
+        }
+    }
+
+    private fun onBackPressedTaskEditFragment() {
+        val goal = TaskEditFragment.binding.goal.editText?.text.toString()
+        when {
+            goal.isBlank() -> {
+                TaskEditFragment.binding.goal.requestFocus()
+                TaskEditFragment.binding.goal.error = getString(R.string.error_cannot_be_empty)
+            }
+            goal.length < 4 -> {
+                TaskEditFragment.binding.goal.requestFocus()
+                TaskEditFragment.binding.goal.error = getString(R.string.error_too_short)
+            }
+            else -> {
+                super.onBackPressed()
+            }
+        }
+    }
+
+    private fun onBackPressedHelpFragment() {
+        toolbar.title = getString(R.string.heading_help)
+        HelpFragment.binding.licensesButton.visibility = View.VISIBLE
+        HelpFragment.binding.versionButton.visibility = View.VISIBLE
+        super.onBackPressed()
+    }
+
+    private fun setFabOnClickListener() {
+        fab.setOnClickListener {
+            val fragment = supportFragmentManager.primaryNavigationFragment
+            if (fragment != null) {
+                val fragments = fragment.childFragmentManager.fragments
+                fragments.forEach {
+                    when (it) {
+                        is TaskListFragment -> navController.navigate(R.id.action_taskListFragment_to_createTaskFragment)
+                        is SkillListFragment -> navController.navigate(R.id.action_skillListFragment_to_createSkillFragment)
+                        is CategoryListFragment -> showCreateCategoryDialog()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showCreateCategoryDialog() {
+        categoryAdapter.closeMenu()
+        val dialog = EditTextDialog.newInstance(
+            title = getString(R.string.heading_create_category),
+            hint = getString(R.string.hint_category_name),
+            positiveButton = R.string.action_create
+        )
+        dialog.onPositiveButtonListener = {
+            val name = dialog.editText.text.toString().trim()
+            if (name.length < 4) {
+                dialog.editText.requestFocus()
+                dialog.editText.error = getString(R.string.error_too_short)
+            } else {
+                val foundCategory = db.categoryDao().findByName(name)
+                if (foundCategory != null) {
+                    dialog.editText.requestFocus()
+                    dialog.editText.error = getString(R.string.error_category_already_exists)
+                } else {
+                    val category = Category(name = name)
+                    val id = db.categoryDao().create(category)
+                    categoryAdapter.categories.add(
+                        Category(id = id, name = name)
+                    )
+                    categoryAdapter.notifyDataSetChanged()
+                    Timber.d("Category ($id) created.")
+                    dialog.dismiss()
+                }
+            }
+        }
+        dialog.onNegativeButtonClicked = {
+            dialog.dismiss()
+        }
+        dialog.show(supportFragmentManager, EditTextDialog::class.simpleName)
     }
 }

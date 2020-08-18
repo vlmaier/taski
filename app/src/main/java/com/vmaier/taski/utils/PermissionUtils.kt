@@ -24,8 +24,10 @@ class PermissionUtils {
             val write = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
             if (read == PackageManager.PERMISSION_DENIED || write == PackageManager.PERMISSION_DENIED) {
                 Timber.d("Permission to access calendar is denied")
-                if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
-                        Manifest.permission.WRITE_CALENDAR)
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        activity,
+                        Manifest.permission.WRITE_CALENDAR
+                    )
                 ) {
                     val builder = AlertDialog.Builder(context)
                     builder
@@ -47,10 +49,11 @@ class PermissionUtils {
 
         private fun requestCalendarPermissions(context: Context) {
             val activity = context as Activity
-            ActivityCompat.requestPermissions(activity, arrayOf(
-                Manifest.permission.READ_CALENDAR,
-                Manifest.permission.WRITE_CALENDAR
-            ),
+            ActivityCompat.requestPermissions(
+                activity, arrayOf(
+                    Manifest.permission.READ_CALENDAR,
+                    Manifest.permission.WRITE_CALENDAR
+                ),
                 ACCESS_CALENDAR_REQUEST_CODE
             )
         }

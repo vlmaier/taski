@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import com.vmaier.taski.App
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Task
-import com.vmaier.taski.features.tasks.TaskFragment
 import timber.log.Timber
 import java.text.ParseException
 import java.util.*
@@ -31,7 +30,7 @@ class CalendarService(val context: Context) {
         if (!isCalendarSyncOn) return
         if (task == null) return
         val calendarId = getCalendarId() ?: return
-        Timber.d("Picked calendar with ID $calendarId.")
+        Timber.d("Picked calendar ($calendarId).")
         val eventId: Uri?
         val startTimeMs = if (task.dueAt != null) {
             try {
@@ -53,9 +52,8 @@ class CalendarService(val context: Context) {
         val timeZone = TimeZone.getDefault().id
         event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
         eventId = context.contentResolver.insert(CalendarContract.Events.CONTENT_URI, event)
-        Timber.d("Created new event in calendar.")
-        Timber.d("Event ID: $eventId")
-        TaskFragment.db.taskDao().updateEventId(task.id, eventId.toString())
+        Timber.d("Created new event ($eventId) in calendar.")
+        db.taskDao().updateEventId(task.id, eventId.toString())
     }
 
     fun updateInCalendar(isCalendarSyncOn: Boolean, before: Task, after: Task?) {
@@ -68,24 +66,19 @@ class CalendarService(val context: Context) {
         val eventId: Uri? = Uri.parse(after.eventId)
         if (eventId != null) {
             val calendarId = getCalendarId() ?: return
-            Timber.d("Picked calendar with ID $calendarId.")
+            Timber.d("Picked calendar ($calendarId).")
             val event = updateEvent(calendarId, before, after)
             context.contentResolver.update(eventId, event, null, null)
-            Timber.d("Updated event in calendar.")
-            Timber.d("Event ID: $eventId")
-            TaskFragment.db.taskDao().updateEventId(before.id, eventId.toString())
+            Timber.d("Updated event ($eventId) in calendar.")
+            db.taskDao().updateEventId(before.id, eventId.toString())
         }
     }
 
     private fun updateEvent(calendarId: Long, before: Task, after: Task): ContentValues {
         val event = ContentValues()
         event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
-        if (before.goal != after.goal) {
-            event.put(CalendarContract.Events.TITLE, after.goal)
-        }
-        if (before.details != after.details) {
-            event.put(CalendarContract.Events.DESCRIPTION, after.details)
-        }
+        if (before.goal != after.goal) event.put(CalendarContract.Events.TITLE, after.goal)
+        if (before.details != after.details) event.put(CalendarContract.Events.DESCRIPTION, after.details)
         if (before.duration != after.duration || before.dueAt != after.dueAt) {
             val startTimeMs = if (after.dueAt != null) {
                 try {
@@ -113,10 +106,9 @@ class CalendarService(val context: Context) {
         val eventId: Uri? = Uri.parse(task.eventId)
         if (eventId != null) {
             val calendarId = getCalendarId() ?: return
-            Timber.d("Picked calendar with ID $calendarId.")
+            Timber.d("Picked calendar ($calendarId).")
             context.contentResolver.delete(eventId, null, null)
-            Timber.d("Deleted event in calendar.")
-            Timber.d("Event ID: $eventId")
+            Timber.d("Deleted event ($eventId) in calendar.")
             db.taskDao().updateEventId(task.id, null)
         }
     }

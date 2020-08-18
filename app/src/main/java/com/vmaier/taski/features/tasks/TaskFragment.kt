@@ -26,11 +26,13 @@ import com.hootsuite.nachos.tokenizer.SpanChipTokenizer
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.vmaier.taski.*
+import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
+import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.services.CalendarService
 import com.vmaier.taski.services.NotificationService
-import com.vmaier.taski.utils.*
+import com.vmaier.taski.utils.Utils
 import java.util.*
 import kotlin.random.Random
 
@@ -76,23 +78,16 @@ open class TaskFragment : Fragment() {
         calendarService = CalendarService(context)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         super.onCreateView(inflater, container, saved)
-        MainActivity.toolbar.title = getString(R.string.heading_tasks)
-        MainActivity.fab.hide()
-        MainActivity.bottomNav.visibility = View.GONE
-        MainActivity.bottomBar.visibility = View.GONE
+        toolbar.title = getString(R.string.heading_tasks)
+        toggleBottomMenu(false, View.GONE)
         val skills = db.skillDao().findAll()
         skillNames = skills.map { it.name }
         return this.view
     }
 
-    fun setTaskIcon(
-        saved: Bundle?, button: ImageButton,
-        fallback: Int = Random.nextInt(App.iconPack.allIcons.size)
-    ) {
+    fun setTaskIcon(saved: Bundle?, button: ImageButton, fallback: Int = Random.nextInt(App.iconPack.allIcons.size)) {
         val iconId = saved?.getInt(KEY_ICON_ID) ?: fallback
         val icon = App.iconPack.getIconDrawable(iconId, IconDrawableLoader(requireContext()))
         icon?.clearColorFilter()
@@ -119,14 +114,10 @@ open class TaskFragment : Fragment() {
                 super.configureChip(chip, chipConfiguration)
                 chip.setShowIconOnLeft(true)
                 chip.setBackgroundColor(
-                    ColorStateList.valueOf(
-                        Utils.getThemeColor(requireContext(), R.attr.colorControlHighlight)
-                    )
+                    ColorStateList.valueOf(Utils.getThemeColor(requireContext(), R.attr.colorControlHighlight))
                 )
                 chip.setTextColor(Utils.getThemeColor(requireContext(), R.attr.colorOnSurface))
-                chip.setIconBackgroundColor(
-                    Utils.getThemeColor(requireContext(), R.attr.colorSecondary)
-                )
+                chip.setIconBackgroundColor(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
             }
         }, ChipSpan::class.java)
     }
@@ -136,9 +127,7 @@ open class TaskFragment : Fragment() {
             val allChips = skills.allChips
             val chipList: MutableList<ChipInfo> = arrayListOf()
             for (chip in allChips) {
-                if (skillNames.contains(chip.text) &&
-                    chipList.find { it.text == chip.text } == null
-                ) {
+                if (skillNames.contains(chip.text) && chipList.find { it.text == chip.text } == null) {
                     chipList.add(ChipInfo(chip.text, chip.data))
                 }
             }
@@ -152,7 +141,7 @@ open class TaskFragment : Fragment() {
         return object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
                 durationValue.text = seek.getHumanReadableValue()
-                // do not allow the seek bar going beyond 1
+                // do not allow the seekbar going beyond 1
                 if (progress <= 1) seek.progress = 1
                 updateXpGain(xpGain, durationBar)
             }
@@ -163,8 +152,7 @@ open class TaskFragment : Fragment() {
     }
 
     fun updateXpGain(xpGain: TextView, durationBar: SeekBar) {
-        val xp = Difficulty.valueOf(difficulty)
-            .factor.times(durationBar.getDurationInMinutes()).toInt()
+        val xp = Difficulty.valueOf(difficulty).factor.times(durationBar.getDurationInMinutes()).toInt()
         xpGain.text = resources.getString(R.string.term_xp_value, xp)
     }
 
@@ -199,8 +187,13 @@ open class TaskFragment : Fragment() {
                     calendarSync.isEnabled = false
                 }
             }
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                // not used
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                // not used
+            }
         })
     }
 

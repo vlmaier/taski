@@ -9,13 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vmaier.taski.App
 import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
+import com.vmaier.taski.MainActivity.Companion.drawerLayout
+import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
+import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
-import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.SortOrder
+import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentSkillListBinding
 import timber.log.Timber
@@ -36,33 +38,27 @@ class SkillListFragment : Fragment() {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
             val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
-            if (order == SortOrder.ASC.value) {
-                when (sort) {
-                    SortSkills.NAME.value -> skills.sortBy { it.name }
-                    SortSkills.XP.value -> skills.sortBy { it.xp }
-                    SortSkills.CATEGORY.value -> {
-                        skills.sortBy {
-                            val db = AppDatabase(context)
-                            if (it.categoryId != null) {
-                                db.categoryDao().findById(it.categoryId).name
-                            } else {
-                                ""
-                            }
+            when (sort) {
+                SortSkills.NAME.value -> skills.apply {
+                    if (order == SortOrder.ASC.value) sortBy { it.name }
+                    else sortByDescending { it.name }
+                }
+                SortSkills.XP.value -> skills.apply {
+                    if (order == SortOrder.ASC.value) sortBy { it.xp }
+                    else sortByDescending { it.xp }
+                }
+                SortSkills.CATEGORY.value -> skills.apply {
+                    val db = AppDatabase(context)
+                    if (order == SortOrder.ASC.value) {
+                        sortBy {
+                            if (it.categoryId == null) ""
+                            else db.categoryDao().findById(it.categoryId).name
                         }
                     }
-                }
-            } else {
-                when (sort) {
-                    SortSkills.NAME.value -> skills.sortByDescending { it.name }
-                    SortSkills.XP.value -> skills.sortByDescending { it.xp }
-                    SortSkills.CATEGORY.value -> {
-                        skills.sortByDescending {
-                            val db = AppDatabase(context)
-                            if (it.categoryId != null) {
-                                db.categoryDao().findById(it.categoryId).name
-                            } else {
-                                ""
-                            }
+                    else {
+                        sortByDescending {
+                            if (it.categoryId == null) ""
+                            else db.categoryDao().findById(it.categoryId).name
                         }
                     }
                 }
@@ -103,18 +99,12 @@ class SkillListFragment : Fragment() {
         saved: Bundle?
     ): View? {
         super.onCreateView(inflater, container, saved)
-        MainActivity.toolbar.title = getString(R.string.heading_skills)
-        MainActivity.fab.show()
-        MainActivity.bottomNav.visibility = View.VISIBLE
-        MainActivity.bottomBar.visibility = View.VISIBLE
+        toolbar.title = getString(R.string.heading_skills)
+        toggleBottomMenu(true, View.VISIBLE)
         val foundItem = MainActivity.bottomNav.menu.findItem(R.id.nav_skills)
-        if (foundItem != null) {
-            foundItem.isChecked = true
-        }
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_skill_list, container, false
-        )
-        MainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        if (foundItem != null) foundItem.isChecked = true
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_skill_list, container, false)
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         return binding.root
     }
 
@@ -150,20 +140,15 @@ class SkillListFragment : Fragment() {
         skillAdapter.setSkills(skills)
         binding.rv.apply {
             layoutManager = GridLayoutManager(activity, 2)
-            adapter =
-                skillAdapter
+            adapter = skillAdapter
         }
         binding.rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             val fab = MainActivity.fab
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
                 if (dy < 0 && !fab.isShown) {
-                    fab.show()
-                    MainActivity.bottomNav.visibility = View.VISIBLE
-                    MainActivity.bottomBar.visibility = View.VISIBLE
+                    toggleBottomMenu(true, View.VISIBLE)
                 } else if (dy > 0 && fab.isShown) {
-                    fab.hide()
-                    MainActivity.bottomNav.visibility = View.GONE
-                    MainActivity.bottomBar.visibility = View.GONE
+                    toggleBottomMenu(false, View.GONE)
                 }
             }
         })
@@ -183,7 +168,6 @@ class SkillListFragment : Fragment() {
         val sortOrderItem = menu.findItem(R.id.sort_skills_order)
         val order = prefs.getString(Const.Prefs.SORT_SKILLS_ORDER, Const.Defaults.SORT_SKILLS_ORDER)
         if (order == SortOrder.ASC.value) {
-
             sortOrderItem.setIcon(R.drawable.ic_sort_order_asc_24)
         } else {
             sortOrderItem.setIcon(R.drawable.ic_sort_order_desc_24)

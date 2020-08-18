@@ -214,7 +214,7 @@
             android:id="@+id/categoryListFragment"
             android:name="com.vmaier.taski.features.categories.CategoryListFragment"
             android:label="CategoryListFragment"
-            tools:layout="@layout/fragment_category_list" >
+            tools:layout="@layout/fragment_category_list">
         <action
                 android:id="@+id/action_categoryListFragment_to_taskListFragment"
                 app:destination="@id/taskListFragment"

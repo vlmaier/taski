@@ -35,8 +35,8 @@
                 android:summary="@string/description_calendar_sync"
                 android:title="@string/heading_calendar_sync" />
         <androidx.preference.CheckBoxPreference
-                android:enabled="false"
                 android:defaultValue="false"
+                android:enabled="false"
                 android:key="delete_completed_tasks"
                 android:summary="@string/description_delete_completed_tasks"
                 android:title="@string/heading_delete_completed_tasks" />

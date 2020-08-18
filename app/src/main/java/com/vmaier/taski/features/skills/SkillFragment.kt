@@ -14,12 +14,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.vmaier.taski.App
-import com.vmaier.taski.MainActivity
+import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
+import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Skill
-import com.vmaier.taski.utils.Utils
+import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
 import com.vmaier.taski.hideKeyboard
+import com.vmaier.taski.utils.Utils
 import kotlin.random.Random
 
 
@@ -51,23 +53,16 @@ open class SkillFragment : Fragment() {
         db = AppDatabase(context)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
         super.onCreateView(inflater, container, saved)
-        MainActivity.toolbar.title = getString(R.string.heading_skills)
-        MainActivity.fab.hide()
-        MainActivity.bottomNav.visibility = View.GONE
-        MainActivity.bottomBar.visibility = View.GONE
+        toolbar.title = getString(R.string.heading_skills)
+        toggleBottomMenu(false, View.GONE)
         val categories = db.categoryDao().findAll()
         categoryNames = categories.map { it.name }
         return this.view
     }
 
-    fun setSkillIcon(
-        saved: Bundle?, button: ImageButton,
-        fallback: Int = Random.nextInt(App.iconPack.allIcons.size)
-    ) {
+    fun setSkillIcon(saved: Bundle?, button: ImageButton, fallback: Int = Random.nextInt(App.iconPack.allIcons.size)) {
         val iconId = saved?.getInt(KEY_ICON_ID) ?: fallback
         val icon = App.iconPack.getIconDrawable(iconId, IconDrawableLoader(requireContext()))
         icon?.clearColorFilter()
@@ -103,11 +98,11 @@ open class SkillFragment : Fragment() {
 
     private fun deleteSkill(view: View, position: Int) {
         val toRestore = SkillListFragment.skillAdapter.removeItem(position)
-        // showing snack bar with undo option
+        // show snackbar with "Undo" option
         val snackbar = Snackbar.make(view, getString(R.string.event_skill_deleted), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.action_undo)) {
-                // undo is selected, restore the deleted item
-                SkillListFragment.skillAdapter.restoreItem(toRestore, position)
+                // "Undo" is selected -> restore the deleted item
+                skillAdapter.restoreItem(toRestore, position)
             }
             .setActionTextColor(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
         snackbar.view.setOnClickListener { snackbar.dismiss() }

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.vmaier.taski.R
+import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
 import com.vmaier.taski.utils.Utils
 import kotlinx.android.synthetic.main.item_category.view.*
 
@@ -38,11 +39,11 @@ class CategoryItemSwipeHandler :
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val position = viewHolder.adapterPosition
-        if (CategoryListFragment.categoryAdapter.isMenuShown(position)) {
-            CategoryListFragment.categoryAdapter.closeMenu(position)
+        val position = viewHolder.absoluteAdapterPosition
+        if (categoryAdapter.isMenuShown(position)) {
+            categoryAdapter.closeMenu(position)
         } else {
-            CategoryListFragment.categoryAdapter.showMenu(viewHolder.adapterPosition)
+            categoryAdapter.showMenu(position)
         }
     }
 
@@ -59,13 +60,15 @@ class CategoryItemSwipeHandler :
             // swipe to the right
             dX > 0 -> {
                 background.setBounds(
-                    item.left, item.top, item.left + dX.toInt(), item.bottom)
+                    item.left, item.top, item.left + dX.toInt(), item.bottom
+                )
             }
             // swipe to the left
             dX < 0 -> {
                 background = ColorDrawable(Utils.getThemeColor(context, R.attr.colorPrimary))
                 background.setBounds(
-                    item.right + dX.toInt(), item.top, item.right, item.bottom)
+                    item.right + dX.toInt(), item.top, item.right, item.bottom
+                )
             }
         }
         background.draw(c)
