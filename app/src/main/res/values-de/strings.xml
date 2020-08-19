@@ -148,6 +148,7 @@
     <string name="heading_select_theme">Wähle ein Thema</string>
     <string name="heading_calendar_settings">Kalendereinstellungen</string>
     <string name="heading_delete_completed_tasks">Abgeschlossene Aufgaben löschen</string>
+    <string name="heading_replay_intro">Intro wiederholen</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Bezeichnung</string>
@@ -173,7 +174,6 @@
     <string name="description_select_theme">Thema auswählen</string>
     <string name="description_switch_to_dark">Wechsel zum Nachtmodus</string>
     <string name="description_switch_to_light">Wechsel zum Tagesmodus</string>
-    <string name="description_rate_app">Wenn du diese App gerne nutzt, würde es dir etwas ausmachen, sich einen Moment Zeit zu nehmen, um sie zu bewerten? Dein Feedback wird mir sehr helfen. Danke für deine Unterstützung!</string>
     <string name="description_delete_completed_tasks">Lösche Aufgaben aus dem Kalender, wenn diese abgeschlossen sind</string>
 
     <!-- Dialog messages -->

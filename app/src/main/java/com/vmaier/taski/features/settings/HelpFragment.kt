@@ -1,5 +1,6 @@
 package com.vmaier.taski.features.settings
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentHelpBinding
+import com.vmaier.taski.intro.Onboarding
 
 
 /**
@@ -36,6 +38,10 @@ class HelpFragment : Fragment() {
         toolbar.title = getString(R.string.heading_help)
         toggleBottomMenu(false, View.GONE)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_help, container, false)
+        binding.replayIntroButton.setOnClickListener {
+            val intent = Intent(requireContext(), Onboarding::class.java)
+            startActivity(intent)
+        }
         binding.licensesButton.setOnClickListener {
             val fragment = LibsBuilder()
                 .withAboutVersionShown(false)
@@ -66,6 +72,7 @@ class HelpFragment : Fragment() {
                 .commit()
         }
         toolbar.title = getString(R.string.heading_licenses)
+        binding.replayIntroButton.visibility = View.GONE
         binding.licensesButton.visibility = View.GONE
         binding.versionButton.visibility = View.GONE
     }

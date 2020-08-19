@@ -150,6 +150,7 @@
     <string name="heading_select_theme">Select theme</string>
     <string name="heading_calendar_settings">Calendar settings</string>
     <string name="heading_delete_completed_tasks">Delete completed tasks</string>
+    <string name="heading_replay_intro">Replay intro</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
@@ -175,7 +176,6 @@
     <string name="description_switch_to_dark">Switch to dark mode</string>
     <string name="description_switch_to_light">Switch to light mode</string>
     <string name="description_select_language">Select language</string>
-    <string name="description_rate_app">If you enjoy using this app, would you mind taking a moment to rate it? Your feedback will help me a lot. Thank you for your support!</string>
     <string name="description_delete_completed_tasks">Delete tasks from the calendar when they have been completed</string>
 
     <!-- Dialog messages -->

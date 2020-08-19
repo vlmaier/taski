@@ -152,6 +152,7 @@
     <string name="heading_select_theme">Выберите тему</string>
     <string name="heading_calendar_settings">Настройки календаря</string>
     <string name="heading_delete_completed_tasks">Удаление выполненных задач</string>
+    <string name="heading_replay_intro">Повторить вступление</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Наименование навыка</string>
@@ -177,7 +178,6 @@
     <string name="description_select_theme">Выберите тему</string>
     <string name="description_switch_to_dark">Переключиться в ночной режим</string>
     <string name="description_switch_to_light">Переключиться в дневной режим</string>
-    <string name="description_rate_app">Если тебе нравится использовать это приложение, не мог бы ты уделить время, чтобы оценить его? Твой отзыв мне очень поможет. Спасибо за поддержку!</string>
     <string name="description_delete_completed_tasks">Удалять задачи из календаря, когда они были выполнены</string>
 
     <!-- Dialog messages -->
