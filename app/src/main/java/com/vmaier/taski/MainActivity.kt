@@ -493,6 +493,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
     private fun onBackPressedHelpFragment() {
         toolbar.title = getString(R.string.heading_help)
+        HelpFragment.binding.manualButton.visibility = View.VISIBLE
+        HelpFragment.binding.replayIntroButton.visibility = View.VISIBLE
         HelpFragment.binding.licensesButton.visibility = View.VISIBLE
         HelpFragment.binding.versionButton.visibility = View.VISIBLE
         super.onBackPressed()

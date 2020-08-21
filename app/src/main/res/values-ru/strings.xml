@@ -153,6 +153,8 @@
     <string name="heading_calendar_settings">Настройки календаря</string>
     <string name="heading_delete_completed_tasks">Удаление выполненных задач</string>
     <string name="heading_replay_intro">Повторить вступление</string>
+    <string name="heading_manual">Руководство</string>
+    <string name="heading_app_manual">Руководство Taski</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Наименование навыка</string>
@@ -209,6 +211,7 @@
     <string name="content_pick_color_icon">значок "выбрать цвет"</string>
     <string name="content_edit_name_icon">значок "изменить название"</string>
     <string name="content_delete_icon">значок "удалить"</string>
+    <string name="content_app_logo">логотип приложения</string>
 
     <!-- Onboarding description -->
     <string name="intro_slide_1_top">Добро пожаловать в Taski</string>

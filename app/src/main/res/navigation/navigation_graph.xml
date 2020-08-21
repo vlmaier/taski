@@ -150,7 +150,11 @@
             android:id="@+id/helpFragment"
             android:name="com.vmaier.taski.features.settings.HelpFragment"
             android:label="HelpFragment"
-            tools:layout="@layout/fragment_help" />
+            tools:layout="@layout/fragment_help" >
+        <action
+                android:id="@+id/action_helpFragment_to_manualFragment"
+                app:destination="@id/manualFragment" />
+    </fragment>
 
     <fragment
             android:id="@+id/chartSkillXpFragment"
@@ -237,5 +241,11 @@
                 app:popEnterAnim="@anim/fade_out"
                 app:popExitAnim="@anim/fade_in" />
     </fragment>
+
+    <fragment
+            android:id="@+id/manualFragment"
+            android:name="com.vmaier.taski.features.settings.ManualFragment"
+            android:label="ManualFragment"
+            tools:layout="@layout/fragment_manual"/>
 
 </navigation>

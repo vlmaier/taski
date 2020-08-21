@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import com.mikepenz.aboutlibraries.LibsBuilder
 import com.vmaier.taski.BuildConfig
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
@@ -38,6 +39,11 @@ class HelpFragment : Fragment() {
         toolbar.title = getString(R.string.heading_help)
         toggleBottomMenu(false, View.GONE)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_help, container, false)
+        binding.manualButton.setOnClickListener {
+            it.findNavController().navigate(
+                HelpFragmentDirections.actionHelpFragmentToManualFragment()
+            )
+        }
         binding.replayIntroButton.setOnClickListener {
             val intent = Intent(requireContext(), Onboarding::class.java)
             startActivity(intent)
@@ -72,6 +78,7 @@ class HelpFragment : Fragment() {
                 .commit()
         }
         toolbar.title = getString(R.string.heading_licenses)
+        binding.manualButton.visibility = View.GONE
         binding.replayIntroButton.visibility = View.GONE
         binding.licensesButton.visibility = View.GONE
         binding.versionButton.visibility = View.GONE

@@ -86,6 +86,7 @@ dependencies {
     implementation 'com.robinhood.ticker:ticker:2.0.2'
     implementation 'com.github.AppIntro:AppIntro:6.0.0'
     implementation 'com.github.worker8:radiogroupplus:1.0.1'
+    implementation 'io.noties.markwon:core:4.5.1'
     implementation "com.mikepenz:aboutlibraries:$latestAboutLibsRelease"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

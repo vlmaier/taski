@@ -125,7 +125,7 @@
     <string name="heading_weekly_tasks_title">Erledigte Aufgaben</string>
     <string name="heading_open_tasks">Offene Aufgaben</string>
     <string name="heading_done_tasks">Anzahl abgeschlossener Aufgaben</string>
-    <string name="heading_calendar_sync">Kalendersynchronisation</string>
+    <string name="heading_calendar_sync">Kalendersynchronisierung</string>
     <string name="heading_user_name">Name</string>
     <string name="heading_edit_category_name">Kategoriename ändern</string>
     <string name="heading_create_category">Erstelle eine neue Kategorie</string>
@@ -149,6 +149,8 @@
     <string name="heading_calendar_settings">Kalendereinstellungen</string>
     <string name="heading_delete_completed_tasks">Abgeschlossene Aufgaben löschen</string>
     <string name="heading_replay_intro">Intro wiederholen</string>
+    <string name="heading_manual">Anleitung</string>
+    <string name="heading_app_manual">Taski Anleitung</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Bezeichnung</string>
@@ -203,6 +205,7 @@
     <string name="content_pick_color_icon">"Wähle eine Farbe" Symbol</string>
     <string name="content_edit_name_icon">"Name ändern" Symbol</string>
     <string name="content_delete_icon">"Löschen" Symbol</string>
+    <string name="content_app_logo">App Logo</string>
 
     <!-- Onboarding description -->
     <string name="intro_slide_1_top">Willkommen zu Taski</string>
@@ -217,5 +220,132 @@
     <string name="intro_slide_5_bottom">mit verschiedenen Diagrammen und Grafiken.</string>
     <string name="intro_slide_6_top">Viel Spaß bei der Auswahl</string>
     <string name="intro_slide_6_bottom">von zahlreichen handverlesenen Themen.</string>
+
+    <string name="text_manual">
+### \# App\n
+Der Name *Taski* stammt aus einer Kombination von zwei Wörtern *Task* und *Skill*. Darüber hinaus ist es ein Teil des Begriffs
+*Multitasking*. Aus diesem Grund wurde ein Oktopus 🐙 für das App-Logo ausgewählt. Er kann sehr effizient im Multitasking sein, da er 8 Tentakeln hat.\n
+\n
+---
+\n
+### \# Aufgaben\n
+Die Aufgaben stellen Ziele oder Missionen dar, die du erreichen möchtest.\n
+\n
+* **Ziel**\\\n
+  Das Aufgabenziel ist **obligatorisch** und muss beim Erstellen oder Bearbeiten einer Aufgabe zwischen 4 und 36 Zeichen lang sein. Aufgaben können nach dem Ziel sortiert werden.\n
+* **Details**\\\n
+  Die Aufgabendetails sind optional und können bis zu 100 Zeichen lang sein.\n
+* **Symbol**\\\n
+  Das Aufgabensymbol kann aus einer Vielzahl von \~1000 Symbolen ausgewählt werden. Die Symbole werden nach den Kategorien gruppiert.\n
+* **Dauer**\\\n
+  Die Aufgabendauer kann aus einem Bereich zwischen 5 Minuten und 1 Woche ausgewählt werden. Die Dauer wird als Parameter für die Erfahrungsberechnung verwendet. Die Aufgaben können nach der Dauer sortiert werden.\n
+* **Schwierigkeit**\\\n
+  Der Schwierigkeitsgrad der Aufgabe kann aus 4 Werten ausgewählt werden: *leicht*, *normal*, *schwer* und *sehr schwer*. Die Schwierigkeit wird als Parameter für die Erfahrungsberechnung verwendet.\n
+* **Fälligkeitsdatum**\\\n
+  Das Fälligkeitsdatum ist für Aufgaben optional. Die Aufgaben können nach dem Fälligkeitsdatum sortiert werden.\n
+* **Fähigkeiten**\\\n
+  Die Fähigkeiten sind optional. Eine oder mehrere Fähigkeiten können einer einzelnen Aufgabe zugewiesen werden.\n
+* **Erfahrungsgewinn**\\\n
+  Die Menge an Erfahrung, die du erhälst, wenn du die Aufgabe erledigst.\n
+\n
+#### Aktionen mit Aufgaben:\n
+\n
+* **Erstellen**\\\n
+  Um eine Aufgabe zu erstellen, drücke auf ➕ im Menü *Aufgaben*.\n
+* **Bearbeiten**\\\n
+  Um eine Aufgabe zu bearbeiten, drücke auf die zu bearbeitende Aufgabe und nehme die Änderungen vor. Weiter drücke auf *Zurück*. Die Änderungen werden gespeichert. Wenn du nicht möchtest, dass die Änderungen gespeichert werden, drücke auf *ABBRECHEN*.\n
+* **Kopieren**\\\n
+  Um eine Aufgabe zu kopieren, drücke lange auf die Aufgabe, die du kopieren möchtest. Ein Kontextmenü wird angezeigt. Drücke auf *Kopieren*, um fortzufahren.\n
+* **Erledigen**\\\n
+  Um eine Aufgabe als erledigt zu setzen, wische nach links ⬅️. Um die Aktion zurückzusetzen, drücke unten auf *RÜCKGÄNGIG*.\n
+* **Fehlschlagen**\\\n
+  Um eine Aufgabe als fehlgeschlagen zu setzen, wische nach rechts ➡️. Um die Aktion zurückzusetzen, drücke unten auf *RÜCKGÄNGIG*.\n
+\n
+---
+\n
+### \# Fähigkeiten\n
+Die Fähigkeiten repräsentieren deine persönlichen Interessen, an denen du arbeiten möchtest.\n
+\n
+* **Bezeichnung**\\\n
+  Die Bezeichnung der Fähigkeit ist **obligatorisch** und muss beim Erstellen oder Bearbeiten einer Fähigkeit zwischen 4 und 24 Zeichen lang sein. Die Fähigkeiten können nach der Bezeichnung sortiert werden.\n
+* **Kategorie**\\\n
+  Die Fähigkeitskategorie ist optional und muss zwischen 4 und 24 Zeichen lang sein. Die Fähigkeiten können nach der Kategorie sortiert werden.\n
+* **Symbol**\\\n
+  Das Fähigkeitensymbol kann aus einer Vielzahl von \~1000 Symbolen ausgewählt werden. Die Symbole werden nach den Kategorien gruppiert.\n
+* **Erfahrung**\\\n
+  Die Menge an Erfahrung, die du bisher in dieser Fertigkeit durch das Erfüllen von Aufgaben gesammelt hast. Die Fähigkeiten können nach der Erfahrung sortiert werden.\n
+* **Stufe**\\\n
+  Die Stufe, die du bisher mit dieser Fertigkeit erreicht hast, indem du Aufgaben erledigt hast.\n
+\n
+#### Aktionen mit Fähigkeiten:\n
+\n
+* **Erstellen**\\\n
+  Um eine Fähigkeit zu erstellen, drücke auf ➕ im Menü *Fähigkeiten*.\n
+* **Zuweisen**\\\n
+  Um eine Fähigkeit beim Erstellen oder Bearbeiten einer Aufgabe zuzuweisen, gebe die Bezeichnung der Fähigkeit, die bereits erstellt wurde, in das Feld *Fähigkeiten* ein. Für eine Aufgabe sind mehrere Fähigkeiten zulässig.\n
+* **Bearbeiten**\\\n
+  Um eine Fähigkeit zu bearbeiten, drücke auf die zu bearbeitende Fähigkeit und nehme die Änderungen vor. Weiter drücke auf *Zurück*. Die Änderungen werden gespeichert. Wenn du nicht möchtest, dass die Änderungen gespeichert werden, drücke auf *ABBRECHEN*.\n
+* **Löschen**\\\n
+  Um eine Fertigkeit zu löschen, drücke auf die zu löschende Fähigkeit und dann auf *LÖSCHEN*. ⚠️ Vorsicht! Der Fortschritt bei dieser Fähigkeit geht somit für immer verloren. Um die Aktion zurückzusetzen, drücke unten auf *RÜCKGÄNGIG*.\n
+\n
+---
+\n
+### \# Kategorien\n
+Die Fähigkeitskategorie stellt eine Gruppe ähnlicher Fähigkeiten dar, die etwas gemeinsam haben, z.B. Fähigkeiten *Lesen* 📚 und *Schach spielen* ♟️ können einer Kategorie *Intelligenz* 🧠 angehören.\n
+\n
+* **Name**\\\n
+  Der Kategoriename ist **obligatorisch** und muss beim Erstellen oder Bearbeiten einer Kategorie zwischen 4 und 24 Zeichen lang sein.\n
+* **Farbe**\\\n
+  Die Farbe der Kategorie ist optional. Wenn eine Farbe ausgewählt ist, haben alle mit der Kategorie verknüpften Fähigkeiten im Menü *Fertigkeiten* einen Rand dieser Farbe.\n
+\n
+#### Aktionen mit Kategorien:\n
+\n
+* **Erstellen**\\\n
+  Um eine Kategorie zu erstellen, drücke auf ➕ im Menü *Kategorien*. Alternativ kann beim Erstellen oder Bearbeiten einer Fertigkeit der Namen der gewünschten Kategorie in das Feld *Kategorie* eingeben werden.\n
+* **Zuweisen**\\\n
+  Gebe den Namen der Kategorie in das Feld *Kategorie* ein, um beim Erstellen oder Bearbeiten einer Aufgabe eine Kategorie zuzuweisen. Pro Fähigkeit ist nur eine Kategorie erlaubt.\n
+* **Bearbeiten**\\\n
+  Um eine Kategorie zu bearbeiten, wische nach links ⬅️. Ein Menü mit verfügbaren Optionen wird erscheinen.\n
+* **Löschen**\\\n
+  Um eine Kategorie zu löschen, wische nach links ⬅️ und drücke auf *Löschen*. ⚠️ Vorsicht! Alle zugewiesenen Fähigkeiten werden diese Kategorie verlieren. Um die Aktion zurückzusetzen, drücke unten auf *RÜCKGÄNGIG*.\n
+\n
+---
+\n
+### \# Erfahrungsberechnung\n
+Die Berechnung der Erfahrung hängt von zwei Variablen ab: *Schwierigkeit* und *Dauer*.\n
+Jede Schwierigkeit hat ihren eigenen Multiplikationsfaktor *f*:\n
+\n
+* **leicht** - 0.5\n
+* **normal** - 1.0\n
+* **schwer** - 1.5\n
+* **sehr schwer** - 2.0\n
+\n
+Jeder Wert der Dauer *d* wird in Minuten umgewandelt. Schließlich werden die Erfahrungspunkte *xp* wie folgt berechnet:\n
+\n
+> *xp = f * d*\n
+\n
+Darüber hinaus tragen nur erledigte Aufgaben zur Erfahrung bei. Fehlgeschlagene Aufgaben werden in der Erfahrungsberechnung ignoriert.\n
+\n
+---
+\n
+### \# Stufenberechnung\n
+Die Stufe wird folgendermaßen berechnet:\n
+\n
+> *level = 0.025 * sqrt(xp)*\n
+\n
+---
+\n
+### \# Kalendersynchronisierung\n
+Wenn die Kalendersynchronisierung aktiviert ist, werden alle mit einem Fälligkeitsdatum erstellten Aufgaben mit dem Standardkalender synchronisiert. Das Aufgabenziel wird als Titel und die Aufgabendetails als Beschreibung des Kalenderereignisses ausgewählt.\n
+\n
+Um erledigte oder fehlgeschlagene Aufgaben aus dem Kalender zu löschen, aktiviere das Kontrollkästchen *Abgeschlossene Aufgaben löschen* in den Einstellungen.\n
+\n
+Wenn du eine Aufgabe mit einem Fälligkeitsdatum erstellen möchtest, ohne sie jedoch mit dem Kalender zu synchronisieren, deaktiviere dazu das Kontrollkästchen *Mit Kalender synchronisieren*, während du eine Aufgabe erstellst oder bearbeitest.\n
+\n
+Der Standardwert für das Feld *Mit Kalender synchronisieren* hängt von der globalen Einstellung *Kalendersynchronisierung* ab.\n
+\n
+---
+\n
+    </string>
 
 </resources>

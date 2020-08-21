@@ -144,13 +144,15 @@
     <string name="heading_dark_mode">Dark mode</string>
     <string name="heading_light_mode">Light mode</string>
     <string name="heading_language">Language</string>
-    <string name="heading_synchronize_to_calendar">Synchronize to calendar</string>
+    <string name="heading_synchronize_to_calendar">Synchronize with calendar</string>
     <string name="heading_sort_by">Sort by</string>
     <string name="heading_sort_order">Sort order</string>
     <string name="heading_select_theme">Select theme</string>
     <string name="heading_calendar_settings">Calendar settings</string>
     <string name="heading_delete_completed_tasks">Delete completed tasks</string>
     <string name="heading_replay_intro">Replay intro</string>
+    <string name="heading_manual">Manual</string>
+    <string name="heading_app_manual">Taski Manual</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
@@ -205,6 +207,7 @@
     <string name="content_pick_color_icon">pick color icon</string>
     <string name="content_edit_name_icon">edit name icon</string>
     <string name="content_delete_icon">delete icon</string>
+    <string name="content_app_logo">app logo</string>
 
     <!-- Onboarding description -->
     <string name="intro_slide_1_top">Welcome to Taski</string>
@@ -231,5 +234,132 @@
     <string name="theme_pilot" translatable="false">Theme.Pilot</string>
     <string name="theme_coral" translatable="false">Theme.Coral</string>
     <string name="theme_blossom" translatable="false">Theme.Blossom</string>
+
+    <string name="text_manual">
+### \# App\n
+The name *Taski* comes from a combination of two words *task* and *skill*. In addition, it is a part of the term
+*multitasking*. For this reason, an octopus 🐙 was chosen for the app logo. He could be very efficient at multitasking as he has 8 tentacles.\n
+\n
+---
+\n
+### \# Tasks\n
+Tasks represent goals or missions that you want to achieve.\n
+\n
+* **Goal**\\\n
+  Task goal is **mandatory** and must be between 4 and 36 characters long when creating or editing a task. Tasks can be sorted by goal.\n
+* **Details**\\\n
+  Task details are optional and can be up to 100 characters long.\n
+* **Icon**\\\n
+  Task icon can be selected from a variety of ~1000 icons. Icons are grouped by category.\n
+* **Duration**\\\n
+  Task duration can be selected from a range between 5 minutes and 1 week. The duration is used as parameter for the experience calculation. Tasks can be sorted by duration.\n
+* **Difficulty**\\\n
+  Task difficulty can be selected from 4 values: *trivial*, *regular*, *hard* and *insane*. The difficulty is used as parameter for the experience calculation.\n
+* **Due date**\\\n
+  Due date is optional for tasks. Tasks can be sorted by due date.\n
+* **Skills**\\\n
+  Skills are optional. One or more skills can be assigned to a single task.\n
+* **Experience gain**\\\n
+  Amount of experience you will get when you complete the task.\n
+\n
+#### Actions on tasks:\n
+\n
+* **Create**\\\n
+  To create a task, press ➕ in *Tasks* menu.\n
+* **Edit**\\\n
+  To edit a task, press the task item to be edited and perform the changes. Further press the *Back* button. Your changes will be saved. If you do not want your changes to be saved press the *CANCEL* button.\n
+* **Copy**\\\n
+  To copy a task, long-press the task item you want to copy. A context menu will appear, press *Copy* to continue.\n
+* **Complete**\\\n
+  To complete a task, swipe left ⬅️ on the task item. To reset the action, press *UNDO* button below.\n
+* **Fail**\\\n
+  To fail a task, swipe right ➡️ on the task item. To reset the action, press *UNDO* button below.\n
+\n
+---
+\n
+### \# Skills\n
+Skills represent your personal abilities that you want to work on.\n
+\n
+* **Name**\\\n
+  Skill name is **mandatory** and must be between 4 and 24 characters long when creating or editing a skill. Skills can be sorted by name.\n
+* **Category**\\\n
+  Skill category is optional and must be between 4 and 24 characters long. Skills can be sorted by category.\n
+* **Icon**\\\n
+  Skill icon can be selected from a variety of ~1000 icons. Icons are grouped by category.\n
+* **Experience**\\\n
+  Amount of experience you have gained so far in this skill by completing tasks. Skills can be sorted by experience.\n
+* **Level**\\\n
+  Level you have reached so far with this skill by completing tasks.\n
+\n
+#### Actions on skills:\n
+\n
+* **Create**\\\n
+  To create a skill, press ➕ in *Skills* menu.\n
+* **Assign**\\\n
+  To assign a skill when creating or editing a task, enter the name of the skill(s) you have already created in *Skills* field. Multiple skills are allowed for a single task.\n
+* **Edit**\\\n
+  To edit a skill, press the skill item to be edited and perform the changes. Further press the *Back* button. Your changes will be saved. If you do not want your changes to be saved press the *CANCEL* button.\n
+* **Delete**\\\n
+  To delete a skill, press the skill item to be deleted and press *DELETE* button. ⚠️ Caution! The progress on this skill will be gone forever. To reset the action, press *UNDO* button below.\n
+\n
+---
+\n
+### \# Categories\n
+Skill category represents a group of similar skills which have one thing in common e.g. skills *Reading* 📚 and *Playing Chess* ♟️ can belong to a category *Intelligence* 🧠.\n
+
+* **Name**\\\n
+  Category name is **mandatory** and must be between 4 and 24 characters long when creating or editing a category.\n
+* **Color**\\\n
+  Category color is optional. When a color is chosen all skills associated with the category will have a border of that color in *Skills* menu.\n
+\n
+#### Actions on categories:\n
+\n
+* **Create**\\\n
+  To create a skill category, press ➕ in *Categories* menu. Alternatively, when creating or editing a skill, you can enter the name of the desired category in the *Category* field.\n
+* **Assign**\\\n
+  Enter the name of the category in the *Category* field to assign a category when creating or editing a task. Only one category is allowed per skill.\n
+* **Edit**\\\n
+  To edit a category, swipe left ⬅️ on the category item to be edited. Further a menu with available options will appear.\n
+* **Delete**\\\n
+  To delete a category, swipe left ⬅️ on the category item to be deleted and press *Delete*. ⚠️ Caution! All assigned skills will lose this category. To revert the action press *UNDO* button below.\n
+\n
+---
+\n
+### \# Experience Calculation\n
+The calculation of experience depends on two variables: *difficulty* and *duration*.\n
+Each difficulty has its own multiplication factor *f*:\n
+\n
+* **trivial** - 0.5\n
+* **regular** - 1.0\n
+* **hard** - 1.5\n
+* **insane** - 2.0\n
+\n
+Each duration value *d* is transformed in minutes. Finally, experience points *xp* are calculated as follows:\n
+\n
+> *xp = f * d*\n
+\n
+In addition, only completed tasks add to the experience. Failed tasks are ignored in the experience calculation.\n
+\n
+---
+\n
+### \# Level Calculation\n
+The level is calculated as follows:\n
+\n
+> *level = 0.025 * sqrt(xp)*\n
+\n
+---
+\n
+### \# Calendar Synchronization\n
+When calendar synchronization is enabled, all created tasks with a due date will be synchronized with the default calendar. The task goal is selected as title and the task details as description of the calendar event.\n
+\n
+To delete completed or failed tasks from the calendar, check the *Delete completed tasks* box in the settings.\n
+\n
+If you want to create a task with a due date but without syncing it with the calendar, uncheck the *Synchronize with calendar* box when creating or editing a task.\n
+\n
+The default value of *Synchronize with calendar* field depends on the global *Calendar Synchronization* setting.\n
+\n
+---
+\n
+    </string>
 
 </resources>
