@@ -461,13 +461,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             SkillEditFragment.binding.name.error = getString(R.string.error_cannot_be_empty)
         } else {
             val foundSkill = db.skillDao().findByName(name)
-            if (name.length < 4) {
+            if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.name.requestFocus()
                 SkillEditFragment.binding.name.error = getString(R.string.error_too_short)
             } else if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                 SkillEditFragment.binding.name.requestFocus()
                 SkillEditFragment.binding.name.error = getString(R.string.error_skill_already_exists)
-            } else if (category.isNotBlank() && category.length < 4) {
+            } else if (category.isNotBlank() && category.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.category.requestFocus()
                 SkillEditFragment.binding.category.error = getString(R.string.error_too_short)
             } else {
@@ -483,7 +483,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 TaskEditFragment.binding.goal.requestFocus()
                 TaskEditFragment.binding.goal.error = getString(R.string.error_cannot_be_empty)
             }
-            goal.length < 4 -> {
+            goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH -> {
                 TaskEditFragment.binding.goal.requestFocus()
                 TaskEditFragment.binding.goal.error = getString(R.string.error_too_short)
             }
@@ -527,7 +527,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         )
         dialog.onPositiveButtonListener = {
             val name = dialog.editText.text.toString().trim()
-            if (name.length < 4) {
+            if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 dialog.editText.requestFocus()
                 dialog.editText.error = getString(R.string.error_too_short)
             } else {

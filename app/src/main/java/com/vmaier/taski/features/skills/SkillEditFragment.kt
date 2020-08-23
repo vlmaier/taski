@@ -134,7 +134,7 @@ class SkillEditFragment : SkillFragment() {
             binding.name.error = getString(R.string.error_cannot_be_empty)
             return
         }
-        if (name.length < 4) {
+        if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.name.requestFocus()
             binding.name.error = getString(R.string.error_too_short)
             return
@@ -143,7 +143,7 @@ class SkillEditFragment : SkillFragment() {
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val categoryId: Long?
         if (categoryName.isNotBlank()) {
-            if (categoryName.length < 4) {
+            if (categoryName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 binding.category.requestFocus()
                 binding.category.error = getString(R.string.error_too_short)
                 return

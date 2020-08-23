@@ -145,7 +145,7 @@ class TaskCreateFragment : TaskFragment() {
             binding.goal.error = getString(R.string.error_cannot_be_empty)
             return false
         }
-        if (goal.length < 4) {
+        if (goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.goal.requestFocus()
             binding.goal.error = getString(R.string.error_too_short)
             return false

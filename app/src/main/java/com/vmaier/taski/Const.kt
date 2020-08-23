@@ -50,6 +50,7 @@ class Const {
             const val DELETE_COMPLETED_TASKS = false
             const val APP_LAUNCH_COUNTER = 0
             const val APP_LAUNCH_COUNTER_FOR_REVIEW = 10
+            const val MINIMAL_INPUT_LENGTH = 2
         }
     }
 }
