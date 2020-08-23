@@ -152,7 +152,7 @@ open class TaskFragment : Fragment() {
     }
 
     fun updateXpGain(xpGain: TextView, durationBar: SeekBar) {
-        val xp = Difficulty.valueOf(difficulty).factor.times(durationBar.getDurationInMinutes()).toInt()
+        val xp = Utils.calculateXp(Difficulty.valueOf(difficulty), durationBar.getDurationInMinutes())
         xpGain.text = resources.getString(R.string.term_xp_value, xp)
     }
 

@@ -6,6 +6,7 @@ import com.vmaier.taski.App
 import com.vmaier.taski.data.Converters
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.Status
+import com.vmaier.taski.utils.Utils
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
@@ -61,7 +62,7 @@ data class Task(
     val difficulty: Difficulty = Difficulty.REGULAR,
 
     @ColumnInfo(name = "xp_value")
-    val xp: Int = difficulty.factor.times(duration).toInt(),
+    val xp: Int = Utils.calculateXp(difficulty, duration),
 
     @ColumnInfo(name = "icon_id")
     val iconId: Int,

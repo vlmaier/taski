@@ -6,6 +6,8 @@ import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import com.vmaier.taski.R
+import com.vmaier.taski.data.Difficulty
+import kotlin.math.roundToInt
 
 
 /**
@@ -56,5 +58,10 @@ object Utils {
             resources.getString(R.string.theme_blossom) -> R.style.Theme_Blossom
             else -> R.style.Theme_Default
         }
+    }
+
+    fun calculateXp(difficulty: Difficulty, duration: Int): Int {
+        val xp = 5 * ((difficulty.factor.times(duration) / 5).roundToInt())
+        return if (xp == 0) 5 else xp
     }
 }
