@@ -23,6 +23,9 @@
                         android:id="@+id/sort_duration"
                         android:title="@string/term_sort_duration" />
                 <item
+                        android:id="@+id/sort_difficulity"
+                        android:title="@string/term_sort_difficulity" />
+                <item
                         android:id="@+id/sort_xp_gain"
                         android:title="@string/term_sort_xp_gain" />
                 <item

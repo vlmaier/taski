@@ -66,6 +66,7 @@
     <string name="term_sort_created_at">дата создания</string>
     <string name="term_sort_goal">цель</string>
     <string name="term_sort_duration">продолжительность</string>
+    <string name="term_sort_difficulity">трудность</string>
     <string name="term_sort_xp_gain">полученный опыт</string>
     <string name="term_sort_due_on">дата выполнения</string>
     <string name="term_sort_by">Отсортировано : %1$s (%2$s)</string>

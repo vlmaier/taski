@@ -9,6 +9,7 @@ enum class SortTasks(val value: String) {
     CREATED_AT("created_at"),
     GOAL("goal"),
     DURATION("duration"),
+    DIFFICULTY("difficulty"),
     XP_GAIN("xp_gain"),
     DUE_ON("due_on")
 }

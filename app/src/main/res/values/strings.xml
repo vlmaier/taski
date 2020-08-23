@@ -64,6 +64,7 @@
     <string name="term_sort_created_at">creation date</string>
     <string name="term_sort_goal">goal</string>
     <string name="term_sort_duration">duration</string>
+    <string name="term_sort_difficulity">difficulty</string>
     <string name="term_sort_xp_gain">experience gain</string>
     <string name="term_sort_due_on">due on</string>
     <string name="term_sort_by">Sorted by : %1$s (%2$s)</string>
