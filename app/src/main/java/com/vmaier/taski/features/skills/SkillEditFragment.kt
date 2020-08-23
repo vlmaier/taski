@@ -143,12 +143,18 @@ class SkillEditFragment : SkillFragment() {
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val categoryId: Long?
         if (categoryName.isNotBlank()) {
-            val foundCategory = db.categoryDao().findByName(categoryName)
-            if (foundCategory != null) {
-                categoryId = foundCategory.id
+            if (categoryName.length < 4) {
+                binding.category.requestFocus()
+                binding.category.error = getString(R.string.error_too_short)
+                return
             } else {
-                categoryId = db.categoryDao().create(Category(name = categoryName))
-                Timber.d("Category ($categoryId) created.")
+                val foundCategory = db.categoryDao().findByName(categoryName)
+                if (foundCategory != null) {
+                    categoryId = foundCategory.id
+                } else {
+                    categoryId = db.categoryDao().create(Category(name = categoryName))
+                    Timber.d("Category ($categoryId) created.")
+                }
             }
         } else {
             categoryId = null

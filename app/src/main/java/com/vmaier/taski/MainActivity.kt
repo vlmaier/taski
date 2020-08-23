@@ -455,6 +455,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
 
     private fun onBackPressedSkillEditFragment() {
         val name = SkillEditFragment.binding.name.editText?.text.toString()
+        val category = SkillEditFragment.binding.category.editText?.text.toString()
         if (name.isBlank()) {
             SkillEditFragment.binding.name.requestFocus()
             SkillEditFragment.binding.name.error = getString(R.string.error_cannot_be_empty)
@@ -463,11 +464,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             if (name.length < 4) {
                 SkillEditFragment.binding.name.requestFocus()
                 SkillEditFragment.binding.name.error = getString(R.string.error_too_short)
-            } else if (foundSkill != null &&
-                foundSkill.id != SkillEditFragment.skill.id
-            ) {
+            } else if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                 SkillEditFragment.binding.name.requestFocus()
                 SkillEditFragment.binding.name.error = getString(R.string.error_skill_already_exists)
+            } else if (category.isNotBlank() && category.length < 4) {
+                SkillEditFragment.binding.category.requestFocus()
+                SkillEditFragment.binding.category.error = getString(R.string.error_too_short)
             } else {
                 super.onBackPressed()
             }
