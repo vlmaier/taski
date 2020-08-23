@@ -76,6 +76,10 @@ class SkillEditFragment : SkillFragment() {
         val doneTasksAmount = db.skillDao().countTasksWithSkillByStatus(skill.id, Status.DONE)
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
 
+        // "Skill hours" settings
+        val skillHoursAmount = db.skillDao().countMinutes(skill.id).div(60)
+        binding.skillHoursValue.text = "$skillHoursAmount"
+
         // XP settings
         binding.skillXp.text = getString(R.string.term_xp_value, skill.xp)
 

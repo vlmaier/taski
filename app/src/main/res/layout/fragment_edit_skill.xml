@@ -110,7 +110,7 @@
                     android:id="@+id/skill_xp_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:singleLine="true"
                     android:text="@string/heading_skill_xp"
                     android:textSize="16sp"
@@ -122,26 +122,38 @@
                     android:id="@+id/skill_open_tasks_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:singleLine="true"
                     android:text="@string/heading_open_tasks"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:autoSizeTextType="uniform"
                     app:layout_constraintStart_toStartOf="@+id/skill_done_tasks_text"
-                    app:layout_constraintTop_toBottomOf="@+id/skill_done_tasks_text" />
+                    app:layout_constraintTop_toBottomOf="@+id/skill_hours" />
 
             <TextView
                     android:id="@+id/skill_done_tasks_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:singleLine="true"
                     android:text="@string/heading_done_tasks"
                     android:textSize="16sp"
                     app:autoSizeTextType="uniform"
                     app:layout_constraintStart_toStartOf="@+id/skill_xp_text"
                     app:layout_constraintTop_toBottomOf="@+id/skill_xp_text" />
+
+            <TextView
+                    android:id="@+id/skill_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:singleLine="true"
+                    android:text="@string/heading_skill_hours"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintStart_toStartOf="@+id/skill_done_tasks_text"
+                    app:layout_constraintTop_toBottomOf="@+id/skill_done_tasks_text" />
 
             <TextView
                     android:id="@+id/skill_level_text"
@@ -198,6 +210,20 @@
                     app:layout_constraintStart_toEndOf="@+id/skill_done_tasks_text"
                     app:layout_constraintTop_toTopOf="@+id/skill_done_tasks_text"
                     tools:text="3" />
+
+            <TextView
+                    android:id="@+id/skill_hours_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintBottom_toBottomOf="@+id/skill_hours"
+                    app:layout_constraintEnd_toEndOf="@+id/icon_button"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/skill_hours"
+                    app:layout_constraintTop_toTopOf="@+id/skill_hours"
+                    tools:text="100" />
 
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv"

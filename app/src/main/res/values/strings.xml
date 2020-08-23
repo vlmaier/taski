@@ -128,6 +128,7 @@
     <string name="heading_weekly_tasks_title">Done tasks</string>
     <string name="heading_open_tasks">Open tasks</string>
     <string name="heading_done_tasks">Amount of done tasks</string>
+    <string name="heading_skill_hours">Amount of invested hours</string>
     <string name="heading_calendar_sync">Calendar synchronization</string>
     <string name="heading_user_name">Name</string>
     <string name="heading_edit_category_name">Edit category name</string>

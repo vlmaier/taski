@@ -130,6 +130,7 @@
     <string name="heading_weekly_tasks_title">Выполненные задачи</string>
     <string name="heading_open_tasks">Не завершеные задачи</string>
     <string name="heading_done_tasks">Количество завершеных задач</string>
+    <string name="heading_skill_hours">Количество вложенных часов</string>
     <string name="heading_calendar_sync">Синхронизация с календарем</string>
     <string name="heading_user_name">Имя</string>
     <string name="heading_edit_category_name">Изменить название категории</string>

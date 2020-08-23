@@ -126,6 +126,7 @@
     <string name="heading_weekly_tasks_title">Erledigte Aufgaben</string>
     <string name="heading_open_tasks">Offene Aufgaben</string>
     <string name="heading_done_tasks">Anzahl abgeschlossener Aufgaben</string>
+    <string name="heading_skill_hours">Anzahl investierter Stunden</string>
     <string name="heading_calendar_sync">Kalendersynchronisierung</string>
     <string name="heading_user_name">Name</string>
     <string name="heading_edit_category_name">Kategoriename ändern</string>
