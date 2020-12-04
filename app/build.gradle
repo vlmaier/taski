@@ -14,8 +14,8 @@ android {
         applicationId "com.vmaier.taski"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 6
-        versionName "1.1.2"
+        versionCode 7
+        versionName "1.2.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         testInstrumentationRunnerArguments clearPackageData: 'true'
         android.defaultConfig.vectorDrawables.useSupportLibrary = true
