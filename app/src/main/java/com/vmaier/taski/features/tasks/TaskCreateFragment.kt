@@ -129,7 +129,8 @@ class TaskCreateFragment : TaskFragment() {
         super.onSaveInstanceState(out)
         out.putString(KEY_GOAL, binding.goal.editText?.text.toString())
         out.putString(KEY_DETAILS, binding.details.editText?.text.toString())
-        out.putString(KEY_DIFFICULTY, difficulty)
+        out.putString(KEY_DIFFICULTY,
+            if (isDifficultyInitialized()) difficulty else Difficulty.REGULAR.value)
         out.putInt(KEY_DURATION, binding.durationBar.progress)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))

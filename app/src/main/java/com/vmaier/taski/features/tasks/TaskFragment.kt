@@ -69,6 +69,8 @@ open class TaskFragment : Fragment() {
             button.background = icon.drawable
             button.tag = icon.id
         }
+
+        fun isDifficultyInitialized() = ::difficulty.isInitialized
     }
 
     override fun onAttach(context: Context) {
