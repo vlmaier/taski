@@ -33,25 +33,13 @@
                 app:popExitAnim="@anim/exit_to_right" />
         <action
                 android:id="@+id/action_taskListFragment_to_skillListFragment"
-                app:destination="@id/skillListFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/skillListFragment" />
         <action
                 android:id="@+id/action_taskListFragment_to_statisticsFragment"
-                app:destination="@id/statisticsFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/statisticsFragment" />
         <action
                 android:id="@+id/action_taskListFragment_to_categoryListFragment"
-                app:destination="@id/categoryListFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/categoryListFragment" />
     </fragment>
 
     <fragment
@@ -94,25 +82,13 @@
                 app:popExitAnim="@anim/exit_to_right" />
         <action
                 android:id="@+id/action_skillListFragment_to_taskListFragment"
-                app:destination="@id/taskListFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/taskListFragment" />
         <action
                 android:id="@+id/action_skillListFragment_to_statisticsFragment"
-                app:destination="@id/statisticsFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/statisticsFragment" />
         <action
                 android:id="@+id/action_skillListFragment_to_categoryListFragment"
-                app:destination="@id/categoryListFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/categoryListFragment" />
     </fragment>
 
     <fragment
@@ -193,25 +169,13 @@
             tools:layout="@layout/fragment_statistics">
         <action
                 android:id="@+id/action_statisticsFragment_to_skillListFragment"
-                app:destination="@id/skillListFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/skillListFragment" />
         <action
                 android:id="@+id/action_statisticsFragment_to_taskListFragment"
-                app:destination="@id/taskListFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/taskListFragment" />
         <action
                 android:id="@+id/action_statisticsFragment_to_categoryListFragment"
-                app:destination="@id/categoryListFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/categoryListFragment" />
     </fragment>
 
     <fragment
@@ -221,25 +185,13 @@
             tools:layout="@layout/fragment_category_list">
         <action
                 android:id="@+id/action_categoryListFragment_to_taskListFragment"
-                app:destination="@id/taskListFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/taskListFragment" />
         <action
                 android:id="@+id/action_categoryListFragment_to_skillListFragment"
-                app:destination="@id/skillListFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/skillListFragment" />
         <action
                 android:id="@+id/action_categoryListFragment_to_statisticsFragment"
-                app:destination="@id/statisticsFragment"
-                app:enterAnim="@anim/fade_out"
-                app:exitAnim="@anim/fade_in"
-                app:popEnterAnim="@anim/fade_out"
-                app:popExitAnim="@anim/fade_in" />
+                app:destination="@id/statisticsFragment" />
     </fragment>
 
     <fragment
