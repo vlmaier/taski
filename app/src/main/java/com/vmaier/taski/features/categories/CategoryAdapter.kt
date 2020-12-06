@@ -17,6 +17,9 @@ import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
+import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
+import com.vmaier.taski.features.categories.CategoryListFragment.Companion.sortCategories
+import com.vmaier.taski.features.categories.CategoryListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.views.EditTextDialog
 import dev.sasikanth.colorsheet.ColorSheet
@@ -125,6 +128,8 @@ class CategoryAdapter internal constructor(
                 db.categoryDao().updateName(category.id, newName)
                 category.name = newName
                 notifyItemChanged(position)
+                sortCategories(dialog.editText.context, categoryAdapter.categories)
+                categoryAdapter.notifyDataSetChanged()
                 closeMenu()
                 Timber.d("Category (${category.id}) name changed.")
             }
@@ -200,6 +205,7 @@ class CategoryAdapter internal constructor(
         val category = categories.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, categories.size)
+        updateSortedByHeader(context, categories)
         val foundSkills = db.skillDao().findSkillsByCategoryId(category.id)
         db.categoryDao().delete(category)
         Timber.d("Category (${category.id}) removed.")
@@ -209,6 +215,7 @@ class CategoryAdapter internal constructor(
     private fun restoreItem(toRestore: Pair<Category, List<Skill>>, position: Int) {
         categories.add(position, toRestore.first)
         notifyItemInserted(position)
+        updateSortedByHeader(context, categories)
         db.categoryDao().create(toRestore.first)
         toRestore.second.forEach {
             db.skillDao().updateCategoryId(it.id, toRestore.first.id)

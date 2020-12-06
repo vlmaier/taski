@@ -541,6 +541,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                     categoryAdapter.categories.add(
                         Category(id = id, name = name)
                     )
+                    CategoryListFragment.sortCategories(dialog.editText.context, categoryAdapter.categories)
                     categoryAdapter.notifyDataSetChanged()
                     Timber.d("Category ($id) created.")
                     dialog.dismiss()
