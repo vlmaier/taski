@@ -36,8 +36,8 @@ class SkillListFragment : Fragment() {
 
         fun sortSkills(context: Context, skills: MutableList<Skill>) {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
-            val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
+            val sort = prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)
+            val order = prefs.getString(Const.Prefs.SORT_SKILLS_ORDER, Const.Defaults.SORT_SKILLS_ORDER)
             when (sort) {
                 SortSkills.NAME.value -> skills.apply {
                     if (order == SortOrder.ASC.value) sortBy { it.name }
@@ -66,7 +66,7 @@ class SkillListFragment : Fragment() {
             updateSortedByHeader(context, skills)
         }
 
-        fun updateSortedByHeader(context: Context, tasks: MutableList<Skill>) {
+        fun updateSortedByHeader(context: Context, skills: MutableList<Skill>) {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val sort = prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)
             val order = prefs.getString(Const.Prefs.SORT_SKILLS_ORDER, Const.Defaults.SORT_SKILLS_ORDER)
@@ -79,7 +79,7 @@ class SkillListFragment : Fragment() {
             val orderString =
                 if (order == SortOrder.ASC.value) context.getString(R.string.term_sort_asc)
                 else context.getString(R.string.term_sort_desc)
-            if (tasks.isNotEmpty()) {
+            if (skills.isNotEmpty()) {
                 binding.header.visibility = View.VISIBLE
                 binding.header.text = context.getString(R.string.term_sort_by, sortString, orderString)
             } else {
@@ -136,7 +136,6 @@ class SkillListFragment : Fragment() {
         val skills = db.skillDao().findAll()
         sortSkills(requireContext(), skills)
         Timber.d("${skills.size} skill(s) found.")
-        skills.sortBy { it.name }
         skillAdapter.setSkills(skills)
         binding.rv.apply {
             layoutManager = GridLayoutManager(activity, 2)

@@ -97,7 +97,7 @@ open class SkillFragment : Fragment() {
     }
 
     private fun deleteSkill(view: View, position: Int) {
-        val toRestore = SkillListFragment.skillAdapter.removeItem(position)
+        val toRestore = skillAdapter.removeItem(position)
         // show snackbar with "Undo" option
         val snackbar = Snackbar.make(view, getString(R.string.event_skill_deleted), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.action_undo)) {
