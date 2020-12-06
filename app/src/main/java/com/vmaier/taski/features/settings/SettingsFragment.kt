@@ -153,10 +153,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     private fun setLocale(locale: Locale) {
-        val metrics: DisplayMetrics = resources.displayMetrics
         val config: Configuration = resources.configuration
         config.locale = locale
-        resources.updateConfiguration(config, metrics)
+        resources.updateConfiguration(config, null)
+        Locale.setDefault(locale)
         activity?.recreate()
     }
 

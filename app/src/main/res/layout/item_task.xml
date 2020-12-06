@@ -1,246 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-            android:id="@+id/cv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="2dp"
-            app:cardMaxElevation="2dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true">
+        android:id="@+id/cv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="2dp"
+        app:cardMaxElevation="2dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
 
             <LinearLayout
-                    android:id="@+id/linear_layout"
-                    android:layout_width="0dp"
+                android:id="@+id/linear_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="42dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@+id/task_duration"
+                app:layout_constraintStart_toEndOf="@+id/task_icon"
+                app:layout_constraintTop_toTopOf="@+id/task_icon">
+
+                <TextView
+                    android:id="@+id/task_goal"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:orientation="vertical"
+                    android:layout_marginStart="4dp"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:autoSizeTextType="uniform"
                     app:layout_constraintEnd_toStartOf="@+id/task_duration"
                     app:layout_constraintStart_toEndOf="@+id/task_icon"
-                    app:layout_constraintTop_toTopOf="@+id/task_icon">
+                    app:layout_constraintTop_toTopOf="@+id/task_icon"
+                    tools:text="Work on App" />
 
                 <TextView
-                        android:id="@+id/task_goal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:ellipsize="marquee"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:scrollHorizontally="true"
-                        android:singleLine="true"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:autoSizeTextType="uniform"
-                        app:layout_constraintEnd_toStartOf="@+id/task_duration"
-                        app:layout_constraintStart_toEndOf="@+id/task_icon"
-                        app:layout_constraintTop_toTopOf="@+id/task_icon"
-                        tools:text="Work on App" />
-
-                <TextView
-                        android:id="@+id/task_details"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="4dp"
-                        android:ellipsize="marquee"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:scrollHorizontally="true"
-                        android:singleLine="true"
-                        android:textSize="16sp"
-                        app:autoSizeTextType="uniform"
-                        app:layout_constraintEnd_toEndOf="@+id/linear_layout"
-                        app:layout_constraintStart_toStartOf="@+id/linear_layout"
-                        app:layout_constraintTop_toBottomOf="@+id/linear_layout"
-                        tools:text="@string/app_name" />
+                    android:id="@+id/task_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintEnd_toEndOf="@+id/linear_layout"
+                    app:layout_constraintStart_toStartOf="@+id/linear_layout"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                    tools:text="@string/app_name" />
 
             </LinearLayout>
 
             <ImageView
-                    android:id="@+id/time_icon"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:layout_marginTop="2dp"
-                    android:backgroundTint="?attr/colorOnSurface"
-                    android:contentDescription="@string/content_due_at_icon"
-                    app:layout_constraintEnd_toEndOf="@+id/task_xp"
-                    app:layout_constraintTop_toTopOf="@+id/linear_layout"
-                    app:srcCompat="@drawable/ic_time_24" />
+                android:id="@+id/time_icon"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginTop="2dp"
+                android:backgroundTint="?attr/colorOnSurface"
+                android:contentDescription="@string/content_due_at_icon"
+                app:layout_constraintEnd_toEndOf="@+id/task_xp"
+                app:layout_constraintTop_toTopOf="@+id/linear_layout"
+                app:srcCompat="@drawable/ic_time_24" />
 
             <ImageView
-                    android:id="@+id/task_icon"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="4dp"
-                    android:layout_marginStart="2dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:adjustViewBounds="false"
-                    android:backgroundTint="?attr/colorOnSurface"
-                    android:contentDescription="@string/content_task_icon"
-                    android:scaleType="fitXY"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/ic_tasks_24" />
+                android:id="@+id/task_icon"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_margin="4dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:adjustViewBounds="false"
+                android:backgroundTint="?attr/colorOnSurface"
+                android:contentDescription="@string/content_task_icon"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/ic_tasks_24" />
 
             <TextView
-                    android:id="@+id/task_xp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginEnd="8dp"
-                    android:singleLine="true"
-                    android:textSize="12sp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_layout"
-                    tools:text="540 XP" />
+                android:id="@+id/task_xp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:singleLine="true"
+                android:textSize="12sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                tools:text="540 XP" />
 
             <TextView
-                    android:id="@+id/task_duration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    android:singleLine="true"
-                    android:textSize="14sp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="@+id/time_icon"
-                    app:layout_constraintEnd_toStartOf="@+id/time_icon"
-                    app:layout_constraintTop_toTopOf="@+id/time_icon"
-                    tools:text="6 h" />
-
-            <ImageView
-                    android:id="@+id/skill_icon_1"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:backgroundTint="?attr/colorOnSurface"
-                    android:contentDescription="@string/content_due_at_icon"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/task_icon"
-                    app:layout_constraintStart_toEndOf="@+id/task_icon"
-                    app:layout_constraintTop_toBottomOf="@+id/linear_layout"
-                    tools:srcCompat="@drawable/ic_skills_24"
-                    tools:visibility="visible" />
-
-            <ImageView
-                    android:id="@+id/skill_icon_2"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="?attr/colorOnSurface"
-                    android:contentDescription="@string/content_due_at_icon"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/skill_icon_1"
-                    app:layout_constraintStart_toEndOf="@+id/skill_icon_1"
-                    app:layout_constraintTop_toTopOf="@+id/skill_icon_1"
-                    tools:srcCompat="@drawable/ic_skills_24"
-                    tools:visibility="visible" />
-
-            <ImageView
-                    android:id="@+id/skill_icon_3"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="?attr/colorOnSurface"
-                    android:contentDescription="@string/content_due_at_icon"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/skill_icon_2"
-                    app:layout_constraintStart_toEndOf="@+id/skill_icon_2"
-                    app:layout_constraintTop_toTopOf="@+id/skill_icon_2"
-                    tools:srcCompat="@drawable/ic_skills_24"
-                    tools:visibility="visible" />
-
-            <ImageView
-                    android:id="@+id/skill_icon_4"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="?attr/colorOnSurface"
-                    android:contentDescription="@string/content_due_at_icon"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/skill_icon_3"
-                    app:layout_constraintStart_toEndOf="@+id/skill_icon_3"
-                    app:layout_constraintTop_toTopOf="@+id/skill_icon_3"
-                    tools:srcCompat="@drawable/ic_skills_24"
-                    tools:visibility="visible" />
-
-            <ImageView
-                    android:id="@+id/skill_icon_5"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="?attr/colorOnSurface"
-                    android:contentDescription="@string/content_due_at_icon"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/skill_icon_4"
-                    app:layout_constraintStart_toEndOf="@+id/skill_icon_4"
-                    app:layout_constraintTop_toTopOf="@+id/skill_icon_4"
-                    tools:srcCompat="@drawable/ic_skills_24"
-                    tools:visibility="visible" />
-
-            <ImageView
-                    android:id="@+id/skill_icon_6"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="?attr/colorOnSurface"
-                    android:contentDescription="@string/content_due_at_icon"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/skill_icon_5"
-                    app:layout_constraintStart_toEndOf="@+id/skill_icon_5"
-                    app:layout_constraintTop_toTopOf="@+id/skill_icon_5"
-                    app:layout_constraintVertical_bias="1.0"
-                    tools:srcCompat="@drawable/ic_skills_24"
-                    tools:visibility="visible" />
-
-            <ImageView
-                    android:id="@+id/skill_icon_7"
-                    android:layout_width="21dp"
-                    android:layout_height="21dp"
-                    android:layout_marginStart="4dp"
-                    android:backgroundTint="?attr/colorOnSurface"
-                    android:contentDescription="@string/content_due_at_icon"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="@+id/skill_icon_6"
-                    app:layout_constraintStart_toEndOf="@+id/skill_icon_6"
-                    app:layout_constraintTop_toTopOf="@+id/skill_icon_6"
-                    tools:srcCompat="@drawable/ic_skills_24"
-                    tools:visibility="visible" />
+                android:id="@+id/task_sort_indicator"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="4dp"
+                android:singleLine="true"
+                android:textAlignment="textEnd"
+                android:textSize="12sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@+id/task_xp"
+                app:layout_constraintEnd_toEndOf="@+id/time_icon"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/linear_layout"
+                app:layout_constraintTop_toBottomOf="@+id/time_icon"
+                tools:text="@string/difficulty_regular_value" />
 
             <TextView
-                    android:id="@+id/too_much_skills"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:singleLine="true"
-                    android:text="@string/three_dots"
-                    android:textSize="18sp"
-                    android:visibility="invisible"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="@+id/skill_icon_7"
-                    app:layout_constraintStart_toEndOf="@+id/skill_icon_7"
-                    app:layout_constraintTop_toTopOf="@+id/skill_icon_7"
-                    tools:visibility="visible" />
+                android:id="@+id/task_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="3dp"
+                android:singleLine="true"
+                android:textSize="14sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="@+id/time_icon"
+                app:layout_constraintEnd_toStartOf="@+id/time_icon"
+                app:layout_constraintTop_toTopOf="@+id/time_icon"
+                tools:text="6 h" />
+
+            <ImageView
+                android:id="@+id/skill_icon_1"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:backgroundTint="?attr/colorOnSurface"
+                android:contentDescription="@string/content_due_at_icon"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/task_icon"
+                app:layout_constraintStart_toEndOf="@+id/task_icon"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout"
+                tools:srcCompat="@drawable/ic_skills_24"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/skill_icon_2"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="?attr/colorOnSurface"
+                android:contentDescription="@string/content_due_at_icon"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/skill_icon_1"
+                app:layout_constraintStart_toEndOf="@+id/skill_icon_1"
+                app:layout_constraintTop_toTopOf="@+id/skill_icon_1"
+                tools:srcCompat="@drawable/ic_person_24"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/skill_icon_3"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="?attr/colorOnSurface"
+                android:contentDescription="@string/content_due_at_icon"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/skill_icon_2"
+                app:layout_constraintStart_toEndOf="@+id/skill_icon_2"
+                app:layout_constraintTop_toTopOf="@+id/skill_icon_2"
+                tools:srcCompat="@drawable/ic_calendar_24"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/skill_icon_4"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="?attr/colorOnSurface"
+                android:contentDescription="@string/content_due_at_icon"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/skill_icon_3"
+                app:layout_constraintStart_toEndOf="@+id/skill_icon_3"
+                app:layout_constraintTop_toTopOf="@+id/skill_icon_3"
+                tools:srcCompat="@drawable/ic_category_24"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/skill_icon_5"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="?attr/colorOnSurface"
+                android:contentDescription="@string/content_due_at_icon"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/skill_icon_4"
+                app:layout_constraintStart_toEndOf="@+id/skill_icon_4"
+                app:layout_constraintTop_toTopOf="@+id/skill_icon_4"
+                tools:srcCompat="@drawable/ic_language_24"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/skill_icon_6"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="?attr/colorOnSurface"
+                android:contentDescription="@string/content_due_at_icon"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/skill_icon_5"
+                app:layout_constraintStart_toEndOf="@+id/skill_icon_5"
+                app:layout_constraintTop_toTopOf="@+id/skill_icon_5"
+                app:layout_constraintVertical_bias="1.0"
+                tools:srcCompat="@drawable/ic_statistics_24"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/skill_icon_7"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="4dp"
+                android:backgroundTint="?attr/colorOnSurface"
+                android:contentDescription="@string/content_due_at_icon"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/skill_icon_6"
+                app:layout_constraintStart_toEndOf="@+id/skill_icon_6"
+                app:layout_constraintTop_toTopOf="@+id/skill_icon_6"
+                tools:srcCompat="@drawable/ic_theme_24"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/too_much_skills"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:singleLine="true"
+                android:text="@string/three_dots"
+                android:textSize="18sp"
+                android:visibility="invisible"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="@+id/skill_icon_7"
+                app:layout_constraintStart_toEndOf="@+id/skill_icon_7"
+                app:layout_constraintTop_toTopOf="@+id/skill_icon_7"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

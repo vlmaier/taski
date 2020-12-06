@@ -2,11 +2,13 @@ package com.vmaier.taski.utils
 
 import android.content.Context
 import android.graphics.Color
+import android.text.format.DateUtils
 import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import com.vmaier.taski.R
 import com.vmaier.taski.data.Difficulty
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
@@ -63,5 +65,17 @@ object Utils {
     fun calculateXp(difficulty: Difficulty, duration: Int): Int {
         val xp = 5 * ((difficulty.factor.times(duration) / 5).roundToInt())
         return if (xp == 0) 5 else xp
+    }
+
+    fun getDateSpanFormat(now: Long, time: Long): Long {
+        return when (abs(now - time)) {
+            in 0..60000 -> DateUtils.SECOND_IN_MILLIS
+            in 60001..3600000 -> DateUtils.MINUTE_IN_MILLIS
+            in 3600001..86400000 -> DateUtils.HOUR_IN_MILLIS
+            in 86400001..604800000 -> DateUtils.DAY_IN_MILLIS
+            in 604800001..31449600000 -> DateUtils.WEEK_IN_MILLIS
+            in 31449600001..Long.MAX_VALUE -> DateUtils.YEAR_IN_MILLIS
+            else -> DateUtils.DAY_IN_MILLIS
+        }
     }
 }

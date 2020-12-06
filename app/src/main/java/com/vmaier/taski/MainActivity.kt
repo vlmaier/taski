@@ -107,10 +107,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         val prefLocale = Locale(prefLanguage)
         val currentLocale: Locale = resources.configuration.locale
         if (prefLocale != currentLocale) {
-            val metrics: DisplayMetrics = resources.displayMetrics
             val config: Configuration = resources.configuration
             config.locale = prefLocale
-            resources.updateConfiguration(config, metrics)
+            resources.updateConfiguration(config, null)
+            Locale.setDefault(prefLocale)
         }
 
         super.onCreate(savedInstanceState)

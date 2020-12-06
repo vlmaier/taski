@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.text.format.DateUtils
 import android.util.Base64
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -14,9 +15,11 @@ import android.widget.SeekBar
 import android.widget.Toast
 import com.vmaier.taski.data.DurationUnit
 import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.utils.Utils
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 
 /**
@@ -157,6 +160,23 @@ fun Task.getHumanReadableDurationValue(context: Context): String {
         DurationUnit.DAY -> context.getString(R.string.unit_day_short, this.convertDurationToMinutes(unit))
         DurationUnit.WEEK -> context.getString(R.string.unit_week_short, this.convertDurationToMinutes(unit))
     }
+}
+
+fun Task.getHumanReadableCreationDate(): String {
+    val now = System.currentTimeMillis()
+    val createdAt = App.dateFormat.parse(this.createdAt).time
+    val format = Utils.getDateSpanFormat(now, createdAt)
+    return DateUtils.getRelativeTimeSpanString(createdAt, now, format).toString()
+}
+
+fun Task.getHumanReadableDueDate(): String {
+    val now = System.currentTimeMillis()
+    if (dueAt != null) {
+        val dueAt = App.dateFormat.parse(this.dueAt).time
+        val format = Utils.getDateSpanFormat(now, dueAt)
+        return DateUtils.getRelativeTimeSpanString(dueAt, now, format).toString()
+    }
+    return ""
 }
 
 fun String.toast(context: Context, length: Int = Toast.LENGTH_SHORT) {
