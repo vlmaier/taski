@@ -88,7 +88,7 @@ class TaskListFragment : Fragment() {
                 SortTasks.CREATED_AT.value -> context.getString(R.string.term_sort_created_at)
                 SortTasks.GOAL.value -> context.getString(R.string.term_sort_goal)
                 SortTasks.DURATION.value -> context.getString(R.string.term_sort_duration)
-                SortTasks.DIFFICULTY.value -> context.getString(R.string.term_sort_difficulity)
+                SortTasks.DIFFICULTY.value -> context.getString(R.string.term_sort_difficulty)
                 SortTasks.XP_GAIN.value -> context.getString(R.string.term_sort_xp_gain)
                 SortTasks.DUE_ON.value -> context.getString(R.string.term_sort_due_on)
                 else -> context.getString(R.string.term_sort_created_at)
@@ -189,7 +189,7 @@ class TaskListFragment : Fragment() {
             SortTasks.CREATED_AT.value -> R.id.sort_created_at
             SortTasks.GOAL.value -> R.id.sort_goal
             SortTasks.DURATION.value -> R.id.sort_duration
-            SortTasks.DIFFICULTY.value -> R.id.sort_difficulity
+            SortTasks.DIFFICULTY.value -> R.id.sort_difficulty
             SortTasks.XP_GAIN.value -> R.id.sort_xp_gain
             SortTasks.DUE_ON.value -> R.id.sort_due_on
             else -> R.id.sort_created_at
@@ -230,7 +230,7 @@ class TaskListFragment : Fragment() {
                 R.id.sort_created_at -> sort = SortTasks.CREATED_AT.value
                 R.id.sort_goal -> sort = SortTasks.GOAL.value
                 R.id.sort_duration -> sort = SortTasks.DURATION.value
-                R.id.sort_difficulity -> sort = SortTasks.DIFFICULTY.value
+                R.id.sort_difficulty -> sort = SortTasks.DIFFICULTY.value
                 R.id.sort_xp_gain -> sort = SortTasks.XP_GAIN.value
                 R.id.sort_due_on -> sort = SortTasks.DUE_ON.value
                 else -> super.onOptionsItemSelected(item)

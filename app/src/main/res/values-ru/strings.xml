@@ -66,7 +66,7 @@
     <string name="term_sort_created_at">дата создания</string>
     <string name="term_sort_goal">цель</string>
     <string name="term_sort_duration">продолжительность</string>
-    <string name="term_sort_difficulity">трудность</string>
+    <string name="term_sort_difficulty">трудность</string>
     <string name="term_sort_xp_gain">полученный опыт</string>
     <string name="term_sort_due_on">дата выполнения</string>
     <string name="term_sort_by">Отсортировано : %1$s (%2$s)</string>
@@ -77,6 +77,7 @@
     <string name="term_sort_name">Наименование</string>
     <string name="term_sort_xp">Опыт</string>
     <string name="term_sort_category">Категория</string>
+    <string name="term_created_at">создано:</string>
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Не может быть пустым</string>

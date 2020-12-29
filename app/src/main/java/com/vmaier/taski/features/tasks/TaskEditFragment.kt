@@ -53,6 +53,9 @@ class TaskEditFragment : TaskFragment() {
         task = args.task
         cameFromTaskList = args.cameFromTaskList
 
+        // Creation date
+        binding.createdAtValue.text = task.createdAt
+
         // Goal settings
         binding.goal.editText?.setText(saved?.getString(KEY_GOAL) ?: task.goal)
         binding.goal.onFocusChangeListener = KeyBoardHider()
