@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.RadioButton
 import androidx.appcompat.app.AlertDialog
@@ -38,6 +37,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     companion object {
         lateinit var calendarSyncPref: CheckBoxPreference
         lateinit var prefTheme: String
+
+        fun isCalendarSyncPrefInitialized() = ::calendarSyncPref.isInitialized
     }
 
     override fun onStart() {

@@ -444,7 +444,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                     prefs.edit()
                         .putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
                         .apply()
-                    SettingsFragment.calendarSyncPref.isChecked = false
+                    if (SettingsFragment.isCalendarSyncPrefInitialized()) {
+                        SettingsFragment.calendarSyncPref.isChecked = false
+                    }
                     Timber.d("Due to lack of permissions calendar synchronization was disabled")
                 } else {
                     Timber.d("Requested permission has been granted by user")
