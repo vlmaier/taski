@@ -17,9 +17,9 @@ import com.vmaier.taski.data.DurationUnit
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.utils.Utils
 import java.io.ByteArrayOutputStream
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.abs
 
 
 /**
@@ -164,7 +164,7 @@ fun Task.getHumanReadableDurationValue(context: Context): String {
 
 fun Task.getHumanReadableCreationDate(): String {
     val now = System.currentTimeMillis()
-    val createdAt = App.dateFormat.parse(this.createdAt).time
+    val createdAt = App.dateTimeFormat.parse(this.createdAt).time
     val format = Utils.getDateSpanFormat(now, createdAt)
     return DateUtils.getRelativeTimeSpanString(createdAt, now, format).toString()
 }
@@ -172,7 +172,11 @@ fun Task.getHumanReadableCreationDate(): String {
 fun Task.getHumanReadableDueDate(): String {
     val now = System.currentTimeMillis()
     if (dueAt != null) {
-        val dueAt = App.dateFormat.parse(this.dueAt).time
+        val dueAt = try {
+            App.dateTimeFormat.parse(this.dueAt).time
+        } catch (e: ParseException) {
+            App.dateFormat.parse(this.dueAt).time
+        }
         val format = Utils.getDateSpanFormat(now, dueAt)
         return DateUtils.getRelativeTimeSpanString(dueAt, now, format).toString()
     }
@@ -203,9 +207,9 @@ fun String.decodeBase64(): Bitmap? {
 }
 
 fun Date.getDateInAppFormat(): String {
-    return SimpleDateFormat(App.dateFormat.toPattern().split(" ")[0], Locale.getDefault()).format(this.time)
+    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[0], Locale.getDefault()).format(this.time)
 }
 
 fun Date.getTimeInAppFormat(): String {
-    return SimpleDateFormat(App.dateFormat.toPattern().split(" ")[1], Locale.getDefault()).format(this.time)
+    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[1], Locale.getDefault()).format(this.time)
 }

@@ -178,15 +178,18 @@ class TaskCreateFragment : TaskFragment() {
         taskAdapter.notifyDataSetChanged()
         calendarService.addToCalendar(binding.calendarSync.isChecked, task)
         if (dueAt != null) {
+            // remind 15 minutes before the task is due (incl. duration)
+            val durationInMs: Long = duration.toLong() * 60 * 1000
             val notifyAtInMs: Long = try {
-                // remind 15 minutes before the task is due (incl. duration)
-                val durationInMs: Long = duration.toLong() * 60 * 1000
-                App.dateFormat.parse(dueAt)?.time
+                App.dateTimeFormat.parse(dueAt)?.time
                     ?.minus(durationInMs)
                     ?.minus(900000)
                     ?: 0
             } catch (e: ParseException) {
-                0
+                App.dateFormat.parse(dueAt)?.time
+                    ?.minus(durationInMs)
+                    ?.minus(900000)
+                    ?: 0
             }
             val taskReminderRequestCode = RequestCode.get(requireContext())
             notificationService.setReminder(

@@ -34,9 +34,13 @@ class CalendarService(val context: Context) {
         val eventId: Uri?
         val startTimeMs = if (task.dueAt != null) {
             try {
-                App.dateFormat.parse(task.dueAt)?.time
+                App.dateTimeFormat.parse(task.dueAt)?.time
             } catch (e: ParseException) {
-                null
+                try {
+                    App.dateFormat.parse(task.dueAt)?.time
+                } catch (e: ParseException) {
+                    null
+                }
             }
         } else {
             null
@@ -82,9 +86,13 @@ class CalendarService(val context: Context) {
         if (before.duration != after.duration || before.dueAt != after.dueAt) {
             val startTimeMs = if (after.dueAt != null) {
                 try {
-                    App.dateFormat.parse(after.dueAt)?.time
+                    App.dateTimeFormat.parse(after.dueAt)?.time
                 } catch (e: ParseException) {
-                    null
+                    try {
+                        App.dateFormat.parse(after.dueAt)?.time
+                    } catch (e: ParseException) {
+                        null
+                    }
                 }
             } else {
                 null

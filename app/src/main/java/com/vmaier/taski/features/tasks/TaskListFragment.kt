@@ -10,14 +10,11 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vmaier.taski.App
-import com.vmaier.taski.Const
-import com.vmaier.taski.MainActivity
+import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.bottomNav
 import com.vmaier.taski.MainActivity.Companion.drawerLayout
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
-import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortOrder
 import com.vmaier.taski.data.SortTasks
@@ -25,6 +22,7 @@ import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentTaskListBinding
 import timber.log.Timber
+import java.text.ParseException
 
 
 /**
@@ -44,8 +42,8 @@ class TaskListFragment : Fragment() {
             val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             when (sort) {
                 SortTasks.CREATED_AT.value -> tasks.apply {
-                    if (order == SortOrder.ASC.value) sortBy { App.dateFormat.parse(it.createdAt).time }
-                    else sortByDescending { App.dateFormat.parse(it.createdAt).time }
+                    if (order == SortOrder.ASC.value) sortBy { App.dateTimeFormat.parse(it.createdAt).time }
+                    else sortByDescending { App.dateTimeFormat.parse(it.createdAt).time }
                 }
                 SortTasks.GOAL.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) sortBy { it.goal }
@@ -66,13 +64,25 @@ class TaskListFragment : Fragment() {
                 SortTasks.DUE_ON.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) {
                         sortBy {
-                            if (it.dueAt != null) App.dateFormat.parse(it.dueAt).time
-                            else App.dateFormat.parse(it.createdAt).time
+                            if (it.dueAt != null) {
+                                try {
+                                    App.dateTimeFormat.parse(it.dueAt).time
+                                } catch (e: ParseException) {
+                                    App.dateFormat.parse(it.dueAt).time
+                                }
+                            }
+                            else App.dateTimeFormat.parse(it.createdAt).time
                         }
                     } else {
                         sortByDescending {
-                            if (it.dueAt != null) App.dateFormat.parse(it.dueAt).time
-                            else App.dateFormat.parse(it.createdAt).time
+                            if (it.dueAt != null) {
+                                try {
+                                    App.dateTimeFormat.parse(it.dueAt).time
+                                } catch (e: ParseException) {
+                                    App.dateFormat.parse(it.dueAt).time
+                                }
+                            }
+                            else App.dateTimeFormat.parse(it.createdAt).time
                         }
                     }
                 }

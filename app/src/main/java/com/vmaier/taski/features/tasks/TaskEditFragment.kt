@@ -112,10 +112,12 @@ class TaskEditFragment : TaskFragment() {
         if (dueAt != null && dueAt.isNotBlank()) {
             val dueAtParts = dueAt.split(" ")
             binding.deadlineDate.editText?.setText(
-                saved?.getString(KEY_DEADLINE_DATE) ?: if (dueAtParts.isNotEmpty()) dueAtParts[0] else ""
+                saved?.getString(KEY_DEADLINE_DATE) ?:
+                if (dueAtParts.isNotEmpty()) dueAtParts[0] else ""
             )
             binding.deadlineTime.editText?.setText(
-                saved?.getString(KEY_DEADLINE_TIME) ?: if (dueAtParts.isNotEmpty()) dueAtParts[1] else ""
+                saved?.getString(KEY_DEADLINE_TIME) ?:
+                if (dueAtParts.isNotEmpty() && dueAtParts.size == 2) dueAtParts[1] else ""
             )
         }
         setDeadlineDateOnClickListener(binding.deadlineDate.editText)
@@ -185,11 +187,7 @@ class TaskEditFragment : TaskFragment() {
         val deadlineTime = binding.deadlineTime.editText?.text.toString()
         if (deadlineDate.isNotBlank()) {
             dueAt = deadlineDate
-            dueAt += if (deadlineTime.isNotBlank()) {
-                " $deadlineTime"
-            } else {
-                " 08:00"
-            }
+            dueAt += " $deadlineTime".trimEnd()
         }
         val toUpdate = Task(
             id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,
@@ -207,21 +205,31 @@ class TaskEditFragment : TaskFragment() {
             getString(R.string.event_task_updated).toast(requireContext())
             if (reminderUpdateRequired && toUpdate.dueAt != null) {
                 notificationService.cancelReminder(requireActivity(), task.reminderRequestCode)
+                // remind 15 minutes before the task is due (incl. duration)
+                val durationInMs: Long = duration.toLong() * 60 * 1000
                 val notifyAtInMs: Long = try {
-                    // remind 15 minutes before the task is due (incl. duration)
-                    val durationInMs: Long = duration.toLong() * 60 * 1000
-                    App.dateFormat.parse(toUpdate.dueAt)?.time
+                    App.dateTimeFormat.parse(toUpdate.dueAt)?.time
                         ?.minus(durationInMs)
                         ?.minus(900000)
                         ?: 0
                 } catch (e: ParseException) {
-                    0
+                    App.dateFormat.parse(toUpdate.dueAt)?.time
+                        ?.minus(durationInMs)
+                        ?.minus(900000)
+                        ?: 0
                 }
                 val taskReminderRequestCode = RequestCode.get(requireContext())
+                val dueDateTime = toUpdate.dueAt.split(" ")
+                // TODO: translate message
+                val message = if (dueDateTime.size == 2) {
+                    "Due at ${toUpdate.dueAt.split(" ")[1]}"
+                } else {
+                    "Due today"
+                }
                 notificationService.setReminder(
                     notifyAtInMs,
                     toUpdate.goal,
-                    "Due at ${toUpdate.dueAt.split(" ")[1]}",
+                    message,
                     requireActivity(),
                     taskReminderRequestCode
                 )

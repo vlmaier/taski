@@ -119,7 +119,7 @@ class ChartWeeklyTasksFragment : TaskFragment() {
     private fun getAmountOfTasksForDayOfTheWeek(day: Int): Float {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_WEEK, day)
-        val closedAtDay = App.dateFormat.format(calendar.time).split(" ")[0]
+        val closedAtDay = App.dateTimeFormat.format(calendar.time).split(" ")[0]
         return db.taskDao().countDailyTasks("%$closedAtDay%").toFloat()
     }
 }
