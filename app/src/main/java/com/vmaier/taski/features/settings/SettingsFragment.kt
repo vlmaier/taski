@@ -147,7 +147,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             val compressedBitmap = bitmap.compress(10)
             avatarView.setImageBitmap(compressedBitmap)
             prefs.edit()
-                .putString(Const.Prefs.USER_AVATAR, compressedBitmap.encodeTobase64())
+                .putString(Const.Prefs.USER_AVATAR, compressedBitmap.encodeToBase64())
                 .apply()
             Timber.d("Avatar changed.")
         }

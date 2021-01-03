@@ -180,17 +180,10 @@ class TaskCreateFragment : TaskFragment() {
         if (dueAt != null) {
             // remind 15 minutes before the task is due (incl. duration)
             val durationInMs: Long = duration.toLong() * 60 * 1000
-            val notifyAtInMs: Long = try {
-                App.dateTimeFormat.parse(dueAt)?.time
-                    ?.minus(durationInMs)
-                    ?.minus(900000)
-                    ?: 0
-            } catch (e: ParseException) {
-                App.dateFormat.parse(dueAt)?.time
-                    ?.minus(durationInMs)
-                    ?.minus(900000)
-                    ?: 0
-            }
+            val notifyAtInMs: Long = dueAt.parseToDate()?.time
+                ?.minus(durationInMs)
+                ?.minus(900000)
+                ?: 0
             val taskReminderRequestCode = RequestCode.get(requireContext())
             notificationService.setReminder(
                 notifyAtInMs,

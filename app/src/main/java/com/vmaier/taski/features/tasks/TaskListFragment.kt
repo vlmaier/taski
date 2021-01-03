@@ -22,7 +22,6 @@ import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentTaskListBinding
 import timber.log.Timber
-import java.text.ParseException
 
 
 /**
@@ -42,8 +41,8 @@ class TaskListFragment : Fragment() {
             val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             when (sort) {
                 SortTasks.CREATED_AT.value -> tasks.apply {
-                    if (order == SortOrder.ASC.value) sortBy { App.dateTimeFormat.parse(it.createdAt).time }
-                    else sortByDescending { App.dateTimeFormat.parse(it.createdAt).time }
+                    if (order == SortOrder.ASC.value) sortBy { it.createdAt.parseToDate()?.time }
+                    else sortByDescending {it.createdAt.parseToDate()?.time }
                 }
                 SortTasks.GOAL.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) sortBy { it.goal }
@@ -65,24 +64,16 @@ class TaskListFragment : Fragment() {
                     if (order == SortOrder.ASC.value) {
                         sortBy {
                             if (it.dueAt != null) {
-                                try {
-                                    App.dateTimeFormat.parse(it.dueAt).time
-                                } catch (e: ParseException) {
-                                    App.dateFormat.parse(it.dueAt).time
-                                }
+                                it.dueAt.parseToDate()?.time
                             }
-                            else App.dateTimeFormat.parse(it.createdAt).time
+                            else it.createdAt.parseToDate()?.time
                         }
                     } else {
                         sortByDescending {
                             if (it.dueAt != null) {
-                                try {
-                                    App.dateTimeFormat.parse(it.dueAt).time
-                                } catch (e: ParseException) {
-                                    App.dateFormat.parse(it.dueAt).time
-                                }
+                                it.dueAt.parseToDate()?.time
                             }
-                            else App.dateTimeFormat.parse(it.createdAt).time
+                            else it.createdAt.parseToDate()?.time
                         }
                     }
                 }

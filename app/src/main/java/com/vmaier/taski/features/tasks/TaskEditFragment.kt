@@ -20,7 +20,6 @@ import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.RequestCode
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import timber.log.Timber
-import java.text.ParseException
 import java.util.*
 
 
@@ -207,17 +206,10 @@ class TaskEditFragment : TaskFragment() {
                 notificationService.cancelReminder(requireActivity(), task.reminderRequestCode)
                 // remind 15 minutes before the task is due (incl. duration)
                 val durationInMs: Long = duration.toLong() * 60 * 1000
-                val notifyAtInMs: Long = try {
-                    App.dateTimeFormat.parse(toUpdate.dueAt)?.time
-                        ?.minus(durationInMs)
-                        ?.minus(900000)
-                        ?: 0
-                } catch (e: ParseException) {
-                    App.dateFormat.parse(toUpdate.dueAt)?.time
-                        ?.minus(durationInMs)
-                        ?.minus(900000)
-                        ?: 0
-                }
+                val notifyAtInMs: Long = toUpdate.dueAt.parseToDate()?.time
+                    ?.minus(durationInMs)
+                    ?.minus(900000)
+                    ?: 0
                 val taskReminderRequestCode = RequestCode.get(requireContext())
                 val dueDateTime = toUpdate.dueAt.split(" ")
                 // TODO: translate message
