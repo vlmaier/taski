@@ -212,11 +212,10 @@ class TaskEditFragment : TaskFragment() {
                     ?: 0
                 val taskReminderRequestCode = RequestCode.get(requireContext())
                 val dueDateTime = toUpdate.dueAt.split(" ")
-                // TODO: translate message
                 val message = if (dueDateTime.size == 2) {
-                    "Due at ${toUpdate.dueAt.split(" ")[1]}"
+                    getString(R.string.term_due_at, toUpdate.dueAt.split(" ")[1])
                 } else {
-                    "Due today"
+                    getString(R.string.term_due_today)
                 }
                 notificationService.setReminder(
                     notifyAtInMs,

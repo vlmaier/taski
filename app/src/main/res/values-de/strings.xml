@@ -48,10 +48,8 @@
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
     <string name="term_level_value">Stufe %d</string>
-    <string name="term_overdue">Überfällig</string>
+    <string name="term_due_at">Fällig um %s</string>
     <string name="term_due_today">Heute fällig</string>
-    <string name="term_due_tomorrow">Morgen fällig</string>
-    <string name="term_due_someday">Eines Tages fällig</string>
     <string name="term_monday_short">Mo.</string>
     <string name="term_tuesday_short">Di.</string>
     <string name="term_wednesday_short">Mi.</string>

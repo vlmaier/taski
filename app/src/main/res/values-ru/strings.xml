@@ -52,10 +52,8 @@
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
     <string name="term_level_value">Уровень %d</string>
-    <string name="term_overdue">Просрочено</string>
+    <string name="term_due_at">Срок сдачи до %s</string>
     <string name="term_due_today">На сегодня</string>
-    <string name="term_due_tomorrow">На завтра</string>
-    <string name="term_due_someday">Когда-нибудь</string>
     <string name="term_monday_short">ПНД</string>
     <string name="term_tuesday_short">ВТР</string>
     <string name="term_wednesday_short">СРД</string>

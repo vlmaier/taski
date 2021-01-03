@@ -50,10 +50,8 @@
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
     <string name="term_level_value">Level %d</string>
-    <string name="term_overdue">Overdue</string>
+    <string name="term_due_at">Due at %s</string>
     <string name="term_due_today">Due today</string>
-    <string name="term_due_tomorrow">Due tomorrow</string>
-    <string name="term_due_someday">Due someday</string>
     <string name="term_monday_short">MON</string>
     <string name="term_tuesday_short">TUE</string>
     <string name="term_wednesday_short">WED</string>
