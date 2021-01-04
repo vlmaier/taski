@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.text.format.DateUtils
 import android.util.Base64
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -14,7 +15,9 @@ import android.widget.SeekBar
 import android.widget.Toast
 import com.vmaier.taski.data.DurationUnit
 import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.utils.Utils
 import java.io.ByteArrayOutputStream
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -159,14 +162,31 @@ fun Task.getHumanReadableDurationValue(context: Context): String {
     }
 }
 
+fun Task.getHumanReadableCreationDate(): String {
+    val now = System.currentTimeMillis()
+    val createdAt = this.createdAt?.parseToDate()?.time ?: 0
+    val format = Utils.getDateSpanFormat(now, createdAt)
+    return DateUtils.getRelativeTimeSpanString(createdAt, now, format).toString()
+}
+
+fun Task.getHumanReadableDueDate(): String {
+    val now = System.currentTimeMillis()
+    if (dueAt != null) {
+        val dueAt = this.dueAt.parseToDate()?.time ?: 0
+        val format = Utils.getDateSpanFormat(now, dueAt)
+        return DateUtils.getRelativeTimeSpanString(dueAt, now, format).toString()
+    }
+    return ""
+}
+
 fun String.toast(context: Context, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(context, this, length).show()
 }
 
-fun Bitmap.encodeTobase64(): String? {
-    val baos = ByteArrayOutputStream()
-    this.compress(Bitmap.CompressFormat.PNG, 100, baos)
-    val b: ByteArray = baos.toByteArray()
+fun Bitmap.encodeToBase64(): String? {
+    val os = ByteArrayOutputStream()
+    this.compress(Bitmap.CompressFormat.PNG, 100, os)
+    val b: ByteArray = os.toByteArray()
     return Base64.encodeToString(b, Base64.DEFAULT)
 }
 
@@ -183,9 +203,21 @@ fun String.decodeBase64(): Bitmap? {
 }
 
 fun Date.getDateInAppFormat(): String {
-    return SimpleDateFormat(App.dateFormat.toPattern().split(" ")[0], Locale.getDefault()).format(this.time)
+    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[0], Locale.getDefault()).format(this.time)
 }
 
 fun Date.getTimeInAppFormat(): String {
-    return SimpleDateFormat(App.dateFormat.toPattern().split(" ")[1], Locale.getDefault()).format(this.time)
+    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[1], Locale.getDefault()).format(this.time)
+}
+
+fun String.parseToDate(): Date? {
+    return try {
+        App.dateTimeFormat.parse(this)
+    } catch (e: ParseException) {
+        try {
+            App.dateFormat.parse(this)
+        } catch (e: ParseException) {
+            null
+        }
+    }
 }

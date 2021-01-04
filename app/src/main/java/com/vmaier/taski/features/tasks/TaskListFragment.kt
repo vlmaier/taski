@@ -10,14 +10,11 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vmaier.taski.App
-import com.vmaier.taski.Const
-import com.vmaier.taski.MainActivity
+import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.bottomNav
 import com.vmaier.taski.MainActivity.Companion.drawerLayout
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
-import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortOrder
 import com.vmaier.taski.data.SortTasks
@@ -44,8 +41,8 @@ class TaskListFragment : Fragment() {
             val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             when (sort) {
                 SortTasks.CREATED_AT.value -> tasks.apply {
-                    if (order == SortOrder.ASC.value) sortBy { App.dateFormat.parse(it.createdAt).time }
-                    else sortByDescending { App.dateFormat.parse(it.createdAt).time }
+                    if (order == SortOrder.ASC.value) sortBy { it.createdAt.parseToDate()?.time }
+                    else sortByDescending {it.createdAt.parseToDate()?.time }
                 }
                 SortTasks.GOAL.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) sortBy { it.goal }
@@ -66,13 +63,17 @@ class TaskListFragment : Fragment() {
                 SortTasks.DUE_ON.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) {
                         sortBy {
-                            if (it.dueAt != null) App.dateFormat.parse(it.dueAt).time
-                            else App.dateFormat.parse(it.createdAt).time
+                            if (it.dueAt != null) {
+                                it.dueAt.parseToDate()?.time
+                            }
+                            else it.createdAt.parseToDate()?.time
                         }
                     } else {
                         sortByDescending {
-                            if (it.dueAt != null) App.dateFormat.parse(it.dueAt).time
-                            else App.dateFormat.parse(it.createdAt).time
+                            if (it.dueAt != null) {
+                                it.dueAt.parseToDate()?.time
+                            }
+                            else it.createdAt.parseToDate()?.time
                         }
                     }
                 }
@@ -88,7 +89,7 @@ class TaskListFragment : Fragment() {
                 SortTasks.CREATED_AT.value -> context.getString(R.string.term_sort_created_at)
                 SortTasks.GOAL.value -> context.getString(R.string.term_sort_goal)
                 SortTasks.DURATION.value -> context.getString(R.string.term_sort_duration)
-                SortTasks.DIFFICULTY.value -> context.getString(R.string.term_sort_difficulity)
+                SortTasks.DIFFICULTY.value -> context.getString(R.string.term_sort_difficulty)
                 SortTasks.XP_GAIN.value -> context.getString(R.string.term_sort_xp_gain)
                 SortTasks.DUE_ON.value -> context.getString(R.string.term_sort_due_on)
                 else -> context.getString(R.string.term_sort_created_at)
@@ -189,7 +190,7 @@ class TaskListFragment : Fragment() {
             SortTasks.CREATED_AT.value -> R.id.sort_created_at
             SortTasks.GOAL.value -> R.id.sort_goal
             SortTasks.DURATION.value -> R.id.sort_duration
-            SortTasks.DIFFICULTY.value -> R.id.sort_difficulity
+            SortTasks.DIFFICULTY.value -> R.id.sort_difficulty
             SortTasks.XP_GAIN.value -> R.id.sort_xp_gain
             SortTasks.DUE_ON.value -> R.id.sort_due_on
             else -> R.id.sort_created_at
@@ -230,7 +231,7 @@ class TaskListFragment : Fragment() {
                 R.id.sort_created_at -> sort = SortTasks.CREATED_AT.value
                 R.id.sort_goal -> sort = SortTasks.GOAL.value
                 R.id.sort_duration -> sort = SortTasks.DURATION.value
-                R.id.sort_difficulity -> sort = SortTasks.DIFFICULTY.value
+                R.id.sort_difficulty -> sort = SortTasks.DIFFICULTY.value
                 R.id.sort_xp_gain -> sort = SortTasks.XP_GAIN.value
                 R.id.sort_due_on -> sort = SortTasks.DUE_ON.value
                 else -> super.onOptionsItemSelected(item)

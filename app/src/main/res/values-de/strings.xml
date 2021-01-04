@@ -48,10 +48,8 @@
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
     <string name="term_level_value">Stufe %d</string>
-    <string name="term_overdue">Überfällig</string>
+    <string name="term_due_at">Fällig um %s</string>
     <string name="term_due_today">Heute fällig</string>
-    <string name="term_due_tomorrow">Morgen fällig</string>
-    <string name="term_due_someday">Eines Tages fällig</string>
     <string name="term_monday_short">Mo.</string>
     <string name="term_tuesday_short">Di.</string>
     <string name="term_wednesday_short">Mi.</string>
@@ -62,7 +60,7 @@
     <string name="term_sort_created_at">Erstellungsdatum</string>
     <string name="term_sort_goal">Ziel</string>
     <string name="term_sort_duration">Dauer</string>
-    <string name="term_sort_difficulity">Schwierigkeit</string>
+    <string name="term_sort_difficulty">Schwierigkeit</string>
     <string name="term_sort_xp_gain">Erfahrungsgewinn</string>
     <string name="term_sort_due_on">Fällig am</string>
     <string name="term_sort_by">Sortiert nach : %1$s (%2$s)</string>
@@ -73,6 +71,7 @@
     <string name="term_sort_name">Name</string>
     <string name="term_sort_xp">Erfahrung</string>
     <string name="term_sort_category">Kategorie</string>
+    <string name="term_created_at">erstellt am:</string>
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Kann nicht leer sein</string>
@@ -248,7 +247,7 @@ Die Aufgaben stellen Ziele oder Missionen dar, die du erreichen möchtest.\n
 * **Fähigkeiten**\\\n
   Die Fähigkeiten sind optional. Eine oder mehrere Fähigkeiten können einer einzelnen Aufgabe zugewiesen werden.\n
 * **Erfahrungsgewinn**\\\n
-  Die Menge an Erfahrung, die du erhälst, wenn du die Aufgabe erledigst.\n
+  Die Menge an Erfahrung, die du erhältst, wenn du die Aufgabe erledigst.\n
 \n
 #### Aktionen mit Aufgaben:\n
 \n

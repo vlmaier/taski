@@ -39,7 +39,7 @@ class ChartDailyXpFragment : TaskFragment() {
         toolbar.title = getString(R.string.heading_statistics)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_daily_xp, container, false)
 
-        val closedAt = App.dateFormat.format(Date()).split(" ")[0]
+        val closedAt = App.dateTimeFormat.format(Date()).split(" ")[0]
         val tasks = db.taskDao().findByClosedAt("%$closedAt%")
         var skillWithXp: MutableMap<String, Long> = mutableMapOf()
         val values = ArrayList<BarEntry>()

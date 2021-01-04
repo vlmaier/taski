@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.os.Handler
-import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -107,10 +106,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         val prefLocale = Locale(prefLanguage)
         val currentLocale: Locale = resources.configuration.locale
         if (prefLocale != currentLocale) {
-            val metrics: DisplayMetrics = resources.displayMetrics
             val config: Configuration = resources.configuration
             config.locale = prefLocale
-            resources.updateConfiguration(config, metrics)
+            resources.updateConfiguration(config, null)
+            Locale.setDefault(prefLocale)
         }
 
         super.onCreate(savedInstanceState)
@@ -444,7 +443,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                     prefs.edit()
                         .putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
                         .apply()
-                    SettingsFragment.calendarSyncPref.isChecked = false
+                    if (SettingsFragment.isCalendarSyncPrefInitialized()) {
+                        SettingsFragment.calendarSyncPref.isChecked = false
+                    }
                     Timber.d("Due to lack of permissions calendar synchronization was disabled")
                 } else {
                     Timber.d("Requested permission has been granted by user")
@@ -541,6 +542,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                     categoryAdapter.categories.add(
                         Category(id = id, name = name)
                     )
+                    CategoryListFragment.sortCategories(dialog.editText.context, categoryAdapter.categories)
                     categoryAdapter.notifyDataSetChanged()
                     Timber.d("Category ($id) created.")
                     dialog.dismiss()

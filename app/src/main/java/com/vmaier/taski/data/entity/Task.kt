@@ -46,7 +46,7 @@ data class Task(
     val status: Status = Status.OPEN,
 
     @ColumnInfo(name = "created_at")
-    val createdAt: String = App.dateFormat.format(Date()),
+    val createdAt: String = App.dateTimeFormat.format(Date()),
 
     @ColumnInfo(name = "closed_at")
     val closedAt: String? = null,

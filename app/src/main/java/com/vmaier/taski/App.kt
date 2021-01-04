@@ -18,8 +18,10 @@ import java.text.SimpleDateFormat
 class App : Application() {
 
     companion object {
-        private const val DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm"
+        private const val DATE_FORMAT_PATTERN = "dd.MM.yyyy"
+        private const val DATE_TIME_FORMAT_PATTERN = "dd.MM.yyyy HH:mm"
         val dateFormat = SimpleDateFormat(DATE_FORMAT_PATTERN)
+        val dateTimeFormat = SimpleDateFormat(DATE_TIME_FORMAT_PATTERN)
 
         lateinit var iconPack: IconPack
 

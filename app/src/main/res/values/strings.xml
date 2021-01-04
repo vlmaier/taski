@@ -50,10 +50,8 @@
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
     <string name="term_level_value">Level %d</string>
-    <string name="term_overdue">Overdue</string>
+    <string name="term_due_at">Due at %s</string>
     <string name="term_due_today">Due today</string>
-    <string name="term_due_tomorrow">Due tomorrow</string>
-    <string name="term_due_someday">Due someday</string>
     <string name="term_monday_short">MON</string>
     <string name="term_tuesday_short">TUE</string>
     <string name="term_wednesday_short">WED</string>
@@ -64,7 +62,7 @@
     <string name="term_sort_created_at">creation date</string>
     <string name="term_sort_goal">goal</string>
     <string name="term_sort_duration">duration</string>
-    <string name="term_sort_difficulity">difficulty</string>
+    <string name="term_sort_difficulty">difficulty</string>
     <string name="term_sort_xp_gain">experience gain</string>
     <string name="term_sort_due_on">due on</string>
     <string name="term_sort_by">Sorted by : %1$s (%2$s)</string>
@@ -75,6 +73,7 @@
     <string name="term_sort_name">name</string>
     <string name="term_sort_xp">experience</string>
     <string name="term_sort_category">category</string>
+    <string name="term_created_at">created at:</string>
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Cannot be empty</string>
@@ -240,7 +239,7 @@
     <string name="text_manual">
 ### \# App\n
 The name *Taski* comes from a combination of two words *task* and *skill*. In addition, it is a part of the term
-*multitasking*. For this reason, an octopus 🐙 was chosen for the app logo. He could be very efficient at multitasking as he has 8 tentacles.\n
+*multitasking*. For this reason, an octopus 🐙 was chosen for the app logo. He can be very efficient at multitasking as he has 8 tentacles.\n
 \n
 ---
 \n

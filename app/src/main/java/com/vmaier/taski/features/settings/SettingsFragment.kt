@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.RadioButton
 import androidx.appcompat.app.AlertDialog
@@ -38,6 +37,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     companion object {
         lateinit var calendarSyncPref: CheckBoxPreference
         lateinit var prefTheme: String
+
+        fun isCalendarSyncPrefInitialized() = ::calendarSyncPref.isInitialized
     }
 
     override fun onStart() {
@@ -146,17 +147,17 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             val compressedBitmap = bitmap.compress(10)
             avatarView.setImageBitmap(compressedBitmap)
             prefs.edit()
-                .putString(Const.Prefs.USER_AVATAR, compressedBitmap.encodeTobase64())
+                .putString(Const.Prefs.USER_AVATAR, compressedBitmap.encodeToBase64())
                 .apply()
             Timber.d("Avatar changed.")
         }
     }
 
     private fun setLocale(locale: Locale) {
-        val metrics: DisplayMetrics = resources.displayMetrics
         val config: Configuration = resources.configuration
         config.locale = locale
-        resources.updateConfiguration(config, metrics)
+        resources.updateConfiguration(config, null)
+        Locale.setDefault(locale)
         activity?.recreate()
     }
 

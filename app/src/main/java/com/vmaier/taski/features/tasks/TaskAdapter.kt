@@ -16,6 +16,7 @@ import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.levelView
 import com.vmaier.taski.MainActivity.Companion.xpView
 import com.vmaier.taski.data.AppDatabase
+import com.vmaier.taski.data.SortTasks
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.features.tasks.TaskListFragment.Companion.taskAdapter
@@ -31,7 +32,7 @@ import java.util.*
  * at 19:24
  */
 class TaskAdapter internal constructor(
-    private val context: Context
+        private val context: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -46,6 +47,7 @@ class TaskAdapter internal constructor(
         var durationView: TextView = itemView.findViewById(R.id.task_duration)
         var xpView: TextView = itemView.findViewById(R.id.task_xp)
         var taskIconView: ImageView = itemView.findViewById(R.id.task_icon)
+        var sortIndicatorView: TextView = itemView.findViewById(R.id.task_sort_indicator)
         var skillIcon1View: ImageView = itemView.findViewById(R.id.skill_icon_1)
         var skillIcon2View: ImageView = itemView.findViewById(R.id.skill_icon_2)
         var skillIcon3View: ImageView = itemView.findViewById(R.id.skill_icon_3)
@@ -67,77 +69,86 @@ class TaskAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val task: Task? = tasks[position]
-        if (task != null) {
-            // Goal settings
-            holder.goalView.text = task.goal
-            holder.goalView.isSelected = true
+        val task: Task = tasks[position]
 
-            // Details settings
-            holder.detailsView.text = task.details
-            holder.detailsView.isSelected = true
+        // Goal settings
+        holder.goalView.text = task.goal
+        holder.goalView.isSelected = true
 
-            // Duration settings
-            holder.durationView.text = task.getHumanReadableDurationValue(context)
+        // Details settings
+        holder.detailsView.text = task.details
+        holder.detailsView.isSelected = true
 
-            // XP settings
-            holder.xpView.text = context.getString(R.string.term_xp_value, task.xp)
+        // Duration settings
+        holder.durationView.text = task.getHumanReadableDurationValue(context)
 
-            // Skills settings
-            setupSkillIcons(holder, task)
+        // XP settings
+        holder.xpView.text = context.getString(R.string.term_xp_value, task.xp)
 
-            // Icon settings
-            holder.taskIconView.setIcon(task.iconId)
+        // Skills settings
+        setupSkillIcons(holder, task)
 
-            holder.itemView.setOnClickListener {
-                it.findNavController().navigate(
+        // Icon settings
+        holder.taskIconView.setIcon(task.iconId)
+
+        // Sort indicator settings
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val sortPref = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
+        holder.sortIndicatorView.text = when (sortPref) {
+            SortTasks.DIFFICULTY.value -> task.difficulty.getName(context)
+            SortTasks.CREATED_AT.value -> task.getHumanReadableCreationDate()
+            SortTasks.DUE_ON.value -> task.getHumanReadableDueDate()
+            else -> ""
+        }
+
+        holder.itemView.setOnClickListener {
+            it.findNavController().navigate(
                     TaskListFragmentDirections
-                        .actionTaskListFragmentToEditTaskFragment(task, cameFromTaskList = true)
-                )
-            }
+                            .actionTaskListFragmentToEditTaskFragment(task, cameFromTaskList = true)
+            )
+        }
 
-            // Copy button
-            holder.itemView.setOnLongClickListener { it ->
-                val menu = PopupMenu(it.context, it)
-                menu.inflate(R.menu.task_context_menu)
-                menu.setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.copy -> {
-                            val taskSkills = db.skillDao().findAssignedSkills(task.id)
-                            val bundle = Bundle()
-                            bundle.putString(TaskFragment.KEY_GOAL, task.goal)
-                            bundle.putString(TaskFragment.KEY_DETAILS, task.details)
-                            bundle.putString(
+        // Copy button
+        holder.itemView.setOnLongClickListener {
+            val menu = PopupMenu(it.context, it)
+            menu.inflate(R.menu.task_context_menu)
+            menu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.copy -> {
+                        val taskSkills = db.skillDao().findAssignedSkills(task.id)
+                        val bundle = Bundle()
+                        bundle.putString(TaskFragment.KEY_GOAL, task.goal)
+                        bundle.putString(TaskFragment.KEY_DETAILS, task.details)
+                        bundle.putString(
                                 TaskFragment.KEY_DIFFICULTY,
                                 task.difficulty.value.toUpperCase(Locale.getDefault())
-                            )
-                            bundle.putInt(TaskFragment.KEY_DURATION, task.getSeekBarValue())
-                            bundle.putStringArray(
+                        )
+                        bundle.putInt(TaskFragment.KEY_DURATION, task.getSeekBarValue())
+                        bundle.putStringArray(
                                 TaskFragment.KEY_SKILLS,
                                 taskSkills.map { skill -> skill.name }.toTypedArray()
-                            )
-                            bundle.putInt(TaskFragment.KEY_ICON_ID, task.iconId)
-                            if (task.dueAt != null) {
-                                val dueAtParts = task.dueAt.split(" ")
-                                bundle.putString(
+                        )
+                        bundle.putInt(TaskFragment.KEY_ICON_ID, task.iconId)
+                        if (task.dueAt != null) {
+                            val dueAtParts = task.dueAt.split(" ")
+                            bundle.putString(
                                     TaskFragment.KEY_DEADLINE_DATE,
                                     dueAtParts[0]
-                                )
-                                bundle.putString(
+                            )
+                            bundle.putString(
                                     TaskFragment.KEY_DEADLINE_TIME,
                                     dueAtParts[1]
-                                )
-                            }
-                            it.findNavController().navigate(
-                                R.id.action_taskListFragment_to_createTaskFragment, bundle
                             )
                         }
+                        it.findNavController().navigate(
+                                R.id.action_taskListFragment_to_createTaskFragment, bundle
+                        )
                     }
-                    true
                 }
-                menu.show()
                 true
             }
+            menu.show()
+            true
         }
     }
 

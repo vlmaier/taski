@@ -8,11 +8,10 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
-import com.vmaier.taski.App
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.parseToDate
 import timber.log.Timber
-import java.text.ParseException
 import java.util.*
 
 
@@ -33,11 +32,7 @@ class CalendarService(val context: Context) {
         Timber.d("Picked calendar ($calendarId).")
         val eventId: Uri?
         val startTimeMs = if (task.dueAt != null) {
-            try {
-                App.dateFormat.parse(task.dueAt)?.time
-            } catch (e: ParseException) {
-                null
-            }
+            task.dueAt.parseToDate()?.time
         } else {
             null
         }
@@ -81,11 +76,7 @@ class CalendarService(val context: Context) {
         if (before.details != after.details) event.put(CalendarContract.Events.DESCRIPTION, after.details)
         if (before.duration != after.duration || before.dueAt != after.dueAt) {
             val startTimeMs = if (after.dueAt != null) {
-                try {
-                    App.dateFormat.parse(after.dueAt)?.time
-                } catch (e: ParseException) {
-                    null
-                }
+                after.dueAt.parseToDate()?.time
             } else {
                 null
             }

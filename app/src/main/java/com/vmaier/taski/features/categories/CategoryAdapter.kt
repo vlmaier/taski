@@ -10,13 +10,19 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
+import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
+import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
+import com.vmaier.taski.features.categories.CategoryListFragment.Companion.sortCategories
+import com.vmaier.taski.features.categories.CategoryListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.views.EditTextDialog
 import dev.sasikanth.colorsheet.ColorSheet
@@ -51,6 +57,7 @@ class CategoryAdapter internal constructor(
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nameView: TextView = itemView.findViewById(R.id.category_name)
         var colorView: ImageView = itemView.findViewById(R.id.category_color)
+        var categoryIndicatorView: TextView = itemView.findViewById(R.id.category_sort_indicator)
     }
 
     internal fun setCategories(categories: List<Category>) {
@@ -103,6 +110,21 @@ class CategoryAdapter internal constructor(
             // set transparent
             holder.colorView.setBackgroundColor(0x00000000)
         }
+
+        // setup "Sort indicator" view
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val sortPref = prefs.getString(Const.Prefs.SORT_CATEGORIES, Const.Defaults.SORT_CATEGORIES)
+        holder.categoryIndicatorView.text = when (sortPref) {
+            SortSkills.XP.value -> {
+                val xp = db.categoryDao().countCategoryXp(category.id)
+                holder.categoryIndicatorView.visibility = View.VISIBLE
+                "$xp XP"
+            }
+            else -> {
+                holder.categoryIndicatorView.visibility = View.GONE
+                ""
+            }
+        }
     }
 
     private fun setupMenuItemView(viewHolder: RecyclerView.ViewHolder, position: Int) {
@@ -125,6 +147,8 @@ class CategoryAdapter internal constructor(
                 db.categoryDao().updateName(category.id, newName)
                 category.name = newName
                 notifyItemChanged(position)
+                sortCategories(dialog.editText.context, categoryAdapter.categories)
+                categoryAdapter.notifyDataSetChanged()
                 closeMenu()
                 Timber.d("Category (${category.id}) name changed.")
             }
@@ -200,6 +224,7 @@ class CategoryAdapter internal constructor(
         val category = categories.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, categories.size)
+        updateSortedByHeader(context, categories)
         val foundSkills = db.skillDao().findSkillsByCategoryId(category.id)
         db.categoryDao().delete(category)
         Timber.d("Category (${category.id}) removed.")
@@ -209,6 +234,7 @@ class CategoryAdapter internal constructor(
     private fun restoreItem(toRestore: Pair<Category, List<Skill>>, position: Int) {
         categories.add(position, toRestore.first)
         notifyItemInserted(position)
+        updateSortedByHeader(context, categories)
         db.categoryDao().create(toRestore.first)
         toRestore.second.forEach {
             db.skillDao().updateCategoryId(it.id, toRestore.first.id)
