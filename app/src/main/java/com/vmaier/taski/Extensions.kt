@@ -164,7 +164,7 @@ fun Task.getHumanReadableDurationValue(context: Context): String {
 
 fun Task.getHumanReadableCreationDate(): String {
     val now = System.currentTimeMillis()
-    val createdAt = this.dueAt?.parseToDate()?.time ?: 0
+    val createdAt = this.createdAt?.parseToDate()?.time ?: 0
     val format = Utils.getDateSpanFormat(now, createdAt)
     return DateUtils.getRelativeTimeSpanString(createdAt, now, format).toString()
 }
