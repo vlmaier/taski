@@ -164,7 +164,7 @@ fun Task.getHumanReadableDurationValue(context: Context): String {
 
 fun Task.getHumanReadableCreationDate(): String {
     val now = System.currentTimeMillis()
-    val createdAt = this.createdAt?.parseToDate()?.time ?: 0
+    val createdAt = this.createdAt
     val format = Utils.getDateSpanFormat(now, createdAt)
     return DateUtils.getRelativeTimeSpanString(createdAt, now, format).toString()
 }
@@ -172,7 +172,7 @@ fun Task.getHumanReadableCreationDate(): String {
 fun Task.getHumanReadableDueDate(): String {
     val now = System.currentTimeMillis()
     if (dueAt != null) {
-        val dueAt = this.dueAt.parseToDate()?.time ?: 0
+        val dueAt = this.dueAt
         val format = Utils.getDateSpanFormat(now, dueAt)
         return DateUtils.getRelativeTimeSpanString(dueAt, now, format).toString()
     }
@@ -203,11 +203,17 @@ fun String.decodeBase64(): Bitmap? {
 }
 
 fun Date.getDateInAppFormat(): String {
-    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[0], Locale.getDefault()).format(this.time)
+    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[0],
+        Locale.getDefault()).format(time)
 }
 
 fun Date.getTimeInAppFormat(): String {
-    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[1], Locale.getDefault()).format(this.time)
+    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[1],
+            Locale.getDefault()).format(this.time)
+}
+
+fun Date.getDateTimeInAppFormat(): String {
+    return SimpleDateFormat(App.dateTimeFormat.toPattern(), Locale.getDefault()).format(this.time)
 }
 
 fun String.parseToDate(): Date? {

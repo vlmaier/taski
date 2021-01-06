@@ -31,11 +31,7 @@ class CalendarService(val context: Context) {
         val calendarId = getCalendarId() ?: return
         Timber.d("Picked calendar ($calendarId).")
         val eventId: Uri?
-        val startTimeMs = if (task.dueAt != null) {
-            task.dueAt.parseToDate()?.time
-        } else {
-            null
-        }
+        val startTimeMs = task.dueAt
         val event = ContentValues()
         event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
         event.put(CalendarContract.Events.TITLE, task.goal)
@@ -75,11 +71,7 @@ class CalendarService(val context: Context) {
         if (before.goal != after.goal) event.put(CalendarContract.Events.TITLE, after.goal)
         if (before.details != after.details) event.put(CalendarContract.Events.DESCRIPTION, after.details)
         if (before.duration != after.duration || before.dueAt != after.dueAt) {
-            val startTimeMs = if (after.dueAt != null) {
-                after.dueAt.parseToDate()?.time
-            } else {
-                null
-            }
+            val startTimeMs = after.dueAt
             if (startTimeMs != null) {
                 event.put(CalendarContract.Events.DTSTART, startTimeMs)
                 event.put(

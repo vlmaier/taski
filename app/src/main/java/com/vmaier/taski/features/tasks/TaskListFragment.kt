@@ -41,8 +41,8 @@ class TaskListFragment : Fragment() {
             val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             when (sort) {
                 SortTasks.CREATED_AT.value -> tasks.apply {
-                    if (order == SortOrder.ASC.value) sortBy { it.createdAt.parseToDate()?.time }
-                    else sortByDescending {it.createdAt.parseToDate()?.time }
+                    if (order == SortOrder.ASC.value) sortByDescending { it.createdAt }
+                    else sortBy { it.createdAt }
                 }
                 SortTasks.GOAL.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) sortBy { it.goal }
@@ -62,19 +62,9 @@ class TaskListFragment : Fragment() {
                 }
                 SortTasks.DUE_ON.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) {
-                        sortBy {
-                            if (it.dueAt != null) {
-                                it.dueAt.parseToDate()?.time
-                            }
-                            else it.createdAt.parseToDate()?.time
-                        }
+                        sortBy { it.dueAt ?: it.createdAt }
                     } else {
-                        sortByDescending {
-                            if (it.dueAt != null) {
-                                it.dueAt.parseToDate()?.time
-                            }
-                            else it.createdAt.parseToDate()?.time
-                        }
+                        sortByDescending { it.dueAt ?: it.createdAt }
                     }
                 }
             }

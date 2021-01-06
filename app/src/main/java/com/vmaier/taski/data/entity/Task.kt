@@ -2,7 +2,6 @@ package com.vmaier.taski.data.entity
 
 import android.os.Parcelable
 import androidx.room.*
-import com.vmaier.taski.App
 import com.vmaier.taski.data.Converters
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.Status
@@ -46,13 +45,13 @@ data class Task(
     val status: Status = Status.OPEN,
 
     @ColumnInfo(name = "created_at")
-    val createdAt: String = App.dateTimeFormat.format(Date()),
+    val createdAt: Long = Date().time,
 
     @ColumnInfo(name = "closed_at")
-    val closedAt: String? = null,
+    val closedAt: Long? = null,
 
     @ColumnInfo(name = "due_at")
-    val dueAt: String? = null,
+    val dueAt: Long? = null,
 
     @ColumnInfo(name = "duration")
     val duration: Int,

@@ -53,7 +53,7 @@ class TaskEditFragment : TaskFragment() {
         cameFromTaskList = args.cameFromTaskList
 
         // Creation date
-        binding.createdAtValue.text = task.createdAt
+        binding.createdAtValue.text = Date(task.createdAt).getDateTimeInAppFormat()
 
         // Goal settings
         binding.goal.editText?.setText(saved?.getString(KEY_GOAL) ?: task.goal)
@@ -76,7 +76,7 @@ class TaskEditFragment : TaskFragment() {
         // Difficulty settings
         binding.difficulty.setOnCheckedChangeListener { chipGroup, chipId ->
             if (chipId == View.NO_ID) {
-                // do not allow to unselect chip
+                // do not allow to deselect chip
                 difficultyChip.isChecked = true
                 return@setOnCheckedChangeListener
             }
@@ -108,21 +108,17 @@ class TaskEditFragment : TaskFragment() {
 
         // Deadline settings
         val dueAt = task.dueAt
-        if (dueAt != null && dueAt.isNotBlank()) {
-            val dueAtParts = dueAt.split(" ")
-            binding.deadlineDate.editText?.setText(
-                saved?.getString(KEY_DEADLINE_DATE) ?:
-                if (dueAtParts.isNotEmpty()) dueAtParts[0] else ""
-            )
-            binding.deadlineTime.editText?.setText(
-                saved?.getString(KEY_DEADLINE_TIME) ?:
-                if (dueAtParts.isNotEmpty() && dueAtParts.size == 2) dueAtParts[1] else ""
-            )
+        if (dueAt != null) {
+            val dateTime = Date(dueAt)
+            val date = saved?.getString(KEY_DEADLINE_DATE) ?: dateTime.getDateInAppFormat()
+            val time = saved?.getString(KEY_DEADLINE_TIME) ?: dateTime.getTimeInAppFormat()
+            binding.deadlineDate.editText?.setText(date)
+            binding.deadlineTime.editText?.setText(if (time == "00:00") "" else time)
         }
         setDeadlineDateOnClickListener(binding.deadlineDate.editText)
         setDeadlineTimeOnClickListener(binding.deadlineTime.editText)
         setDeadlineDateOnTextChangedListener(binding.calendarSync, binding.deadlineDate.editText)
-        val isCalendarSyncEnabled = dueAt != null && dueAt.isNotBlank() && task.eventId != null
+        val isCalendarSyncEnabled = dueAt != null && task.eventId != null
         binding.calendarSync.isEnabled = isCalendarSyncEnabled
         binding.calendarSync.isChecked = isCalendarSyncEnabled
         binding.calendarSync.setOnCheckedChangeListener { _, isChecked ->
@@ -181,16 +177,17 @@ class TaskEditFragment : TaskFragment() {
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()
         val skillsToAssign = db.skillDao().findByName(skillNames)
-        var dueAt: String? = null
         val deadlineDate = binding.deadlineDate.editText?.text.toString()
         val deadlineTime = binding.deadlineTime.editText?.text.toString()
+        var dueAt: Date? = null
         if (deadlineDate.isNotBlank()) {
-            dueAt = deadlineDate
-            dueAt += " $deadlineTime".trimEnd()
+            var deadline = deadlineDate
+            deadline += " $deadlineTime".trimEnd()
+            dueAt = deadline.parseToDate()
         }
         val toUpdate = Task(
             id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,
-            createdAt = task.createdAt, dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty),
+            createdAt = task.createdAt, dueAt = dueAt?.time, difficulty = Difficulty.valueOf(difficulty),
             eventId = task.eventId, reminderRequestCode = task.reminderRequestCode
         )
         if (task != toUpdate || assignedSkills != skillsToAssign) {
@@ -206,14 +203,13 @@ class TaskEditFragment : TaskFragment() {
                 notificationService.cancelReminder(requireActivity(), task.reminderRequestCode)
                 // remind 15 minutes before the task is due (incl. duration)
                 val durationInMs: Long = duration.toLong() * 60 * 1000
-                val notifyAtInMs: Long = toUpdate.dueAt.parseToDate()?.time
+                val notifyAtInMs: Long = dueAt?.time
                     ?.minus(durationInMs)
                     ?.minus(900000)
                     ?: 0
                 val taskReminderRequestCode = RequestCode.get(requireContext())
-                val dueDateTime = toUpdate.dueAt.split(" ")
-                val message = if (dueDateTime.size == 2) {
-                    getString(R.string.term_due_at, toUpdate.dueAt.split(" ")[1])
+                val message = if (deadlineTime.isNotBlank()) {
+                    getString(R.string.term_due_at, deadlineTime)
                 } else {
                     getString(R.string.term_due_today)
                 }

@@ -107,7 +107,7 @@ interface TaskDao {
         WHERE id = :taskId
     """
     )
-    fun close(taskId: Long, status: Status, closedAt: String = App.dateTimeFormat.format(Date()))
+    fun close(taskId: Long, status: Status, closedAt: Long = Date().time)
 
     @Query(
         """

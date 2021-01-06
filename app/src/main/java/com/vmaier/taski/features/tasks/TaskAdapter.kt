@@ -130,14 +130,14 @@ class TaskAdapter internal constructor(
                         )
                         bundle.putInt(TaskFragment.KEY_ICON_ID, task.iconId)
                         if (task.dueAt != null) {
-                            val dueAtParts = task.dueAt.split(" ")
+                            val dateTime = Date(task.dueAt)
                             bundle.putString(
-                                    TaskFragment.KEY_DEADLINE_DATE,
-                                    dueAtParts[0]
+                                TaskFragment.KEY_DEADLINE_DATE,
+                                dateTime.getDateInAppFormat()
                             )
                             bundle.putString(
-                                    TaskFragment.KEY_DEADLINE_TIME,
-                                    dueAtParts[1]
+                                TaskFragment.KEY_DEADLINE_TIME,
+                                dateTime.getTimeInAppFormat()
                             )
                         }
                         it.findNavController().navigate(

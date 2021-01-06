@@ -157,20 +157,21 @@ class TaskCreateFragment : TaskFragment() {
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()
         val skillsToAssign = db.skillDao().findByName(skillNames)
-        var dueAt: String? = null
         val deadlineDate = binding.deadlineDate.editText?.text.toString()
         val deadlineTime = binding.deadlineTime.editText?.text.toString()
+        var dueAt: Date? = null
         if (deadlineDate.isNotBlank()) {
-            dueAt = deadlineDate
-            dueAt += if (deadlineTime.isNotBlank()) {
+            var deadline = deadlineDate
+            deadline += if (deadlineTime.isNotBlank()) {
                 " $deadlineTime"
             } else {
                 " 08:00"
             }
+            dueAt = deadline.parseToDate()
         }
         val task = Task(
             goal = goal, details = details, duration = duration, iconId = iconId,
-            dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty)
+            dueAt = dueAt?.time, difficulty = Difficulty.valueOf(difficulty)
         )
         val id = db.taskDao().createTask(task, skillsToAssign)
         Timber.d("Task ($id) created.")
@@ -180,15 +181,19 @@ class TaskCreateFragment : TaskFragment() {
         if (dueAt != null) {
             // remind 15 minutes before the task is due (incl. duration)
             val durationInMs: Long = duration.toLong() * 60 * 1000
-            val notifyAtInMs: Long = dueAt.parseToDate()?.time
-                ?.minus(durationInMs)
-                ?.minus(900000)
-                ?: 0
+            val notifyAtInMs: Long = dueAt.time
+                .minus(durationInMs)
+                .minus(900000)
             val taskReminderRequestCode = RequestCode.get(requireContext())
+            val message = if (deadlineTime.isNotBlank()) {
+                getString(R.string.term_due_at, deadlineTime)
+            } else {
+                getString(R.string.term_due_today)
+            }
             notificationService.setReminder(
                 notifyAtInMs,
                 task.goal,
-                "Due at ${dueAt.split(" ")[1]}",
+                message,
                 requireActivity(),
                 taskReminderRequestCode
             )
