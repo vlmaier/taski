@@ -34,6 +34,7 @@ class Const {
     class Tags {
         companion object {
             const val ICON_DIALOG_TAG = "icon_dialog"
+            const val RECURRENCE_LIST_DIALOG = "recurrence-list-dialog"
         }
     }
 

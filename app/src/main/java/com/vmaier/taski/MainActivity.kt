@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
@@ -35,6 +36,13 @@ import com.maltaisn.icondialog.IconDialog
 import com.maltaisn.icondialog.IconDialogSettings
 import com.maltaisn.icondialog.data.Icon
 import com.maltaisn.icondialog.pack.IconPack
+import com.maltaisn.recurpicker.Recurrence
+import com.maltaisn.recurpicker.RecurrencePickerSettings
+import com.maltaisn.recurpicker.format.RecurrenceFormatter
+import com.maltaisn.recurpicker.list.RecurrenceListCallback
+import com.maltaisn.recurpicker.list.RecurrenceListDialog
+import com.maltaisn.recurpicker.picker.RecurrencePickerCallback
+import com.maltaisn.recurpicker.picker.RecurrencePickerFragment
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
@@ -61,7 +69,8 @@ import java.util.*
  * on 09.05.2019
  * at 21:00
  */
-class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, IconDialog.Callback {
+class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
+    IconDialog.Callback, RecurrenceListCallback, RecurrencePickerCallback {
 
     private lateinit var navController: NavController
     private lateinit var drawerNav: NavigationView
@@ -82,6 +91,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         lateinit var userNameView: TextView
         lateinit var avatarView: ImageView
         lateinit var db: AppDatabase
+
+        private val recurrenceSettings = RecurrencePickerSettings()
+        val startDate = System.currentTimeMillis()
+        val recurrenceDialog by lazy { RecurrenceListDialog.newInstance(recurrenceSettings) }
+        val recurrenceFragment by lazy { RecurrencePickerFragment.newInstance(recurrenceSettings) }
+        var selectedRecurrence = Recurrence(Recurrence.Period.NONE)
 
         fun toggleBottomMenu(showFab: Boolean = false, visibility: Int = View.GONE) {
             if (showFab) fab.show() else fab.hide()
@@ -394,6 +409,37 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         }
     }
 
+    override fun onRecurrenceCustomClicked() {
+        // "Custom..." item in the recurrence list dialog was clicked
+        recurrenceFragment.selectedRecurrence = selectedRecurrence
+        recurrenceFragment.startDate = startDate
+        val fragment = supportFragmentManager.primaryNavigationFragment
+        if (fragment != null) {
+            val fragments = fragment.childFragmentManager.fragments
+            fragments.forEach {
+                val backStateName = it.javaClass.name
+                val manager: FragmentManager = fragment.childFragmentManager
+                val fragmentPopped: Boolean = manager.popBackStackImmediate(backStateName, 0)
+                if (!fragmentPopped) {
+                    manager.beginTransaction()
+                        .replace(R.id.nav_host_fragment, recurrenceFragment)
+                        .addToBackStack(backStateName)
+                        .commit()
+                }
+            }
+        }
+    }
+
+    override fun onRecurrencePresetSelected(recurrence: Recurrence) {
+        // recurrence preset item in the recurrence list dialog was selected
+        updateRecurrence(recurrence)
+    }
+
+    override fun onRecurrenceCreated(recurrence: Recurrence) {
+        // custom recurrence was created with the recurrence picker fragment
+        updateRecurrence(recurrence)
+    }
+
     override fun onBackPressed() {
         if (backButtonPressedOnce) {
             // close app if back button was pressed twice in last 2 seconds
@@ -409,6 +455,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
                 val fragments = fragment.childFragmentManager.fragments
                 fragments.forEach {
                     when (it) {
+                        is TaskCreateFragment -> onBackPressedTaskCreateFragment()
                         is SkillEditFragment -> onBackPressedSkillEditFragment()
                         is TaskEditFragment -> onBackPressedTaskEditFragment()
                         is HelpFragment -> onBackPressedHelpFragment()
@@ -477,7 +524,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
         }
     }
 
+    private fun onBackPressedTaskCreateFragment() {
+        selectedRecurrence = Recurrence(Recurrence.Period.NONE)
+        super.onBackPressed()
+    }
+
     private fun onBackPressedTaskEditFragment() {
+        selectedRecurrence = Recurrence(Recurrence.Period.NONE)
         val goal = TaskEditFragment.binding.goal.editText?.text.toString()
         when {
             goal.isBlank() -> {
@@ -553,5 +606,39 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Icon
             dialog.dismiss()
         }
         dialog.show(supportFragmentManager, EditTextDialog::class.simpleName)
+    }
+
+    private fun updateRecurrence(recurrence: Recurrence) {
+        selectedRecurrence = recurrence
+        val fragment = supportFragmentManager.primaryNavigationFragment
+        if (fragment != null) {
+            val fragments = fragment.childFragmentManager.fragments
+            fragments.forEach {
+                when(it) {
+                    is TaskCreateFragment ->
+                        TaskCreateFragment.recurrenceButton.text =
+                            RecurrenceFormatter(App.dateTimeFormat).format(this, selectedRecurrence)
+                    is TaskEditFragment ->
+                        TaskEditFragment.recurrenceButton.text =
+                            RecurrenceFormatter(App.dateTimeFormat).format(this, selectedRecurrence)
+                    is RecurrencePickerFragment -> {
+                        if (TaskCreateFragment.isRecurrenceButtonInitialized()) {
+                            TaskCreateFragment.recurrenceButton.text =
+                                RecurrenceFormatter(App.dateTimeFormat).format(
+                                    this,
+                                    selectedRecurrence
+                                )
+                        }
+                        if (TaskEditFragment.isRecurrenceButtonInitialized()) {
+                            TaskEditFragment.recurrenceButton.text =
+                                RecurrenceFormatter(App.dateTimeFormat).format(
+                                    this,
+                                    selectedRecurrence
+                                )
+                        }
+                    }
+                }
+            }
+        }
     }
 }

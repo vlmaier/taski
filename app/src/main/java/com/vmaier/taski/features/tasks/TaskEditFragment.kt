@@ -5,11 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
+import com.maltaisn.recurpicker.Recurrence
+import com.maltaisn.recurpicker.format.RecurrenceFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.iconDialog
+import com.vmaier.taski.MainActivity.Companion.recurrenceDialog
+import com.vmaier.taski.MainActivity.Companion.selectedRecurrence
+import com.vmaier.taski.MainActivity.Companion.startDate
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.entity.Task
@@ -36,8 +42,10 @@ class TaskEditFragment : TaskFragment() {
     companion object {
         lateinit var binding: FragmentEditTaskBinding
         lateinit var difficultyChip: Chip
+        lateinit var recurrenceButton: Button
         lateinit var task: Task
         lateinit var assignedSkills: List<Skill>
+        fun isRecurrenceButtonInitialized() = Companion::recurrenceButton.isInitialized
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
@@ -125,6 +133,17 @@ class TaskEditFragment : TaskFragment() {
             if (isChecked) PermissionUtils.setupCalendarPermissions(requireContext())
         }
 
+        // Recurrence settings
+        recurrenceButton = binding.recurrenceButton
+        // TODO: update selectedRecurrence with value from task object
+        binding.recurrenceButton.text =
+            RecurrenceFormatter(App.dateTimeFormat).format(requireContext(), selectedRecurrence)
+        binding.recurrenceButton.setOnClickListener {
+            recurrenceDialog.selectedRecurrence = selectedRecurrence
+            recurrenceDialog.startDate = startDate
+            recurrenceDialog.show(requireActivity().supportFragmentManager, Const.Tags.RECURRENCE_LIST_DIALOG)
+        }
+
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
             iconDialog.show(fragmentManager, Const.Tags.ICON_DIALOG_TAG)
@@ -133,6 +152,7 @@ class TaskEditFragment : TaskFragment() {
             it.findNavController().popBackStack()
             it.hideKeyboard()
             isCanceled = true
+            selectedRecurrence = Recurrence(Recurrence.Period.NONE)
         }
         return binding.root
     }
@@ -159,7 +179,6 @@ class TaskEditFragment : TaskFragment() {
     }
 
     private fun saveChangesOnTask() {
-
         val goal = binding.goal.editText?.text.toString().trim()
         if (goal.isBlank()) {
             binding.goal.requestFocus()

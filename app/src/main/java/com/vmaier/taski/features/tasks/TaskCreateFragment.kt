@@ -6,11 +6,17 @@ import android.view.View
 import android.view.View.NO_ID
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
+import com.maltaisn.recurpicker.Recurrence
+import com.maltaisn.recurpicker.format.RecurrenceFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.iconDialog
+import com.vmaier.taski.MainActivity.Companion.recurrenceDialog
+import com.vmaier.taski.MainActivity.Companion.selectedRecurrence
+import com.vmaier.taski.MainActivity.Companion.startDate
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentCreateTaskBinding
@@ -20,7 +26,6 @@ import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.RequestCode
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import timber.log.Timber
-import java.text.ParseException
 import java.util.*
 
 
@@ -34,6 +39,8 @@ class TaskCreateFragment : TaskFragment() {
     companion object {
         lateinit var binding: FragmentCreateTaskBinding
         lateinit var difficultyChip: Chip
+        lateinit var recurrenceButton: Button
+        fun isRecurrenceButtonInitialized() = Companion::recurrenceButton.isInitialized
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
@@ -65,7 +72,7 @@ class TaskCreateFragment : TaskFragment() {
         // Difficulty settings
         binding.difficulty.setOnCheckedChangeListener { chipGroup, chipId ->
             if (chipId == NO_ID) {
-                // do not allow to unselect a chip
+                // do not allow to deselect a chip
                 difficultyChip.isChecked = true
                 return@setOnCheckedChangeListener
             }
@@ -96,11 +103,13 @@ class TaskCreateFragment : TaskFragment() {
             if (createTaskButtonClicked()) {
                 it.findNavController().popBackStack()
                 it.hideKeyboard()
+                selectedRecurrence = Recurrence(Recurrence.Period.NONE)
             }
         }
         binding.cancelButton.setOnClickListener {
             it.findNavController().popBackStack()
             it.hideKeyboard()
+            selectedRecurrence = Recurrence(Recurrence.Period.NONE)
         }
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
@@ -115,6 +124,16 @@ class TaskCreateFragment : TaskFragment() {
         setDeadlineDateOnTextChangedListener(binding.calendarSync, binding.deadlineDate.editText)
         binding.calendarSync.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) PermissionUtils.setupCalendarPermissions(requireContext())
+        }
+
+        // Recurrence settings
+        recurrenceButton = binding.recurrenceButton
+        binding.recurrenceButton.text =
+            RecurrenceFormatter(App.dateTimeFormat).format(requireContext(), selectedRecurrence)
+        binding.recurrenceButton.setOnClickListener {
+            recurrenceDialog.selectedRecurrence = selectedRecurrence
+            recurrenceDialog.startDate = startDate
+            recurrenceDialog.show(requireActivity().supportFragmentManager, Const.Tags.RECURRENCE_LIST_DIALOG)
         }
         return binding.root
     }
@@ -139,7 +158,6 @@ class TaskCreateFragment : TaskFragment() {
     }
 
     private fun createTaskButtonClicked(): Boolean {
-
         val goal = binding.goal.editText?.text.toString().trim()
         if (goal.isBlank()) {
             binding.goal.requestFocus()
