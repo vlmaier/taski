@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
 import com.maltaisn.recurpicker.Recurrence
+import com.maltaisn.recurpicker.format.RRuleFormatter
 import com.maltaisn.recurpicker.format.RecurrenceFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.iconDialog
@@ -186,9 +187,13 @@ class TaskCreateFragment : TaskFragment() {
             }
             dueAt = deadline.parseToDate()
         }
+        var rrule: String? = null
+        if (selectedRecurrence != Recurrence.DOES_NOT_REPEAT) {
+            rrule = RRuleFormatter().format(selectedRecurrence)
+        }
         val task = Task(
             goal = goal, details = details, duration = duration, iconId = iconId,
-            dueAt = dueAt?.time, difficulty = Difficulty.valueOf(difficulty)
+            dueAt = dueAt?.time, difficulty = Difficulty.valueOf(difficulty), rrule = rrule
         )
         val id = db.taskDao().createTask(task, skillsToAssign)
         Timber.d("Task ($id) created.")

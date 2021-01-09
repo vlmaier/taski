@@ -515,7 +515,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     }
 
     private fun onBackPressedTaskEditFragment() {
-        selectedRecurrence = Recurrence(Recurrence.Period.NONE)
         val goal = TaskEditFragment.binding.goal.editText?.text.toString()
         when {
             goal.isBlank() -> {

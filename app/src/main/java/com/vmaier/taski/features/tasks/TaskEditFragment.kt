@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
 import com.maltaisn.recurpicker.Recurrence
+import com.maltaisn.recurpicker.format.RRuleFormatter
 import com.maltaisn.recurpicker.format.RecurrenceFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.iconDialog
@@ -134,9 +135,16 @@ class TaskEditFragment : TaskFragment() {
 
         // Recurrence settings
         recurrenceButton = binding.recurrenceButton
-        // TODO: update selectedRecurrence with value from task object
-        binding.recurrenceButton.text =
-            RecurrenceFormatter(App.dateTimeFormat).format(requireContext(), selectedRecurrence)
+        val recurrence = RecurrenceFormatter(App.dateTimeFormat).format(requireContext(),
+            if (task.rrule != null) {
+                val taskRecurrence = RRuleFormatter().parse(task.rrule.toString())
+                selectedRecurrence = taskRecurrence
+                taskRecurrence
+            } else {
+                selectedRecurrence
+            }
+        )
+        binding.recurrenceButton.text = recurrence
         binding.recurrenceButton.setOnClickListener {
             recurrenceListDialog.selectedRecurrence = selectedRecurrence
             recurrenceListDialog.startDate = System.currentTimeMillis()
@@ -203,10 +211,14 @@ class TaskEditFragment : TaskFragment() {
             deadline += " $deadlineTime".trimEnd()
             dueAt = deadline.parseToDate()
         }
+        var rrule: String? = task.rrule
+        if (selectedRecurrence != Recurrence.DOES_NOT_REPEAT) {
+            rrule = RRuleFormatter().format(selectedRecurrence)
+        }
         val toUpdate = Task(
             id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,
             createdAt = task.createdAt, dueAt = dueAt?.time, difficulty = Difficulty.valueOf(difficulty),
-            eventId = task.eventId, reminderRequestCode = task.reminderRequestCode
+            eventId = task.eventId, reminderRequestCode = task.reminderRequestCode, rrule = rrule
         )
         if (task != toUpdate || assignedSkills != skillsToAssign) {
             val reminderUpdateRequired = task.dueAt != toUpdate.dueAt
@@ -241,6 +253,7 @@ class TaskEditFragment : TaskFragment() {
                 db.taskDao().updateAlarmRequestCode(task.id, taskReminderRequestCode)
             }
         }
+        selectedRecurrence = Recurrence(Recurrence.Period.NONE)
     }
 
     private fun updateInAdapter(task: Task, skills: List<Skill>) {
