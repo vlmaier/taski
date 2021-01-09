@@ -19,7 +19,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
@@ -42,6 +41,7 @@ import com.maltaisn.recurpicker.format.RecurrenceFormatter
 import com.maltaisn.recurpicker.list.RecurrenceListCallback
 import com.maltaisn.recurpicker.list.RecurrenceListDialog
 import com.maltaisn.recurpicker.picker.RecurrencePickerCallback
+import com.maltaisn.recurpicker.picker.RecurrencePickerDialog
 import com.maltaisn.recurpicker.picker.RecurrencePickerFragment
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
@@ -93,9 +93,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         lateinit var db: AppDatabase
 
         private val recurrenceSettings = RecurrencePickerSettings()
-        val startDate = System.currentTimeMillis()
-        val recurrenceDialog by lazy { RecurrenceListDialog.newInstance(recurrenceSettings) }
-        val recurrenceFragment by lazy { RecurrencePickerFragment.newInstance(recurrenceSettings) }
+        val recurrenceListDialog by lazy { RecurrenceListDialog.newInstance(recurrenceSettings) }
+        val recurrencePickerDialog by lazy { RecurrencePickerDialog.newInstance(recurrenceSettings) }
         var selectedRecurrence = Recurrence(Recurrence.Period.NONE)
 
         fun toggleBottomMenu(showFab: Boolean = false, visibility: Int = View.GONE) {
@@ -411,23 +410,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
     override fun onRecurrenceCustomClicked() {
         // "Custom..." item in the recurrence list dialog was clicked
-        recurrenceFragment.selectedRecurrence = selectedRecurrence
-        recurrenceFragment.startDate = startDate
-        val fragment = supportFragmentManager.primaryNavigationFragment
-        if (fragment != null) {
-            val fragments = fragment.childFragmentManager.fragments
-            fragments.forEach {
-                val backStateName = it.javaClass.name
-                val manager: FragmentManager = fragment.childFragmentManager
-                val fragmentPopped: Boolean = manager.popBackStackImmediate(backStateName, 0)
-                if (!fragmentPopped) {
-                    manager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, recurrenceFragment)
-                        .addToBackStack(backStateName)
-                        .commit()
-                }
-            }
-        }
+        recurrencePickerDialog.selectedRecurrence = selectedRecurrence
+        recurrencePickerDialog.startDate = System.currentTimeMillis()
+        recurrencePickerDialog.show(supportFragmentManager, Const.Tags.RECURRENCE_PICKER_DIALOG)
     }
 
     override fun onRecurrencePresetSelected(recurrence: Recurrence) {

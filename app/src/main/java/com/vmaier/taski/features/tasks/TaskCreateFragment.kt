@@ -14,9 +14,8 @@ import com.maltaisn.recurpicker.Recurrence
 import com.maltaisn.recurpicker.format.RecurrenceFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.iconDialog
-import com.vmaier.taski.MainActivity.Companion.recurrenceDialog
+import com.vmaier.taski.MainActivity.Companion.recurrenceListDialog
 import com.vmaier.taski.MainActivity.Companion.selectedRecurrence
-import com.vmaier.taski.MainActivity.Companion.startDate
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentCreateTaskBinding
@@ -131,9 +130,9 @@ class TaskCreateFragment : TaskFragment() {
         binding.recurrenceButton.text =
             RecurrenceFormatter(App.dateTimeFormat).format(requireContext(), selectedRecurrence)
         binding.recurrenceButton.setOnClickListener {
-            recurrenceDialog.selectedRecurrence = selectedRecurrence
-            recurrenceDialog.startDate = startDate
-            recurrenceDialog.show(requireActivity().supportFragmentManager, Const.Tags.RECURRENCE_LIST_DIALOG)
+            recurrenceListDialog.selectedRecurrence = selectedRecurrence
+            recurrenceListDialog.startDate = System.currentTimeMillis()
+            recurrenceListDialog.show(requireActivity().supportFragmentManager, Const.Tags.RECURRENCE_LIST_DIALOG)
         }
         return binding.root
     }
