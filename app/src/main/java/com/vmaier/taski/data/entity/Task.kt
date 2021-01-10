@@ -73,5 +73,8 @@ data class Task(
     val reminderRequestCode: Int? = null,
 
     @ColumnInfo(name = "rrule")
-    val rrule: String? = null
+    val rrule: String? = null,
+
+    @ColumnInfo(name = "count_done", defaultValue = "0")
+    val countDone: Int = 0
 ) : Parcelable

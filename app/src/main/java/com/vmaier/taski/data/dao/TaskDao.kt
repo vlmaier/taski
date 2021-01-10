@@ -57,10 +57,10 @@ interface TaskDao {
         """
         SELECT *
         FROM tasks
-        WHERE status = 'done' AND closed_at LIKE :closedAt
+        WHERE closed_at > :after AND closed_at < :before
     """
     )
-    fun findByClosedAt(closedAt: String): List<Task>
+    fun findByClosedAt(after: Long, before: Long): List<Task>
 
     @Query(
         """
@@ -73,32 +73,40 @@ interface TaskDao {
 
     @Query(
         """
-        SELECT SUM(xp_value)
+        SELECT SUM(xp_value * count_done)
         FROM tasks
-        WHERE status = 'done'        
     """
     )
     fun countOverallXp(): Long
 
     @Query(
         """
-        SELECT SUM(xp_value)
+        SELECT SUM(xp_value * count_done)
         FROM tasks
-        WHERE status = 'done' AND closed_at LIKE :closedAt
+        WHERE closed_at > :after AND closed_at < :before
     """
     )
-    fun countDailyXp(closedAt: String): Long
+    fun countDailyXp(after: Long, before: Long): Long
 
     @Query(
         """
         SELECT COUNT(*)
         FROM tasks
-        WHERE status = 'done' AND closed_at LIKE :closedAt
+        WHERE closed_at > :after AND closed_at < :before
     """
     )
-    fun countDailyTasks(closedAt: String): Int
+    fun countDailyTasks(after: Long, before: Long): Int
 
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
+
+    @Query(
+        """
+        UPDATE tasks
+        SET count_done = count_done + 1
+        WHERE id = :taskId
+    """
+    )
+    fun incrementCountDone(taskId: Long)
 
     @Query(
         """
@@ -112,11 +120,20 @@ interface TaskDao {
     @Query(
         """
         UPDATE tasks
-        SET status = 'open', closed_at = null
+        SET status = 'open', closed_at = null, count_done = count_done - 1
         WHERE id = :taskId
     """
     )
     fun reopen(taskId: Long)
+
+    @Query(
+        """
+        UPDATE tasks
+        SET closed_at = :closedAt
+        WHERE id = :taskId
+    """
+    )
+    fun updateClosedAt(taskId: Long, closedAt: Long = Date().time)
 
     @Query(
         """

@@ -8,6 +8,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import com.vmaier.taski.R
 import com.vmaier.taski.data.Difficulty
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -77,5 +78,19 @@ object Utils {
             in 31449600001..Long.MAX_VALUE -> DateUtils.YEAR_IN_MILLIS
             else -> DateUtils.DAY_IN_MILLIS
         }
+    }
+
+    fun getStartOfDay(calendar: Calendar = Calendar.getInstance()): Long {
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        return calendar.time.time
+    }
+
+    fun getEndOfDay(calendar: Calendar = Calendar.getInstance()): Long {
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        return calendar.time.time
     }
 }

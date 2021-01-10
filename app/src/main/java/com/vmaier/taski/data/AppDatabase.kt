@@ -23,8 +23,8 @@ import com.vmaier.taski.data.entity.Task
  */
 @Database(
     entities = [Task::class, Skill::class, Category::class, AssignedSkill::class],
-    version = 6,
-    exportSchema = false
+    version = 8,
+    exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -70,9 +70,9 @@ abstract class AppDatabase : RoomDatabase() {
         private val MIGRATION_4_5 = object : Migration(4, 5) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // change datetime format from "dd.MM.yyyy HH:mm" to "yyyy-MM-dd HH:mm" (ISO 8601)
-                database.execSQL("UPDATE tasks SET created_at = strftime('%Y-%m-%d %H:%M', datetime(substr(created_at, 7, 4) || '-' || substr(created_at, 4, 2) || '-' || substr(created_at, 1, 2) || substr(created_at, 11, 8))), closed_at = strftime('%Y-%m-%d %H:%M', datetime(substr(closed_at, 7, 4) || '-' || substr(closed_at, 4, 2) || '-' || substr(closed_at, 1, 2) || substr(closed_at, 11, 8))), due_at = strftime('%Y-%m-%d %H:%M', datetime(substr(due_at, 7, 4) || '-' || substr(due_at, 4, 2) || '-' || substr(due_at, 1, 2) || substr(due_at, 11, 8)))")
+                database.execSQL("UPDATE tasks SET created_at = strftime('%Y-%m-%d %H:%M', datetime(substr(created_at, 7, 4) || '-' || substr(created_at, 4, 2) || '-' || substr(created_at, 1, 2) || substr(created_at, 11, 8), 'utc')), closed_at = strftime('%Y-%m-%d %H:%M', datetime(substr(closed_at, 7, 4) || '-' || substr(closed_at, 4, 2) || '-' || substr(closed_at, 1, 2) || substr(closed_at, 11, 8), 'utc')), due_at = strftime('%Y-%m-%d %H:%M', datetime(substr(due_at, 7, 4) || '-' || substr(due_at, 4, 2) || '-' || substr(due_at, 1, 2) || substr(due_at, 11, 8), 'utc'))")
                 // change datetime format to epoch
-                database.execSQL("UPDATE tasks SET created_at = CAST(strftime('%s', created_at) AS INT), closed_at = CAST(strftime('%s', closed_at) AS INT), due_at = CAST(strftime('%s', due_at) AS INT)")
+                database.execSQL("UPDATE tasks SET created_at = CAST(strftime('%s', created_at) AS INT) * 1000, closed_at = CAST(strftime('%s', closed_at) AS INT) * 1000, due_at = CAST(strftime('%s', due_at) AS INT) * 1000")
                 database.beginTransaction()
                 try {
                     // change type to INTEGER for created_at, closed_at and due_at columns
@@ -93,6 +93,26 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.beginTransaction()
+                try {
+                    database.execSQL("ALTER TABLE tasks ADD COLUMN count_done INTEGER NOT NULL DEFAULT 0")
+                    database.execSQL("UPDATE tasks SET count_done = 1 WHERE status = 'done'")
+                    database.setTransactionSuccessful()
+                } finally {
+                    database.endTransaction()
+                }
+            }
+        }
+
+        private val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_tasks_id ON tasks(id)")
+                database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_tasks_event_id ON tasks(event_id)")
+            }
+        }
+
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
                 .allowMainThreadQueries()
@@ -101,7 +121,9 @@ abstract class AppDatabase : RoomDatabase() {
                     MIGRATION_2_3,
                     MIGRATION_3_4,
                     MIGRATION_4_5,
-                    MIGRATION_5_6
+                    MIGRATION_5_6,
+                    MIGRATION_6_7,
+                    MIGRATION_7_8
                 ).build()
     }
 }

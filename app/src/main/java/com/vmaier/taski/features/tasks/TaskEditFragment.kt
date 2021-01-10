@@ -217,8 +217,9 @@ class TaskEditFragment : TaskFragment() {
         }
         val toUpdate = Task(
             id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,
-            createdAt = task.createdAt, dueAt = dueAt?.time, difficulty = Difficulty.valueOf(difficulty),
-            eventId = task.eventId, reminderRequestCode = task.reminderRequestCode, rrule = rrule
+            createdAt = task.createdAt, dueAt = dueAt?.time, closedAt = task.closedAt,
+            difficulty = Difficulty.valueOf(difficulty), eventId = task.eventId,
+            reminderRequestCode = task.reminderRequestCode, rrule = rrule, countDone = task.countDone
         )
         if (task != toUpdate || assignedSkills != skillsToAssign) {
             val reminderUpdateRequired = task.dueAt != toUpdate.dueAt

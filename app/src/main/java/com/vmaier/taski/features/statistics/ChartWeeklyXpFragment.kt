@@ -119,7 +119,6 @@ class ChartWeeklyXpFragment : TaskFragment() {
     private fun getXpForDayOfTheWeek(day: Int): Float {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_WEEK, day)
-        val closedAtDay = App.dateTimeFormat.format(calendar.time).split(" ")[0]
-        return db.taskDao().countDailyXp("%$closedAtDay%").toFloat()
+        return db.taskDao().countDailyXp(Utils.getStartOfDay(calendar), Utils.getEndOfDay(calendar)).toFloat()
     }
 }

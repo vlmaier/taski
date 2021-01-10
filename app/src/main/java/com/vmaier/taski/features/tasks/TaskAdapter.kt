@@ -12,6 +12,8 @@ import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.maltaisn.icondialog.pack.IconDrawableLoader
+import com.maltaisn.recurpicker.RecurrenceFinder
+import com.maltaisn.recurpicker.format.RRuleFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.levelView
 import com.vmaier.taski.MainActivity.Companion.xpView
@@ -207,12 +209,29 @@ class TaskAdapter internal constructor(
                     levelService.checkForSkillLevelUp(skill, xpPerSkill)
                 }
                 levelService.checkForOverallLevelUp(task.xp)
+                db.taskDao().incrementCountDone(task.id)
             }
-            db.taskDao().close(task.id, status)
-            val deleteCompletedTasks = PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(Const.Prefs.DELETE_COMPLETED_TASKS, Const.Defaults.DELETE_COMPLETED_TASKS)
-            if (task.eventId != null && deleteCompletedTasks) {
-                calendarService.deleteCalendarEvent(task)
+            // handle recurrence
+            if (task.rrule != null) {
+                val isRecurrenceDone = RecurrenceFinder().findBasedOn(
+                    RRuleFormatter().parse(task.rrule),
+                    task.createdAt,
+                    task.closedAt ?: task.createdAt,
+                    task.countDone + 1,
+                    1,
+                    System.currentTimeMillis(),
+                    false
+                ).size == 0
+                if (isRecurrenceDone) {
+                    // recurrence is finished
+                    db.taskDao().close(task.id, status)
+                    removeTaskFromCalendar(task)
+                } else {
+                    db.taskDao().updateClosedAt(task.id)
+                }
+            } else {
+                db.taskDao().close(task.id, status)
+                removeTaskFromCalendar(task)
             }
         } else {
             for (skill in assignedSkills) {
@@ -229,5 +248,16 @@ class TaskAdapter internal constructor(
         taskAdapter.notifyDataSetChanged()
         updateSortedByHeader(context, tasks)
         return db.taskDao().findById(task.id)
+    }
+
+    private fun removeTaskFromCalendar(task: Task) {
+        val deleteCompletedTasks = PreferenceManager.getDefaultSharedPreferences(context)
+            .getBoolean(
+                Const.Prefs.DELETE_COMPLETED_TASKS,
+                Const.Defaults.DELETE_COMPLETED_TASKS
+            )
+        if (task.eventId != null && deleteCompletedTasks) {
+            calendarService.deleteCalendarEvent(task)
+        }
     }
 }
