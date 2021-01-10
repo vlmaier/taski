@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
+import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.features.tasks.TaskListFragment.Companion.taskAdapter
@@ -41,11 +42,16 @@ class TaskItemSwipeHandler :
         val context = itemView.context
         lateinit var message: String
         lateinit var taskToRestore: Task
+        val closedTaskId: Long
         if (direction == ItemTouchHelper.LEFT) {
-            taskToRestore = taskAdapter.removeItem(position, Status.DONE)
+            val completedTask = taskAdapter.removeItem(position, Status.DONE)
+            taskToRestore = completedTask.first
+            closedTaskId = completedTask.second
             message = context.getString(R.string.event_task_complete, taskToRestore.xp)
         } else {
-            taskToRestore = taskAdapter.removeItem(position, Status.FAILED)
+            val failedTask = taskAdapter.removeItem(position, Status.FAILED)
+            taskToRestore = failedTask.first
+            closedTaskId = failedTask.second
             message = context.getString(R.string.event_task_failed)
         }
         // show snackbar with "Undo" option
@@ -53,6 +59,10 @@ class TaskItemSwipeHandler :
             .setAction(context.getString(R.string.action_undo)) {
                 // "Undo" is selected -> restore the deleted item
                 taskAdapter.restoreItem(taskToRestore, position)
+                if (closedTaskId != 0L) {
+                    val db = AppDatabase(context)
+                    db.taskDao().removeClosedTask(closedTaskId)
+                }
             }
             .setActionTextColor(Utils.getThemeColor(context, R.attr.colorSecondary))
         snackbar.view.setOnClickListener { snackbar.dismiss() }

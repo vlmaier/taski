@@ -10,10 +10,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.vmaier.taski.data.dao.CategoryDao
 import com.vmaier.taski.data.dao.SkillDao
 import com.vmaier.taski.data.dao.TaskDao
-import com.vmaier.taski.data.entity.AssignedSkill
-import com.vmaier.taski.data.entity.Category
-import com.vmaier.taski.data.entity.Skill
-import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.data.entity.*
 
 
 /**
@@ -22,8 +19,8 @@ import com.vmaier.taski.data.entity.Task
  * at 16:45
  */
 @Database(
-    entities = [Task::class, Skill::class, Category::class, AssignedSkill::class],
-    version = 8,
+    entities = [Task::class, Skill::class, Category::class, AssignedSkill::class, ClosedTask::class],
+    version = 9,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -113,6 +110,21 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        private val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.beginTransaction()
+                try {
+                    database.execSQL("CREATE TABLE closed_tasks (id INTEGER PRIMARY KEY NOT NULL, task_id INTEGER NOT NULL, closed_at INTEGER NOT NULL, FOREIGN KEY(task_id) REFERENCES tasks(id) ON DELETE CASCADE)")
+                    database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_closed_tasks_id ON closed_tasks(id)")
+                    database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_closed_tasks_task_id_closed_at ON closed_tasks(task_id, closed_at)")
+                    database.execSQL("INSERT INTO closed_tasks (task_id, closed_at) SELECT id, closed_at FROM tasks WHERE closed_at IS NOT NULL")
+                    database.setTransactionSuccessful()
+                } finally {
+                    database.endTransaction()
+                }
+            }
+        }
+
         private fun buildDatabase(context: Context) =
             Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME)
                 .allowMainThreadQueries()
@@ -123,7 +135,8 @@ abstract class AppDatabase : RoomDatabase() {
                     MIGRATION_4_5,
                     MIGRATION_5_6,
                     MIGRATION_6_7,
-                    MIGRATION_7_8
+                    MIGRATION_7_8,
+                    MIGRATION_8_9
                 ).build()
     }
 }

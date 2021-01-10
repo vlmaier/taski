@@ -156,7 +156,7 @@ class TaskAdapter internal constructor(
 
     override fun getItemCount(): Int = tasks.size
 
-    fun removeItem(position: Int, status: Status): Task {
+    fun removeItem(position: Int, status: Status): Pair<Task, Long> {
         val task = tasks.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, tasks.size)
@@ -199,9 +199,10 @@ class TaskAdapter internal constructor(
         }
     }
 
-    private fun updateTaskStatus(task: Task, status: Status): Task {
+    private fun updateTaskStatus(task: Task, status: Status): Pair<Task, Long> {
         val assignedSkills = db.skillDao().findAssignedSkills(task.id)
         val xpPerSkill = if (assignedSkills.size >= 2) task.xp.div(assignedSkills.size) else task.xp
+        var closedTaskId = 0L
         if (status != Status.OPEN) {
             if (status == Status.DONE) {
                 for (skill in assignedSkills) {
@@ -224,13 +225,13 @@ class TaskAdapter internal constructor(
                 ).size == 0
                 if (isRecurrenceDone) {
                     // recurrence is finished
-                    db.taskDao().close(task.id, status)
+                    closedTaskId = db.taskDao().closeTask(task.id, status)
                     removeTaskFromCalendar(task)
                 } else {
-                    db.taskDao().updateClosedAt(task.id)
+                    closedTaskId = db.taskDao().closeRecurringTask(task.id)
                 }
             } else {
-                db.taskDao().close(task.id, status)
+                closedTaskId = db.taskDao().closeTask(task.id, status)
                 removeTaskFromCalendar(task)
             }
         } else {
@@ -247,7 +248,7 @@ class TaskAdapter internal constructor(
         }
         taskAdapter.notifyDataSetChanged()
         updateSortedByHeader(context, tasks)
-        return db.taskDao().findById(task.id)
+        return Pair(db.taskDao().findById(task.id), closedTaskId)
     }
 
     private fun removeTaskFromCalendar(task: Task) {

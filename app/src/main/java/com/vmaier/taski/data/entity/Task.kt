@@ -45,7 +45,7 @@ data class Task(
     val status: Status = Status.OPEN,
 
     @ColumnInfo(name = "created_at")
-    val createdAt: Long = Date().time,
+    val createdAt: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "closed_at")
     val closedAt: Long? = null,

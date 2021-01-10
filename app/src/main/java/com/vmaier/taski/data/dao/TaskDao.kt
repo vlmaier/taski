@@ -1,9 +1,9 @@
 package com.vmaier.taski.data.dao
 
 import androidx.room.*
-import com.vmaier.taski.App
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.AssignedSkill
+import com.vmaier.taski.data.entity.ClosedTask
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.entity.Task
 import java.util.*
@@ -24,6 +24,23 @@ interface TaskDao {
 
     @Insert(entity = AssignedSkill::class, onConflict = OnConflictStrategy.IGNORE)
     fun assignSkill(assignedSkill: AssignedSkill)
+
+    @Insert(entity = ClosedTask::class, onConflict = OnConflictStrategy.IGNORE)
+    fun close(closedTask: ClosedTask): Long
+
+    fun closeTask(taskId: Long, status: Status, closedAt: Long = System.currentTimeMillis()): Long {
+        close(taskId, status, closedAt)
+        return if (status == Status.DONE) {
+            close(ClosedTask(taskId = taskId, closedAt = closedAt))
+        } else {
+            0L
+        }
+    }
+
+    fun closeRecurringTask(taskId: Long, closedAt: Long = System.currentTimeMillis()): Long {
+        updateClosedAt(taskId, closedAt)
+        return close(ClosedTask(taskId = taskId, closedAt = closedAt))
+    }
 
     fun createTask(task: Task, skills: List<Skill>): Long {
         val id = create(task)
@@ -81,9 +98,11 @@ interface TaskDao {
 
     @Query(
         """
-        SELECT SUM(xp_value * count_done)
+        SELECT SUM(xp_value)
         FROM tasks
-        WHERE closed_at > :after AND closed_at < :before
+        INNER JOIN closed_tasks 
+          ON tasks.id = closed_tasks.task_id
+        WHERE closed_tasks.closed_at > :after AND closed_tasks.closed_at < :before
     """
     )
     fun countDailyXp(after: Long, before: Long): Long
@@ -92,7 +111,9 @@ interface TaskDao {
         """
         SELECT COUNT(*)
         FROM tasks
-        WHERE closed_at > :after AND closed_at < :before
+        INNER JOIN closed_tasks 
+          ON tasks.id = closed_tasks.task_id
+        WHERE closed_tasks.closed_at > :after AND closed_tasks.closed_at < :before
     """
     )
     fun countDailyTasks(after: Long, before: Long): Int
@@ -115,7 +136,7 @@ interface TaskDao {
         WHERE id = :taskId
     """
     )
-    fun close(taskId: Long, status: Status, closedAt: Long = Date().time)
+    fun close(taskId: Long, status: Status, closedAt: Long = System.currentTimeMillis())
 
     @Query(
         """
@@ -133,7 +154,7 @@ interface TaskDao {
         WHERE id = :taskId
     """
     )
-    fun updateClosedAt(taskId: Long, closedAt: Long = Date().time)
+    fun updateClosedAt(taskId: Long, closedAt: Long = System.currentTimeMillis())
 
     @Query(
         """
@@ -179,4 +200,12 @@ interface TaskDao {
     """
     )
     fun removeAssignedSkills(taskId: Long)
+
+    @Query(
+        """
+        DELETE FROM closed_tasks
+        WHERE id = :id
+    """
+    )
+    fun removeClosedTask(id: Long)
 }
