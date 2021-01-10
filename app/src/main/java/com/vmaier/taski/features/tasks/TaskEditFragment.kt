@@ -211,9 +211,10 @@ class TaskEditFragment : TaskFragment() {
             deadline += " $deadlineTime".trimEnd()
             dueAt = deadline.parseToDate()
         }
-        var rrule: String? = task.rrule
-        if (selectedRecurrence != Recurrence.DOES_NOT_REPEAT) {
-            rrule = RRuleFormatter().format(selectedRecurrence)
+        val rrule = if (selectedRecurrence != Recurrence.DOES_NOT_REPEAT) {
+            RRuleFormatter().format(selectedRecurrence)
+        } else {
+            null
         }
         val toUpdate = Task(
             id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,

@@ -40,6 +40,9 @@ class CalendarService(val context: Context) {
             event.put(CalendarContract.Events.DTSTART, startTimeMs)
             event.put(CalendarContract.Events.DTEND, startTimeMs + task.duration * 60 * 1000)
         }
+        if (task.rrule != null) {
+            event.put(CalendarContract.Events.RRULE, task.rrule.replace("RRULE:", ""))
+        }
         val timeZone = TimeZone.getDefault().id
         event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
         eventId = context.contentResolver.insert(CalendarContract.Events.CONTENT_URI, event)
@@ -81,6 +84,13 @@ class CalendarService(val context: Context) {
             }
             val timeZone = TimeZone.getDefault().id
             event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
+        }
+        if (before.rrule != after.rrule) {
+            if (after.rrule == null) {
+                event.putNull(CalendarContract.Events.RRULE)
+            } else {
+                event.put(CalendarContract.Events.RRULE, after.rrule.replace("RRULE:", ""))
+            }
         }
         return event
     }
