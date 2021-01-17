@@ -52,7 +52,14 @@ class CalendarService(val context: Context) {
 
     fun updateInCalendar(isCalendarSyncOn: Boolean, before: Task, after: Task?) {
         if (after == null) return
-        if (!isCalendarSyncOn) return
+        if (!isCalendarSyncOn) {
+            if (after.eventId != null) {
+                deleteCalendarEvent(after)
+                return
+            } else {
+                return
+            }
+        }
         if (after.eventId == null) {
             addToCalendar(isCalendarSyncOn, after)
             return

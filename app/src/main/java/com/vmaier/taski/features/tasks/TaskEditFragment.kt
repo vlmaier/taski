@@ -126,9 +126,8 @@ class TaskEditFragment : TaskFragment() {
         setDeadlineDateOnClickListener(binding.deadlineDate.editText)
         setDeadlineTimeOnClickListener(binding.deadlineTime.editText)
         setDeadlineDateOnTextChangedListener(binding.calendarSync, binding.deadlineDate.editText)
-        val isCalendarSyncEnabled = dueAt != null && task.eventId != null
-        binding.calendarSync.isEnabled = isCalendarSyncEnabled
-        binding.calendarSync.isChecked = isCalendarSyncEnabled
+        binding.calendarSync.isEnabled = dueAt != null
+        binding.calendarSync.isChecked = dueAt != null && task.eventId != null
         binding.calendarSync.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) PermissionUtils.setupCalendarPermissions(requireContext())
         }
@@ -254,6 +253,14 @@ class TaskEditFragment : TaskFragment() {
                 )
                 db.taskDao().updateAlarmRequestCode(task.id, taskReminderRequestCode)
             }
+        // enable sync (only) after disabling before
+        } else if (binding.calendarSync.isChecked && task.eventId == null) {
+            calendarService.addToCalendar(true, task)
+            getString(R.string.event_task_updated).toast(requireContext())
+        // disable sync (only) after enabling before
+        } else if (!binding.calendarSync.isChecked && task.eventId != null) {
+            calendarService.deleteCalendarEvent(task)
+            getString(R.string.event_task_updated).toast(requireContext())
         }
         selectedRecurrence = Recurrence(Recurrence.Period.NONE)
     }
