@@ -43,22 +43,25 @@ class TaskItemSwipeHandler :
         lateinit var message: String
         lateinit var taskToRestore: Task
         val closedTaskId: Long
+        val isCounterIncremented: Boolean
         if (direction == ItemTouchHelper.LEFT) {
             val completedTask = taskAdapter.removeItem(position, Status.DONE)
             taskToRestore = completedTask.first
             closedTaskId = completedTask.second
+            isCounterIncremented = completedTask.third
             message = context.getString(R.string.event_task_complete, taskToRestore.xp)
         } else {
             val failedTask = taskAdapter.removeItem(position, Status.FAILED)
             taskToRestore = failedTask.first
             closedTaskId = failedTask.second
+            isCounterIncremented = failedTask.third
             message = context.getString(R.string.event_task_failed)
         }
         // show snackbar with "Undo" option
         val snackbar = Snackbar.make(MainActivity.fab, message, Snackbar.LENGTH_LONG)
             .setAction(context.getString(R.string.action_undo)) {
                 // "Undo" is selected -> restore the deleted item
-                taskAdapter.restoreItem(taskToRestore, position)
+                taskAdapter.restoreItem(taskToRestore, position, isCounterIncremented)
                 if (closedTaskId != 0L) {
                     val db = AppDatabase(context)
                     db.taskDao().removeClosedTask(closedTaskId)

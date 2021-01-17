@@ -37,9 +37,13 @@ interface TaskDao {
         }
     }
 
-    fun closeRecurringTask(taskId: Long, closedAt: Long = System.currentTimeMillis()): Long {
+    fun closeRecurringTask(taskId: Long, status: Status, closedAt: Long = System.currentTimeMillis()): Long {
         updateClosedAt(taskId, closedAt)
-        return close(ClosedTask(taskId = taskId, closedAt = closedAt))
+        return if (status == Status.DONE) {
+            close(ClosedTask(taskId = taskId, closedAt = closedAt))
+        } else {
+            0L
+        }
     }
 
     fun createTask(task: Task, skills: List<Skill>): Long {
@@ -132,6 +136,15 @@ interface TaskDao {
     @Query(
         """
         UPDATE tasks
+        SET count_done = count_done - 1
+        WHERE id = :taskId
+    """
+    )
+    fun decrementCountDone(taskId: Long)
+
+    @Query(
+        """
+        UPDATE tasks
         SET status = :status, closed_at = :closedAt
         WHERE id = :taskId
     """
@@ -141,7 +154,7 @@ interface TaskDao {
     @Query(
         """
         UPDATE tasks
-        SET status = 'open', closed_at = null, count_done = count_done - 1
+        SET status = 'open'
         WHERE id = :taskId
     """
     )
@@ -154,7 +167,7 @@ interface TaskDao {
         WHERE id = :taskId
     """
     )
-    fun updateClosedAt(taskId: Long, closedAt: Long = System.currentTimeMillis())
+    fun updateClosedAt(taskId: Long, closedAt: Long? = System.currentTimeMillis())
 
     @Query(
         """

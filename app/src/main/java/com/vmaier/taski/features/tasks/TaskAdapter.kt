@@ -156,17 +156,17 @@ class TaskAdapter internal constructor(
 
     override fun getItemCount(): Int = tasks.size
 
-    fun removeItem(position: Int, status: Status): Pair<Task, Long> {
+    fun removeItem(position: Int, status: Status): Triple<Task, Long, Boolean> {
         val task = tasks.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, tasks.size)
         return updateTaskStatus(task, status)
     }
 
-    fun restoreItem(task: Task, position: Int) {
+    fun restoreItem(task: Task, position: Int, decrementCounter: Boolean) {
         tasks.add(position, task)
         notifyItemInserted(position)
-        updateTaskStatus(task, Status.OPEN)
+        updateTaskStatus(task, Status.OPEN, decrementCounter)
     }
 
     private fun setupSkillIcons(holder: TaskViewHolder, task: Task) {
@@ -199,10 +199,11 @@ class TaskAdapter internal constructor(
         }
     }
 
-    private fun updateTaskStatus(task: Task, status: Status): Pair<Task, Long> {
+    private fun updateTaskStatus(task: Task, status: Status, decrementCounter: Boolean = false): Triple<Task, Long, Boolean> {
         val assignedSkills = db.skillDao().findAssignedSkills(task.id)
         val xpPerSkill = if (assignedSkills.size >= 2) task.xp.div(assignedSkills.size) else task.xp
         var closedTaskId = 0L
+        var isCounterIncremented = false
         if (status != Status.OPEN) {
             if (status == Status.DONE) {
                 for (skill in assignedSkills) {
@@ -211,6 +212,7 @@ class TaskAdapter internal constructor(
                 }
                 levelService.checkForOverallLevelUp(task.xp)
                 db.taskDao().incrementCountDone(task.id)
+                isCounterIncremented = true
             }
             // handle recurrence
             if (task.rrule != null) {
@@ -228,7 +230,7 @@ class TaskAdapter internal constructor(
                     closedTaskId = db.taskDao().closeTask(task.id, status)
                     removeTaskFromCalendar(task)
                 } else {
-                    closedTaskId = db.taskDao().closeRecurringTask(task.id)
+                    closedTaskId = db.taskDao().closeRecurringTask(task.id, status)
                 }
             } else {
                 closedTaskId = db.taskDao().closeTask(task.id, status)
@@ -239,6 +241,12 @@ class TaskAdapter internal constructor(
                 db.skillDao().updateXp(skill.id, -xpPerSkill)
             }
             db.taskDao().reopen(task.id)
+            if (decrementCounter) {
+                db.taskDao().decrementCountDone(task.id)
+            }
+            if (task.rrule == null) {
+                db.taskDao().updateClosedAt(task.id, null)
+            }
         }
         if (status != Status.FAILED) {
             val overallXp = db.taskDao().countOverallXp()
@@ -248,7 +256,7 @@ class TaskAdapter internal constructor(
         }
         taskAdapter.notifyDataSetChanged()
         updateSortedByHeader(context, tasks)
-        return Pair(db.taskDao().findById(task.id), closedTaskId)
+        return Triple(db.taskDao().findById(task.id), closedTaskId, isCounterIncremented)
     }
 
     private fun removeTaskFromCalendar(task: Task) {
