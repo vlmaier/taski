@@ -26,9 +26,9 @@
                 android:id="@+id/linear_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="42dp"
+                android:layout_marginEnd="8dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/task_duration"
+                app:layout_constraintEnd_toStartOf="@+id/task_sort_indicator"
                 app:layout_constraintStart_toEndOf="@+id/task_icon"
                 app:layout_constraintTop_toTopOf="@+id/task_icon">
 
@@ -79,7 +79,7 @@
                 android:backgroundTint="?attr/colorOnSurface"
                 android:contentDescription="@string/content_due_at_icon"
                 app:layout_constraintBottom_toBottomOf="@+id/task_duration"
-                app:layout_constraintEnd_toEndOf="@+id/task_sort_indicator"
+                app:layout_constraintEnd_toEndOf="@+id/task_xp"
                 app:layout_constraintTop_toTopOf="@+id/task_duration"
                 app:srcCompat="@drawable/ic_replay_24"
                 tools:visibility="visible" />
@@ -117,19 +117,15 @@
 
             <TextView
                 android:id="@+id/task_sort_indicator"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="16dp"
-                android:layout_marginStart="4dp"
                 android:singleLine="true"
                 android:textAlignment="textEnd"
                 android:textSize="12sp"
-                app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toTopOf="@+id/task_xp"
                 app:layout_constraintEnd_toEndOf="@+id/task_xp"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/linear_layout"
                 app:layout_constraintTop_toBottomOf="@+id/task_duration"
-                tools:text="@string/difficulty_regular_value" />
+                tools:text="15 seconds ago" />
 
             <TextView
                 android:id="@+id/task_duration"
@@ -137,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:singleLine="true"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="@+id/linear_layout"
                 app:layout_constraintEnd_toStartOf="@+id/recurrence_icon"
