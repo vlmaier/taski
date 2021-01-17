@@ -49,6 +49,7 @@ class TaskAdapter internal constructor(
         var durationView: TextView = itemView.findViewById(R.id.task_duration)
         var xpView: TextView = itemView.findViewById(R.id.task_xp)
         var taskIconView: ImageView = itemView.findViewById(R.id.task_icon)
+        var recurrenceIconView: ImageView = itemView.findViewById(R.id.recurrence_icon)
         var sortIndicatorView: TextView = itemView.findViewById(R.id.task_sort_indicator)
         var skillIcon1View: ImageView = itemView.findViewById(R.id.skill_icon_1)
         var skillIcon2View: ImageView = itemView.findViewById(R.id.skill_icon_2)
@@ -102,6 +103,9 @@ class TaskAdapter internal constructor(
             SortTasks.DUE_ON.value -> task.getHumanReadableDueDate()
             else -> ""
         }
+
+        // Recurrence icon settings
+        holder.recurrenceIconView.visibility = if (task.rrule == null) View.GONE else View.VISIBLE
 
         holder.itemView.setOnClickListener {
             it.findNavController().navigate(

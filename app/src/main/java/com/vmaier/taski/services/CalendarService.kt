@@ -10,7 +10,6 @@ import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Task
-import com.vmaier.taski.parseToDate
 import timber.log.Timber
 import java.util.*
 
