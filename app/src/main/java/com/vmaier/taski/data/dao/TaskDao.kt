@@ -78,10 +78,10 @@ interface TaskDao {
         """
         SELECT *
         FROM tasks
-        WHERE closed_at > :after AND closed_at < :before
+        WHERE closed_at > :after AND closed_at < :before AND count_done > 0
     """
     )
-    fun findByClosedAt(after: Long, before: Long): List<Task>
+    fun findClosedTasks(after: Long, before: Long): List<Task>
 
     @Query(
         """
