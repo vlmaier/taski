@@ -173,7 +173,7 @@ class TaskEditFragment : TaskFragment() {
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
         out.putString(KEY_GOAL, binding.goal.editText?.text.toString())
-        out.putString(KEY_DETAILS, binding.goal.editText?.text.toString())
+        out.putString(KEY_DETAILS, binding.details.editText?.text.toString())
         out.putString(KEY_DIFFICULTY,
                 if (isDifficultyInitialized()) difficulty else Difficulty.REGULAR.value)
         out.putInt(KEY_DURATION, binding.durationBar.progress)
