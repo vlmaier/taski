@@ -63,11 +63,10 @@ class TaskCreateFragment : TaskFragment() {
         setTaskIcon(args, binding.iconButton)
 
         // Duration settings
-        binding.durationBar.progress = args?.getInt(KEY_DURATION) ?: 3
-        binding.durationValue.text = binding.durationBar.getHumanReadableValue()
-        binding.durationBar.setOnSeekBarChangeListener(
-            getDurationBarListener(binding.durationValue, binding.xpGain, binding.durationBar)
-        )
+        binding.durationButton.text = getHumanReadableDuration()
+        binding.durationButton.setOnClickListener {
+            showDurationPickerDialog(binding.durationButton, binding.xpGain)
+        }
 
         // Difficulty settings
         binding.difficulty.setOnCheckedChangeListener { chipGroup, chipId ->
@@ -78,7 +77,7 @@ class TaskCreateFragment : TaskFragment() {
             }
             difficultyChip = chipGroup.findViewById(chipId)
             difficulty = difficultyChip.tag.toString().toUpperCase(Locale.getDefault())
-            updateXpGain(binding.xpGain, binding.durationBar)
+            updateXpGain(binding.xpGain)
         }
         val selectedDifficulty = Difficulty.valueOf(
             args?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
@@ -150,7 +149,6 @@ class TaskCreateFragment : TaskFragment() {
         out.putString(KEY_DETAILS, binding.details.editText?.text.toString())
         out.putString(KEY_DIFFICULTY,
             if (isDifficultyInitialized()) difficulty else Difficulty.REGULAR.value)
-        out.putInt(KEY_DURATION, binding.durationBar.progress)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
         out.putString(KEY_DEADLINE_DATE, binding.deadlineDate.editText?.text.toString())
@@ -171,7 +169,7 @@ class TaskCreateFragment : TaskFragment() {
         }
         val detailsValue = binding.details.editText?.text.toString().trim()
         val details = if (detailsValue.isNotBlank()) detailsValue else null
-        val duration = binding.durationBar.getDurationInMinutes()
+        val duration = getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()
         val skillsToAssign = db.skillDao().findByName(skillNames)

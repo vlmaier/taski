@@ -129,7 +129,6 @@ class TaskAdapter internal constructor(
                                 TaskFragment.KEY_DIFFICULTY,
                                 task.difficulty.value.toUpperCase(Locale.getDefault())
                         )
-                        bundle.putInt(TaskFragment.KEY_DURATION, task.getSeekBarValue())
                         bundle.putStringArray(
                                 TaskFragment.KEY_SKILLS,
                                 taskSkills.map { skill -> skill.name }.toTypedArray()

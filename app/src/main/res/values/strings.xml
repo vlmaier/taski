@@ -34,6 +34,10 @@
         <item quantity="one">%d week</item>
         <item quantity="other">%d weeks</item>
     </plurals>
+    <plurals name="duration_year">
+        <item quantity="one">%d year</item>
+        <item quantity="other">%d years</item>
+    </plurals>
 
     <!-- Difficulty values -->
     <string name="difficulty_trivial_value">trivial</string>
@@ -46,6 +50,7 @@
     <string name="unit_hour_short">%d h</string>
     <string name="unit_day_short">%d d</string>
     <string name="unit_week_short">%d w</string>
+    <string name="unit_year_short">%d y</string>
 
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
@@ -183,6 +188,7 @@
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Pick a category color</string>
+    <string name="pick_task_duration">Pick task duration</string>
     <string name="alert_skill_delete">Delete skill?</string>
     <string name="alert_reset_avatar">Reset avatar?</string>
     <plurals name="alert_assigned_task">

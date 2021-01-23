@@ -7,7 +7,6 @@ import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.utils.Utils
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 
 /**
