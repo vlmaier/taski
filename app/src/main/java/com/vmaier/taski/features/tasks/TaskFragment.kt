@@ -295,7 +295,7 @@ open class TaskFragment : Fragment() {
         }
 
         val builder = AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.heading_duration))
+            .setTitle(getString(R.string.pick_task_duration))
             .setView(dialogView)
             .setCancelable(true)
             .setPositiveButton(getString(R.string.action_set)) { _, _ ->
