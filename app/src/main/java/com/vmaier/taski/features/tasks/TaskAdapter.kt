@@ -18,6 +18,7 @@ import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.levelView
 import com.vmaier.taski.MainActivity.Companion.xpView
 import com.vmaier.taski.data.AppDatabase
+import com.vmaier.taski.data.Quadruple
 import com.vmaier.taski.data.SortTasks
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
@@ -159,17 +160,17 @@ class TaskAdapter internal constructor(
 
     override fun getItemCount(): Int = tasks.size
 
-    fun removeItem(position: Int, status: Status): Triple<Task, Long, Boolean> {
+    fun removeItem(position: Int, status: Status): Quadruple<Task, Long, Boolean, Long?> {
         val task = tasks.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, tasks.size)
         return updateTaskStatus(task, status)
     }
 
-    fun restoreItem(task: Task, position: Int, decrementCounter: Boolean) {
+    fun restoreItem(task: Task, position: Int, decrementCounter: Boolean, closedAt: Long?) {
         tasks.add(position, task)
         notifyItemInserted(position)
-        updateTaskStatus(task, Status.OPEN, decrementCounter)
+        updateTaskStatus(task, Status.OPEN, decrementCounter, closedAt)
     }
 
     private fun setupSkillIcons(holder: TaskViewHolder, task: Task) {
@@ -202,7 +203,7 @@ class TaskAdapter internal constructor(
         }
     }
 
-    private fun updateTaskStatus(task: Task, status: Status, decrementCounter: Boolean = false): Triple<Task, Long, Boolean> {
+    private fun updateTaskStatus(task: Task, status: Status, decrementCounter: Boolean = false, closedAt: Long? = null): Quadruple<Task, Long, Boolean, Long?> {
         val assignedSkills = db.skillDao().findAssignedSkills(task.id)
         val xpPerSkill = if (assignedSkills.size >= 2) task.xp.div(assignedSkills.size) else task.xp
         var closedTaskId = 0L
@@ -249,6 +250,8 @@ class TaskAdapter internal constructor(
             }
             if (task.rrule == null) {
                 db.taskDao().updateClosedAt(task.id, null)
+            } else {
+                db.taskDao().updateClosedAt(task.id, closedAt)
             }
         }
         if (status != Status.FAILED) {
@@ -259,7 +262,7 @@ class TaskAdapter internal constructor(
         }
         taskAdapter.notifyDataSetChanged()
         updateSortedByHeader(context, tasks)
-        return Triple(db.taskDao().findById(task.id), closedTaskId, isCounterIncremented)
+        return Quadruple(db.taskDao().findById(task.id), closedTaskId, isCounterIncremented, task.closedAt)
     }
 
     private fun removeTaskFromCalendar(task: Task) {
