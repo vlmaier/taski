@@ -258,11 +258,13 @@ open class TaskFragment : Fragment() {
             }
         }
 
+        durationValuePicker.wrapSelectorWheel = false
         durationValuePicker.minValue = 1
         durationValuePicker.maxValue = array.size
         durationValuePicker.value = array.indexOf(durationValue) + 1
         durationValuePicker.displayedValues = array.map { it.toString() }.toTypedArray()
 
+        durationUnitPicker.wrapSelectorWheel = false
         durationUnitPicker.minValue = 1
         updateDurationUnitValue(durationUnitPicker, durationValue)
         durationUnitPicker.value = durationUnitPickerValue
