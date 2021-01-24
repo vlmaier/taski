@@ -26,9 +26,9 @@
                 android:id="@+id/linear_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="42dp"
+                android:layout_marginEnd="8dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/task_duration"
+                app:layout_constraintEnd_toStartOf="@+id/task_sort_indicator"
                 app:layout_constraintStart_toEndOf="@+id/task_icon"
                 app:layout_constraintTop_toTopOf="@+id/task_icon">
 
@@ -73,15 +73,16 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/time_icon"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginTop="2dp"
+                android:id="@+id/recurrence_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:backgroundTint="?attr/colorOnSurface"
                 android:contentDescription="@string/content_due_at_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/task_duration"
                 app:layout_constraintEnd_toEndOf="@+id/task_xp"
-                app:layout_constraintTop_toTopOf="@+id/linear_layout"
-                app:srcCompat="@drawable/ic_time_24" />
+                app:layout_constraintTop_toTopOf="@+id/task_duration"
+                app:srcCompat="@drawable/ic_replay_24"
+                tools:visibility="visible" />
 
             <ImageView
                 android:id="@+id/task_icon"
@@ -107,7 +108,7 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginEnd="8dp"
                 android:singleLine="true"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -116,37 +117,34 @@
 
             <TextView
                 android:id="@+id/task_sort_indicator"
-                android:layout_width="0dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textAlignment="textEnd"
-                android:textSize="12sp"
-                app:autoSizeTextType="uniform"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toTopOf="@+id/task_xp"
-                app:layout_constraintEnd_toEndOf="@+id/time_icon"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/linear_layout"
-                app:layout_constraintTop_toBottomOf="@+id/time_icon"
-                tools:text="@string/difficulty_regular_value" />
+                app:layout_constraintEnd_toEndOf="@+id/task_xp"
+                app:layout_constraintTop_toBottomOf="@+id/task_duration"
+                tools:text="15 seconds ago" />
 
             <TextView
                 android:id="@+id/task_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="3dp"
+                android:layout_marginEnd="2dp"
                 android:singleLine="true"
                 android:textSize="14sp"
                 app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/time_icon"
-                app:layout_constraintEnd_toStartOf="@+id/time_icon"
-                app:layout_constraintTop_toTopOf="@+id/time_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/linear_layout"
+                app:layout_constraintEnd_toStartOf="@+id/recurrence_icon"
+                app:layout_constraintTop_toTopOf="@+id/linear_layout"
+                app:layout_constraintVertical_bias="0.0"
                 tools:text="6 h" />
 
             <ImageView
                 android:id="@+id/skill_icon_1"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
                 android:backgroundTint="?attr/colorOnSurface"
@@ -160,8 +158,8 @@
 
             <ImageView
                 android:id="@+id/skill_icon_2"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="4dp"
                 android:backgroundTint="?attr/colorOnSurface"
                 android:contentDescription="@string/content_due_at_icon"
@@ -174,8 +172,8 @@
 
             <ImageView
                 android:id="@+id/skill_icon_3"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="4dp"
                 android:backgroundTint="?attr/colorOnSurface"
                 android:contentDescription="@string/content_due_at_icon"
@@ -188,8 +186,8 @@
 
             <ImageView
                 android:id="@+id/skill_icon_4"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="4dp"
                 android:backgroundTint="?attr/colorOnSurface"
                 android:contentDescription="@string/content_due_at_icon"
@@ -202,8 +200,8 @@
 
             <ImageView
                 android:id="@+id/skill_icon_5"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="4dp"
                 android:backgroundTint="?attr/colorOnSurface"
                 android:contentDescription="@string/content_due_at_icon"
@@ -216,8 +214,8 @@
 
             <ImageView
                 android:id="@+id/skill_icon_6"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="4dp"
                 android:backgroundTint="?attr/colorOnSurface"
                 android:contentDescription="@string/content_due_at_icon"
@@ -231,8 +229,8 @@
 
             <ImageView
                 android:id="@+id/skill_icon_7"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="4dp"
                 android:backgroundTint="?attr/colorOnSurface"
                 android:contentDescription="@string/content_due_at_icon"
@@ -247,7 +245,7 @@
                 android:id="@+id/too_much_skills"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="4dp"
                 android:singleLine="true"
                 android:text="@string/three_dots"
                 android:textSize="18sp"

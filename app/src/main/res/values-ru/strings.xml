@@ -14,6 +14,7 @@
     <string name="theme_pilot_name">Пилот</string>
     <string name="theme_coral_name">Коралл</string>
     <string name="theme_blossom_name">Цветок</string>
+    <string name="theme_mint_name">Мята</string>
 
     <!-- Duration values -->
     <plurals name="duration_minute">
@@ -36,6 +37,11 @@
         <item quantity="few">%d недели</item>
         <item quantity="many">%d недель</item>
     </plurals>
+    <plurals name="duration_year">
+        <item quantity="one">%d год</item>
+        <item quantity="few">%d года</item>
+        <item quantity="many">%d лет</item>
+    </plurals>
 
     <!-- Difficulty values -->
     <string name="difficulty_trivial_value">банально</string>
@@ -48,6 +54,7 @@
     <string name="unit_hour_short">%d ч</string>
     <string name="unit_day_short">%d д</string>
     <string name="unit_week_short">%d н</string>
+    <string name="unit_year_short">%d г</string>
 
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
@@ -110,8 +117,7 @@
     <string name="heading_create_task">Создать новую задачю</string>
     <string name="heading_duration">Продолжительность</string>
     <string name="heading_difficulty">Трудность</string>
-    <string name="heading_due_on">Выполнить к</string>
-    <string name="heading_due_at">в</string>
+    <string name="heading_deadline">Срок выполнения</string>
     <string name="heading_tasks">Задачи</string>
     <string name="heading_skills">Навыки</string>
     <string name="heading_categories">Категории</string>
@@ -134,7 +140,7 @@
     <string name="heading_user_name">Имя</string>
     <string name="heading_edit_category_name">Изменить название категории</string>
     <string name="heading_create_category">Создать категорию навыков</string>
-    <string name="heading_select_image">Выберите картинку</string>
+    <string name="heading_select_image">Выбери картинку</string>
     <string name="heading_visual_prefs">Визуальные настройки</string>
     <string name="heading_general_settings">Общие настройки</string>
     <string name="heading_help">Помощь</string>
@@ -150,7 +156,7 @@
     <string name="heading_synchronize_to_calendar">Синхронизировать с календарем</string>
     <string name="heading_sort_by">Сортировать по</string>
     <string name="heading_sort_order">Порядок сортировки</string>
-    <string name="heading_select_theme">Выберите тему</string>
+    <string name="heading_select_theme">Выбери тему</string>
     <string name="heading_calendar_settings">Настройки календаря</string>
     <string name="heading_delete_completed_tasks">Удаление выполненных задач</string>
     <string name="heading_replay_intro">Повторить вступление</string>
@@ -165,26 +171,27 @@
     <string name="hint_task_due_date">Дата</string>
     <string name="hint_task_due_time">Время</string>
     <string name="hint_no_skills">Навыки еще не созданы</string>
-    <string name="hint_no_tasks_in_rv">Нет доступных задач\nнажмите + чтобы добавить</string>
-    <string name="hint_no_skills_in_rv">Нет доступных навыков\nнажмите + чтобы добавить</string>
-    <string name="hint_no_categories_in_rv">Нет доступных категорий\nнажмите + чтобы добавить</string>
-    <string name="hint_user_name">Введите ваше имя пользователя</string>
-    <string name="hint_category_name">Введите название категории</string>
+    <string name="hint_no_tasks_in_rv">Нет доступных задач\nнажми + чтобы добавить</string>
+    <string name="hint_no_skills_in_rv">Нет доступных навыков\nнажми + чтобы добавить</string>
+    <string name="hint_no_categories_in_rv">Нет доступных категорий\nнажми + чтобы добавить</string>
+    <string name="hint_user_name">Введи свое имя пользователя</string>
+    <string name="hint_category_name">Введи название категории</string>
 
     <!-- Description messages -->
     <string name="description_calendar_sync">Если включено, приложение будет синхронизировать все задачи с календарем по умолчанию</string>
-    <string name="description_user_name">Установите свое имя, которое будет отображаться в навигационном меню</string>
+    <string name="description_user_name">Установи свое имя, которое будет отображаться в навигационном меню</string>
     <string name="description_change_avatar">Изменить аватар пользователя</string>
     <string name="description_reset_avatar">Сбросить текущий аватар на стандартный</string>
     <string name="description_no_data">Нет данных</string>
-    <string name="description_select_language">Выберите язык</string>
-    <string name="description_select_theme">Выберите тему</string>
+    <string name="description_select_language">Выбери язык</string>
+    <string name="description_select_theme">Выбери тему</string>
     <string name="description_switch_to_dark">Переключиться в ночной режим</string>
     <string name="description_switch_to_light">Переключиться в дневной режим</string>
     <string name="description_delete_completed_tasks">Удалять задачи из календаря, когда они были выполнены</string>
 
     <!-- Dialog messages -->
-    <string name="pick_a_color">Выберите цвет категории</string>
+    <string name="pick_a_color">Выбери цвет категории</string>
+    <string name="pick_task_duration">Выбери продолжительность задачи</string>
     <string name="alert_skill_delete">Удалить навык?</string>
     <string name="alert_reset_avatar">Сбросить аватар?</string>
     <plurals name="alert_assigned_task">
@@ -223,9 +230,9 @@
     <string name="intro_slide_3_bottom">чтобы достичь ваших целей.</string>
     <string name="intro_slide_4_top">Присваивай навыки задачам</string>
     <string name="intro_slide_4_bottom">и следи за прогрессом при выполнении.</string>
-    <string name="intro_slide_5_top">Следите за прогрессом</string>
+    <string name="intro_slide_5_top">Следи за прогрессом</string>
     <string name="intro_slide_5_bottom">с различными диаграммами и графиками.</string>
-    <string name="intro_slide_6_top">Наслаждайтесь выбором</string>
+    <string name="intro_slide_6_top">Наслаждайся выбором</string>
     <string name="intro_slide_6_bottom">из множества подобранных тем.</string>
 
     <string name="text_manual">
@@ -271,7 +278,7 @@
 ---
 \n
 ### \# Навыки\n
-Навыки отражают ваши личные интересы, над которыми вы хотите работать.\n
+Навыки отражают ваши личные интересы, над которыми ты хочешь работать.\n
 \n
 * **Обозначение**\\\n
   Имя навыка является **обязательным** и должно содержать от 4 до 24 символов при создании или редактировании навыка. Умения можно отсортировать по имени.\n

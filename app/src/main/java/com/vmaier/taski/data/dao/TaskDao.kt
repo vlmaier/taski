@@ -1,9 +1,9 @@
 package com.vmaier.taski.data.dao
 
 import androidx.room.*
-import com.vmaier.taski.App
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.AssignedSkill
+import com.vmaier.taski.data.entity.ClosedTask
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.entity.Task
 import java.util.*
@@ -24,6 +24,27 @@ interface TaskDao {
 
     @Insert(entity = AssignedSkill::class, onConflict = OnConflictStrategy.IGNORE)
     fun assignSkill(assignedSkill: AssignedSkill)
+
+    @Insert(entity = ClosedTask::class, onConflict = OnConflictStrategy.IGNORE)
+    fun close(closedTask: ClosedTask): Long
+
+    fun closeTask(taskId: Long, status: Status, closedAt: Long = System.currentTimeMillis()): Long {
+        close(taskId, status, closedAt)
+        return if (status == Status.DONE) {
+            close(ClosedTask(taskId = taskId, closedAt = closedAt))
+        } else {
+            0L
+        }
+    }
+
+    fun closeRecurringTask(taskId: Long, status: Status, closedAt: Long = System.currentTimeMillis()): Long {
+        updateClosedAt(taskId, closedAt)
+        return if (status == Status.DONE) {
+            close(ClosedTask(taskId = taskId, closedAt = closedAt))
+        } else {
+            0L
+        }
+    }
 
     fun createTask(task: Task, skills: List<Skill>): Long {
         val id = create(task)
@@ -57,10 +78,10 @@ interface TaskDao {
         """
         SELECT *
         FROM tasks
-        WHERE status = 'done' AND closed_at LIKE :closedAt
+        WHERE closed_at > :after AND closed_at < :before AND count_done > 0
     """
     )
-    fun findByClosedAt(closedAt: String): List<Task>
+    fun findClosedTasks(after: Long, before: Long): List<Task>
 
     @Query(
         """
@@ -73,9 +94,8 @@ interface TaskDao {
 
     @Query(
         """
-        SELECT SUM(xp_value)
+        SELECT SUM(xp_value * count_done)
         FROM tasks
-        WHERE status = 'done'        
     """
     )
     fun countOverallXp(): Long
@@ -84,21 +104,43 @@ interface TaskDao {
         """
         SELECT SUM(xp_value)
         FROM tasks
-        WHERE status = 'done' AND closed_at LIKE :closedAt
+        INNER JOIN closed_tasks 
+          ON tasks.id = closed_tasks.task_id
+        WHERE closed_tasks.closed_at > :after AND closed_tasks.closed_at < :before
     """
     )
-    fun countDailyXp(closedAt: String): Long
+    fun countDailyXp(after: Long, before: Long): Long
 
     @Query(
         """
         SELECT COUNT(*)
         FROM tasks
-        WHERE status = 'done' AND closed_at LIKE :closedAt
+        INNER JOIN closed_tasks 
+          ON tasks.id = closed_tasks.task_id
+        WHERE closed_tasks.closed_at > :after AND closed_tasks.closed_at < :before
     """
     )
-    fun countDailyTasks(closedAt: String): Int
+    fun countDailyTasks(after: Long, before: Long): Int
 
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
+
+    @Query(
+        """
+        UPDATE tasks
+        SET count_done = count_done + 1
+        WHERE id = :taskId
+    """
+    )
+    fun incrementCountDone(taskId: Long)
+
+    @Query(
+        """
+        UPDATE tasks
+        SET count_done = count_done - 1
+        WHERE id = :taskId
+    """
+    )
+    fun decrementCountDone(taskId: Long)
 
     @Query(
         """
@@ -107,16 +149,25 @@ interface TaskDao {
         WHERE id = :taskId
     """
     )
-    fun close(taskId: Long, status: Status, closedAt: String = App.dateTimeFormat.format(Date()))
+    fun close(taskId: Long, status: Status, closedAt: Long = System.currentTimeMillis())
 
     @Query(
         """
         UPDATE tasks
-        SET status = 'open', closed_at = null
+        SET status = 'open'
         WHERE id = :taskId
     """
     )
     fun reopen(taskId: Long)
+
+    @Query(
+        """
+        UPDATE tasks
+        SET closed_at = :closedAt
+        WHERE id = :taskId
+    """
+    )
+    fun updateClosedAt(taskId: Long, closedAt: Long? = System.currentTimeMillis())
 
     @Query(
         """
@@ -162,4 +213,12 @@ interface TaskDao {
     """
     )
     fun removeAssignedSkills(taskId: Long)
+
+    @Query(
+        """
+        DELETE FROM closed_tasks
+        WHERE id = :id
+    """
+    )
+    fun removeClosedTask(id: Long)
 }

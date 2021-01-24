@@ -10,6 +10,8 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.maltaisn.recurpicker.RecurrenceFinder
+import com.maltaisn.recurpicker.format.RRuleFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.bottomNav
 import com.vmaier.taski.MainActivity.Companion.drawerLayout
@@ -21,7 +23,9 @@ import com.vmaier.taski.data.SortTasks
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentTaskListBinding
+import com.vmaier.taski.utils.Utils
 import timber.log.Timber
+import java.util.*
 
 
 /**
@@ -41,8 +45,8 @@ class TaskListFragment : Fragment() {
             val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             when (sort) {
                 SortTasks.CREATED_AT.value -> tasks.apply {
-                    if (order == SortOrder.ASC.value) sortBy { it.createdAt.parseToDate()?.time }
-                    else sortByDescending {it.createdAt.parseToDate()?.time }
+                    if (order == SortOrder.ASC.value) sortByDescending { it.createdAt }
+                    else sortBy { it.createdAt }
                 }
                 SortTasks.GOAL.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) sortBy { it.goal }
@@ -62,19 +66,9 @@ class TaskListFragment : Fragment() {
                 }
                 SortTasks.DUE_ON.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) {
-                        sortBy {
-                            if (it.dueAt != null) {
-                                it.dueAt.parseToDate()?.time
-                            }
-                            else it.createdAt.parseToDate()?.time
-                        }
+                        sortBy { it.dueAt ?: it.createdAt }
                     } else {
-                        sortByDescending {
-                            if (it.dueAt != null) {
-                                it.dueAt.parseToDate()?.time
-                            }
-                            else it.createdAt.parseToDate()?.time
-                        }
+                        sortByDescending { it.dueAt ?: it.createdAt }
                     }
                 }
             }
@@ -161,6 +155,22 @@ class TaskListFragment : Fragment() {
         })
         val db = AppDatabase(requireContext())
         val tasks = db.taskDao().findByStatus(Status.OPEN)
+        tasks.removeAll {
+            if (it.rrule != null) {
+                val found = RecurrenceFinder().findBasedOn(
+                    RRuleFormatter().parse(it.rrule),
+                    it.createdAt,
+                    it.closedAt ?: it.createdAt,
+                    it.countDone,
+                    1,
+                    it.closedAt ?: it.createdAt,
+                    false
+                )
+                found.size == 0 || (it.closedAt != null && found[0] > Utils.getEndOfDay())
+            } else {
+                false
+            }
+        }
         sortTasks(requireContext(), tasks)
         Timber.d("${tasks.size} task(s) found.")
         taskAdapter.setTasks(tasks)

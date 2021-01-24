@@ -131,12 +131,12 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="136dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
                     android:hint="@string/hint_task_due_date"
                     app:endIconMode="clear_text"
-                    app:layout_constraintStart_toEndOf="@+id/deadline_date_text"
-                    app:layout_constraintTop_toBottomOf="@+id/difficulty">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/deadline_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -154,29 +154,29 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/deadline_time"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:hint="@string/hint_task_due_time"
-                    app:endIconMode="clear_text"
-                    app:layout_constraintBottom_toBottomOf="@+id/deadline_date"
-                    app:layout_constraintStart_toEndOf="@+id/deadline_time_text"
-                    app:layout_constraintTop_toTopOf="@+id/deadline_date">
+                android:id="@+id/deadline_time"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="106dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:hint="@string/hint_task_due_time"
+                app:endIconMode="clear_text"
+                app:layout_constraintBottom_toBottomOf="@+id/deadline_date"
+                app:layout_constraintStart_toEndOf="@+id/deadline_date"
+                app:layout_constraintTop_toTopOf="@+id/deadline_date">
 
                 <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:importantForAutofill="no"
-                        android:inputType="none"
-                        android:padding="12dp"
-                        android:singleLine="true"
-                        android:textSize="14sp"
-                        tools:ignore="KeyboardInaccessibleWidget"
-                        tools:text="14:45" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    android:padding="12dp"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    tools:ignore="KeyboardInaccessibleWidget"
+                    tools:text="14:45" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -244,58 +244,6 @@
                     tools:background="@drawable/ic_tasks_24" />
 
             <TextView
-                    android:id="@+id/duration_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="16dp"
-                    android:singleLine="true"
-                    android:text="@string/heading_duration"
-                    android:textSize="16sp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintStart_toStartOf="@+id/duration_bar"
-                    app:layout_constraintTop_toBottomOf="@+id/details" />
-
-            <TextView
-                    android:id="@+id/deadline_date_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:singleLine="true"
-                    android:text="@string/heading_due_on"
-                    android:textSize="16sp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="@+id/deadline_date"
-                    app:layout_constraintStart_toStartOf="@+id/difficulty"
-                    app:layout_constraintTop_toTopOf="@+id/deadline_date" />
-
-            <TextView
-                    android:id="@+id/deadline_time_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:singleLine="true"
-                    android:text="@string/heading_due_at"
-                    android:textSize="16sp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="@+id/deadline_date"
-                    app:layout_constraintStart_toEndOf="@+id/deadline_date"
-                    app:layout_constraintTop_toTopOf="@+id/deadline_date" />
-
-            <TextView
-                    android:id="@+id/duration_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:singleLine="true"
-                    android:textSize="16sp"
-                    app:autoSizeTextType="uniform"
-                    app:layout_constraintBottom_toBottomOf="@+id/duration_text"
-                    app:layout_constraintEnd_toEndOf="@+id/icon_button"
-                    app:layout_constraintTop_toTopOf="@+id/duration_text"
-                    tools:text="15 minutes" />
-
-            <TextView
                     android:id="@+id/xp_gain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -309,17 +257,6 @@
                     app:layout_constraintTop_toTopOf="@+id/xp_gain_text"
                     tools:text="15 XP" />
 
-            <SeekBar
-                    android:id="@+id/duration_bar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:max="20"
-                    app:layout_constraintEnd_toEndOf="@+id/icon_button"
-                    app:layout_constraintStart_toStartOf="@+id/details"
-                    app:layout_constraintTop_toBottomOf="@+id/duration_text"
-                    tools:progress="3" />
-
             <TextView
                     android:id="@+id/difficulty_text"
                     android:layout_width="0dp"
@@ -331,20 +268,80 @@
                     android:textSize="16sp"
                     app:autoSizeTextType="uniform"
                     app:layout_constraintStart_toStartOf="@+id/difficulty"
-                    app:layout_constraintTop_toBottomOf="@+id/duration_bar" />
+                    app:layout_constraintTop_toBottomOf="@+id/details" />
 
-            <CheckBox
+            <TextView
+                    android:id="@+id/deadline_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="16dp"
+                    android:singleLine="true"
+                    android:text="@string/heading_deadline"
+                    android:textSize="16sp"
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintStart_toStartOf="@+id/deadline_date"
+                    app:layout_constraintTop_toBottomOf="@+id/difficulty" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/calendar_sync"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:enabled="false"
+                    android:paddingEnd="4dp"
+                    android:text="@string/heading_synchronize_to_calendar"
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recurrence_button"
+                    tools:ignore="RtlSymmetry" />
+
+            <Button
+                    android:id="@+id/recurrence_button"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:padding="4dp"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    app:icon="@drawable/ic_replay_24"
+                    app:iconPadding="4dp"
+                    app:iconTint="?attr/colorSecondary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/duration_button"
+                    tools:text="Does not repeat" />
+
+            <Button
+                    android:id="@+id/duration_button"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:enabled="false"
-                    android:text="@string/heading_synchronize_to_calendar"
+                    android:padding="4dp"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:textAppearance="?attr/textAppearanceCaption"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    app:icon="@drawable/ic_time_24"
+                    app:iconPadding="4dp"
+                    app:iconTint="?attr/colorSecondary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/deadline_date" />
+                    app:layout_constraintTop_toBottomOf="@+id/deadline_date"
+                    tools:text="15 minutes" />
 
             <TextView
                     android:id="@+id/skills_text"

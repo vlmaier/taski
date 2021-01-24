@@ -9,6 +9,8 @@ import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.maltaisn.recurpicker.RecurrenceFinder
+import com.maltaisn.recurpicker.format.RRuleFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
@@ -18,6 +20,7 @@ import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.sortSkills
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.utils.KeyBoardHider
+import com.vmaier.taski.utils.Utils
 import timber.log.Timber
 
 
@@ -68,12 +71,8 @@ class SkillEditFragment : SkillFragment() {
         val autoCompleteCategory = binding.category.editText as AppCompatAutoCompleteTextView
         autoCompleteCategory.setAdapter(arrayAdapter)
 
-        // "Open tasks" settings
-        val openTasksAmount = db.skillDao().countTasksWithSkillByStatus(skill.id, Status.OPEN)
-        binding.skillOpenTasksText.visibility = if (openTasksAmount > 0) View.VISIBLE else View.GONE
-
         // "Done tasks" settings
-        val doneTasksAmount = db.skillDao().countTasksWithSkillByStatus(skill.id, Status.DONE)
+        val doneTasksAmount = db.skillDao().countDoneTasksWithSkill(skill.id)
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
 
         // "Skill hours" settings
@@ -102,6 +101,22 @@ class SkillEditFragment : SkillFragment() {
             isCanceled = true
         }
         val tasks = db.skillDao().findTasksWithSkillByStatus(skill.id, Status.OPEN)
+        tasks.removeAll {
+            if (it.rrule != null) {
+                val found = RecurrenceFinder().findBasedOn(
+                    RRuleFormatter().parse(it.rrule),
+                    it.createdAt,
+                    it.closedAt ?: it.createdAt,
+                    it.countDone,
+                    1,
+                    it.closedAt ?: it.createdAt,
+                    false
+                )
+                found.size == 0 || (it.closedAt != null && found[0] > Utils.getEndOfDay())
+            } else {
+                false
+            }
+        }
         Timber.d("${tasks.size} task(s) found.")
         tasks.sortBy { it.goal }
         taskAdapter = AssignedTaskAdapter(requireContext())
@@ -110,6 +125,9 @@ class SkillEditFragment : SkillFragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = taskAdapter
         }
+
+        // "Open tasks" settings
+        binding.skillOpenTasksText.visibility = if (tasks.size > 0) View.VISIBLE else View.GONE
         return binding.root
     }
 

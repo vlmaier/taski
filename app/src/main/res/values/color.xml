@@ -261,6 +261,32 @@
     <color name="colorOnBackgroundLightBlossom">@color/colorDarkBlossom</color>
     <color name="colorOnBackgroundDarkBlossom">@color/colorLightBlossom</color>
 
+    <!-- Color palette for Mint theme -->
+    <color name="colorPrimaryDarkMint">#AAD8C4</color>
+    <color name="colorPrimaryLightMint">#7CB896</color>
+    <color name="colorPrimaryVariantDarkMint">#7CB896</color>
+    <color name="colorPrimaryVariantLightMint">#AAD8C4</color>
+    <color name="colorSecondaryMint">#6B635E</color>
+    <color name="colorSecondaryVariantMint">#99908B</color>
+    <color name="colorErrorDarkMint">#CF6679</color>
+    <color name="colorErrorLightMint">#B00020</color>
+    <color name="colorLightMint">#FFFFFF</color>
+    <color name="colorDarkMint">#212121</color>
+    <color name="colorSurfaceLightMint">@color/colorLightMint</color>
+    <color name="colorSurfaceDarkMint">@color/colorDarkMint</color>
+    <color name="colorBackgroundLightMint">@color/colorLightMint</color>
+    <color name="colorBackgroundDarkMint">@color/colorDarkMint</color>
+    <color name="colorOnSurfaceLightMint">@color/colorDarkMint</color>
+    <color name="colorOnSurfaceDarkMint">@color/colorLightMint</color>
+    <color name="colorOnErrorLightMint">@color/colorLightMint</color>
+    <color name="colorOnErrorDarkMint">@color/colorDarkMint</color>
+    <color name="colorOnPrimaryLightMint">@color/colorLightMint</color>
+    <color name="colorOnPrimaryDarkMint">@color/colorDarkMint</color>
+    <color name="colorOnSecondaryLightMint">@color/colorLightMint</color>
+    <color name="colorOnSecondaryDarkMint">@color/colorDarkMint</color>
+    <color name="colorOnBackgroundLightMint">@color/colorDarkMint</color>
+    <color name="colorOnBackgroundDarkMint">@color/colorLightMint</color>
+
     <color name="colorDivider">#C6C4C4</color>
     <color name="colorSwipeDone">#388E3C</color>
     <color name="colorSwipeCancel">#D32F2F</color>

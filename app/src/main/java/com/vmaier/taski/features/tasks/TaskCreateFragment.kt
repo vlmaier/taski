@@ -6,11 +6,17 @@ import android.view.View
 import android.view.View.NO_ID
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
+import com.maltaisn.recurpicker.Recurrence
+import com.maltaisn.recurpicker.format.RRuleFormatter
+import com.maltaisn.recurpicker.format.RecurrenceFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.iconDialog
+import com.vmaier.taski.MainActivity.Companion.recurrenceListDialog
+import com.vmaier.taski.MainActivity.Companion.selectedRecurrence
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentCreateTaskBinding
@@ -20,7 +26,6 @@ import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.RequestCode
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import timber.log.Timber
-import java.text.ParseException
 import java.util.*
 
 
@@ -34,6 +39,8 @@ class TaskCreateFragment : TaskFragment() {
     companion object {
         lateinit var binding: FragmentCreateTaskBinding
         lateinit var difficultyChip: Chip
+        lateinit var recurrenceButton: Button
+        fun isRecurrenceButtonInitialized() = Companion::recurrenceButton.isInitialized
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
@@ -56,22 +63,21 @@ class TaskCreateFragment : TaskFragment() {
         setTaskIcon(args, binding.iconButton)
 
         // Duration settings
-        binding.durationBar.progress = args?.getInt(KEY_DURATION) ?: 3
-        binding.durationValue.text = binding.durationBar.getHumanReadableValue()
-        binding.durationBar.setOnSeekBarChangeListener(
-            getDurationBarListener(binding.durationValue, binding.xpGain, binding.durationBar)
-        )
+        binding.durationButton.text = getHumanReadableDuration()
+        binding.durationButton.setOnClickListener {
+            showDurationPickerDialog(binding.durationButton, binding.xpGain)
+        }
 
         // Difficulty settings
         binding.difficulty.setOnCheckedChangeListener { chipGroup, chipId ->
             if (chipId == NO_ID) {
-                // do not allow to unselect a chip
+                // do not allow to deselect a chip
                 difficultyChip.isChecked = true
                 return@setOnCheckedChangeListener
             }
             difficultyChip = chipGroup.findViewById(chipId)
             difficulty = difficultyChip.tag.toString().toUpperCase(Locale.getDefault())
-            updateXpGain(binding.xpGain, binding.durationBar)
+            updateXpGain(binding.xpGain)
         }
         val selectedDifficulty = Difficulty.valueOf(
             args?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
@@ -96,11 +102,13 @@ class TaskCreateFragment : TaskFragment() {
             if (createTaskButtonClicked()) {
                 it.findNavController().popBackStack()
                 it.hideKeyboard()
+                selectedRecurrence = Recurrence(Recurrence.Period.NONE)
             }
         }
         binding.cancelButton.setOnClickListener {
             it.findNavController().popBackStack()
             it.hideKeyboard()
+            selectedRecurrence = Recurrence(Recurrence.Period.NONE)
         }
         binding.iconButton.setOnClickListener {
             val fragmentManager = requireActivity().supportFragmentManager
@@ -115,6 +123,16 @@ class TaskCreateFragment : TaskFragment() {
         setDeadlineDateOnTextChangedListener(binding.calendarSync, binding.deadlineDate.editText)
         binding.calendarSync.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) PermissionUtils.setupCalendarPermissions(requireContext())
+        }
+
+        // Recurrence settings
+        recurrenceButton = binding.recurrenceButton
+        binding.recurrenceButton.text =
+            RecurrenceFormatter(App.dateTimeFormat).format(requireContext(), selectedRecurrence)
+        binding.recurrenceButton.setOnClickListener {
+            recurrenceListDialog.selectedRecurrence = selectedRecurrence
+            recurrenceListDialog.startDate = System.currentTimeMillis()
+            recurrenceListDialog.show(requireActivity().supportFragmentManager, Const.Tags.RECURRENCE_LIST_DIALOG)
         }
         return binding.root
     }
@@ -131,7 +149,6 @@ class TaskCreateFragment : TaskFragment() {
         out.putString(KEY_DETAILS, binding.details.editText?.text.toString())
         out.putString(KEY_DIFFICULTY,
             if (isDifficultyInitialized()) difficulty else Difficulty.REGULAR.value)
-        out.putInt(KEY_DURATION, binding.durationBar.progress)
         out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
         out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
         out.putString(KEY_DEADLINE_DATE, binding.deadlineDate.editText?.text.toString())
@@ -139,7 +156,6 @@ class TaskCreateFragment : TaskFragment() {
     }
 
     private fun createTaskButtonClicked(): Boolean {
-
         val goal = binding.goal.editText?.text.toString().trim()
         if (goal.isBlank()) {
             binding.goal.requestFocus()
@@ -153,24 +169,29 @@ class TaskCreateFragment : TaskFragment() {
         }
         val detailsValue = binding.details.editText?.text.toString().trim()
         val details = if (detailsValue.isNotBlank()) detailsValue else null
-        val duration = binding.durationBar.getDurationInMinutes()
+        val duration = getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()
         val skillsToAssign = db.skillDao().findByName(skillNames)
-        var dueAt: String? = null
         val deadlineDate = binding.deadlineDate.editText?.text.toString()
         val deadlineTime = binding.deadlineTime.editText?.text.toString()
+        var dueAt: Date? = null
         if (deadlineDate.isNotBlank()) {
-            dueAt = deadlineDate
-            dueAt += if (deadlineTime.isNotBlank()) {
+            var deadline = deadlineDate
+            deadline += if (deadlineTime.isNotBlank()) {
                 " $deadlineTime"
             } else {
                 " 08:00"
             }
+            dueAt = deadline.parseToDate()
+        }
+        var rrule: String? = null
+        if (selectedRecurrence != Recurrence.DOES_NOT_REPEAT) {
+            rrule = RRuleFormatter().format(selectedRecurrence)
         }
         val task = Task(
             goal = goal, details = details, duration = duration, iconId = iconId,
-            dueAt = dueAt, difficulty = Difficulty.valueOf(difficulty)
+            dueAt = dueAt?.time, difficulty = Difficulty.valueOf(difficulty), rrule = rrule
         )
         val id = db.taskDao().createTask(task, skillsToAssign)
         Timber.d("Task ($id) created.")
@@ -180,15 +201,19 @@ class TaskCreateFragment : TaskFragment() {
         if (dueAt != null) {
             // remind 15 minutes before the task is due (incl. duration)
             val durationInMs: Long = duration.toLong() * 60 * 1000
-            val notifyAtInMs: Long = dueAt.parseToDate()?.time
-                ?.minus(durationInMs)
-                ?.minus(900000)
-                ?: 0
+            val notifyAtInMs: Long = dueAt.time
+                .minus(durationInMs)
+                .minus(900000)
             val taskReminderRequestCode = RequestCode.get(requireContext())
+            val message = if (deadlineTime.isNotBlank()) {
+                getString(R.string.term_due_at, deadlineTime)
+            } else {
+                getString(R.string.term_due_today)
+            }
             notificationService.setReminder(
                 notifyAtInMs,
                 task.goal,
-                "Due at ${dueAt.split(" ")[1]}",
+                message,
                 requireActivity(),
                 taskReminderRequestCode
             )

@@ -12,6 +12,8 @@ import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.maltaisn.icondialog.pack.IconDrawableLoader
+import com.maltaisn.recurpicker.RecurrenceFinder
+import com.maltaisn.recurpicker.format.RRuleFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.levelView
 import com.vmaier.taski.MainActivity.Companion.xpView
@@ -47,6 +49,7 @@ class TaskAdapter internal constructor(
         var durationView: TextView = itemView.findViewById(R.id.task_duration)
         var xpView: TextView = itemView.findViewById(R.id.task_xp)
         var taskIconView: ImageView = itemView.findViewById(R.id.task_icon)
+        var recurrenceIconView: ImageView = itemView.findViewById(R.id.recurrence_icon)
         var sortIndicatorView: TextView = itemView.findViewById(R.id.task_sort_indicator)
         var skillIcon1View: ImageView = itemView.findViewById(R.id.skill_icon_1)
         var skillIcon2View: ImageView = itemView.findViewById(R.id.skill_icon_2)
@@ -101,6 +104,9 @@ class TaskAdapter internal constructor(
             else -> ""
         }
 
+        // Recurrence icon settings
+        holder.recurrenceIconView.visibility = if (task.rrule == null) View.GONE else View.VISIBLE
+
         holder.itemView.setOnClickListener {
             it.findNavController().navigate(
                     TaskListFragmentDirections
@@ -123,21 +129,20 @@ class TaskAdapter internal constructor(
                                 TaskFragment.KEY_DIFFICULTY,
                                 task.difficulty.value.toUpperCase(Locale.getDefault())
                         )
-                        bundle.putInt(TaskFragment.KEY_DURATION, task.getSeekBarValue())
                         bundle.putStringArray(
                                 TaskFragment.KEY_SKILLS,
                                 taskSkills.map { skill -> skill.name }.toTypedArray()
                         )
                         bundle.putInt(TaskFragment.KEY_ICON_ID, task.iconId)
                         if (task.dueAt != null) {
-                            val dueAtParts = task.dueAt.split(" ")
+                            val dateTime = Date(task.dueAt)
                             bundle.putString(
-                                    TaskFragment.KEY_DEADLINE_DATE,
-                                    dueAtParts[0]
+                                TaskFragment.KEY_DEADLINE_DATE,
+                                dateTime.getDateInAppFormat()
                             )
                             bundle.putString(
-                                    TaskFragment.KEY_DEADLINE_TIME,
-                                    dueAtParts[1]
+                                TaskFragment.KEY_DEADLINE_TIME,
+                                dateTime.getTimeInAppFormat()
                             )
                         }
                         it.findNavController().navigate(
@@ -154,17 +159,17 @@ class TaskAdapter internal constructor(
 
     override fun getItemCount(): Int = tasks.size
 
-    fun removeItem(position: Int, status: Status): Task {
+    fun removeItem(position: Int, status: Status): Triple<Task, Long, Boolean> {
         val task = tasks.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, tasks.size)
         return updateTaskStatus(task, status)
     }
 
-    fun restoreItem(task: Task, position: Int) {
+    fun restoreItem(task: Task, position: Int, decrementCounter: Boolean) {
         tasks.add(position, task)
         notifyItemInserted(position)
-        updateTaskStatus(task, Status.OPEN)
+        updateTaskStatus(task, Status.OPEN, decrementCounter)
     }
 
     private fun setupSkillIcons(holder: TaskViewHolder, task: Task) {
@@ -197,9 +202,11 @@ class TaskAdapter internal constructor(
         }
     }
 
-    private fun updateTaskStatus(task: Task, status: Status): Task {
+    private fun updateTaskStatus(task: Task, status: Status, decrementCounter: Boolean = false): Triple<Task, Long, Boolean> {
         val assignedSkills = db.skillDao().findAssignedSkills(task.id)
         val xpPerSkill = if (assignedSkills.size >= 2) task.xp.div(assignedSkills.size) else task.xp
+        var closedTaskId = 0L
+        var isCounterIncremented = false
         if (status != Status.OPEN) {
             if (status == Status.DONE) {
                 for (skill in assignedSkills) {
@@ -207,18 +214,42 @@ class TaskAdapter internal constructor(
                     levelService.checkForSkillLevelUp(skill, xpPerSkill)
                 }
                 levelService.checkForOverallLevelUp(task.xp)
+                db.taskDao().incrementCountDone(task.id)
+                isCounterIncremented = true
             }
-            db.taskDao().close(task.id, status)
-            val deleteCompletedTasks = PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(Const.Prefs.DELETE_COMPLETED_TASKS, Const.Defaults.DELETE_COMPLETED_TASKS)
-            if (task.eventId != null && deleteCompletedTasks) {
-                calendarService.deleteCalendarEvent(task)
+            // handle recurrence
+            if (task.rrule != null) {
+                val isRecurrenceDone = RecurrenceFinder().findBasedOn(
+                    RRuleFormatter().parse(task.rrule),
+                    task.createdAt,
+                    task.closedAt ?: task.createdAt,
+                    task.countDone + 1,
+                    1,
+                    System.currentTimeMillis(),
+                    false
+                ).size == 0
+                if (isRecurrenceDone) {
+                    // recurrence is finished
+                    closedTaskId = db.taskDao().closeTask(task.id, status)
+                    removeTaskFromCalendar(task)
+                } else {
+                    closedTaskId = db.taskDao().closeRecurringTask(task.id, status)
+                }
+            } else {
+                closedTaskId = db.taskDao().closeTask(task.id, status)
+                removeTaskFromCalendar(task)
             }
         } else {
             for (skill in assignedSkills) {
                 db.skillDao().updateXp(skill.id, -xpPerSkill)
             }
             db.taskDao().reopen(task.id)
+            if (decrementCounter) {
+                db.taskDao().decrementCountDone(task.id)
+            }
+            if (task.rrule == null) {
+                db.taskDao().updateClosedAt(task.id, null)
+            }
         }
         if (status != Status.FAILED) {
             val overallXp = db.taskDao().countOverallXp()
@@ -228,6 +259,17 @@ class TaskAdapter internal constructor(
         }
         taskAdapter.notifyDataSetChanged()
         updateSortedByHeader(context, tasks)
-        return db.taskDao().findById(task.id)
+        return Triple(db.taskDao().findById(task.id), closedTaskId, isCounterIncremented)
+    }
+
+    private fun removeTaskFromCalendar(task: Task) {
+        val deleteCompletedTasks = PreferenceManager.getDefaultSharedPreferences(context)
+            .getBoolean(
+                Const.Prefs.DELETE_COMPLETED_TASKS,
+                Const.Defaults.DELETE_COMPLETED_TASKS
+            )
+        if (task.eventId != null && deleteCompletedTasks) {
+            calendarService.deleteCalendarEvent(task)
+        }
     }
 }

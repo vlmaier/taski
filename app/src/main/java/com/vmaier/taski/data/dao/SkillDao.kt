@@ -108,24 +108,22 @@ interface SkillDao {
 
     @Query(
         """
-        SELECT COUNT(*)
+        SELECT SUM(tasks.count_done)
         FROM assigned_skills 
         INNER JOIN tasks
           ON task_id = tasks.id
-        WHERE skill_id = :skillId 
-          AND status = :status 
+        WHERE skill_id = :skillId
     """
     )
-    fun countTasksWithSkillByStatus(skillId: Long, status: Status): Long
+    fun countDoneTasksWithSkill(skillId: Long): Long
 
     @Query(
         """
-        SELECT SUM(duration) 
+        SELECT SUM(duration * count_done) 
         FROM assigned_skills 
         INNER JOIN tasks
           ON task_id = tasks.id
-        WHERE skill_id = :skillId 
-          AND status = 'done'
+        WHERE skill_id = :skillId
     """
     )
     fun countMinutes(skillId: Long): Int

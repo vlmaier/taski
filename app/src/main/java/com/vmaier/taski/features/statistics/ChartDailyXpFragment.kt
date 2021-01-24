@@ -12,13 +12,11 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.vmaier.taski.App
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentChartDailyXpBinding
 import com.vmaier.taski.features.tasks.TaskFragment
 import com.vmaier.taski.utils.Utils
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.floor
 
@@ -39,8 +37,7 @@ class ChartDailyXpFragment : TaskFragment() {
         toolbar.title = getString(R.string.heading_statistics)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_daily_xp, container, false)
 
-        val closedAt = App.dateTimeFormat.format(Date()).split(" ")[0]
-        val tasks = db.taskDao().findByClosedAt("%$closedAt%")
+        val tasks = db.taskDao().findClosedTasks(Utils.getStartOfDay(), Utils.getEndOfDay())
         var skillWithXp: MutableMap<String, Long> = mutableMapOf()
         val values = ArrayList<BarEntry>()
         tasks.forEach { task ->

@@ -171,4 +171,21 @@
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
     </style>
 
+    <style name="Theme.Mint" parent="Base.Theme.Mint">
+        <item name="colorPrimary">@color/colorPrimaryDarkMint</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantDarkMint</item>
+        <item name="colorSecondary">@color/colorSecondaryMint</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantMint</item>
+        <item name="android:colorBackground">@color/colorBackgroundDarkMint</item>
+        <item name="colorSurface">@color/colorSurfaceDarkMint</item>
+        <item name="colorError">@color/colorErrorDarkMint</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryDarkMint</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightMint</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundDarkMint</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceDarkMint</item>
+        <item name="colorOnError">@color/colorOnErrorDarkMint</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+    </style>
+
 </resources>

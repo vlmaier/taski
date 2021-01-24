@@ -10,4 +10,5 @@ enum class DurationUnit(val value: String) {
     HOUR("hour"),
     DAY("day"),
     WEEK("week"),
+    YEAR("year")
 }

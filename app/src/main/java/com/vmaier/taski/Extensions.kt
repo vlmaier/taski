@@ -11,6 +11,7 @@ import android.util.Base64
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.NumberPicker
 import android.widget.SeekBar
 import android.widget.Toast
 import com.vmaier.taski.data.DurationUnit
@@ -137,10 +138,11 @@ fun Task.getSeekBarValue(): Int {
 
 fun Task.getDurationUnit(): DurationUnit {
     return when (this.duration) {
-        in 5..45 -> DurationUnit.MINUTE
-        in 60..960 -> DurationUnit.HOUR
-        in 1440..8640 -> DurationUnit.DAY
-        else -> DurationUnit.WEEK
+        in 1..59 -> DurationUnit.MINUTE
+        in 60..1439 -> DurationUnit.HOUR
+        in 1440..10079 -> DurationUnit.DAY
+        in 10080..524159 -> DurationUnit.WEEK
+        else -> DurationUnit.YEAR
     }
 }
 
@@ -150,6 +152,7 @@ fun Task.convertDurationToMinutes(unit: DurationUnit): Int {
         DurationUnit.HOUR -> this.duration.div(60)
         DurationUnit.DAY -> this.duration.div(60).div(24)
         DurationUnit.WEEK -> this.duration.div(60).div(24).div(7)
+        DurationUnit.YEAR -> this.duration.div(60).div(24).div(7).div(52)
     }
 }
 
@@ -159,12 +162,13 @@ fun Task.getHumanReadableDurationValue(context: Context): String {
         DurationUnit.HOUR -> context.getString(R.string.unit_hour_short, this.convertDurationToMinutes(unit))
         DurationUnit.DAY -> context.getString(R.string.unit_day_short, this.convertDurationToMinutes(unit))
         DurationUnit.WEEK -> context.getString(R.string.unit_week_short, this.convertDurationToMinutes(unit))
+        DurationUnit.YEAR -> context.getString(R.string.unit_year_short, this.convertDurationToMinutes(unit))
     }
 }
 
 fun Task.getHumanReadableCreationDate(): String {
     val now = System.currentTimeMillis()
-    val createdAt = this.createdAt?.parseToDate()?.time ?: 0
+    val createdAt = this.createdAt
     val format = Utils.getDateSpanFormat(now, createdAt)
     return DateUtils.getRelativeTimeSpanString(createdAt, now, format).toString()
 }
@@ -172,7 +176,7 @@ fun Task.getHumanReadableCreationDate(): String {
 fun Task.getHumanReadableDueDate(): String {
     val now = System.currentTimeMillis()
     if (dueAt != null) {
-        val dueAt = this.dueAt.parseToDate()?.time ?: 0
+        val dueAt = this.dueAt
         val format = Utils.getDateSpanFormat(now, dueAt)
         return DateUtils.getRelativeTimeSpanString(dueAt, now, format).toString()
     }
@@ -203,11 +207,17 @@ fun String.decodeBase64(): Bitmap? {
 }
 
 fun Date.getDateInAppFormat(): String {
-    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[0], Locale.getDefault()).format(this.time)
+    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[0],
+        Locale.getDefault()).format(time)
 }
 
 fun Date.getTimeInAppFormat(): String {
-    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[1], Locale.getDefault()).format(this.time)
+    return SimpleDateFormat(App.dateTimeFormat.toPattern().split(" ")[1],
+            Locale.getDefault()).format(this.time)
+}
+
+fun Date.getDateTimeInAppFormat(): String {
+    return SimpleDateFormat(App.dateTimeFormat.toPattern(), Locale.getDefault()).format(this.time)
 }
 
 fun String.parseToDate(): Date? {
@@ -219,5 +229,16 @@ fun String.parseToDate(): Date? {
         } catch (e: ParseException) {
             null
         }
+    }
+}
+
+fun NumberPicker.getDurationUnit(): DurationUnit {
+    return when (this.value) {
+        1 -> DurationUnit.MINUTE
+        2 -> DurationUnit.HOUR
+        3 -> DurationUnit.DAY
+        4 -> DurationUnit.WEEK
+        5 -> DurationUnit.YEAR
+        else -> DurationUnit.MINUTE
     }
 }

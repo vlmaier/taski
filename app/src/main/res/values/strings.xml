@@ -16,6 +16,7 @@
     <string name="theme_pilot_name">Pilot</string>
     <string name="theme_coral_name">Coral</string>
     <string name="theme_blossom_name">Blossom</string>
+    <string name="theme_mint_name">Mint</string>
 
     <!-- Duration values -->
     <plurals name="duration_minute">
@@ -34,6 +35,10 @@
         <item quantity="one">%d week</item>
         <item quantity="other">%d weeks</item>
     </plurals>
+    <plurals name="duration_year">
+        <item quantity="one">%d year</item>
+        <item quantity="other">%d years</item>
+    </plurals>
 
     <!-- Difficulty values -->
     <string name="difficulty_trivial_value">trivial</string>
@@ -46,6 +51,7 @@
     <string name="unit_hour_short">%d h</string>
     <string name="unit_day_short">%d d</string>
     <string name="unit_week_short">%d w</string>
+    <string name="unit_year_short">%d y</string>
 
     <!-- Terms -->
     <string name="term_xp_value">%d XP</string>
@@ -108,8 +114,7 @@
     <string name="heading_create_task">Create new task</string>
     <string name="heading_duration">Duration</string>
     <string name="heading_difficulty">Difficulty</string>
-    <string name="heading_due_on">Due on</string>
-    <string name="heading_due_at">at</string>
+    <string name="heading_deadline">Deadline</string>
     <string name="heading_tasks">Tasks</string>
     <string name="heading_skills">Skills</string>
     <string name="heading_categories">Categories</string>
@@ -183,6 +188,7 @@
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Pick a category color</string>
+    <string name="pick_task_duration">Pick task duration</string>
     <string name="alert_skill_delete">Delete skill?</string>
     <string name="alert_reset_avatar">Reset avatar?</string>
     <plurals name="alert_assigned_task">
@@ -235,6 +241,7 @@
     <string name="theme_pilot" translatable="false">Theme.Pilot</string>
     <string name="theme_coral" translatable="false">Theme.Coral</string>
     <string name="theme_blossom" translatable="false">Theme.Blossom</string>
+    <string name="theme_mint" translatable="false">Theme.Mint</string>
 
     <string name="text_manual">
 ### \# App\n

@@ -10,7 +10,6 @@ import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Task
-import com.vmaier.taski.parseToDate
 import timber.log.Timber
 import java.util.*
 
@@ -31,11 +30,7 @@ class CalendarService(val context: Context) {
         val calendarId = getCalendarId() ?: return
         Timber.d("Picked calendar ($calendarId).")
         val eventId: Uri?
-        val startTimeMs = if (task.dueAt != null) {
-            task.dueAt.parseToDate()?.time
-        } else {
-            null
-        }
+        val startTimeMs = task.dueAt
         val event = ContentValues()
         event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
         event.put(CalendarContract.Events.TITLE, task.goal)
@@ -43,6 +38,9 @@ class CalendarService(val context: Context) {
         if (startTimeMs != null) {
             event.put(CalendarContract.Events.DTSTART, startTimeMs)
             event.put(CalendarContract.Events.DTEND, startTimeMs + task.duration * 60 * 1000)
+        }
+        if (task.rrule != null) {
+            event.put(CalendarContract.Events.RRULE, task.rrule.replace("RRULE:", ""))
         }
         val timeZone = TimeZone.getDefault().id
         event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
@@ -53,7 +51,14 @@ class CalendarService(val context: Context) {
 
     fun updateInCalendar(isCalendarSyncOn: Boolean, before: Task, after: Task?) {
         if (after == null) return
-        if (!isCalendarSyncOn) return
+        if (!isCalendarSyncOn) {
+            if (after.eventId != null) {
+                deleteCalendarEvent(after)
+                return
+            } else {
+                return
+            }
+        }
         if (after.eventId == null) {
             addToCalendar(isCalendarSyncOn, after)
             return
@@ -75,11 +80,7 @@ class CalendarService(val context: Context) {
         if (before.goal != after.goal) event.put(CalendarContract.Events.TITLE, after.goal)
         if (before.details != after.details) event.put(CalendarContract.Events.DESCRIPTION, after.details)
         if (before.duration != after.duration || before.dueAt != after.dueAt) {
-            val startTimeMs = if (after.dueAt != null) {
-                after.dueAt.parseToDate()?.time
-            } else {
-                null
-            }
+            val startTimeMs = after.dueAt
             if (startTimeMs != null) {
                 event.put(CalendarContract.Events.DTSTART, startTimeMs)
                 event.put(
@@ -89,6 +90,13 @@ class CalendarService(val context: Context) {
             }
             val timeZone = TimeZone.getDefault().id
             event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone)
+        }
+        if (before.rrule != after.rrule) {
+            if (after.rrule == null) {
+                event.putNull(CalendarContract.Events.RRULE)
+            } else {
+                event.put(CalendarContract.Events.RRULE, after.rrule.replace("RRULE:", ""))
+            }
         }
         return event
     }

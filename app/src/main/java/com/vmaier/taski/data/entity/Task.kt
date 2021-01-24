@@ -2,13 +2,11 @@ package com.vmaier.taski.data.entity
 
 import android.os.Parcelable
 import androidx.room.*
-import com.vmaier.taski.App
 import com.vmaier.taski.data.Converters
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.utils.Utils
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 
 /**
@@ -46,13 +44,13 @@ data class Task(
     val status: Status = Status.OPEN,
 
     @ColumnInfo(name = "created_at")
-    val createdAt: String = App.dateTimeFormat.format(Date()),
+    val createdAt: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "closed_at")
-    val closedAt: String? = null,
+    val closedAt: Long? = null,
 
     @ColumnInfo(name = "due_at")
-    val dueAt: String? = null,
+    val dueAt: Long? = null,
 
     @ColumnInfo(name = "duration")
     val duration: Int,
@@ -71,5 +69,11 @@ data class Task(
     val eventId: String? = null,
 
     @ColumnInfo(name = "reminder_request_code")
-    val reminderRequestCode: Int? = null
+    val reminderRequestCode: Int? = null,
+
+    @ColumnInfo(name = "rrule")
+    val rrule: String? = null,
+
+    @ColumnInfo(name = "count_done", defaultValue = "0")
+    val countDone: Int = 0
 ) : Parcelable
