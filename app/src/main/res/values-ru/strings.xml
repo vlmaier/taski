@@ -116,8 +116,7 @@
     <string name="heading_create_task">Создать новую задачю</string>
     <string name="heading_duration">Продолжительность</string>
     <string name="heading_difficulty">Трудность</string>
-    <string name="heading_due_on">Выполнить к</string>
-    <string name="heading_due_at">в</string>
+    <string name="heading_deadline">Срок выполнения</string>
     <string name="heading_tasks">Задачи</string>
     <string name="heading_skills">Навыки</string>
     <string name="heading_categories">Категории</string>

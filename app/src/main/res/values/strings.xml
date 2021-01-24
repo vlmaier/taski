@@ -113,8 +113,7 @@
     <string name="heading_create_task">Create new task</string>
     <string name="heading_duration">Duration</string>
     <string name="heading_difficulty">Difficulty</string>
-    <string name="heading_due_on">Due on</string>
-    <string name="heading_due_at">at</string>
+    <string name="heading_deadline">Deadline</string>
     <string name="heading_tasks">Tasks</string>
     <string name="heading_skills">Skills</string>
     <string name="heading_categories">Categories</string>

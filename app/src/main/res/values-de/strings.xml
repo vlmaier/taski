@@ -111,8 +111,7 @@
     <string name="heading_create_task">Neue Aufgabe</string>
     <string name="heading_duration">Dauer</string>
     <string name="heading_difficulty">Schwierigkeit</string>
-    <string name="heading_due_on">Fällig am</string>
-    <string name="heading_due_at">um</string>
+    <string name="heading_deadline">Frist</string>
     <string name="heading_tasks">Aufgaben</string>
     <string name="heading_skills">Fähigkeiten</string>
     <string name="heading_categories">Kategorien</string>
