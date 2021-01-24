@@ -14,6 +14,7 @@
     <string name="theme_pilot_name">Пилот</string>
     <string name="theme_coral_name">Коралл</string>
     <string name="theme_blossom_name">Цветок</string>
+    <string name="theme_mint_name">Мята</string>
 
     <!-- Duration values -->
     <plurals name="duration_minute">

@@ -14,6 +14,7 @@
     <string name="theme_pilot_name">Pilot</string>
     <string name="theme_coral_name">Koralle</string>
     <string name="theme_blossom_name">Blüte</string>
+    <string name="theme_mint_name">Minze</string>
 
     <!-- Duration values -->
     <plurals name="duration_minute">

@@ -171,6 +171,23 @@
         <item name="colorOnError">@color/colorOnErrorLightBlossom</item>
     </style>
 
+    <style name="Theme.Mint" parent="Base.Theme.Mint" />
+
+    <style name="Base.Theme.Mint" parent="Base.Theme.MaterialThemeBuilder">
+        <item name="colorPrimary">@color/colorPrimaryLightMint</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariantLightMint</item>
+        <item name="colorSecondary">@color/colorSecondaryMint</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariantMint</item>
+        <item name="android:colorBackground">@color/colorBackgroundLightMint</item>
+        <item name="colorSurface">@color/colorSurfaceLightMint</item>
+        <item name="colorError">@color/colorErrorLightMint</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryLightMint</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryLightMint</item>
+        <item name="colorOnBackground">@color/colorOnBackgroundLightMint</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceLightMint</item>
+        <item name="colorOnError">@color/colorOnErrorLightMint</item>
+    </style>
+
     <style name="Base.Theme.SettingsButton" parent="@style/Widget.AppCompat.ActionButton.Overflow">
         <item name="android:tint">?attr/colorOnPrimary</item>
     </style>

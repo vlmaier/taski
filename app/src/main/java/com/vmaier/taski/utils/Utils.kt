@@ -59,6 +59,7 @@ object Utils {
             resources.getString(R.string.theme_pilot) -> R.style.Theme_Pilot
             resources.getString(R.string.theme_coral) -> R.style.Theme_Coral
             resources.getString(R.string.theme_blossom) -> R.style.Theme_Blossom
+            resources.getString(R.string.theme_mint) -> R.style.Theme_Mint
             else -> R.style.Theme_Default
         }
     }

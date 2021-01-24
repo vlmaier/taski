@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<worker8.com.github.radiogroupplus.RadioGroupPlus xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <worker8.com.github.radiogroupplus.RadioGroupPlus
         android:id="@+id/radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -9,12 +14,12 @@
         android:paddingLeft="?dialogPreferredPadding"
         android:paddingRight="?dialogPreferredPadding">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp">
 
-        <RadioButton
+            <RadioButton
                 android:id="@+id/button_default"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -27,7 +32,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_light_default"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -40,7 +45,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_dark_default"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -53,7 +58,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_default"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -65,7 +70,7 @@
                 app:layout_constraintTop_toTopOf="@+id/color_primary_dark_default"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_variant_default"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -78,13 +83,13 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="ContentDescription" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <RadioButton
+            <RadioButton
                 android:id="@+id/button_sailor"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -96,7 +101,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_light_sailor"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -109,7 +114,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_dark_sailor"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -122,7 +127,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_sailor"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -134,7 +139,7 @@
                 app:layout_constraintTop_toTopOf="@+id/color_primary_dark_sailor"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_variant_sailor"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -147,13 +152,13 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="ContentDescription" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <RadioButton
+            <RadioButton
                 android:id="@+id/button_royal"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -165,7 +170,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_light_royal"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -178,7 +183,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_dark_royal"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -191,7 +196,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_royal"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -203,7 +208,7 @@
                 app:layout_constraintTop_toTopOf="@+id/color_primary_dark_royal"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_variant_royal"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -216,13 +221,13 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="ContentDescription" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <RadioButton
+            <RadioButton
                 android:id="@+id/button_mercury"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -234,7 +239,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_light_mercury"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -247,7 +252,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_dark_mercury"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -260,7 +265,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_mercury"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -272,7 +277,7 @@
                 app:layout_constraintTop_toTopOf="@+id/color_primary_dark_mercury"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_variant_mercury"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -285,13 +290,13 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="ContentDescription" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <RadioButton
+            <RadioButton
                 android:id="@+id/button_mocca"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -303,7 +308,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_light_mocca"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -316,7 +321,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_dark_mocca"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -329,7 +334,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_mocca"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -341,7 +346,7 @@
                 app:layout_constraintTop_toTopOf="@+id/color_primary_dark_mocca"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_variant_mocca"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -354,13 +359,13 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="ContentDescription" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <RadioButton
+            <RadioButton
                 android:id="@+id/button_creeper"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -372,7 +377,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_light_creeper"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -385,7 +390,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_dark_creeper"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -398,7 +403,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_creeper"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -410,7 +415,7 @@
                 app:layout_constraintTop_toTopOf="@+id/color_primary_dark_creeper"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_variant_creeper"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -423,13 +428,13 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="ContentDescription" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <RadioButton
+            <RadioButton
                 android:id="@+id/button_flamingo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -441,7 +446,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_light_flamingo"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -454,7 +459,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_dark_flamingo"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -467,7 +472,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_flamingo"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -479,7 +484,7 @@
                 app:layout_constraintTop_toTopOf="@+id/color_primary_dark_flamingo"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_variant_flamingo"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -492,13 +497,13 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="ContentDescription" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <RadioButton
+            <RadioButton
                 android:id="@+id/button_pilot"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -510,7 +515,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_light_pilot"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -523,7 +528,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_dark_pilot"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -536,7 +541,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_pilot"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -548,7 +553,7 @@
                 app:layout_constraintTop_toTopOf="@+id/color_primary_dark_pilot"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_variant_pilot"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -561,13 +566,13 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="ContentDescription" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <RadioButton
+            <RadioButton
                 android:id="@+id/button_coral"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -579,7 +584,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_light_coral"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -592,7 +597,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_dark_coral"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -605,7 +610,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_coral"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -617,7 +622,7 @@
                 app:layout_constraintTop_toTopOf="@+id/color_primary_dark_coral"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_variant_coral"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -630,13 +635,13 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="ContentDescription" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <RadioButton
+            <RadioButton
                 android:id="@+id/button_blossom"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -648,7 +653,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_light_blossom"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -661,7 +666,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_primary_dark_blossom"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -674,7 +679,7 @@
                 app:layout_constraintVertical_bias="1.0"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_blossom"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -686,7 +691,7 @@
                 app:layout_constraintTop_toTopOf="@+id/color_primary_dark_blossom"
                 tools:ignore="ContentDescription" />
 
-        <ImageView
+            <ImageView
                 android:id="@+id/color_secondary_variant_blossom"
                 android:layout_width="20dp"
                 android:layout_height="0dp"
@@ -699,6 +704,76 @@
                 app:layout_constraintVertical_bias="0.0"
                 tools:ignore="ContentDescription" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</worker8.com.github.radiogroupplus.RadioGroupPlus>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/button_mint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/theme_mint_name"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_light_mint"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/color_primary_light_mint"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryLightMint"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/color_primary_dark_mint"
+                app:layout_constraintStart_toEndOf="@+id/button_mint"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/color_primary_dark_mint"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorPrimaryDarkMint"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_light_mint"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_mint"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_light_mint"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_light_mint"
+                app:layout_constraintVertical_bias="1.0"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/color_secondary_mint"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryMint"
+                app:layout_constraintBottom_toBottomOf="@+id/color_primary_dark_mint"
+                app:layout_constraintEnd_toStartOf="@+id/color_secondary_variant_mint"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_primary_dark_mint"
+                app:layout_constraintTop_toTopOf="@+id/color_primary_dark_mint"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/color_secondary_variant_mint"
+                android:layout_width="20dp"
+                android:layout_height="0dp"
+                android:background="@color/colorSecondaryVariantMint"
+                app:layout_constraintBottom_toBottomOf="@+id/color_secondary_mint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/color_secondary_mint"
+                app:layout_constraintTop_toTopOf="@+id/color_secondary_mint"
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </worker8.com.github.radiogroupplus.RadioGroupPlus>
+</ScrollView>

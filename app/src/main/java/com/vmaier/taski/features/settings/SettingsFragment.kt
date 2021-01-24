@@ -88,7 +88,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 Timber.d("Calendar synchronization is ${if (isCalendarSyncOn) "enabled" else "disabled"}.")
                 val calendarTasksPref: CheckBoxPreference? = findPreference(Const.Prefs.DELETE_COMPLETED_TASKS)
                 calendarTasksPref?.isEnabled = isCalendarSyncOn
-                // unselect "Delete completed tasks" if "Calendar sync" gets disabled
+                // deselect "Delete completed tasks" if "Calendar sync" gets disabled
                 if (!isCalendarSyncOn) {
                     calendarTasksPref?.isChecked = isCalendarSyncOn
                     prefs.edit()
@@ -260,6 +260,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                     R.id.button_pilot -> getString(R.string.theme_pilot)
                     R.id.button_coral -> getString(R.string.theme_coral)
                     R.id.button_blossom -> getString(R.string.theme_blossom)
+                    R.id.button_mint -> getString(R.string.theme_mint)
                     else -> getString(R.string.theme_default)
                 }
             }
@@ -299,6 +300,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
             getString(R.string.theme_blossom) -> {
                 dialogView.findViewById(R.id.button_blossom) as RadioButton
+            }
+            getString(R.string.theme_mint) -> {
+                dialogView.findViewById(R.id.button_mint) as RadioButton
             }
             else -> dialogView.findViewById(R.id.button_default) as RadioButton
         }
