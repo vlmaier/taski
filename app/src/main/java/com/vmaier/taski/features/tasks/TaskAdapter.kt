@@ -305,7 +305,7 @@ class TaskAdapter internal constructor(
                 Const.Defaults.DELETE_COMPLETED_TASKS
             )
         if (task.eventId != null && deleteCompletedTasks) {
-            calendarService.deleteCalendarEvent(task)
+            calendarService.deleteFromCalendar(task)
         }
     }
 }

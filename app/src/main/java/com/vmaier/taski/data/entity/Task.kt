@@ -76,4 +76,13 @@ data class Task(
 
     @ColumnInfo(name = "count_done", defaultValue = "0")
     val countDone: Int = 0
-) : Parcelable
+) : Parcelable {
+
+    val doneAt: Long?
+        get() = dueAt?.plus(duration * 60 * 1000)
+
+    val calendarRRule: String?
+        // remove 'RRULE:' otherwise the calendar cannot cope with it
+        get() = rrule?.replace("RRULE:", "")
+}
+

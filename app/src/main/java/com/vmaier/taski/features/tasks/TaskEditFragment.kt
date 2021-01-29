@@ -282,7 +282,7 @@ class TaskEditFragment : TaskFragment() {
             getString(R.string.event_task_updated).toast(requireContext())
             // disable sync (only) after enabling before
         } else if (!binding.calendarSync.isChecked && task.eventId != null) {
-            calendarService.deleteCalendarEvent(task)
+            calendarService.deleteFromCalendar(task)
             getString(R.string.event_task_updated).toast(requireContext())
         }
         selectedRecurrence = Recurrence(Recurrence.Period.NONE)
