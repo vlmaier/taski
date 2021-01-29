@@ -241,8 +241,10 @@ class TaskAdapter internal constructor(
                 removeTaskFromCalendar(task)
             }
         } else {
-            for (skill in assignedSkills) {
-                db.skillDao().updateXp(skill.id, -xpPerSkill)
+            if (task.status == Status.DONE) {
+                for (skill in assignedSkills) {
+                    db.skillDao().updateXp(skill.id, -xpPerSkill)
+                }
             }
             db.taskDao().reopen(task.id)
             if (decrementCounter) {
