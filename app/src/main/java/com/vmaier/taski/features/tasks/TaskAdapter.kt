@@ -238,9 +238,9 @@ class TaskAdapter internal constructor(
             if (status == Status.DONE) {
                 for (skill in assignedSkills) {
                     db.skillDao().updateXp(skill.id, xpPerSkill)
-                    levelService.checkForSkillLevelUp(skill, xpPerSkill)
+                    levelService.checkSkillLevelUp(skill, xpPerSkill)
                 }
-                levelService.checkForOverallLevelUp(task.xp)
+                levelService.checkOverallLevelUp(task.xp)
                 db.taskDao().incrementCountDone(task.id)
                 isCounterIncremented = true
             }

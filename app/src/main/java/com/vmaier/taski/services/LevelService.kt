@@ -3,6 +3,7 @@ package com.vmaier.taski.services
 import android.app.Activity
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import android.view.animation.AnticipateOvershootInterpolator
 import androidx.appcompat.app.AlertDialog
 import com.robinhood.ticker.TickerUtils
@@ -25,31 +26,31 @@ class LevelService(val context: Context) {
     val db = AppDatabase(context)
     private val delay = 1000L
 
-    internal fun getOverallLevel(xp: Long = db.taskDao().countOverallXp()): Int {
+    fun getOverallLevel(xp: Long): Int {
         return calculateLevel(xp)
     }
 
-    internal fun getSkillLevel(skill: Skill): Int {
+    fun getSkillLevel(skill: Skill): Int {
         return calculateLevel(skill.xp)
     }
 
-    fun checkForSkillLevelUp(skill: Skill, xp: Int) {
+    fun checkSkillLevelUp(skill: Skill, xp: Int) {
         val previousLevel = getSkillLevel(skill)
         val nextLevel = calculateLevel(skill.xp + xp)
         if (previousLevel != nextLevel) {
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 val title = context.getString(R.string.term_skill_level_increased, skill.name)
                 showDialog(title, previousLevel, nextLevel, skill.iconId)
             }, delay)
         }
     }
 
-    fun checkForOverallLevelUp(xpValue: Int) {
-        val overallXpValue = db.taskDao().countOverallXp()
-        val previousLevel = getOverallLevel(overallXpValue)
-        val nextLevel = calculateLevel(overallXpValue + xpValue)
+    fun checkOverallLevelUp(xp: Int) {
+        val overallXp = db.taskDao().countOverallXp()
+        val previousLevel = getOverallLevel(overallXp)
+        val nextLevel = calculateLevel(overallXp + xp)
         if (previousLevel != nextLevel) {
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 val title = context.getString(R.string.term_overall_level_increased)
                 showDialog(title, previousLevel, nextLevel)
             }, delay)
@@ -57,14 +58,13 @@ class LevelService(val context: Context) {
     }
 
     private fun showDialog(title: String, previousLevel: Int, nextLevel: Int, iconId: Int? = null) {
-        val dialogView =
-            (context as Activity).layoutInflater.inflate(R.layout.level_up_dialog, null)
-        val ticker: TickerView = dialogView.findViewById(R.id.ticker)
+        val view = (context as Activity).layoutInflater.inflate(R.layout.level_up_dialog, null)
+        val ticker: TickerView = view.findViewById(R.id.ticker)
         ticker.animationInterpolator = AnticipateOvershootInterpolator()
         ticker.setCharacterLists(TickerUtils.provideNumberList())
         val builder = AlertDialog.Builder(context)
             .setTitle(title)
-            .setView(dialogView)
+            .setView(view)
             .setCancelable(true)
             .setPositiveButton(context.getString(R.string.action_ok)) { dialogInterface, _ ->
                 dialogInterface.dismiss()
