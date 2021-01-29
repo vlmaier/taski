@@ -32,7 +32,7 @@ import timber.log.Timber
 
 /**
  * Created by Vladas Maier
- * on 23/07/2020
+ * on 23.07.2020
  * at 16:47
  */
 class CategoryAdapter internal constructor(
@@ -160,13 +160,15 @@ class CategoryAdapter internal constructor(
 
         // setup "Pick Color" button
         holder.pickColorView.setOnClickListener {
-            val selectedColor = if (category.color != null) Color.parseColor(category.color) else null
+            val selectedColor =
+                if (category.color != null) Color.parseColor(category.color) else null
             ColorSheet().colorPicker(
                 colors = Utils.getMaterialColors(context),
                 selectedColor = selectedColor,
                 noColorOption = true,
                 listener = { color ->
-                    val hexColor = if (color == ColorSheet.NO_COLOR) null else ColorSheetUtils.colorToHex(color)
+                    val hexColor =
+                        if (color == ColorSheet.NO_COLOR) null else ColorSheetUtils.colorToHex(color)
                     db.categoryDao().updateColor(category.id, hexColor)
                     category.color = hexColor
                     notifyItemChanged(position)

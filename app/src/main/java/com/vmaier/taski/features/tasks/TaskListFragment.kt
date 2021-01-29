@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.maltaisn.recurpicker.RecurrenceFinder
 import com.maltaisn.recurpicker.format.RRuleFormatter
-import com.vmaier.taski.*
+import com.vmaier.taski.Const
+import com.vmaier.taski.MainActivity
 import com.vmaier.taski.MainActivity.Companion.bottomNav
 import com.vmaier.taski.MainActivity.Companion.drawerLayout
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
+import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortOrder
 import com.vmaier.taski.data.SortTasks
@@ -25,7 +27,6 @@ import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentTaskListBinding
 import com.vmaier.taski.utils.Utils
 import timber.log.Timber
-import java.util.*
 
 
 /**
@@ -42,7 +43,8 @@ class TaskListFragment : Fragment() {
         fun sortTasks(context: Context, tasks: MutableList<Task>) {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
-            val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
+            val order =
+                prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             when (sort) {
                 SortTasks.CREATED_AT.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) sortByDescending { it.createdAt }
@@ -78,7 +80,8 @@ class TaskListFragment : Fragment() {
         fun updateSortedByHeader(context: Context, tasks: MutableList<Task>) {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
-            val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
+            val order =
+                prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             val sortString = when (sort) {
                 SortTasks.CREATED_AT.value -> context.getString(R.string.term_sort_created_at)
                 SortTasks.GOAL.value -> context.getString(R.string.term_sort_goal)
@@ -93,7 +96,8 @@ class TaskListFragment : Fragment() {
                 else context.getString(R.string.term_sort_desc)
             if (tasks.isNotEmpty()) {
                 binding.header.visibility = View.VISIBLE
-                binding.header.text = context.getString(R.string.term_sort_by, sortString, orderString)
+                binding.header.text =
+                    context.getString(R.string.term_sort_by, sortString, orderString)
             } else {
                 binding.header.visibility = View.GONE
                 binding.header.text = ""
@@ -106,7 +110,11 @@ class TaskListFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_tasks)
         toggleBottomMenu(true, View.VISIBLE)
@@ -220,7 +228,8 @@ class TaskListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (item.itemId == R.id.sort_tasks_order) {
-            val savedOrder = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
+            val savedOrder =
+                prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
             val newOrder = if (savedOrder == SortOrder.ASC.value) {
                 item.setIcon(R.drawable.ic_sort_order_desc_24)
                 SortOrder.DESC.value

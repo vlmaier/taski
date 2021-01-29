@@ -6,7 +6,7 @@ import androidx.room.ForeignKey.CASCADE
 
 /**
  * Created by Vladas Maier
- * on 10/01/2021
+ * on 10.01.2021
  * at 18:35
  */
 @Entity(

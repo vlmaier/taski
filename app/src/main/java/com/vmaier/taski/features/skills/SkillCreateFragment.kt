@@ -9,7 +9,6 @@ import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.vmaier.taski.Const
-import com.vmaier.taski.MainActivity
 import com.vmaier.taski.MainActivity.Companion.iconDialog
 import com.vmaier.taski.R
 import com.vmaier.taski.data.entity.Category
@@ -23,7 +22,7 @@ import timber.log.Timber
 
 /**
  * Created by Vladas Maier
- * on 02/03/2020
+ * on 02.03.2020
  * at 20:02
  */
 class SkillCreateFragment : SkillFragment() {
@@ -32,9 +31,14 @@ class SkillCreateFragment : SkillFragment() {
         lateinit var binding: FragmentCreateSkillBinding
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_skill, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_create_skill, container, false)
 
         // Name settings
         binding.name.editText?.setText(saved?.getString(KEY_NAME) ?: "")

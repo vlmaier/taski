@@ -38,7 +38,10 @@ class Onboarding : AppIntro() {
             AppIntroFragment.newInstance(
                 title = resources.getString(R.string.intro_slide_3_top),
                 imageDrawable = R.drawable.ic_tasks_200,
-                backgroundColor = ContextCompat.getColor(this, R.color.colorPrimaryVariantLightRoyal),
+                backgroundColor = ContextCompat.getColor(
+                    this,
+                    R.color.colorPrimaryVariantLightRoyal
+                ),
                 description = resources.getString(R.string.intro_slide_3_bottom)
             )
         )
@@ -54,7 +57,10 @@ class Onboarding : AppIntro() {
             AppIntroFragment.newInstance(
                 title = resources.getString(R.string.intro_slide_5_top),
                 imageDrawable = R.drawable.ic_statistics_200,
-                backgroundColor = ContextCompat.getColor(this, R.color.colorPrimaryVariantLightCreeper),
+                backgroundColor = ContextCompat.getColor(
+                    this,
+                    R.color.colorPrimaryVariantLightCreeper
+                ),
                 description = resources.getString(R.string.intro_slide_5_bottom)
             )
         )

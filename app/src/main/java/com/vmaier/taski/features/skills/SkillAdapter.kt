@@ -10,7 +10,8 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vmaier.taski.*
+import com.vmaier.taski.Const
+import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.entity.AssignedSkill
@@ -18,13 +19,14 @@ import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.services.LevelService
+import com.vmaier.taski.setIcon
 import kotlinx.android.synthetic.main.item_skill.view.*
 import timber.log.Timber
 
 
 /**
  * Created by Vladas Maier
- * on 25/02/2020
+ * on 25.02.2020
  * at 19:27
  */
 class SkillAdapter internal constructor(
@@ -63,7 +65,8 @@ class SkillAdapter internal constructor(
         holder.nameView.isSelected = true
 
         // setup "Category" view
-        val category: Category? = if (skill.categoryId != null) db.categoryDao().findById(skill.categoryId) else null
+        val category: Category? =
+            if (skill.categoryId != null) db.categoryDao().findById(skill.categoryId) else null
         holder.categoryView.text = category?.name ?: ""
         holder.categoryView.isSelected = true
         if (category?.color != null) {

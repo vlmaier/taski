@@ -6,12 +6,11 @@ import com.vmaier.taski.data.entity.AssignedSkill
 import com.vmaier.taski.data.entity.ClosedTask
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.entity.Task
-import java.util.*
 
 
 /**
  * Created by Vladas Maier
- * on 22/04/2020
+ * on 22.04.2020
  * at 16:39
  */
 @Dao
@@ -37,7 +36,11 @@ interface TaskDao {
         }
     }
 
-    fun closeRecurringTask(taskId: Long, status: Status, closedAt: Long = System.currentTimeMillis()): Long {
+    fun closeRecurringTask(
+        taskId: Long,
+        status: Status,
+        closedAt: Long = System.currentTimeMillis()
+    ): Long {
         updateClosedAt(taskId, closedAt)
         return if (status == Status.DONE) {
             close(ClosedTask(taskId = taskId, closedAt = closedAt))

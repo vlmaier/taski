@@ -32,10 +32,15 @@ class ChartCategoryXpFragment : SkillFragment() {
         lateinit var binding: FragmentChartCategoryXpBinding
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_statistics)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_category_xp, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_chart_category_xp, container, false)
 
         val categories = db.categoryDao().findAll()
         val values = ArrayList<PieEntry>()

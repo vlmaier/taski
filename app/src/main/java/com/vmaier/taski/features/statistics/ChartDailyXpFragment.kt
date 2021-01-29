@@ -17,7 +17,6 @@ import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentChartDailyXpBinding
 import com.vmaier.taski.features.tasks.TaskFragment
 import com.vmaier.taski.utils.Utils
-import kotlin.collections.ArrayList
 import kotlin.math.floor
 
 
@@ -32,10 +31,15 @@ class ChartDailyXpFragment : TaskFragment() {
         lateinit var binding: FragmentChartDailyXpBinding
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_statistics)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_daily_xp, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_chart_daily_xp, container, false)
 
         val tasks = db.taskDao().findClosedTasks(Utils.getStartOfDay(), Utils.getEndOfDay())
         var skillWithXp: MutableMap<String, Long> = mutableMapOf()
@@ -43,7 +47,11 @@ class ChartDailyXpFragment : TaskFragment() {
         tasks.forEach { task ->
             val assignedSkills = db.skillDao().findAssignedSkills(task.id)
             if (assignedSkills.isEmpty()) {
-                fillSkillWithXp(skillWithXp, getString(R.string.heading_unassigned), task.xp.toLong())
+                fillSkillWithXp(
+                    skillWithXp,
+                    getString(R.string.heading_unassigned),
+                    task.xp.toLong()
+                )
             } else {
                 assignedSkills.forEach { skill ->
                     fillSkillWithXp(skillWithXp, skill.name, task.xp.toLong())
@@ -107,7 +115,11 @@ class ChartDailyXpFragment : TaskFragment() {
         return binding.root
     }
 
-    private fun fillSkillWithXp(skillWithXp: MutableMap<String, Long>, skillName: String, xp: Long) {
+    private fun fillSkillWithXp(
+        skillWithXp: MutableMap<String, Long>,
+        skillName: String,
+        xp: Long
+    ) {
         skillWithXp[skillName] = xp + (skillWithXp[skillName] ?: 0)
     }
 }

@@ -22,7 +22,7 @@ import com.vmaier.taski.utils.Utils
 
 /**
  * Created by Vladas Maier
- * on 06/02/2020
+ * on 06.02.2020
  * at 19:09
  */
 class TaskItemSwipeHandler :

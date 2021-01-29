@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: SharedPreferences
     private lateinit var levelService: LevelService
-    private var backButtonPressedOnce = false
+    private var isBackButtonPressedOnce = false
 
     companion object {
         lateinit var iconDialog: IconDialog
@@ -93,8 +94,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         lateinit var db: AppDatabase
 
         private val recurrenceSettings = RecurrencePickerSettings()
-        val recurrenceListDialog by lazy { RecurrenceListDialog.newInstance(recurrenceSettings) }
-        val recurrencePickerDialog by lazy { RecurrencePickerDialog.newInstance(recurrenceSettings) }
+        val recurrenceListDialog by lazy {
+            RecurrenceListDialog.newInstance(recurrenceSettings)
+        }
+        val recurrencePickerDialog by lazy {
+            RecurrencePickerDialog.newInstance(recurrenceSettings)
+        }
         var selectedRecurrence = Recurrence(Recurrence.Period.NONE)
 
         fun toggleBottomMenu(showFab: Boolean = false, visibility: Int = View.GONE) {
@@ -116,12 +121,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         }
 
         // Language settings
-        val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)
+        val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)!!
         val prefLocale = Locale(prefLanguage)
         val currentLocale: Locale = resources.configuration.locale
         if (prefLocale != currentLocale) {
             val config: Configuration = resources.configuration
-            config.locale = prefLocale
+            config.setLocale(prefLocale)
             resources.updateConfiguration(config, null)
             Locale.setDefault(prefLocale)
         }
@@ -210,7 +215,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
         // "Status Bar" settings
         this.window.statusBarColor = Utils.getThemeColor(this, R.attr.colorPrimary)
-        var launchCounter = prefs.getInt(Const.Prefs.APP_LAUNCH_COUNTER, Const.Defaults.APP_LAUNCH_COUNTER)
+        var launchCounter =
+            prefs.getInt(Const.Prefs.APP_LAUNCH_COUNTER, Const.Defaults.APP_LAUNCH_COUNTER)
         launchCounter++
         prefs.edit()
             .putInt(Const.Prefs.APP_LAUNCH_COUNTER, launchCounter)
@@ -240,7 +246,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         avatarView = headerView.findViewById(R.id.user_avatar)
         avatarView.clipToOutline = true
         val avatar = prefs.getString(Const.Prefs.USER_AVATAR, null)
-        val fallbackImage = getDrawable(R.mipmap.ic_launcher)
+        val fallbackImage = AppCompatResources.getDrawable(this, R.mipmap.ic_launcher)
         if (avatar != null) {
             val bitmap = avatar.decodeBase64()
             if (bitmap != null) avatarView.setImageBitmap(bitmap)
@@ -258,7 +264,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         levelView.text = getString(R.string.term_level_value, overallLevel)
     }
 
-    override val iconDialogIconPack: IconPack? get() = App.iconPack
+    override val iconDialogIconPack: IconPack get() = App.iconPack
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -391,16 +397,32 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 fragments.forEach {
                     when (it) {
                         is TaskCreateFragment -> {
-                            TaskFragment.setIcon(this, selectedIcon, TaskCreateFragment.binding.iconButton)
+                            TaskFragment.setIcon(
+                                this,
+                                selectedIcon,
+                                TaskCreateFragment.binding.iconButton
+                            )
                         }
                         is TaskEditFragment -> {
-                            TaskFragment.setIcon(this, selectedIcon, TaskEditFragment.binding.iconButton)
+                            TaskFragment.setIcon(
+                                this,
+                                selectedIcon,
+                                TaskEditFragment.binding.iconButton
+                            )
                         }
                         is SkillCreateFragment -> {
-                            SkillFragment.setIcon(this, selectedIcon, SkillCreateFragment.binding.iconButton)
+                            SkillFragment.setIcon(
+                                this,
+                                selectedIcon,
+                                SkillCreateFragment.binding.iconButton
+                            )
                         }
                         is SkillEditFragment -> {
-                            SkillFragment.setIcon(this, selectedIcon, SkillEditFragment.binding.iconButton)
+                            SkillFragment.setIcon(
+                                this,
+                                selectedIcon,
+                                SkillEditFragment.binding.iconButton
+                            )
                         }
                     }
                 }
@@ -426,12 +448,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     }
 
     override fun onBackPressed() {
-        if (backButtonPressedOnce) {
+        if (isBackButtonPressedOnce) {
             // close app if back button was pressed twice in last 2 seconds
             finish()
         }
-        backButtonPressedOnce = true
-        Handler().postDelayed({ backButtonPressedOnce = false }, 500)
+        isBackButtonPressedOnce = true
+        Handler().postDelayed({ isBackButtonPressedOnce = false }, 500)
 
         val count = supportFragmentManager.backStackEntryCount
         if (count == 0) {
@@ -455,7 +477,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         }
     }
 
-    override fun getTheme(): Theme? {
+    override fun getTheme(): Theme {
         val theme: Theme = super.getTheme()
         val prefs = getDefaultSharedPreferences(this)
         val prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME)
@@ -464,7 +486,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         return theme
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             PermissionUtils.ACCESS_CALENDAR_REQUEST_CODE -> {
@@ -499,7 +525,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 SkillEditFragment.binding.name.error = getString(R.string.error_too_short)
             } else if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                 SkillEditFragment.binding.name.requestFocus()
-                SkillEditFragment.binding.name.error = getString(R.string.error_skill_already_exists)
+                SkillEditFragment.binding.name.error =
+                    getString(R.string.error_skill_already_exists)
             } else if (category.isNotBlank() && category.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.category.requestFocus()
                 SkillEditFragment.binding.category.error = getString(R.string.error_too_short)
@@ -579,7 +606,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     categoryAdapter.categories.add(
                         Category(id = id, name = name)
                     )
-                    CategoryListFragment.sortCategories(dialog.editText.context, categoryAdapter.categories)
+                    CategoryListFragment.sortCategories(
+                        dialog.editText.context,
+                        categoryAdapter.categories
+                    )
                     categoryAdapter.notifyDataSetChanged()
                     Timber.d("Category ($id) created.")
                     dialog.dismiss()
@@ -598,7 +628,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         if (fragment != null) {
             val fragments = fragment.childFragmentManager.fragments
             fragments.forEach {
-                when(it) {
+                when (it) {
                     is TaskCreateFragment ->
                         TaskCreateFragment.recurrenceButton.text =
                             RecurrenceFormatter(App.dateTimeFormat).format(this, selectedRecurrence)

@@ -13,7 +13,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.vmaier.taski.App
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentChartWeeklyXpBinding
@@ -35,10 +34,15 @@ class ChartWeeklyXpFragment : TaskFragment() {
         lateinit var binding: FragmentChartWeeklyXpBinding
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_statistics)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_weekly_xp, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_chart_weekly_xp, container, false)
 
         val daysOfWeekWithValue = ArrayList<Float>()
         daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.MONDAY))
@@ -119,6 +123,7 @@ class ChartWeeklyXpFragment : TaskFragment() {
     private fun getXpForDayOfTheWeek(day: Int): Float {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_WEEK, day)
-        return db.taskDao().countDailyXp(Utils.getStartOfDay(calendar), Utils.getEndOfDay(calendar)).toFloat()
+        return db.taskDao().countDailyXp(Utils.getStartOfDay(calendar), Utils.getEndOfDay(calendar))
+            .toFloat()
     }
 }

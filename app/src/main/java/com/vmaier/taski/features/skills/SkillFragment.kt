@@ -27,7 +27,7 @@ import kotlin.random.Random
 
 /**
  * Created by Vladas Maier
- * on 02/03/2020
+ * on 02.03.2020
  * at 20:48
  */
 open class SkillFragment : Fragment() {
@@ -53,7 +53,11 @@ open class SkillFragment : Fragment() {
         db = AppDatabase(context)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_skills)
         toggleBottomMenu(false, View.GONE)
@@ -62,7 +66,11 @@ open class SkillFragment : Fragment() {
         return this.view
     }
 
-    fun setSkillIcon(saved: Bundle?, button: ImageButton, fallback: Int = Random.nextInt(App.iconPack.allIcons.size)) {
+    fun setSkillIcon(
+        saved: Bundle?,
+        button: ImageButton,
+        fallback: Int = Random.nextInt(App.iconPack.allIcons.size)
+    ) {
         val iconId = saved?.getInt(KEY_ICON_ID) ?: fallback
         val icon = App.iconPack.getIconDrawable(iconId, IconDrawableLoader(requireContext()))
         icon?.clearColorFilter()
@@ -99,12 +107,13 @@ open class SkillFragment : Fragment() {
     private fun deleteSkill(view: View, position: Int) {
         val toRestore = skillAdapter.removeItem(position)
         // show snackbar with "Undo" option
-        val snackbar = Snackbar.make(view, getString(R.string.event_skill_deleted), Snackbar.LENGTH_LONG)
-            .setAction(getString(R.string.action_undo)) {
-                // "Undo" is selected -> restore the deleted item
-                skillAdapter.restoreItem(toRestore, position)
-            }
-            .setActionTextColor(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
+        val snackbar =
+            Snackbar.make(view, getString(R.string.event_skill_deleted), Snackbar.LENGTH_LONG)
+                .setAction(getString(R.string.action_undo)) {
+                    // "Undo" is selected -> restore the deleted item
+                    skillAdapter.restoreItem(toRestore, position)
+                }
+                .setActionTextColor(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
         snackbar.view.setOnClickListener { snackbar.dismiss() }
         snackbar.show()
         view.findNavController().popBackStack()

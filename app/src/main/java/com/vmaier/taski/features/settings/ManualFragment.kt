@@ -29,15 +29,16 @@ class ManualFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         saved: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_manual)
         toggleBottomMenu(false, View.GONE)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_manual, container, false)
 
-        binding.version.text = "v" + BuildConfig.VERSION_NAME
-        val markwon = Markwon.create(requireContext());
-        markwon.setMarkdown(binding.text, resources.getString(R.string.text_manual));
+        val version = "v${BuildConfig.VERSION_NAME}"
+        binding.version.text = version
+        val md = Markwon.create(requireContext());
+        md.setMarkdown(binding.text, resources.getString(R.string.text_manual));
 
         return binding.root
     }

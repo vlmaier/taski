@@ -2,7 +2,7 @@ package com.vmaier.taski.data
 
 /**
  * Created by Vladas Maier
- * on 24/01/2021.
+ * on 24.01.2021
  * at 15:41
  */
 data class Quadruple<out A, out B, out C, out D>(

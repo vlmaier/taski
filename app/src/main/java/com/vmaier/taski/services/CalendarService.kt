@@ -16,7 +16,7 @@ import java.util.*
 
 /**
  * Created by Vladas Maier
- * on 08/08/2020
+ * on 08.08.2020
  * at 12:50
  */
 class CalendarService(val context: Context) {
@@ -78,7 +78,10 @@ class CalendarService(val context: Context) {
         val event = ContentValues()
         event.put(CalendarContract.Events.CALENDAR_ID, calendarId)
         if (before.goal != after.goal) event.put(CalendarContract.Events.TITLE, after.goal)
-        if (before.details != after.details) event.put(CalendarContract.Events.DESCRIPTION, after.details)
+        if (before.details != after.details) event.put(
+            CalendarContract.Events.DESCRIPTION,
+            after.details
+        )
         if (before.duration != after.duration || before.dueAt != after.dueAt) {
             val startTimeMs = after.dueAt
             if (startTimeMs != null) {
@@ -118,9 +121,9 @@ class CalendarService(val context: Context) {
             CalendarContract.Calendars.CALENDAR_DISPLAY_NAME
         )
 
-        // check permission
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
-            != PackageManager.PERMISSION_GRANTED) {
+            != PackageManager.PERMISSION_GRANTED
+        ) {
             return null
         }
         var cursor = context.contentResolver.query(

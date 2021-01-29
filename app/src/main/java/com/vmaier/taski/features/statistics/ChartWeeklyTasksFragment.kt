@@ -13,7 +13,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.vmaier.taski.App
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentChartWeeklyTasksBinding
@@ -35,10 +34,19 @@ class ChartWeeklyTasksFragment : TaskFragment() {
         lateinit var binding: FragmentChartWeeklyTasksBinding
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_statistics)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_weekly_tasks, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_chart_weekly_tasks,
+            container,
+            false
+        )
 
         val daysOfWeekWithValue = ArrayList<Float>()
         daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.MONDAY))
@@ -119,6 +127,7 @@ class ChartWeeklyTasksFragment : TaskFragment() {
     private fun getAmountOfTasksForDayOfTheWeek(day: Int): Float {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_WEEK, day)
-        return db.taskDao().countDailyTasks(Utils.getStartOfDay(calendar), Utils.getEndOfDay(calendar)).toFloat()
+        return db.taskDao()
+            .countDailyTasks(Utils.getStartOfDay(calendar), Utils.getEndOfDay(calendar)).toFloat()
     }
 }

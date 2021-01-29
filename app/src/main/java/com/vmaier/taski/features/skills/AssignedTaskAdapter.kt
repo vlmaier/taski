@@ -15,11 +15,11 @@ import com.vmaier.taski.setIcon
 
 /**
  * Created by Vladas Maier
- * on 28/07/2020
+ * on 28.07.2020
  * at 18:48
  */
 class AssignedTaskAdapter internal constructor(
-    private val context: Context
+    context: Context
 ) : RecyclerView.Adapter<AssignedTaskAdapter.AssignedTaskViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -41,20 +41,19 @@ class AssignedTaskAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: AssignedTaskViewHolder, position: Int) {
-        val task: Task? = tasks[position]
-        if (task != null) {
-            // setup "Goal" view
-            holder.goalView.text = task.goal
-            holder.goalView.isSelected = true
+        val task: Task = tasks[position]
 
-            // setup "Icon" view
-            holder.iconView.setIcon(task.iconId)
-            holder.itemView.setOnClickListener {
-                it.findNavController().navigate(
-                    SkillEditFragmentDirections
-                        .actionSkillEditFragmentToEditTaskFragment(task, cameFromTaskList = false)
-                )
-            }
+        // setup "Goal" view
+        holder.goalView.text = task.goal
+        holder.goalView.isSelected = true
+
+        // setup "Icon" view
+        holder.iconView.setIcon(task.iconId)
+        holder.itemView.setOnClickListener {
+            it.findNavController().navigate(
+                SkillEditFragmentDirections
+                    .actionSkillEditFragmentToEditTaskFragment(task, cameFromTaskList = false)
+            )
         }
     }
 

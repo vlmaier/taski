@@ -31,11 +31,11 @@ import java.util.*
 
 /**
  * Created by Vladas Maier
- * on 16/02/2020
+ * on 16.02.2020
  * at 19:24
  */
 class TaskAdapter internal constructor(
-        private val context: Context
+    private val context: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -110,8 +110,8 @@ class TaskAdapter internal constructor(
 
         holder.itemView.setOnClickListener {
             it.findNavController().navigate(
-                    TaskListFragmentDirections
-                            .actionTaskListFragmentToEditTaskFragment(task, cameFromTaskList = true)
+                TaskListFragmentDirections
+                    .actionTaskListFragmentToEditTaskFragment(task, cameFromTaskList = true)
             )
         }
 
@@ -127,12 +127,12 @@ class TaskAdapter internal constructor(
                         bundle.putString(TaskFragment.KEY_GOAL, task.goal)
                         bundle.putString(TaskFragment.KEY_DETAILS, task.details)
                         bundle.putString(
-                                TaskFragment.KEY_DIFFICULTY,
-                                task.difficulty.value.toUpperCase(Locale.getDefault())
+                            TaskFragment.KEY_DIFFICULTY,
+                            task.difficulty.value.toUpperCase(Locale.getDefault())
                         )
                         bundle.putStringArray(
-                                TaskFragment.KEY_SKILLS,
-                                taskSkills.map { skill -> skill.name }.toTypedArray()
+                            TaskFragment.KEY_SKILLS,
+                            taskSkills.map { skill -> skill.name }.toTypedArray()
                         )
                         bundle.putInt(TaskFragment.KEY_ICON_ID, task.iconId)
                         if (task.dueAt != null) {
@@ -147,7 +147,7 @@ class TaskAdapter internal constructor(
                             )
                         }
                         it.findNavController().navigate(
-                                R.id.action_taskListFragment_to_createTaskFragment, bundle
+                            R.id.action_taskListFragment_to_createTaskFragment, bundle
                         )
                     }
                 }
@@ -179,31 +179,57 @@ class TaskAdapter internal constructor(
         val icons = App.iconPack
         if (size > 0) {
             holder.skillIcon1View.background =
-                if (size >= 1) icons.getIconDrawable(skills[0].iconId, IconDrawableLoader(context)) else null
+                if (size >= 1) icons.getIconDrawable(
+                    skills[0].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon1View.visibility = if (size >= 1) View.VISIBLE else View.INVISIBLE
             holder.skillIcon2View.background =
-                if (size >= 2) icons.getIconDrawable(skills[1].iconId, IconDrawableLoader(context)) else null
+                if (size >= 2) icons.getIconDrawable(
+                    skills[1].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon2View.visibility = if (size >= 2) View.VISIBLE else View.INVISIBLE
             holder.skillIcon3View.background =
-                if (size >= 3) icons.getIconDrawable(skills[2].iconId, IconDrawableLoader(context)) else null
+                if (size >= 3) icons.getIconDrawable(
+                    skills[2].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon3View.visibility = if (size >= 3) View.VISIBLE else View.INVISIBLE
             holder.skillIcon4View.background =
-                if (size >= 4) icons.getIconDrawable(skills[3].iconId, IconDrawableLoader(context)) else null
+                if (size >= 4) icons.getIconDrawable(
+                    skills[3].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon4View.visibility = if (size >= 4) View.VISIBLE else View.INVISIBLE
             holder.skillIcon5View.background =
-                if (size >= 5) icons.getIconDrawable(skills[4].iconId, IconDrawableLoader(context)) else null
+                if (size >= 5) icons.getIconDrawable(
+                    skills[4].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon5View.visibility = if (size >= 5) View.VISIBLE else View.INVISIBLE
             holder.skillIcon6View.background =
-                if (size >= 6) icons.getIconDrawable(skills[5].iconId, IconDrawableLoader(context)) else null
+                if (size >= 6) icons.getIconDrawable(
+                    skills[5].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon6View.visibility = if (size >= 6) View.VISIBLE else View.INVISIBLE
             holder.skillIcon7View.background =
-                if (size >= 7) icons.getIconDrawable(skills[6].iconId, IconDrawableLoader(context)) else null
+                if (size >= 7) icons.getIconDrawable(
+                    skills[6].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon7View.visibility = if (size >= 7) View.VISIBLE else View.INVISIBLE
             holder.tooMuchSkillsView.visibility = if (size > 7) View.VISIBLE else View.INVISIBLE
         }
     }
 
-    private fun updateTaskStatus(task: Task, status: Status, decrementCounter: Boolean = false, closedAt: Long? = null): Quadruple<Task, Long, Boolean, Long?> {
+    private fun updateTaskStatus(
+        task: Task,
+        status: Status,
+        decrementCounter: Boolean = false,
+        closedAt: Long? = null
+    ): Quadruple<Task, Long, Boolean, Long?> {
         val assignedSkills = db.skillDao().findAssignedSkills(task.id)
         val xpPerSkill = if (assignedSkills.size >= 2) task.xp.div(assignedSkills.size) else task.xp
         var closedTaskId = 0L
@@ -264,7 +290,12 @@ class TaskAdapter internal constructor(
         }
         taskAdapter.notifyDataSetChanged()
         updateSortedByHeader(context, tasks)
-        return Quadruple(db.taskDao().findById(task.id), closedTaskId, isCounterIncremented, task.closedAt)
+        return Quadruple(
+            db.taskDao().findById(task.id),
+            closedTaskId,
+            isCounterIncremented,
+            task.closedAt
+        )
     }
 
     private fun removeTaskFromCalendar(task: Task) {

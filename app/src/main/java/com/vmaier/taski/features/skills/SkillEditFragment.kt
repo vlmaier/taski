@@ -26,7 +26,7 @@ import timber.log.Timber
 
 /**
  * Created by Vladas Maier
- * on 03/03/2020
+ * on 03.03.2020
  * at 17:38
  */
 class SkillEditFragment : SkillFragment() {
@@ -42,7 +42,11 @@ class SkillEditFragment : SkillFragment() {
         fun isTaskAdapterInitialized() = ::taskAdapter.isInitialized
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         levelService = LevelService(requireContext())
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_skill, container, false)
@@ -61,7 +65,8 @@ class SkillEditFragment : SkillFragment() {
 
         // Category settings
         val categoryId = skill.categoryId
-        val categoryName = if (categoryId != null) db.categoryDao().findNameById(categoryId) else null
+        val categoryName =
+            if (categoryId != null) db.categoryDao().findNameById(categoryId) else null
         binding.category.editText?.setText(saved?.getString(KEY_CATEGORY) ?: categoryName)
         binding.category.onFocusChangeListener = KeyBoardHider()
         val arrayAdapter = ArrayAdapter(
@@ -181,7 +186,13 @@ class SkillEditFragment : SkillFragment() {
         } else {
             categoryId = null
         }
-        val toUpdate = Skill(id = skill.id, name = name, categoryId = categoryId, xp = skill.xp, iconId = iconId)
+        val toUpdate = Skill(
+            id = skill.id,
+            name = name,
+            categoryId = categoryId,
+            xp = skill.xp,
+            iconId = iconId
+        )
         if (skill != toUpdate) {
             db.skillDao().update(toUpdate)
             Timber.d("Skill (${skill.id}) updated.")

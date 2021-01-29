@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
-            android:id="@+id/sort_tasks_by"
-            android:icon="@drawable/ic_sort_24"
-            android:title="@string/heading_sort_by"
-            app:iconTint="?attr/colorOnPrimary"
-            app:showAsAction="always">
+        android:id="@+id/sort_tasks_by"
+        android:icon="@drawable/ic_sort_24"
+        android:title="@string/heading_sort_by"
+        app:iconTint="?attr/colorOnPrimary"
+        app:showAsAction="always">
         <menu>
             <group
-                    android:id="@+id/group"
-                    android:checkableBehavior="single">
+                android:id="@+id/group"
+                android:checkableBehavior="single">
                 <item
-                        android:id="@+id/sort_created_at"
-                        android:title="@string/term_sort_created_at" />
+                    android:id="@+id/sort_created_at"
+                    android:title="@string/term_sort_created_at" />
                 <item
-                        android:id="@+id/sort_goal"
-                        android:title="@string/term_sort_goal" />
+                    android:id="@+id/sort_goal"
+                    android:title="@string/term_sort_goal" />
                 <item
-                        android:id="@+id/sort_duration"
-                        android:title="@string/term_sort_duration" />
+                    android:id="@+id/sort_duration"
+                    android:title="@string/term_sort_duration" />
                 <item
-                        android:id="@+id/sort_difficulty"
-                        android:title="@string/term_sort_difficulty" />
+                    android:id="@+id/sort_difficulty"
+                    android:title="@string/term_sort_difficulty" />
                 <item
-                        android:id="@+id/sort_xp_gain"
-                        android:title="@string/term_sort_xp_gain" />
+                    android:id="@+id/sort_xp_gain"
+                    android:title="@string/term_sort_xp_gain" />
                 <item
-                        android:id="@+id/sort_due_on"
-                        android:title="@string/term_sort_due_on" />
+                    android:id="@+id/sort_due_on"
+                    android:title="@string/term_sort_due_on" />
             </group>
         </menu>
     </item>
 
     <item
-            android:id="@+id/sort_tasks_order"
-            android:title="@string/heading_sort_by"
-            app:iconTint="?attr/colorOnPrimary"
-            app:showAsAction="ifRoom"
-            tools:icon="@drawable/ic_sort_order_asc_24" />
+        android:id="@+id/sort_tasks_order"
+        android:title="@string/heading_sort_by"
+        app:iconTint="?attr/colorOnPrimary"
+        app:showAsAction="ifRoom"
+        tools:icon="@drawable/ic_sort_order_asc_24" />
 
 </menu>

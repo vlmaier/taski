@@ -9,7 +9,7 @@ import com.vmaier.taski.data.entity.Task
 
 /**
  * Created by Vladas Maier
- * on 22/04/2020
+ * on 22.04.2020
  * at 16:43
  */
 @Dao

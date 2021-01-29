@@ -27,10 +27,11 @@ import java.util.*
 
 /**
  * Created by Vladas Maier
- * on 20/04/2020
+ * on 20.04.2020
  * at 20:34
  */
-class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var prefs: SharedPreferences
 
@@ -64,7 +65,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val isDarkModeOn = prefs.getBoolean(Const.Prefs.DARK_MODE, Const.Defaults.DARK_MODE)
         val darkMode = preferenceScreen.findPreference(Const.Prefs.DARK_MODE) as SwitchPreference?
         darkMode?.setIcon(if (isDarkModeOn) R.drawable.ic_light_mode_24 else R.drawable.ic_dark_mode_24)
-        darkMode?.title = getString(if (isDarkModeOn) R.string.heading_light_mode else R.string.heading_dark_mode)
+        darkMode?.title =
+            getString(if (isDarkModeOn) R.string.heading_light_mode else R.string.heading_dark_mode)
 
         // preselect language value
         val appLanguage = preferenceScreen.findPreference(Const.Prefs.LANGUAGE) as ListPreference?
@@ -72,8 +74,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val languageValues = resources.getStringArray(R.array.language_values_array)
         appLanguage?.setValueIndex(languageValues.indexOf(prefLanguage))
 
-        val calendarTasksPref: CheckBoxPreference? = findPreference(Const.Prefs.DELETE_COMPLETED_TASKS)
-        calendarTasksPref?.isEnabled = prefs.getBoolean(Const.Prefs.CALENDAR_SYNC, Const.Defaults.CALENDAR_SYNC)
+        val calendarTasksPref: CheckBoxPreference? =
+            findPreference(Const.Prefs.DELETE_COMPLETED_TASKS)
+        calendarTasksPref?.isEnabled =
+            prefs.getBoolean(Const.Prefs.CALENDAR_SYNC, Const.Defaults.CALENDAR_SYNC)
     }
 
     override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
@@ -86,7 +90,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                     .putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
                     .apply()
                 Timber.d("Calendar synchronization is ${if (isCalendarSyncOn) "enabled" else "disabled"}.")
-                val calendarTasksPref: CheckBoxPreference? = findPreference(Const.Prefs.DELETE_COMPLETED_TASKS)
+                val calendarTasksPref: CheckBoxPreference? =
+                    findPreference(Const.Prefs.DELETE_COMPLETED_TASKS)
                 calendarTasksPref?.isEnabled = isCalendarSyncOn
                 // deselect "Delete completed tasks" if "Calendar sync" gets disabled
                 if (!isCalendarSyncOn) {
@@ -98,7 +103,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
             Const.Prefs.DELETE_COMPLETED_TASKS -> {
                 val pref: CheckBoxPreference? = findPreference(key)
-                val calendarSyncPref: CheckBoxPreference? = findPreference(Const.Prefs.CALENDAR_SYNC)
+                val calendarSyncPref: CheckBoxPreference? =
+                    findPreference(Const.Prefs.CALENDAR_SYNC)
                 val isCalendarSyncOn = calendarSyncPref?.isChecked ?: false
                 if (isCalendarSyncOn) {
                     val value = pref?.isChecked ?: Const.Defaults.DELETE_COMPLETED_TASKS
@@ -142,8 +148,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == PermissionUtils.PICK_IMAGE_REQUEST_CODE &&
             resultCode == Activity.RESULT_OK &&
-            intent != null && intent.data != null) {
-            val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, intent.data)
+            intent != null && intent.data != null
+        ) {
+            val bitmap =
+                MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, intent.data)
             val compressedBitmap = bitmap.compress(10)
             avatarView.setImageBitmap(compressedBitmap)
             prefs.edit()
@@ -229,8 +237,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     private fun setThemeClickListener() {
         val preference = preferenceScreen.findPreference(Const.Prefs.THEME) as Preference?
         preference?.setOnPreferenceClickListener {
-            prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME) ?: Const.Defaults.THEME
-            val dialogView = (context as Activity).layoutInflater.inflate(R.layout.select_theme_dialog, null)
+            prefTheme =
+                prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME) ?: Const.Defaults.THEME
+            val dialogView =
+                (context as Activity).layoutInflater.inflate(R.layout.select_theme_dialog, null)
             val radioGroup = dialogView.findViewById(R.id.radio_group) as RadioGroupPlus
             preselectTheme(dialogView)
             val builder = AlertDialog.Builder(requireContext())

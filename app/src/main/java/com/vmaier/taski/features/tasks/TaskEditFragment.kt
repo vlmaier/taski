@@ -31,7 +31,7 @@ import java.util.*
 
 /**
  * Created by Vladas Maier
- * on 08/02/2020
+ * on 08.02.2020
  * at 11:26
  */
 class TaskEditFragment : TaskFragment() {
@@ -49,7 +49,11 @@ class TaskEditFragment : TaskFragment() {
         fun isRecurrenceButtonInitialized() = Companion::recurrenceButton.isInitialized
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_task, container, false)
 
@@ -111,7 +115,8 @@ class TaskEditFragment : TaskFragment() {
         binding.skills.hint = if (skillNames.isEmpty()) getString(R.string.hint_no_skills) else ""
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
-        binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: assignedSkills.map { it.name })
+        binding.skills.setText(
+            saved?.getStringArrayList(KEY_SKILLS) ?: assignedSkills.map { it.name })
         val amountOfSkills = assignedSkills.size
         val linesNeeded = if (amountOfSkills <= 3) 1 else assignedSkills.size.div(3) + 1
         binding.skills.setLines(linesNeeded)
@@ -136,7 +141,8 @@ class TaskEditFragment : TaskFragment() {
 
         // Recurrence settings
         recurrenceButton = binding.recurrenceButton
-        val recurrence = RecurrenceFormatter(App.dateTimeFormat).format(requireContext(),
+        val recurrence = RecurrenceFormatter(App.dateTimeFormat).format(
+            requireContext(),
             if (task.rrule != null) {
                 val taskRecurrence = RRuleFormatter().parse(task.rrule.toString())
                 selectedRecurrence = taskRecurrence
@@ -149,7 +155,10 @@ class TaskEditFragment : TaskFragment() {
         binding.recurrenceButton.setOnClickListener {
             recurrenceListDialog.selectedRecurrence = selectedRecurrence
             recurrenceListDialog.startDate = System.currentTimeMillis()
-            recurrenceListDialog.show(requireActivity().supportFragmentManager, Const.Tags.RECURRENCE_LIST_DIALOG)
+            recurrenceListDialog.show(
+                requireActivity().supportFragmentManager,
+                Const.Tags.RECURRENCE_LIST_DIALOG
+            )
         }
 
         binding.iconButton.setOnClickListener {
@@ -221,10 +230,19 @@ class TaskEditFragment : TaskFragment() {
             null
         }
         val toUpdate = Task(
-            id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,
-            createdAt = task.createdAt, dueAt = dueAt?.time, closedAt = task.closedAt,
-            difficulty = Difficulty.valueOf(difficulty), eventId = task.eventId,
-            reminderRequestCode = task.reminderRequestCode, rrule = rrule, countDone = task.countDone
+            id = task.id,
+            goal = goal,
+            details = details,
+            duration = duration,
+            iconId = iconId,
+            createdAt = task.createdAt,
+            dueAt = dueAt?.time,
+            closedAt = task.closedAt,
+            difficulty = Difficulty.valueOf(difficulty),
+            eventId = task.eventId,
+            reminderRequestCode = task.reminderRequestCode,
+            rrule = rrule,
+            countDone = task.countDone
         )
         if (task != toUpdate || assignedSkills != skillsToAssign) {
             val reminderUpdateRequired = task.dueAt != toUpdate.dueAt
@@ -258,11 +276,11 @@ class TaskEditFragment : TaskFragment() {
                 )
                 db.taskDao().updateAlarmRequestCode(task.id, taskReminderRequestCode)
             }
-        // enable sync (only) after disabling before
+            // enable sync (only) after disabling before
         } else if (binding.calendarSync.isChecked && task.eventId == null) {
             calendarService.addToCalendar(true, task)
             getString(R.string.event_task_updated).toast(requireContext())
-        // disable sync (only) after enabling before
+            // disable sync (only) after enabling before
         } else if (!binding.calendarSync.isChecked && task.eventId != null) {
             calendarService.deleteCalendarEvent(task)
             getString(R.string.event_task_updated).toast(requireContext())

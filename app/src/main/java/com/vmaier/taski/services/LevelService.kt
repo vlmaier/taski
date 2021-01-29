@@ -17,7 +17,7 @@ import kotlin.math.pow
 
 /**
  * Created by Vladas Maier
- * on 29/07/2020
+ * on 29.07.2020
  * at 15:50
  */
 class LevelService(val context: Context) {
@@ -57,7 +57,8 @@ class LevelService(val context: Context) {
     }
 
     private fun showDialog(title: String, previousLevel: Int, nextLevel: Int, iconId: Int? = null) {
-        val dialogView = (context as Activity).layoutInflater.inflate(R.layout.level_up_dialog, null)
+        val dialogView =
+            (context as Activity).layoutInflater.inflate(R.layout.level_up_dialog, null)
         val ticker: TickerView = dialogView.findViewById(R.id.ticker)
         ticker.animationInterpolator = AnticipateOvershootInterpolator()
         ticker.setCharacterLists(TickerUtils.provideNumberList())

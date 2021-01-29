@@ -44,7 +44,11 @@ class TaskCreateFragment : TaskFragment() {
         fun isRecurrenceButtonInitialized() = Companion::recurrenceButton.isInitialized
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_task, container, false)
 
@@ -133,7 +137,10 @@ class TaskCreateFragment : TaskFragment() {
         binding.recurrenceButton.setOnClickListener {
             recurrenceListDialog.selectedRecurrence = selectedRecurrence
             recurrenceListDialog.startDate = System.currentTimeMillis()
-            recurrenceListDialog.show(requireActivity().supportFragmentManager, Const.Tags.RECURRENCE_LIST_DIALOG)
+            recurrenceListDialog.show(
+                requireActivity().supportFragmentManager,
+                Const.Tags.RECURRENCE_LIST_DIALOG
+            )
         }
         return binding.root
     }

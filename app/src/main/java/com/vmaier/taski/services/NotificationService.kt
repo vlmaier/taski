@@ -126,7 +126,13 @@ class NotificationService : IntentService("NotificationService") {
         }
     }
 
-    fun setReminder(timeInMs: Long, title: String, message: String, activity: Activity, requestCode: Int) {
+    fun setReminder(
+        timeInMs: Long,
+        title: String,
+        message: String,
+        activity: Activity,
+        requestCode: Int
+    ) {
         val intent = Intent(activity.applicationContext, ReminderReceiver::class.java)
         intent.putExtra(KEY_TIMESTAMP, timeInMs)
         intent.putExtra(KEY_TITLE, title)
