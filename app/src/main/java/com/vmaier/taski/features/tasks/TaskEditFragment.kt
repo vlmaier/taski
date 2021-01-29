@@ -45,6 +45,7 @@ class TaskEditFragment : TaskFragment() {
         lateinit var recurrenceButton: Button
         lateinit var task: Task
         lateinit var assignedSkills: List<Skill>
+        fun isBindingInitialized() = Companion::binding.isInitialized
         fun isRecurrenceButtonInitialized() = Companion::recurrenceButton.isInitialized
     }
 
@@ -173,15 +174,19 @@ class TaskEditFragment : TaskFragment() {
 
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-        out.putString(KEY_GOAL, binding.goal.editText?.text.toString())
-        out.putString(KEY_DETAILS, binding.details.editText?.text.toString())
-        out.putString(KEY_DIFFICULTY,
-                if (isDifficultyInitialized()) difficulty else Difficulty.REGULAR.value)
-        out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
-        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
-        out.putString(KEY_DEADLINE_DATE, binding.deadlineDate.editText?.text.toString())
-        out.putString(KEY_DEADLINE_TIME, binding.deadlineTime.editText?.text.toString())
-        saveChangesOnTask()
+        if (isBindingInitialized()) {
+            out.putString(KEY_GOAL, binding.goal.editText?.text.toString())
+            out.putString(KEY_DETAILS, binding.details.editText?.text.toString())
+            out.putString(
+                KEY_DIFFICULTY,
+                if (isDifficultyInitialized()) difficulty else Difficulty.REGULAR.value
+            )
+            out.putStringArray(KEY_SKILLS, binding.skills.chipValues.toTypedArray())
+            out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
+            out.putString(KEY_DEADLINE_DATE, binding.deadlineDate.editText?.text.toString())
+            out.putString(KEY_DEADLINE_TIME, binding.deadlineTime.editText?.text.toString())
+            saveChangesOnTask()
+        }
     }
 
     private fun saveChangesOnTask() {
