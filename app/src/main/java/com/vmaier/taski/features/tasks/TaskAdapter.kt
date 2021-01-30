@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.findNavController
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.maltaisn.recurpicker.RecurrenceFinder
@@ -26,6 +25,7 @@ import com.vmaier.taski.features.tasks.TaskListFragment.Companion.taskAdapter
 import com.vmaier.taski.features.tasks.TaskListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.services.CalendarService
 import com.vmaier.taski.services.LevelService
+import com.vmaier.taski.services.PreferenceService
 import java.util.*
 
 
@@ -39,8 +39,9 @@ class TaskAdapter internal constructor(
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var levelService = LevelService(context)
-    private var calendarService = CalendarService(context)
+    private val prefService = PreferenceService(context)
+    private val levelService = LevelService(context)
+    private val calendarService = CalendarService(context)
     var tasks: MutableList<Task> = mutableListOf()
     val db = AppDatabase(context)
 
@@ -96,9 +97,8 @@ class TaskAdapter internal constructor(
         holder.taskIconView.setIcon(task.iconId)
 
         // Sort indicator settings
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val sortPref = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
-        holder.sortIndicatorView.text = when (sortPref) {
+        val sort = prefService.getSort(PreferenceService.SortType.TASKS)
+        holder.sortIndicatorView.text = when (sort) {
             SortTasks.DIFFICULTY.value -> task.difficulty.getName(context)
             SortTasks.CREATED_AT.value -> task.getHumanReadableCreationDate()
             SortTasks.DUE_ON.value -> task.getHumanReadableDueDate()
@@ -299,12 +299,7 @@ class TaskAdapter internal constructor(
     }
 
     private fun removeTaskFromCalendar(task: Task) {
-        val deleteCompletedTasks = PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean(
-                Const.Prefs.DELETE_COMPLETED_TASKS,
-                Const.Defaults.DELETE_COMPLETED_TASKS
-            )
-        if (task.eventId != null && deleteCompletedTasks) {
+        if (task.eventId != null && prefService.isDeleteCompletedTasksEnabled()) {
             calendarService.deleteFromCalendar(task)
         }
     }

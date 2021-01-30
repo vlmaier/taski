@@ -1,7 +1,6 @@
 package com.vmaier.taski
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources.Theme
@@ -22,7 +21,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -58,6 +56,7 @@ import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
 import com.vmaier.taski.features.tasks.*
 import com.vmaier.taski.intro.Onboarding
 import com.vmaier.taski.services.LevelService
+import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.views.EditTextDialog
@@ -76,8 +75,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     private lateinit var navController: NavController
     private lateinit var drawerNav: NavigationView
     private lateinit var binding: ActivityMainBinding
-    private lateinit var prefs: SharedPreferences
     private lateinit var levelService: LevelService
+    private lateinit var prefService: PreferenceService
     private var isBackButtonPressedOnce = false
 
     companion object {
@@ -111,17 +110,17 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        prefs = getDefaultSharedPreferences(this)
+        prefService = PreferenceService(this)
 
         // Onboarding settings
-        val firstStart = prefs.getBoolean(Const.Prefs.ONBOARDING, Const.Defaults.ONBOARDING)
+        val firstStart = prefService.isOnboardingEnabled()
         if (firstStart) {
             val intent = Intent(this, Onboarding::class.java)
             startActivity(intent)
         }
 
         // Language settings
-        val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)!!
+        val prefLanguage = prefService.getLanguage()
         val prefLocale = Locale(prefLanguage)
         val currentLocale: Locale = resources.configuration.locale
         if (prefLocale != currentLocale) {
@@ -180,12 +179,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         setFabOnClickListener()
 
         // Theme settings
-        val prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME)
+        val prefTheme = prefService.getTheme()
         val prefThemeId = Utils.getThemeByName(this, prefTheme)
         setTheme(prefThemeId)
 
         // "Dark mode" settings
-        val isDarkModeOn = prefs.getBoolean(Const.Prefs.DARK_MODE, Const.Defaults.DARK_MODE)
+        val isDarkModeOn = prefService.isDarkModeEnabled()
         if (isDarkModeOn) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
@@ -215,12 +214,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
         // "Status Bar" settings
         this.window.statusBarColor = Utils.getThemeColor(this, R.attr.colorPrimary)
-        var launchCounter =
-            prefs.getInt(Const.Prefs.APP_LAUNCH_COUNTER, Const.Defaults.APP_LAUNCH_COUNTER)
-        launchCounter++
-        prefs.edit()
-            .putInt(Const.Prefs.APP_LAUNCH_COUNTER, launchCounter)
-            .apply()
+        val launchCounter = prefService.incrementAppLaunchCounter()
         if (launchCounter == Const.Defaults.APP_LAUNCH_COUNTER_FOR_REVIEW) {
             val manager: ReviewManager = ReviewManagerFactory.create(this)
             val request: Task<ReviewInfo> = manager.requestReviewFlow()
@@ -240,12 +234,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
         // "User name" settings
         userNameView = headerView.findViewById(R.id.user_name) as TextView
-        userNameView.text = prefs.getString(Const.Prefs.USER_NAME, Const.Defaults.USER_NAME)
+        userNameView.text = prefService.getUserName()
 
         // "User avatar" settings
         avatarView = headerView.findViewById(R.id.user_avatar)
         avatarView.clipToOutline = true
-        val avatar = prefs.getString(Const.Prefs.USER_AVATAR, null)
+        val avatar = prefService.getUserAvatar()
         val fallbackImage = AppCompatResources.getDrawable(this, R.mipmap.ic_launcher)
         if (avatar != null) {
             val bitmap = avatar.decodeBase64()
@@ -479,8 +473,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
     override fun getTheme(): Theme {
         val theme: Theme = super.getTheme()
-        val prefs = getDefaultSharedPreferences(this)
-        val prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME)
+        val prefTheme = prefService.getTheme()
         val prefThemeId = Utils.getThemeByName(this, prefTheme)
         theme.applyStyle(prefThemeId, true)
         return theme
@@ -496,11 +489,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             PermissionUtils.ACCESS_CALENDAR_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Timber.d("Requested permission has been denied by user")
-                    val isCalendarSyncOn = prefs
-                        .getBoolean(Const.Prefs.CALENDAR_SYNC, Const.Defaults.CALENDAR_SYNC)
-                    prefs.edit()
-                        .putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
-                        .apply()
                     if (SettingsFragment.isCalendarSyncPrefInitialized()) {
                         SettingsFragment.calendarSyncPref.isChecked = false
                     }

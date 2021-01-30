@@ -1,5 +1,6 @@
 package com.vmaier.taski.data
 
+
 /**
  * Created by Vladas Maier
  * on 22.01.2020

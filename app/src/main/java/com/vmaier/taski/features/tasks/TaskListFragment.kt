@@ -6,13 +6,11 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.maltaisn.recurpicker.RecurrenceFinder
 import com.maltaisn.recurpicker.format.RRuleFormatter
-import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.MainActivity.Companion.bottomNav
 import com.vmaier.taski.MainActivity.Companion.drawerLayout
@@ -25,6 +23,7 @@ import com.vmaier.taski.data.SortTasks
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentTaskListBinding
+import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.utils.Utils
 import timber.log.Timber
 
@@ -41,10 +40,9 @@ class TaskListFragment : Fragment() {
         lateinit var binding: FragmentTaskListBinding
 
         fun sortTasks(context: Context, tasks: MutableList<Task>) {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
-            val order =
-                prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
+            val prefService = PreferenceService(context)
+            val sort = prefService.getSort(PreferenceService.SortType.TASKS)
+            val order = prefService.getSortOrder(PreferenceService.SortType.TASKS)
             when (sort) {
                 SortTasks.CREATED_AT.value -> tasks.apply {
                     if (order == SortOrder.ASC.value) sortByDescending { it.createdAt }
@@ -78,10 +76,9 @@ class TaskListFragment : Fragment() {
         }
 
         fun updateSortedByHeader(context: Context, tasks: MutableList<Task>) {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
-            val order =
-                prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
+            val prefService = PreferenceService(context)
+            val sort = prefService.getSort(PreferenceService.SortType.TASKS)
+            val order = prefService.getSortOrder(PreferenceService.SortType.TASKS)
             val sortString = when (sort) {
                 SortTasks.CREATED_AT.value -> context.getString(R.string.term_sort_created_at)
                 SortTasks.GOAL.value -> context.getString(R.string.term_sort_goal)
@@ -203,8 +200,8 @@ class TaskListFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.task_sort_menu, menu)
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val menuItemId = when (prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)) {
+        val prefService = PreferenceService(requireContext())
+        val menuItemId = when (prefService.getSort(PreferenceService.SortType.TASKS)) {
             SortTasks.CREATED_AT.value -> R.id.sort_created_at
             SortTasks.GOAL.value -> R.id.sort_goal
             SortTasks.DURATION.value -> R.id.sort_duration
@@ -216,7 +213,7 @@ class TaskListFragment : Fragment() {
         val sortItem = menu.findItem(menuItemId)
         sortItem.isChecked = true
         val sortOrderItem = menu.findItem(R.id.sort_tasks_order)
-        val order = prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
+        val order = prefService.getSortOrder(PreferenceService.SortType.TASKS)
         if (order == SortOrder.ASC.value) {
             sortOrderItem.setIcon(R.drawable.ic_sort_order_asc_24)
         } else {
@@ -226,10 +223,9 @@ class TaskListFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val prefService = PreferenceService(requireContext())
         if (item.itemId == R.id.sort_tasks_order) {
-            val savedOrder =
-                prefs.getString(Const.Prefs.SORT_TASKS_ORDER, Const.Defaults.SORT_TASKS_ORDER)
+            val savedOrder = prefService.getSortOrder(PreferenceService.SortType.TASKS)
             val newOrder = if (savedOrder == SortOrder.ASC.value) {
                 item.setIcon(R.drawable.ic_sort_order_desc_24)
                 SortOrder.DESC.value
@@ -237,15 +233,12 @@ class TaskListFragment : Fragment() {
                 item.setIcon(R.drawable.ic_sort_order_asc_24)
                 SortOrder.ASC.value
             }
-            prefs.edit()
-                .putString(Const.Prefs.SORT_TASKS_ORDER, newOrder)
-                .apply()
+            prefService.setSortOrder(newOrder, PreferenceService.SortType.TASKS)
             sortTasks(requireContext(), taskAdapter.tasks)
             taskAdapter.notifyDataSetChanged()
         } else {
             item.isChecked = true
-            var sort = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
-                ?: SortTasks.CREATED_AT.value
+            var sort = prefService.getSort(PreferenceService.SortType.TASKS)
             when (item.itemId) {
                 R.id.sort_created_at -> sort = SortTasks.CREATED_AT.value
                 R.id.sort_goal -> sort = SortTasks.GOAL.value
@@ -255,9 +248,7 @@ class TaskListFragment : Fragment() {
                 R.id.sort_due_on -> sort = SortTasks.DUE_ON.value
                 else -> super.onOptionsItemSelected(item)
             }
-            prefs.edit()
-                .putString(Const.Prefs.SORT_TASKS, sort)
-                .apply()
+            prefService.setSort(sort, PreferenceService.SortType.TASKS)
             sortTasks(requireContext(), taskAdapter.tasks)
             taskAdapter.notifyDataSetChanged()
         }

@@ -10,10 +10,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
@@ -23,6 +21,7 @@ import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.sortCategories
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.updateSortedByHeader
+import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.views.EditTextDialog
 import dev.sasikanth.colorsheet.ColorSheet
@@ -112,9 +111,9 @@ class CategoryAdapter internal constructor(
         }
 
         // setup "Sort indicator" view
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val sortPref = prefs.getString(Const.Prefs.SORT_CATEGORIES, Const.Defaults.SORT_CATEGORIES)
-        holder.categoryIndicatorView.text = when (sortPref) {
+        val prefService = PreferenceService(context)
+        val sort = prefService.getSort(PreferenceService.SortType.CATEGORIES)
+        holder.categoryIndicatorView.text = when (sort) {
             SortSkills.XP.value -> {
                 val xp = db.categoryDao().countCategoryXp(category.id)
                 holder.categoryIndicatorView.visibility = View.VISIBLE

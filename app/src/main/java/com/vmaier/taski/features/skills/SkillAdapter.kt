@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vmaier.taski.Const
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortSkills
@@ -19,6 +17,7 @@ import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.services.LevelService
+import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.setIcon
 import kotlinx.android.synthetic.main.item_skill.view.*
 import timber.log.Timber
@@ -84,9 +83,9 @@ class SkillAdapter internal constructor(
         holder.levelView.text = context.getString(R.string.term_level_value, skillLevel)
 
         // setup "Sort indicator" view
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val sortPref = prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)
-        holder.sortIndicatorView.text = when (sortPref) {
+        val prefService = PreferenceService(context)
+        val sort = prefService.getSort(PreferenceService.SortType.SKILLS)
+        holder.sortIndicatorView.text = when (sort) {
             SortSkills.XP.value -> {
                 holder.sortIndicatorView.visibility = View.VISIBLE
                 "(" + skill.xp + " XP)"

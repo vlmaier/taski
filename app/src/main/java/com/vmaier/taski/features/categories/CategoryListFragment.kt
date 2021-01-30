@@ -6,11 +6,9 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.MainActivity.Companion.bottomNav
 import com.vmaier.taski.MainActivity.Companion.drawerLayout
@@ -22,6 +20,7 @@ import com.vmaier.taski.data.SortCategories
 import com.vmaier.taski.data.SortOrder
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.databinding.FragmentCategoryListBinding
+import com.vmaier.taski.services.PreferenceService
 import timber.log.Timber
 
 
@@ -37,12 +36,9 @@ class CategoryListFragment : Fragment() {
         lateinit var binding: FragmentCategoryListBinding
 
         fun sortCategories(context: Context, categories: MutableList<Category>) {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val sort = prefs.getString(Const.Prefs.SORT_CATEGORIES, Const.Defaults.SORT_CATEGORIES)
-            val order = prefs.getString(
-                Const.Prefs.SORT_CATEGORIES_ORDER,
-                Const.Defaults.SORT_CATEGORIES_ORDER
-            )
+            val prefService = PreferenceService(context)
+            val sort = prefService.getSort(PreferenceService.SortType.CATEGORIES)
+            val order = prefService.getSortOrder(PreferenceService.SortType.CATEGORIES)
             when (sort) {
                 SortCategories.NAME.value -> categories.apply {
                     if (order == SortOrder.ASC.value) sortBy { it.name }
@@ -62,12 +58,9 @@ class CategoryListFragment : Fragment() {
         }
 
         fun updateSortedByHeader(context: Context, categories: MutableList<Category>) {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val sort = prefs.getString(Const.Prefs.SORT_CATEGORIES, Const.Defaults.SORT_CATEGORIES)
-            val order = prefs.getString(
-                Const.Prefs.SORT_CATEGORIES_ORDER,
-                Const.Defaults.SORT_CATEGORIES_ORDER
-            )
+            val prefService = PreferenceService(context)
+            val sort = prefService.getSort(PreferenceService.SortType.CATEGORIES)
+            val order = prefService.getSortOrder(PreferenceService.SortType.CATEGORIES)
             val sortString = when (sort) {
                 SortCategories.NAME.value -> context.getString(R.string.term_sort_name)
                 SortCategories.XP.value -> context.getString(R.string.term_sort_xp)
@@ -95,7 +88,7 @@ class CategoryListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         saved: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_categories)
         toggleBottomMenu(true, View.INVISIBLE)
@@ -160,9 +153,9 @@ class CategoryListFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.category_sort_menu, menu)
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val prefService = PreferenceService(requireContext())
         val menuItemId =
-            when (prefs.getString(Const.Prefs.SORT_CATEGORIES, Const.Defaults.SORT_CATEGORIES)) {
+            when (prefService.getSort(PreferenceService.SortType.CATEGORIES)) {
                 SortCategories.NAME.value -> R.id.sort_name
                 SortCategories.XP.value -> R.id.sort_xp
                 else -> R.id.sort_name
@@ -170,8 +163,7 @@ class CategoryListFragment : Fragment() {
         val sortItem = menu.findItem(menuItemId)
         sortItem.isChecked = true
         val sortOrderItem = menu.findItem(R.id.sort_categories_order)
-        val order =
-            prefs.getString(Const.Prefs.SORT_CATEGORIES_ORDER, Const.Defaults.SORT_CATEGORIES_ORDER)
+        val order = prefService.getSortOrder(PreferenceService.SortType.CATEGORIES)
         if (order == SortOrder.ASC.value) {
             sortOrderItem.setIcon(R.drawable.ic_sort_order_asc_24)
         } else {
@@ -181,12 +173,9 @@ class CategoryListFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val prefService = PreferenceService(requireContext())
         if (item.itemId == R.id.sort_categories_order) {
-            val savedOrder = prefs.getString(
-                Const.Prefs.SORT_CATEGORIES_ORDER,
-                Const.Defaults.SORT_CATEGORIES_ORDER
-            )
+            val savedOrder = prefService.getSortOrder(PreferenceService.SortType.CATEGORIES)
             val newOrder = if (savedOrder == SortOrder.ASC.value) {
                 item.setIcon(R.drawable.ic_sort_order_desc_24)
                 SortOrder.DESC.value
@@ -194,23 +183,18 @@ class CategoryListFragment : Fragment() {
                 item.setIcon(R.drawable.ic_sort_order_asc_24)
                 SortOrder.ASC.value
             }
-            prefs.edit()
-                .putString(Const.Prefs.SORT_CATEGORIES_ORDER, newOrder)
-                .apply()
+            prefService.setSortOrder(newOrder, PreferenceService.SortType.CATEGORIES)
             sortCategories(requireContext(), categoryAdapter.categories)
             categoryAdapter.notifyDataSetChanged()
         } else {
             item.isChecked = true
-            var sort = prefs.getString(Const.Prefs.SORT_CATEGORIES, Const.Defaults.SORT_CATEGORIES)
-                ?: SortCategories.NAME.value
+            var sort = prefService.getSort(PreferenceService.SortType.CATEGORIES)
             when (item.itemId) {
                 R.id.sort_name -> sort = SortCategories.NAME.value
                 R.id.sort_xp -> sort = SortCategories.XP.value
                 else -> super.onOptionsItemSelected(item)
             }
-            prefs.edit()
-                .putString(Const.Prefs.SORT_CATEGORIES, sort)
-                .apply()
+            prefService.setSort(sort, PreferenceService.SortType.CATEGORIES)
             sortCategories(requireContext(), categoryAdapter.categories)
             categoryAdapter.notifyDataSetChanged()
         }

@@ -1,8 +1,7 @@
 package com.vmaier.taski.utils
 
 import android.content.Context
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
-import com.vmaier.taski.Const
+import com.vmaier.taski.services.PreferenceService
 import java.util.concurrent.atomic.AtomicInteger
 
 
@@ -15,14 +14,12 @@ class RequestCode {
 
     companion object {
         fun get(context: Context): Int {
-            val prefs = getDefaultSharedPreferences(context)
+            val prefService = PreferenceService(context)
             val current = AtomicInteger(
-                prefs.getInt(Const.Prefs.REQUEST_CODE_COUNTER, 1)
+                prefService.getRequestCodeCounter()
             )
             val next = current.incrementAndGet()
-            prefs.edit()
-                .putInt(Const.Prefs.REQUEST_CODE_COUNTER, next)
-                .apply()
+            prefService.setRequestCodeCounter(next)
             return next
         }
     }

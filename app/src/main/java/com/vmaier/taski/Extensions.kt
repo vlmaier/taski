@@ -123,7 +123,7 @@ fun String.toast(context: Context, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(context, this, length).show()
 }
 
-fun Bitmap.encodeToBase64(): String? {
+fun Bitmap.encodeToBase64(): String {
     val os = ByteArrayOutputStream()
     this.compress(Bitmap.CompressFormat.PNG, 100, os)
     val b: ByteArray = os.toByteArray()

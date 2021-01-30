@@ -3,11 +3,10 @@ package com.vmaier.taski.intro
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import com.github.appintro.AppIntro
 import com.github.appintro.AppIntroFragment
-import com.vmaier.taski.Const
 import com.vmaier.taski.R
+import com.vmaier.taski.services.PreferenceService
 
 
 class Onboarding : AppIntro() {
@@ -85,10 +84,8 @@ class Onboarding : AppIntro() {
     }
 
     private fun completeIntro() {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        prefs.edit()
-            .putBoolean(Const.Prefs.ONBOARDING, false)
-            .apply()
+        val prefService = PreferenceService(this)
+        prefService.setOnboardingEnabled(false)
         finish()
     }
 }

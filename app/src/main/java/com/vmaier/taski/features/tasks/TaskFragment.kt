@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -18,7 +17,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.hootsuite.nachos.ChipConfiguration
 import com.hootsuite.nachos.NachoTextView
 import com.hootsuite.nachos.chip.ChipInfo
@@ -35,6 +33,7 @@ import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.DurationUnit
 import com.vmaier.taski.services.CalendarService
 import com.vmaier.taski.services.NotificationService
+import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.utils.Utils
 import java.util.*
 import kotlin.random.Random
@@ -47,13 +46,12 @@ import kotlin.random.Random
  */
 open class TaskFragment : Fragment() {
 
-    lateinit var prefs: SharedPreferences
+    lateinit var db: AppDatabase
     lateinit var calendarService: CalendarService
 
     companion object {
         lateinit var skillNames: List<String>
         lateinit var difficulty: String
-        lateinit var db: AppDatabase
 
         var durationValue: Int = 15
         var durationUnit: DurationUnit = DurationUnit.MINUTE
@@ -81,7 +79,6 @@ open class TaskFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         db = AppDatabase(context)
-        prefs = getDefaultSharedPreferences(context)
         calendarService = CalendarService(context)
     }
 
@@ -188,7 +185,8 @@ open class TaskFragment : Fragment() {
         view?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 if (s.isNotEmpty()) {
-                    val isCalendarSyncOn = prefs.getBoolean(Const.Prefs.CALENDAR_SYNC, false)
+                    val prefService = PreferenceService(requireContext())
+                    val isCalendarSyncOn = prefService.isCalendarSyncEnabled()
                     calendarSync.isChecked = isCalendarSyncOn
                     calendarSync.isEnabled = true
                 } else {
