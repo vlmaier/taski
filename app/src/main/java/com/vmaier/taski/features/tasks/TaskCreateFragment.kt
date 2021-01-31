@@ -176,7 +176,7 @@ class TaskCreateFragment : TaskFragment() {
         }
         if (goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.goal.requestFocus()
-            binding.goal.error = getString(R.string.error_too_short)
+            binding.goal.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             return false
         }
         val detailsValue = binding.details.editText?.text.toString().trim()
@@ -206,7 +206,6 @@ class TaskCreateFragment : TaskFragment() {
             dueAt = dueAt?.time, difficulty = Difficulty.valueOf(difficulty), rrule = rrule
         )
         val id = db.taskDao().createTask(task, skillsToAssign)
-        Timber.d("Task ($id) created.")
         task.id = id
         taskAdapter.notifyDataSetChanged()
         calendarService.addToCalendar(binding.calendarSync.isChecked, task)

@@ -45,6 +45,7 @@ import com.maltaisn.recurpicker.picker.RecurrencePickerFragment
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
+import com.vmaier.taski.data.repository.CategoryRepository
 import com.vmaier.taski.databinding.ActivityMainBinding
 import com.vmaier.taski.features.categories.CategoryListFragment
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
@@ -91,6 +92,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         lateinit var userNameView: TextView
         lateinit var avatarView: ImageView
         lateinit var db: AppDatabase
+        lateinit var categoryRepository: CategoryRepository
 
         private val recurrenceSettings = RecurrencePickerSettings()
         val recurrenceListDialog by lazy {
@@ -133,6 +135,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         super.onCreate(savedInstanceState)
 
         db = AppDatabase(this)
+        categoryRepository = CategoryRepository(this)
         levelService = LevelService(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -457,8 +460,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 fragments.forEach {
                     when (it) {
                         is TaskCreateFragment -> onBackPressedTaskCreateFragment()
-                        is SkillEditFragment -> onBackPressedSkillEditFragment()
                         is TaskEditFragment -> onBackPressedTaskEditFragment()
+                        is SkillEditFragment -> onBackPressedSkillEditFragment()
+                        is CategoryListFragment -> onBackPressedCategoryListFragment()
                         is HelpFragment -> onBackPressedHelpFragment()
                         else -> {
                             super.onBackPressed()
@@ -510,14 +514,14 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             val foundSkill = db.skillDao().findByName(name)
             if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.name.requestFocus()
-                SkillEditFragment.binding.name.error = getString(R.string.error_too_short)
+                SkillEditFragment.binding.name.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             } else if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                 SkillEditFragment.binding.name.requestFocus()
                 SkillEditFragment.binding.name.error =
                     getString(R.string.error_skill_already_exists)
             } else if (category.isNotBlank() && category.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.category.requestFocus()
-                SkillEditFragment.binding.category.error = getString(R.string.error_too_short)
+                SkillEditFragment.binding.category.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             } else {
                 super.onBackPressed()
             }
@@ -538,7 +542,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             }
             goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH -> {
                 TaskEditFragment.binding.goal.requestFocus()
-                TaskEditFragment.binding.goal.error = getString(R.string.error_too_short)
+                TaskEditFragment.binding.goal.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             }
             else -> {
                 super.onBackPressed()
@@ -552,6 +556,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         HelpFragment.binding.replayIntroButton.visibility = View.VISIBLE
         HelpFragment.binding.licensesButton.visibility = View.VISIBLE
         HelpFragment.binding.versionButton.visibility = View.VISIBLE
+        super.onBackPressed()
+    }
+
+    private fun onBackPressedCategoryListFragment() {
+        categoryAdapter.closeMenu()
         super.onBackPressed()
     }
 
@@ -582,24 +591,23 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             val name = dialog.editText.text.toString().trim()
             if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 dialog.editText.requestFocus()
-                dialog.editText.error = getString(R.string.error_too_short)
+                dialog.editText.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             } else {
-                val foundCategory = db.categoryDao().findByName(name)
+                val foundCategory = categoryRepository.get(name)
                 if (foundCategory != null) {
                     dialog.editText.requestFocus()
                     dialog.editText.error = getString(R.string.error_category_already_exists)
                 } else {
-                    val category = Category(name = name)
-                    val id = db.categoryDao().create(category)
-                    categoryAdapter.categories.add(
-                        Category(id = id, name = name)
-                    )
+                    categoryRepository.create(name, null).observe(this, {
+                        if (it != null) {
+                            categoryAdapter.categories.add(Category(id = it, name = name))
+                        }
+                    })
                     CategoryListFragment.sortCategories(
                         dialog.editText.context,
                         categoryAdapter.categories
                     )
                     categoryAdapter.notifyDataSetChanged()
-                    Timber.d("Category ($id) created.")
                     dialog.dismiss()
                 }
             }

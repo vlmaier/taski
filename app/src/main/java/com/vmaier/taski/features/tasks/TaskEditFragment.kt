@@ -207,7 +207,7 @@ class TaskEditFragment : TaskFragment() {
         }
         if (goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.goal.requestFocus()
-            binding.goal.error = getString(R.string.error_too_short)
+            binding.goal.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             return
         }
         val detailsValue = binding.details.editText?.text.toString().trim()
@@ -247,7 +247,6 @@ class TaskEditFragment : TaskFragment() {
         if (task != toUpdate || assignedSkills != skillsToAssign) {
             val reminderUpdateRequired = task.dueAt != toUpdate.dueAt
             db.taskDao().updateTask(toUpdate, skillsToAssign)
-            Timber.d("Updated task with ID: ${task.id}.")
             updateInAdapter(toUpdate, skillsToAssign)
             TaskListFragment.sortTasks(requireContext(), TaskListFragment.taskAdapter.tasks)
             TaskListFragment.taskAdapter.notifyDataSetChanged()

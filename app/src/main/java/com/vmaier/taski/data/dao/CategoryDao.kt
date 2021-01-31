@@ -1,5 +1,6 @@
 package com.vmaier.taski.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.vmaier.taski.data.entity.Category
 
@@ -15,7 +16,7 @@ interface CategoryDao {
     // ------------------------------------- CREATE QUERIES ------------------------------------- //
 
     @Insert(entity = Category::class, onConflict = OnConflictStrategy.IGNORE)
-    fun create(category: Category): Long
+    suspend fun create(category: Category): Long
 
     // -------------------------------------  READ QUERIES  ------------------------------------- //
 
@@ -23,19 +24,10 @@ interface CategoryDao {
         """
         SELECT *
         FROM categories
-        WHERE id = :categoryId
+        WHERE id = :id
     """
     )
-    fun findById(categoryId: Long): Category
-
-    @Query(
-        """
-        SELECT name
-        FROM categories
-        WHERE id = :categoryId
-    """
-    )
-    fun findNameById(categoryId: Long): String
+    fun getLive(id: Long): LiveData<Category>?
 
     @Query(
         """
@@ -44,7 +36,7 @@ interface CategoryDao {
         WHERE name = :name COLLATE NOCASE
     """
     )
-    fun findByName(name: String): Category?
+    fun getLive(name: String): LiveData<Category>?
 
     @Query(
         """
@@ -52,7 +44,42 @@ interface CategoryDao {
         FROM categories
     """
     )
-    fun findAll(): MutableList<Category>
+    fun getAllLive(): LiveData<MutableList<Category>>
+
+    @Query(
+        """
+        SELECT *
+        FROM categories
+        WHERE id = :id
+    """
+    )
+    fun get(id: Long): Category?
+
+    @Query(
+        """
+        SELECT *
+        FROM categories
+        WHERE name = :name COLLATE NOCASE
+    """
+    )
+    fun get(name: String): Category?
+
+    @Query(
+        """
+        SELECT *
+        FROM categories
+    """
+    )
+    fun getAll(): List<Category>
+
+    @Query(
+        """
+        SELECT name
+        FROM categories
+        WHERE id = :id
+    """
+    )
+    fun getNameById(id: Long): String?
 
     @Query(
         """
@@ -62,10 +89,10 @@ interface CategoryDao {
           ON task_id = tasks.id
         INNER JOIN skills
           ON skill_id = skills.id
-        WHERE category_id = :categoryId
+        WHERE category_id = :id
     """
     )
-    fun countCategoryXp(categoryId: Long): Long
+    fun countXP(id: Long): Long
 
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 
@@ -73,22 +100,27 @@ interface CategoryDao {
         """
         UPDATE categories
         SET name = :name
-        WHERE id = :categoryId
+        WHERE id = :id
     """
     )
-    fun updateName(categoryId: Long, name: String)
+    suspend fun updateName(id: Long, name: String)
 
     @Query(
         """
         UPDATE categories
         SET color = :color
-        WHERE id = :categoryId
+        WHERE id = :id
     """
     )
-    fun updateColor(categoryId: Long, color: String?)
+    suspend fun updateColor(id: Long, color: String?)
 
     // ------------------------------------- DELETE QUERIES ------------------------------------- //
 
-    @Delete
-    fun delete(category: Category)
+    @Query(
+        """
+        DELETE FROM categories
+        WHERE id = :id
+    """
+    )
+    suspend fun delete(id: Long)
 }

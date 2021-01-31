@@ -166,11 +166,29 @@ interface SkillDao {
     @Query(
         """
         UPDATE skills
+        SET name = :name
+        WHERE id = :skillId
+    """
+    )
+    suspend fun updateName(skillId: Long, name: String)
+
+    @Query(
+        """
+        UPDATE skills
+        SET icon_id = :iconId
+        WHERE id = :skillId
+    """
+    )
+    suspend fun updateIconId(skillId: Long, iconId: Int)
+
+    @Query(
+        """
+        UPDATE skills
         SET category_id = :categoryId
         WHERE id = :skillId
     """
     )
-    fun updateCategoryId(skillId: Long, categoryId: Long)
+    suspend fun updateCategoryId(skillId: Long, categoryId: Long?)
 
     @Query(
         """

@@ -177,7 +177,6 @@ class TaskListFragment : Fragment() {
             }
         }
         sortTasks(requireContext(), tasks)
-        Timber.d("${tasks.size} task(s) found.")
         taskAdapter.setTasks(tasks)
         binding.rv.apply {
             layoutManager = LinearLayoutManager(activity)

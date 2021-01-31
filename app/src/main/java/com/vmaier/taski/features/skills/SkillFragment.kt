@@ -19,6 +19,7 @@ import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Skill
+import com.vmaier.taski.data.repository.CategoryRepository
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
 import com.vmaier.taski.hideKeyboard
 import com.vmaier.taski.utils.Utils
@@ -35,6 +36,7 @@ open class SkillFragment : Fragment() {
     companion object {
         lateinit var categoryNames: List<String>
         lateinit var db: AppDatabase
+        lateinit var categoryRepository: CategoryRepository
 
         const val KEY_NAME = "name"
         const val KEY_CATEGORY = "category"
@@ -51,6 +53,7 @@ open class SkillFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         db = AppDatabase(context)
+        categoryRepository = CategoryRepository(context)
     }
 
     override fun onCreateView(
@@ -61,8 +64,7 @@ open class SkillFragment : Fragment() {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_skills)
         toggleBottomMenu(false, View.GONE)
-        val categories = db.categoryDao().findAll()
-        categoryNames = categories.map { it.name }
+        categoryNames = categoryRepository.getAllNames()
         return this.view
     }
 

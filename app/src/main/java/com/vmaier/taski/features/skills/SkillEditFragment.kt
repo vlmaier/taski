@@ -13,7 +13,6 @@ import com.maltaisn.recurpicker.RecurrenceFinder
 import com.maltaisn.recurpicker.format.RRuleFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.data.Status
-import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentEditSkillBinding
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
@@ -21,7 +20,9 @@ import com.vmaier.taski.features.skills.SkillListFragment.Companion.sortSkills
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.utils.KeyBoardHider
 import com.vmaier.taski.utils.Utils
-import timber.log.Timber
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 /**
@@ -66,7 +67,7 @@ class SkillEditFragment : SkillFragment() {
         // Category settings
         val categoryId = skill.categoryId
         val categoryName =
-            if (categoryId != null) db.categoryDao().findNameById(categoryId) else null
+            if (categoryId != null) categoryRepository.getNameById(categoryId) else null
         binding.category.editText?.setText(saved?.getString(KEY_CATEGORY) ?: categoryName)
         binding.category.onFocusChangeListener = KeyBoardHider()
         val arrayAdapter = ArrayAdapter(
@@ -122,7 +123,6 @@ class SkillEditFragment : SkillFragment() {
                 false
             }
         }
-        Timber.d("${tasks.size} task(s) found.")
         tasks.sortBy { it.goal }
         taskAdapter = AssignedTaskAdapter(requireContext())
         taskAdapter.setTasks(tasks)
@@ -155,6 +155,7 @@ class SkillEditFragment : SkillFragment() {
     }
 
     private fun saveChangesOnSkill() {
+        var isUpdated = false
         val name = binding.name.editText?.text.toString().trim()
         if (name.isBlank()) {
             binding.name.requestFocus()
@@ -163,40 +164,51 @@ class SkillEditFragment : SkillFragment() {
         }
         if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.name.requestFocus()
-            binding.name.error = getString(R.string.error_too_short)
+            binding.name.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             return
         }
-        val categoryName = binding.category.editText?.text.toString().trim()
+        if (skill.name != name) {
+            isUpdated = true
+            CoroutineScope(Dispatchers.IO).launch {
+                db.skillDao().updateName(skill.id, name)
+            }
+        }
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        val categoryId: Long?
+        if (skill.iconId != iconId) {
+            isUpdated = true
+            CoroutineScope(Dispatchers.IO).launch {
+                db.skillDao().updateIconId(skill.id, iconId)
+            }
+        }
+        val categoryName = binding.category.editText?.text.toString().trim()
         if (categoryName.isNotBlank()) {
             if (categoryName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 binding.category.requestFocus()
-                binding.category.error = getString(R.string.error_too_short)
+                binding.category.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
                 return
             } else {
-                val foundCategory = db.categoryDao().findByName(categoryName)
+                val foundCategory = categoryRepository.get(categoryName)
                 if (foundCategory != null) {
-                    categoryId = foundCategory.id
+                    if (foundCategory.id != skill.categoryId) {
+                        isUpdated = true
+                        CoroutineScope(Dispatchers.IO).launch {
+                            db.skillDao().updateCategoryId(skill.id, foundCategory.id)
+                        }
+                    }
                 } else {
-                    categoryId = db.categoryDao().create(Category(name = categoryName))
-                    Timber.d("Category ($categoryId) created.")
+                    isUpdated = true
+                    categoryRepository.create(categoryName, null, skill.id)
                 }
             }
         } else {
-            categoryId = null
+            if (skill.categoryId != null) {
+                isUpdated = true
+                CoroutineScope(Dispatchers.IO).launch {
+                    db.skillDao().updateCategoryId(skill.id, null)
+                }
+            }
         }
-        val toUpdate = Skill(
-            id = skill.id,
-            name = name,
-            categoryId = categoryId,
-            xp = skill.xp,
-            iconId = iconId
-        )
-        if (skill != toUpdate) {
-            db.skillDao().update(toUpdate)
-            Timber.d("Skill (${skill.id}) updated.")
-            skillAdapter.skills[itemPosition] = toUpdate
+        if (isUpdated) {
             sortSkills(requireContext(), skillAdapter.skills)
             skillAdapter.notifyDataSetChanged()
             getString(R.string.event_skill_updated).toast(requireContext())
