@@ -11,15 +11,10 @@ import androidx.navigation.findNavController
 import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity.Companion.iconDialog
 import com.vmaier.taski.R
-import com.vmaier.taski.data.entity.Skill
-import com.vmaier.taski.data.repository.CategoryRepository
 import com.vmaier.taski.databinding.FragmentCreateSkillBinding
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
 import com.vmaier.taski.hideKeyboard
 import com.vmaier.taski.utils.KeyBoardHider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 /**
@@ -31,7 +26,6 @@ class SkillCreateFragment : SkillFragment() {
 
     companion object {
         lateinit var binding: FragmentCreateSkillBinding
-        lateinit var categoryRepository: CategoryRepository
     }
 
     override fun onCreateView(
@@ -40,7 +34,6 @@ class SkillCreateFragment : SkillFragment() {
         saved: Bundle?
     ): View {
         super.onCreateView(inflater, container, saved)
-        categoryRepository = CategoryRepository(requireContext())
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_create_skill, container, false)
 
@@ -104,7 +97,7 @@ class SkillCreateFragment : SkillFragment() {
                 binding.name.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
                 return false
             }
-            val foundSkill = db.skillDao().findByName(name)
+            val foundSkill = skillRepository.get(name)
             if (foundSkill != null) {
                 binding.name.requestFocus()
                 binding.name.error = getString(R.string.error_skill_already_exists)
@@ -112,26 +105,22 @@ class SkillCreateFragment : SkillFragment() {
             }
         }
         val categoryName = binding.category.editText?.text.toString().trim()
+        if (categoryName.isNotBlank() && categoryName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
+            binding.category.requestFocus()
+            binding.category.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+            return false
+        }
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        val skill = Skill(name = name, iconId = iconId)
-        val skillId = db.skillDao().create(skill)
-        if (categoryName.isNotBlank()) {
-            if (categoryName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
-                binding.category.requestFocus()
-                binding.category.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
-                return false
-            } else {
+        skillRepository.create(name, iconId, null).observe(viewLifecycleOwner, { skillId ->
+            if (skillId != null && categoryName.isNotBlank()) {
                 val foundCategory = categoryRepository.get(categoryName)
                 if (foundCategory != null) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        db.skillDao().updateCategoryId(skillId, foundCategory.id)
-                    }
+                    skillRepository.updateCategoryId(requireContext(), skillId, foundCategory.id)
                 } else {
                     categoryRepository.create(categoryName, null, skillId)
                 }
-
             }
-        }
+        })
         skillAdapter.notifyDataSetChanged()
         return true
     }

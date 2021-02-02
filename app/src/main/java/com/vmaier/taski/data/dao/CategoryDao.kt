@@ -1,6 +1,5 @@
 package com.vmaier.taski.data.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.vmaier.taski.data.entity.Category
 
@@ -27,32 +26,6 @@ interface CategoryDao {
         WHERE id = :id
     """
     )
-    fun getLive(id: Long): LiveData<Category>?
-
-    @Query(
-        """
-        SELECT *
-        FROM categories
-        WHERE name = :name COLLATE NOCASE
-    """
-    )
-    fun getLive(name: String): LiveData<Category>?
-
-    @Query(
-        """
-        SELECT *
-        FROM categories
-    """
-    )
-    fun getAllLive(): LiveData<MutableList<Category>>
-
-    @Query(
-        """
-        SELECT *
-        FROM categories
-        WHERE id = :id
-    """
-    )
     fun get(id: Long): Category?
 
     @Query(
@@ -70,7 +43,7 @@ interface CategoryDao {
         FROM categories
     """
     )
-    fun getAll(): List<Category>
+    fun getAll(): MutableList<Category>
 
     @Query(
         """

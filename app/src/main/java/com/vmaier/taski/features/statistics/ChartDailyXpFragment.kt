@@ -45,7 +45,7 @@ class ChartDailyXpFragment : TaskFragment() {
         var skillWithXp: MutableMap<String, Long> = mutableMapOf()
         val values = ArrayList<BarEntry>()
         tasks.forEach { task ->
-            val assignedSkills = db.skillDao().findAssignedSkills(task.id)
+            val assignedSkills = skillRepository.getAssignedSkills(task.id)
             if (assignedSkills.isEmpty()) {
                 fillSkillWithXp(
                     skillWithXp,

@@ -7,22 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.entity.AssignedSkill
 import com.vmaier.taski.data.entity.Skill
-import com.vmaier.taski.data.model.CategoryViewModel
+import com.vmaier.taski.data.repository.CategoryRepository
+import com.vmaier.taski.data.repository.SkillRepository
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.setIcon
 import kotlinx.android.synthetic.main.item_skill.view.*
-import timber.log.Timber
 
 
 /**
@@ -35,11 +32,11 @@ class SkillAdapter internal constructor(
 ) : RecyclerView.Adapter<SkillAdapter.SkillViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private lateinit var categoryViewModel: CategoryViewModel
+    private val categoryRepository = CategoryRepository(context)
+    private val skillRepository = SkillRepository(context)
 
     var skills: MutableList<Skill> = mutableListOf()
     var levelService = LevelService(context)
-    val db = AppDatabase(context)
 
     inner class SkillViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nameView: TextView = itemView.findViewById(R.id.skill_name)
@@ -68,19 +65,16 @@ class SkillAdapter internal constructor(
         holder.nameView.isSelected = true
 
         // setup "Category" view
+        holder.categoryView.text = ""
+        holder.itemView.cv.strokeColor = 0x00000000
         if (skill.categoryId != null) {
-            categoryViewModel =
-                ViewModelProvider(context as MainActivity).get(CategoryViewModel::class.java)
-            categoryViewModel.getLive(skill.categoryId)?.observe(context, {
-                if (it == null) {
-                    holder.categoryView.text = ""
-                } else {
-                    holder.categoryView.text = it.name
-                    holder.categoryView.isSelected = true
-                    holder.itemView.cv.strokeColor =
-                        if (it.color != null) Color.parseColor(it.color) else 0x00000000
-                }
-            })
+            val category = categoryRepository.get(skill.categoryId)
+            if (category != null) {
+                holder.categoryView.text = category.name
+                holder.categoryView.isSelected = true
+                holder.itemView.cv.strokeColor =
+                    if (category.color != null) Color.parseColor(category.color) else 0x00000000
+            }
         }
 
         // setup "Icon" view
@@ -119,8 +113,8 @@ class SkillAdapter internal constructor(
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, skills.size)
         updateSortedByHeader(context, skills)
-        val foundAssignments = db.skillDao().findAssignments(skill.id)
-        db.skillDao().delete(skill)
+        val foundAssignments = skillRepository.getAssignments(skill.id)
+        skillRepository.delete(skill.id)
         return Pair(skill, foundAssignments)
     }
 
@@ -128,9 +122,6 @@ class SkillAdapter internal constructor(
         skills.add(position, toRestore.first)
         notifyItemInserted(position)
         updateSortedByHeader(context, skills)
-        db.skillDao().create(toRestore.first)
-        toRestore.second.forEach {
-            db.taskDao().assignSkill(it)
-        }
+        skillRepository.restore(toRestore.first, toRestore.second)
     }
 }

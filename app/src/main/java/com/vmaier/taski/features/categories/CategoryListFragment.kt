@@ -19,7 +19,7 @@ import com.vmaier.taski.R
 import com.vmaier.taski.data.SortCategories
 import com.vmaier.taski.data.SortOrder
 import com.vmaier.taski.data.entity.Category
-import com.vmaier.taski.data.model.CategoryViewModel
+import com.vmaier.taski.data.repository.CategoryRepository
 import com.vmaier.taski.databinding.FragmentCategoryListBinding
 import com.vmaier.taski.services.PreferenceService
 
@@ -35,7 +35,7 @@ class CategoryListFragment : Fragment() {
         lateinit var categoryAdapter: CategoryAdapter
         lateinit var binding: FragmentCategoryListBinding
 
-        private lateinit var categoryViewModel: CategoryViewModel
+        private lateinit var categoryRepository: CategoryRepository
 
         fun sortCategories(context: Context, categories: MutableList<Category>) {
             val prefService = PreferenceService(context)
@@ -48,10 +48,10 @@ class CategoryListFragment : Fragment() {
                 }
                 SortCategories.XP.value -> categories.apply {
                     if (order == SortOrder.ASC.value) sortBy {
-                        categoryViewModel.countXP(it.id)
+                        categoryRepository.countXP(it.id)
                     }
                     else sortByDescending {
-                        categoryViewModel.countXP(it.id)
+                        categoryRepository.countXP(it.id)
                     }
                 }
             }
@@ -105,6 +105,7 @@ class CategoryListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        categoryRepository = CategoryRepository(requireContext())
         categoryAdapter = CategoryAdapter(requireContext())
         categoryAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
@@ -127,14 +128,9 @@ class CategoryListFragment : Fragment() {
                 binding.emptyRv.visibility = visibility
             }
         })
-
-        categoryViewModel =
-            ViewModelProvider(context as MainActivity).get(CategoryViewModel::class.java)
-        categoryViewModel.getAllLive().observe(viewLifecycleOwner, {
-            sortCategories(requireContext(), it)
-            categoryAdapter.setCategories(it)
-        })
-
+        val categories = categoryRepository.getAll()
+        sortCategories(requireContext(), categories)
+        categoryAdapter.setCategories(categories)
         binding.rv.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = categoryAdapter

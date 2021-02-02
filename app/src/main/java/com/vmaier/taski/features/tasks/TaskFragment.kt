@@ -31,6 +31,7 @@ import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.DurationUnit
+import com.vmaier.taski.data.repository.SkillRepository
 import com.vmaier.taski.services.CalendarService
 import com.vmaier.taski.services.NotificationService
 import com.vmaier.taski.services.PreferenceService
@@ -52,6 +53,7 @@ open class TaskFragment : Fragment() {
     companion object {
         lateinit var skillNames: List<String>
         lateinit var difficulty: String
+        lateinit var skillRepository: SkillRepository
 
         var durationValue: Int = 15
         var durationUnit: DurationUnit = DurationUnit.MINUTE
@@ -80,6 +82,7 @@ open class TaskFragment : Fragment() {
         super.onAttach(context)
         db = AppDatabase(context)
         calendarService = CalendarService(context)
+        skillRepository = SkillRepository(context)
     }
 
     override fun onCreateView(
@@ -90,8 +93,7 @@ open class TaskFragment : Fragment() {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_tasks)
         toggleBottomMenu(false, View.GONE)
-        val skills = db.skillDao().findAll()
-        skillNames = skills.map { it.name }
+        skillNames = skillRepository.getAllNames()
         return this.view
     }
 
@@ -110,8 +112,7 @@ open class TaskFragment : Fragment() {
     fun getSkillsTokenizer(): SpanChipTokenizer<ChipSpan> {
         return SpanChipTokenizer(requireContext(), object : ChipSpanChipCreator() {
             override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan {
-                val skills = db.skillDao().findAll()
-                val skill = skills.find { it.name == text }
+                val skill = skillRepository.get(text.toString())
                 var icon: Drawable? = null
                 if (skill != null) {
                     icon = App.iconPack.getIconDrawable(skill.iconId, IconDrawableLoader(context))

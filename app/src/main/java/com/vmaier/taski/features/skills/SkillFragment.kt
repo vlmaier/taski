@@ -17,9 +17,9 @@ import com.vmaier.taski.App
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.repository.CategoryRepository
+import com.vmaier.taski.data.repository.SkillRepository
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
 import com.vmaier.taski.hideKeyboard
 import com.vmaier.taski.utils.Utils
@@ -35,7 +35,7 @@ open class SkillFragment : Fragment() {
 
     companion object {
         lateinit var categoryNames: List<String>
-        lateinit var db: AppDatabase
+        lateinit var skillRepository: SkillRepository
         lateinit var categoryRepository: CategoryRepository
 
         const val KEY_NAME = "name"
@@ -52,7 +52,7 @@ open class SkillFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        db = AppDatabase(context)
+        skillRepository = SkillRepository(context)
         categoryRepository = CategoryRepository(context)
     }
 
@@ -82,7 +82,7 @@ open class SkillFragment : Fragment() {
 
     fun setDeleteButtonOnClickListener(view: Button, position: Int, skill: Skill) {
         view.setOnClickListener {
-            val countTasks = db.skillDao().countTasksWithSkill(skill.id)
+            val countTasks = skillRepository.countTasksBySkillId(skill.id)
             if (countTasks > 0) {
                 val dialogBuilder = AlertDialog.Builder(requireContext())
                 dialogBuilder

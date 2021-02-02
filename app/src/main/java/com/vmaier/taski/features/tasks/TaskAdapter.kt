@@ -21,6 +21,7 @@ import com.vmaier.taski.data.Quadruple
 import com.vmaier.taski.data.SortTasks
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.data.repository.SkillRepository
 import com.vmaier.taski.features.tasks.TaskListFragment.Companion.taskAdapter
 import com.vmaier.taski.features.tasks.TaskListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.services.CalendarService
@@ -39,6 +40,7 @@ class TaskAdapter internal constructor(
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private val skillRepository = SkillRepository(context)
     private val prefService = PreferenceService(context)
     private val levelService = LevelService(context)
     private val calendarService = CalendarService(context)
@@ -122,7 +124,7 @@ class TaskAdapter internal constructor(
             menu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.copy -> {
-                        val taskSkills = db.skillDao().findAssignedSkills(task.id)
+                        val taskSkills = skillRepository.getAssignedSkills(task.id)
                         val bundle = Bundle()
                         bundle.putString(TaskFragment.KEY_GOAL, task.goal)
                         bundle.putString(TaskFragment.KEY_DETAILS, task.details)
@@ -174,7 +176,7 @@ class TaskAdapter internal constructor(
     }
 
     private fun setupSkillIcons(holder: TaskViewHolder, task: Task) {
-        val skills = db.skillDao().findAssignedSkills(task.id).sortedBy { it.name }
+        val skills = skillRepository.getAssignedSkills(task.id).sortedBy { it.name }
         val size = skills.size
         val icons = App.iconPack
         if (size > 0) {
@@ -230,14 +232,14 @@ class TaskAdapter internal constructor(
         decrementCounter: Boolean = false,
         closedAt: Long? = null
     ): Quadruple<Task, Long, Boolean, Long?> {
-        val assignedSkills = db.skillDao().findAssignedSkills(task.id)
+        val assignedSkills = skillRepository.getAssignedSkills(task.id)
         val xpPerSkill = if (assignedSkills.size >= 2) task.xp.div(assignedSkills.size) else task.xp
         var closedTaskId = 0L
         var isCounterIncremented = false
         if (status != Status.OPEN) {
             if (status == Status.DONE) {
                 for (skill in assignedSkills) {
-                    db.skillDao().updateXp(skill.id, xpPerSkill)
+                    skillRepository.updateXp(skill.id, xpPerSkill)
                     levelService.checkSkillLevelUp(skill, xpPerSkill)
                 }
                 levelService.checkOverallLevelUp(task.xp)
@@ -269,7 +271,7 @@ class TaskAdapter internal constructor(
         } else {
             if (task.status == Status.DONE) {
                 for (skill in assignedSkills) {
-                    db.skillDao().updateXp(skill.id, -xpPerSkill)
+                    skillRepository.updateXp(skill.id, -xpPerSkill)
                 }
             }
             db.taskDao().reopen(task.id)

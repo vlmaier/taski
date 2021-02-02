@@ -78,11 +78,11 @@ class SkillEditFragment : SkillFragment() {
         autoCompleteCategory.setAdapter(arrayAdapter)
 
         // "Done tasks" settings
-        val doneTasksAmount = db.skillDao().countDoneTasksWithSkill(skill.id)
+        val doneTasksAmount = skillRepository.countDoneTasksBySkillId(skill.id)
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
 
         // "Skill hours" settings
-        val skillHoursAmount = db.skillDao().countMinutes(skill.id).div(60)
+        val skillHoursAmount = skillRepository.countMinutes(skill.id).div(60)
         binding.skillHoursValue.text = "$skillHoursAmount"
 
         // XP settings
@@ -106,7 +106,7 @@ class SkillEditFragment : SkillFragment() {
             it.hideKeyboard()
             isCanceled = true
         }
-        val tasks = db.skillDao().findTasksWithSkillByStatus(skill.id, Status.OPEN)
+        val tasks = skillRepository.getTasksWithSkillByStatus(skill.id, Status.OPEN)
         tasks.removeAll {
             if (it.rrule != null) {
                 val found = RecurrenceFinder().findBasedOn(
@@ -139,7 +139,7 @@ class SkillEditFragment : SkillFragment() {
     override fun onPause() {
         super.onPause()
         // check if the skill was not deleted
-        if (db.skillDao().findById(skill.id) != null && !isCanceled) {
+        if (skillRepository.get(skill.id) != null && !isCanceled) {
             saveChangesOnSkill()
         }
         binding.name.hideKeyboard()
@@ -155,7 +155,7 @@ class SkillEditFragment : SkillFragment() {
     }
 
     private fun saveChangesOnSkill() {
-        var isUpdated = false
+        val context = requireContext()
         val name = binding.name.editText?.text.toString().trim()
         if (name.isBlank()) {
             binding.name.requestFocus()
@@ -168,17 +168,11 @@ class SkillEditFragment : SkillFragment() {
             return
         }
         if (skill.name != name) {
-            isUpdated = true
-            CoroutineScope(Dispatchers.IO).launch {
-                db.skillDao().updateName(skill.id, name)
-            }
+            skillRepository.updateName(context, skill.id, name)
         }
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         if (skill.iconId != iconId) {
-            isUpdated = true
-            CoroutineScope(Dispatchers.IO).launch {
-                db.skillDao().updateIconId(skill.id, iconId)
-            }
+            skillRepository.updateIconId(context, skill.id, iconId)
         }
         val categoryName = binding.category.editText?.text.toString().trim()
         if (categoryName.isNotBlank()) {
@@ -190,28 +184,16 @@ class SkillEditFragment : SkillFragment() {
                 val foundCategory = categoryRepository.get(categoryName)
                 if (foundCategory != null) {
                     if (foundCategory.id != skill.categoryId) {
-                        isUpdated = true
-                        CoroutineScope(Dispatchers.IO).launch {
-                            db.skillDao().updateCategoryId(skill.id, foundCategory.id)
-                        }
+                        skillRepository.updateCategoryId(context, skill.id, foundCategory.id)
                     }
                 } else {
-                    isUpdated = true
                     categoryRepository.create(categoryName, null, skill.id)
                 }
             }
         } else {
             if (skill.categoryId != null) {
-                isUpdated = true
-                CoroutineScope(Dispatchers.IO).launch {
-                    db.skillDao().updateCategoryId(skill.id, null)
-                }
+                skillRepository.updateCategoryId(context, skill.id, null)
             }
-        }
-        if (isUpdated) {
-            sortSkills(requireContext(), skillAdapter.skills)
-            skillAdapter.notifyDataSetChanged()
-            getString(R.string.event_skill_updated).toast(requireContext())
         }
     }
 }

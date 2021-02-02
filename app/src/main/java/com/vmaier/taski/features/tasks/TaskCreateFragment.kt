@@ -25,7 +25,6 @@ import com.vmaier.taski.utils.KeyBoardHider
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.RequestCode
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
-import timber.log.Timber
 import java.util.*
 
 
@@ -184,7 +183,7 @@ class TaskCreateFragment : TaskFragment() {
         val duration = getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()
-        val skillsToAssign = db.skillDao().findByName(skillNames)
+        val skillsToAssign = skillRepository.getByNames(skillNames)
         val deadlineDate = binding.deadlineDate.editText?.text.toString()
         val deadlineTime = binding.deadlineTime.editText?.text.toString()
         var dueAt: Date? = null

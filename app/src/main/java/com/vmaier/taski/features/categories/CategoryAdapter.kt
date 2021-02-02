@@ -15,11 +15,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.repository.CategoryRepository
+import com.vmaier.taski.data.repository.SkillRepository
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.sortCategories
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.services.PreferenceService
@@ -27,7 +27,6 @@ import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.views.EditTextDialog
 import dev.sasikanth.colorsheet.ColorSheet
 import dev.sasikanth.colorsheet.utils.ColorSheetUtils
-import timber.log.Timber
 
 
 /**
@@ -41,9 +40,9 @@ class CategoryAdapter internal constructor(
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val categoryRepository = CategoryRepository(context)
-    
+    private val skillRepository = SkillRepository(context)
+
     var categories: MutableList<Category> = mutableListOf()
-    val db = AppDatabase(context)
 
     enum class ItemViewType(val value: Int) {
         MENU(0),
@@ -190,7 +189,7 @@ class CategoryAdapter internal constructor(
 
         // setup "Delete" button
         holder.deleteView.setOnClickListener {
-            val countSkills = db.skillDao().countSkillsWithCategory(category.id)
+            val countSkills = skillRepository.countSkillsByCategoryId(category.id)
             // show dialog if there are skills attached to category
             if (countSkills > 0) {
                 val dialogBuilder = AlertDialog.Builder(context)
@@ -237,7 +236,7 @@ class CategoryAdapter internal constructor(
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, categories.size)
         updateSortedByHeader(context, categories)
-        val foundSkills = db.skillDao().findSkillsByCategoryId(category.id)
+        val foundSkills = skillRepository.getByCategoryId(category.id)
         categoryRepository.delete(category.id)
         return Pair(category, foundSkills)
     }

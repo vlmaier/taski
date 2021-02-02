@@ -25,7 +25,6 @@ import com.vmaier.taski.utils.KeyBoardHider
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.RequestCode
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
-import timber.log.Timber
 import java.util.*
 
 
@@ -110,7 +109,7 @@ class TaskEditFragment : TaskFragment() {
         val adapter = ArrayAdapter(
             requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
         )
-        assignedSkills = db.skillDao().findAssignedSkills(task.id)
+        assignedSkills = skillRepository.getAssignedSkills(task.id)
         binding.skills.setAdapter(adapter)
         binding.skills.hint = if (skillNames.isEmpty()) getString(R.string.hint_no_skills) else ""
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
@@ -215,7 +214,7 @@ class TaskEditFragment : TaskFragment() {
         val duration = getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()
-        val skillsToAssign = db.skillDao().findByName(skillNames)
+        val skillsToAssign = skillRepository.getByNames(skillNames)
         val deadlineDate = binding.deadlineDate.editText?.text.toString()
         val deadlineTime = binding.deadlineTime.editText?.text.toString()
         var dueAt: Date? = null

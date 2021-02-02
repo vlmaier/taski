@@ -23,13 +23,11 @@ class CategoryRepository(context: Context) {
 
     private var categoryDao: CategoryDao
     private var skillDao: SkillDao
-    private var categories: LiveData<MutableList<Category>>
 
     init {
         val database: AppDatabase = AppDatabase.invoke(context)
         categoryDao = database.categoryDao()
         skillDao = database.skillDao()
-        categories = categoryDao.getAllLive()
     }
 
     fun create(name: String, color: String?): LiveData<Long> {
@@ -64,14 +62,6 @@ class CategoryRepository(context: Context) {
         }
     }
 
-    fun getLive(id: Long): LiveData<Category>? {
-        return categoryDao.getLive(id)
-    }
-
-    fun getAllLive(): LiveData<MutableList<Category>> {
-        return categories
-    }
-
     fun get(id: Long): Category? {
         return categoryDao.get(id)
     }
@@ -80,7 +70,7 @@ class CategoryRepository(context: Context) {
         return categoryDao.get(name)
     }
 
-    fun getAll(): List<Category> {
+    fun getAll(): MutableList<Category> {
         return categoryDao.getAll()
     }
 
@@ -106,7 +96,11 @@ class CategoryRepository(context: Context) {
     fun updateColor(id: Long, color: String?) {
         CoroutineScope(IO).launch {
             categoryDao.updateColor(id, color)
-            Timber.d("Category(id=$id) color updated to '$color'")
+            if (color == null) {
+                Timber.d("Category(id=$id) color reset")
+            } else {
+                Timber.d("Category(id=$id) color updated to '$color'")
+            }
         }
     }
 

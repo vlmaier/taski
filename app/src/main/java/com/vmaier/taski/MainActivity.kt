@@ -46,6 +46,7 @@ import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.repository.CategoryRepository
+import com.vmaier.taski.data.repository.SkillRepository
 import com.vmaier.taski.databinding.ActivityMainBinding
 import com.vmaier.taski.features.categories.CategoryListFragment
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
@@ -93,6 +94,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         lateinit var avatarView: ImageView
         lateinit var db: AppDatabase
         lateinit var categoryRepository: CategoryRepository
+        lateinit var skillRepository: SkillRepository
 
         private val recurrenceSettings = RecurrencePickerSettings()
         val recurrenceListDialog by lazy {
@@ -135,6 +137,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         super.onCreate(savedInstanceState)
 
         db = AppDatabase(this)
+        skillRepository = SkillRepository(this)
         categoryRepository = CategoryRepository(this)
         levelService = LevelService(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -511,14 +514,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             SkillEditFragment.binding.name.requestFocus()
             SkillEditFragment.binding.name.error = getString(R.string.error_cannot_be_empty)
         } else {
-            val foundSkill = db.skillDao().findByName(name)
+            val foundSkill = skillRepository.get(name)
             if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.name.requestFocus()
                 SkillEditFragment.binding.name.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             } else if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                 SkillEditFragment.binding.name.requestFocus()
-                SkillEditFragment.binding.name.error =
-                    getString(R.string.error_skill_already_exists)
+                SkillEditFragment.binding.name.error = getString(R.string.error_skill_already_exists)
             } else if (category.isNotBlank() && category.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.category.requestFocus()
                 SkillEditFragment.binding.category.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
@@ -598,9 +600,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     dialog.editText.requestFocus()
                     dialog.editText.error = getString(R.string.error_category_already_exists)
                 } else {
-                    categoryRepository.create(name, null).observe(this, {
-                        if (it != null) {
-                            categoryAdapter.categories.add(Category(id = it, name = name))
+                    categoryRepository.create(name, null).observe(this, { categoryId ->
+                        if (categoryId != null) {
+                            categoryAdapter.categories.add(Category(id = categoryId, name = name))
                         }
                     })
                     CategoryListFragment.sortCategories(
