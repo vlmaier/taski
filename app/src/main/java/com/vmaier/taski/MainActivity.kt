@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -42,11 +43,11 @@ import com.maltaisn.recurpicker.list.RecurrenceListDialog
 import com.maltaisn.recurpicker.picker.RecurrencePickerCallback
 import com.maltaisn.recurpicker.picker.RecurrencePickerDialog
 import com.maltaisn.recurpicker.picker.RecurrencePickerFragment
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.repository.CategoryRepository
 import com.vmaier.taski.data.repository.SkillRepository
+import com.vmaier.taski.data.repository.TaskRepository
 import com.vmaier.taski.databinding.ActivityMainBinding
 import com.vmaier.taski.features.categories.CategoryListFragment
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
@@ -88,13 +89,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         lateinit var bottomNav: BottomNavigationView
         lateinit var bottomBar: BottomAppBar
         lateinit var fab: FloatingActionButton
-        lateinit var xpView: TextView
-        lateinit var levelView: TextView
         lateinit var userNameView: TextView
         lateinit var avatarView: ImageView
-        lateinit var db: AppDatabase
-        lateinit var categoryRepository: CategoryRepository
+        lateinit var taskRepository: TaskRepository
         lateinit var skillRepository: SkillRepository
+        lateinit var categoryRepository: CategoryRepository
 
         private val recurrenceSettings = RecurrencePickerSettings()
         val recurrenceListDialog by lazy {
@@ -136,7 +135,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
         super.onCreate(savedInstanceState)
 
-        db = AppDatabase(this)
+        taskRepository = TaskRepository(this)
         skillRepository = SkillRepository(this)
         categoryRepository = CategoryRepository(this)
         levelService = LevelService(this)
@@ -168,7 +167,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         // "Bottom Navigation" settings
         bottomNav = findViewById(R.id.bottom_nav)
         bottomNav.setOnNavigationItemSelectedListener { onNavigationItemSelected(it) }
-        val taskAmount = db.taskDao().countByStatus(Status.OPEN)
+        val taskAmount = taskRepository.countByStatus(Status.OPEN)
         bottomNav.getOrCreateBadge(R.id.nav_tasks).number = taskAmount
         bottomNav.getOrCreateBadge(R.id.nav_tasks).isVisible = taskAmount > 0
 
@@ -253,15 +252,22 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             else avatarView.setImageDrawable(fallbackImage)
         } else avatarView.setImageDrawable(fallbackImage)
 
-        // XP settings
-        xpView = headerView.findViewById(R.id.xp_counter) as TextView
-        val overallXp = db.taskDao().countOverallXp()
-        xpView.text = getString(R.string.term_xp_value, overallXp)
+        drawerLayout.addDrawerListener(object : DrawerListener {
+            override fun onDrawerSlide(view: View, v: Float) {
+                // XP settings
+                val xpView = headerView.findViewById(R.id.xp_counter) as TextView
+                val overallXp = taskRepository.countOverallXp()
+                xpView.text = getString(R.string.term_xp_value, overallXp)
 
-        // Level settings
-        levelView = headerView.findViewById(R.id.level_counter) as TextView
-        val overallLevel = levelService.getOverallLevel(overallXp)
-        levelView.text = getString(R.string.term_level_value, overallLevel)
+                // Level settings
+                val levelView = headerView.findViewById(R.id.level_counter) as TextView
+                val overallLevel = levelService.getOverallLevel(overallXp)
+                levelView.text = getString(R.string.term_level_value, overallLevel)
+            }
+            override fun onDrawerOpened(view: View) {}
+            override fun onDrawerClosed(view: View) {}
+            override fun onDrawerStateChanged(i: Int) {}
+        })
     }
 
     override val iconDialogIconPack: IconPack get() = App.iconPack
@@ -517,13 +523,19 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             val foundSkill = skillRepository.get(name)
             if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.name.requestFocus()
-                SkillEditFragment.binding.name.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+                SkillEditFragment.binding.name.error = getString(
+                    R.string.error_too_short,
+                    Const.Defaults.MINIMAL_INPUT_LENGTH
+                )
             } else if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                 SkillEditFragment.binding.name.requestFocus()
                 SkillEditFragment.binding.name.error = getString(R.string.error_skill_already_exists)
             } else if (category.isNotBlank() && category.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.category.requestFocus()
-                SkillEditFragment.binding.category.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+                SkillEditFragment.binding.category.error = getString(
+                    R.string.error_too_short,
+                    Const.Defaults.MINIMAL_INPUT_LENGTH
+                )
             } else {
                 super.onBackPressed()
             }
@@ -544,7 +556,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             }
             goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH -> {
                 TaskEditFragment.binding.goal.requestFocus()
-                TaskEditFragment.binding.goal.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+                TaskEditFragment.binding.goal.error = getString(
+                    R.string.error_too_short,
+                    Const.Defaults.MINIMAL_INPUT_LENGTH
+                )
             }
             else -> {
                 super.onBackPressed()
@@ -593,23 +608,27 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             val name = dialog.editText.text.toString().trim()
             if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 dialog.editText.requestFocus()
-                dialog.editText.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+                dialog.editText.error = getString(
+                    R.string.error_too_short,
+                    Const.Defaults.MINIMAL_INPUT_LENGTH
+                )
             } else {
                 val foundCategory = categoryRepository.get(name)
                 if (foundCategory != null) {
                     dialog.editText.requestFocus()
                     dialog.editText.error = getString(R.string.error_category_already_exists)
                 } else {
-                    categoryRepository.create(name, null).observe(this, { categoryId ->
-                        if (categoryId != null) {
-                            categoryAdapter.categories.add(Category(id = categoryId, name = name))
+                    val categoryId = categoryRepository.create(name, null)
+                    categoryId.observe(this, { id ->
+                        if (id != null) {
+                            categoryAdapter.categories.add(Category(id = id, name = name))
+                            CategoryListFragment.sortCategories(
+                                dialog.editText.context,
+                                categoryAdapter.categories
+                            )
+                            categoryAdapter.notifyDataSetChanged()
                         }
                     })
-                    CategoryListFragment.sortCategories(
-                        dialog.editText.context,
-                        categoryAdapter.categories
-                    )
-                    categoryAdapter.notifyDataSetChanged()
                     dialog.dismiss()
                 }
             }

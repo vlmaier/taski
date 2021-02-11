@@ -28,10 +28,10 @@ import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.DurationUnit
 import com.vmaier.taski.data.repository.SkillRepository
+import com.vmaier.taski.data.repository.TaskRepository
 import com.vmaier.taski.services.CalendarService
 import com.vmaier.taski.services.NotificationService
 import com.vmaier.taski.services.PreferenceService
@@ -47,12 +47,12 @@ import kotlin.random.Random
  */
 open class TaskFragment : Fragment() {
 
-    lateinit var db: AppDatabase
     lateinit var calendarService: CalendarService
 
     companion object {
         lateinit var skillNames: List<String>
         lateinit var difficulty: String
+        lateinit var taskRepository: TaskRepository
         lateinit var skillRepository: SkillRepository
 
         var durationValue: Int = 15
@@ -80,8 +80,8 @@ open class TaskFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        db = AppDatabase(context)
         calendarService = CalendarService(context)
+        taskRepository = TaskRepository(context)
         skillRepository = SkillRepository(context)
     }
 

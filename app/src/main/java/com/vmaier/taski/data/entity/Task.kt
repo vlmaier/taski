@@ -41,7 +41,7 @@ data class Task(
 
     @ColumnInfo(name = "status")
     @TypeConverters(Converters::class)
-    val status: Status = Status.OPEN,
+    var status: Status = Status.OPEN,
 
     @ColumnInfo(name = "created_at")
     val createdAt: Long = System.currentTimeMillis(),
@@ -84,5 +84,16 @@ data class Task(
     val calendarRRule: String?
         // remove 'RRULE:' otherwise the calendar cannot cope with it
         get() = rrule?.replace("RRULE:", "")
+
+    fun isUpdateRequired(other: Task): Boolean {
+        if (this.goal != other.goal) return true
+        if (this.details != other.details) return true
+        if (this.duration != other.duration) return true
+        if (this.difficulty != other.difficulty) return true
+        if (this.iconId != other.iconId) return true
+        if (this.dueAt != other.dueAt) return true
+        if (this.rrule != other.rrule) return true
+        return false
+    }
 }
 

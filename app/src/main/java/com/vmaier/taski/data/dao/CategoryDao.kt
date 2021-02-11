@@ -56,7 +56,7 @@ interface CategoryDao {
 
     @Query(
         """
-        SELECT SUM(tasks.xp_value * tasks.count_done)
+        SELECT SUM(skills.xp_value * tasks.count_done)
         FROM assigned_skills 
         INNER JOIN tasks
           ON task_id = tasks.id

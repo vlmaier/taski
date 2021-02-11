@@ -3,6 +3,7 @@ package com.vmaier.taski.data.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Transaction
 import com.vmaier.taski.R
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
@@ -32,28 +33,6 @@ class SkillRepository(context: Context) {
         val database: AppDatabase = AppDatabase.invoke(context)
         skillDao = database.skillDao()
         taskDao = database.taskDao()
-    }
-
-    fun create(name: String, iconId: Int, categoryId: Long?): LiveData<Long> {
-        val liveData = MutableLiveData<Long>()
-        CoroutineScope(Dispatchers.IO).launch {
-            val skill = Skill(name = name, iconId = iconId, categoryId = categoryId)
-            val id = skillDao.create(skill)
-            Timber.d("$skill created")
-            liveData.postValue(id)
-        }
-        return liveData
-    }
-
-    fun restore(skill: Skill, assignments: List<AssignedSkill>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            skillDao.create(skill)
-            Timber.d("$skill restored")
-            assignments.forEach {
-                taskDao.assignSkill(it)
-                Timber.d("$it reassigned to $skill")
-            }
-        }
     }
 
     fun getTasksWithSkillByStatus(id: Long, status: Status): MutableList<Task> {
@@ -108,6 +87,31 @@ class SkillRepository(context: Context) {
         return skillDao.countSkillsByCategoryId(categoryId)
     }
 
+    @Transaction
+    fun create(name: String, iconId: Int, categoryId: Long?): LiveData<Long> {
+        val liveData = MutableLiveData<Long>()
+        CoroutineScope(Dispatchers.IO).launch {
+            val skill = Skill(name = name, iconId = iconId, categoryId = categoryId)
+            val id = skillDao.create(skill)
+            Timber.d("$skill created")
+            liveData.postValue(id)
+        }
+        return liveData
+    }
+
+    @Transaction
+    fun restore(skill: Skill, assignments: List<AssignedSkill>) {
+        CoroutineScope(Dispatchers.IO).launch {
+            skillDao.create(skill)
+            Timber.d("$skill restored")
+            assignments.forEach {
+                taskDao.assignSkill(it)
+                Timber.d("$it reassigned to $skill")
+            }
+        }
+    }
+
+    @Transaction
     fun updateName(context: Context, id: Long, name: String) {
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
@@ -118,6 +122,7 @@ class SkillRepository(context: Context) {
         }
     }
 
+    @Transaction
     fun updateIconId(context: Context, id: Long, iconId: Int) {
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
@@ -128,7 +133,8 @@ class SkillRepository(context: Context) {
         }
     }
 
-    fun updateCategoryId(context: Context, id: Long, categoryId: Long?) {
+    @Transaction
+    fun updateCategoryId(context: Context, id: Long, categoryId: Long?, showMessage: Boolean = true) {
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 skillDao.updateCategoryId(id, categoryId)
@@ -137,11 +143,12 @@ class SkillRepository(context: Context) {
                 } else {
                     Timber.d("Skill(id=$id) category ID updated to '$categoryId'")
                 }
-                refreshUI(context, id, true)
+                refreshUI(context, id, true, showMessage)
             }
         }
     }
 
+    @Transaction
     fun updateXp(id: Long, xp: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             skillDao.updateXp(id, xp)
@@ -149,6 +156,7 @@ class SkillRepository(context: Context) {
         }
     }
 
+    @Transaction
     fun delete(id: Long) {
         CoroutineScope(Dispatchers.IO).launch {
             skillDao.delete(id)
@@ -156,7 +164,7 @@ class SkillRepository(context: Context) {
         }
     }
 
-    private suspend fun refreshUI(context: Context, id: Long, sort: Boolean = false) {
+    private suspend fun refreshUI(context: Context, id: Long, sort: Boolean = false, showMessage: Boolean = true) {
         withContext(Dispatchers.Main) {
             val skill = skillDao.get(id)
             if (skill != null) {
@@ -169,7 +177,7 @@ class SkillRepository(context: Context) {
                     skillAdapter.setSkills(skills)
                     skillAdapter.notifyDataSetChanged()
                 }
-                context.getString(R.string.event_skill_updated).toast(context)
+                if (showMessage) context.getString(R.string.event_skill_updated).toast(context)
             }
         }
     }

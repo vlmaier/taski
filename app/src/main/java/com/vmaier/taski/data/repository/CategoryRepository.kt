@@ -3,6 +3,7 @@ package com.vmaier.taski.data.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Transaction
 import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.dao.CategoryDao
 import com.vmaier.taski.data.dao.SkillDao
@@ -23,43 +24,13 @@ class CategoryRepository(context: Context) {
 
     private var categoryDao: CategoryDao
     private var skillDao: SkillDao
+    private var skillRepository: SkillRepository
 
     init {
         val database: AppDatabase = AppDatabase.invoke(context)
         categoryDao = database.categoryDao()
         skillDao = database.skillDao()
-    }
-
-    fun create(name: String, color: String?): LiveData<Long> {
-        val liveData = MutableLiveData<Long>()
-        CoroutineScope(IO).launch {
-            val category = Category(name = name, color = color)
-            val id = categoryDao.create(category)
-            Timber.d("$category created")
-            liveData.postValue(id)
-        }
-        return liveData
-    }
-
-    fun create(name: String, color: String?, skillId: Long) {
-        CoroutineScope(IO).launch {
-            val category = Category(name = name, color = color)
-            val id = categoryDao.create(category)
-            skillDao.updateCategoryId(skillId, id)
-            Timber.d("$category created")
-            Timber.d("Skill(id=$skillId) assigned to $category")
-        }
-    }
-
-    fun restore(category: Category, skills: List<Skill>) {
-        CoroutineScope(IO).launch {
-            val id = categoryDao.create(category)
-            Timber.d("$category restored")
-            skills.forEach {
-                skillDao.updateCategoryId(it.id, id)
-                Timber.d("$it reassigned to $category")
-            }
-        }
+        skillRepository = SkillRepository(context)
     }
 
     fun get(id: Long): Category? {
@@ -86,6 +57,42 @@ class CategoryRepository(context: Context) {
         return categoryDao.countXP(id)
     }
 
+    @Transaction
+    fun create(name: String, color: String?): LiveData<Long> {
+        val liveData = MutableLiveData<Long>()
+        CoroutineScope(IO).launch {
+            val category = Category(name = name, color = color)
+            val id = categoryDao.create(category)
+            Timber.d("$category created")
+            liveData.postValue(id)
+        }
+        return liveData
+    }
+
+    @Transaction
+    fun create(context: Context, name: String, color: String?, skillId: Long) {
+        CoroutineScope(IO).launch {
+            val category = Category(name = name, color = color)
+            val id = categoryDao.create(category)
+            Timber.d("$category created")
+            skillRepository.updateCategoryId(context, skillId, id, false)
+        }
+    }
+
+    @Transaction
+    fun restore(category: Category, skills: List<Skill>) {
+        CoroutineScope(IO).launch {
+            val id = categoryDao.create(category)
+            Timber.d("$category restored")
+            skills.forEach {
+                // UI refresh is not needed here
+                skillDao.updateCategoryId(it.id, id)
+                Timber.d("$it reassigned to $category")
+            }
+        }
+    }
+
+    @Transaction
     fun updateName(id: Long, name: String) {
         CoroutineScope(IO).launch {
             categoryDao.updateName(id, name)
@@ -93,6 +100,7 @@ class CategoryRepository(context: Context) {
         }
     }
 
+    @Transaction
     fun updateColor(id: Long, color: String?) {
         CoroutineScope(IO).launch {
             categoryDao.updateColor(id, color)
@@ -104,6 +112,7 @@ class CategoryRepository(context: Context) {
         }
     }
 
+    @Transaction
     fun delete(id: Long) {
         CoroutineScope(IO).launch {
             categoryDao.delete(id)

@@ -7,8 +7,8 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import androidx.core.content.ContextCompat.checkSelfPermission
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.data.repository.TaskRepository
 import timber.log.Timber
 import java.util.*
 import android.provider.CalendarContract as Calendar
@@ -22,7 +22,7 @@ import android.provider.CalendarContract.Calendars as Calendars
  */
 class CalendarService(val context: Context) {
 
-    val db = AppDatabase(context)
+    val taskRepository = TaskRepository(context)
 
     fun addToCalendar(isCalendarSyncOn: Boolean, task: Task?) {
         if (!isCalendarSyncOn) return
@@ -31,7 +31,7 @@ class CalendarService(val context: Context) {
         val event = createEvent(calendarId, task)
         val eventId = context.contentResolver.insert(Calendar.Events.CONTENT_URI, event)
         Timber.d("Created new event ($eventId) in calendar.")
-        db.taskDao().updateEventId(task.id, eventId.toString())
+        taskRepository.updateEventId(task.id, eventId.toString())
     }
 
     fun updateInCalendar(isCalendarSyncOn: Boolean, before: Task, after: Task?) {
@@ -57,7 +57,7 @@ class CalendarService(val context: Context) {
             val event = updateEvent(calendarId, before, after)
             context.contentResolver.update(eventId, event, null, null)
             Timber.d("Updated event ($eventId) in calendar.")
-            db.taskDao().updateEventId(before.id, eventId.toString())
+            taskRepository.updateEventId(before.id, eventId.toString())
         }
     }
 
@@ -66,7 +66,7 @@ class CalendarService(val context: Context) {
         if (eventId != null) {
             context.contentResolver.delete(eventId, null, null)
             Timber.d("Deleted event ($eventId) from calendar.")
-            db.taskDao().updateEventId(task.id, null)
+            taskRepository.updateEventId(task.id, null)
         }
     }
 

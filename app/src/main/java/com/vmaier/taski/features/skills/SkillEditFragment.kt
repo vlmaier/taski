@@ -187,7 +187,7 @@ class SkillEditFragment : SkillFragment() {
                         skillRepository.updateCategoryId(context, skill.id, foundCategory.id)
                     }
                 } else {
-                    categoryRepository.create(categoryName, null, skill.id)
+                    categoryRepository.create(context, categoryName, null, skill.id)
                 }
             }
         } else {

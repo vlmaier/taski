@@ -10,8 +10,8 @@ import com.robinhood.ticker.TickerUtils
 import com.robinhood.ticker.TickerView
 import com.vmaier.taski.App
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.entity.Skill
+import com.vmaier.taski.data.repository.TaskRepository
 import com.vmaier.taski.utils.Utils
 import kotlin.math.pow
 
@@ -23,7 +23,7 @@ import kotlin.math.pow
  */
 class LevelService(val context: Context) {
 
-    val db = AppDatabase(context)
+    val taskRepository = TaskRepository(context)
     private val delay = 1000L
 
     fun getOverallLevel(xp: Long): Int {
@@ -46,7 +46,7 @@ class LevelService(val context: Context) {
     }
 
     fun checkOverallLevelUp(xp: Int) {
-        val overallXp = db.taskDao().countOverallXp()
+        val overallXp = taskRepository.countOverallXp()
         val previousLevel = getOverallLevel(overallXp)
         val nextLevel = calculateLevel(overallXp + xp)
         if (previousLevel != nextLevel) {

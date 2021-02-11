@@ -14,6 +14,7 @@ import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentCreateSkillBinding
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
 import com.vmaier.taski.hideKeyboard
+import com.vmaier.taski.lifecycleOwner
 import com.vmaier.taski.utils.KeyBoardHider
 
 
@@ -111,16 +112,20 @@ class SkillCreateFragment : SkillFragment() {
             return false
         }
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        skillRepository.create(name, iconId, null).observe(viewLifecycleOwner, { skillId ->
-            if (skillId != null && categoryName.isNotBlank()) {
-                val foundCategory = categoryRepository.get(categoryName)
-                if (foundCategory != null) {
-                    skillRepository.updateCategoryId(requireContext(), skillId, foundCategory.id)
-                } else {
-                    categoryRepository.create(categoryName, null, skillId)
+        val skillId = skillRepository.create(name, iconId, null)
+        val lifecycleOwner = requireContext().lifecycleOwner()
+        if (lifecycleOwner != null) {
+            skillId.observe(lifecycleOwner, { id ->
+                if (id != null && categoryName.isNotBlank()) {
+                    val foundCategory = categoryRepository.get(categoryName)
+                    if (foundCategory != null) {
+                        skillRepository.updateCategoryId(requireContext(), id, foundCategory.id)
+                    } else {
+                        categoryRepository.create(requireContext(), categoryName, null, id)
+                    }
                 }
-            }
-        })
+            })
+        }
         skillAdapter.notifyDataSetChanged()
         return true
     }

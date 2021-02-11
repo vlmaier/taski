@@ -6,16 +6,18 @@ import android.graphics.Paint
 import android.graphics.RectF
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.data.repository.TaskRepository
 import com.vmaier.taski.features.tasks.TaskListFragment.Companion.taskAdapter
+import com.vmaier.taski.lifecycleOwner
 import com.vmaier.taski.toBitmap
 import com.vmaier.taski.utils.Utils
 
@@ -40,9 +42,9 @@ class TaskItemSwipeHandler :
         val position = viewHolder.absoluteAdapterPosition
         val itemView = viewHolder.itemView
         val context = itemView.context
-        lateinit var message: String
-        lateinit var taskToRestore: Task
-        val closedTaskId: Long
+        val message: String
+        val taskToRestore: Task?
+        val closedTaskId: LiveData<Long>
         val isCounterIncremented: Boolean
         val closedAt: Long?
         if (direction == ItemTouchHelper.LEFT) {
@@ -51,7 +53,7 @@ class TaskItemSwipeHandler :
             closedTaskId = completedTask.second
             isCounterIncremented = completedTask.third
             closedAt = completedTask.fourth
-            message = context.getString(R.string.event_task_complete, taskToRestore.xp)
+            message = context.getString(R.string.event_task_complete, taskToRestore?.xp)
         } else {
             val failedTask = taskAdapter.removeItem(position, Status.FAILED)
             taskToRestore = failedTask.first
@@ -64,10 +66,16 @@ class TaskItemSwipeHandler :
         val snackbar = Snackbar.make(MainActivity.fab, message, Snackbar.LENGTH_LONG)
             .setAction(context.getString(R.string.action_undo)) {
                 // "Undo" is selected -> restore the deleted item
-                taskAdapter.restoreItem(taskToRestore, position, isCounterIncremented, closedAt)
-                if (closedTaskId != 0L) {
-                    val db = AppDatabase(context)
-                    db.taskDao().removeClosedTask(closedTaskId)
+                val taskId = taskToRestore?.id ?: 0L
+                taskAdapter.restoreItem(taskId, position, isCounterIncremented, closedAt)
+                val lifecycleOwner = context.lifecycleOwner()
+                if (lifecycleOwner != null) {
+                    closedTaskId.observe(lifecycleOwner, { id ->
+                        if (id != 0L) {
+                            val taskRepository = TaskRepository(context)
+                            taskRepository.deleteClosedTask(id)
+                        }
+                    })
                 }
             }
             .setActionTextColor(Utils.getThemeColor(context, R.attr.colorSecondary))

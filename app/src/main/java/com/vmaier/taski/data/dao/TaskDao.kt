@@ -1,10 +1,10 @@
 package com.vmaier.taski.data.dao
 
 import androidx.room.*
+import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.AssignedSkill
 import com.vmaier.taski.data.entity.ClosedTask
-import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.entity.Task
 
 
@@ -19,43 +19,13 @@ interface TaskDao {
     // ------------------------------------- CREATE QUERIES ------------------------------------- //
 
     @Insert(entity = Task::class, onConflict = OnConflictStrategy.REPLACE)
-    fun create(task: Task): Long
+    suspend fun create(task: Task): Long
 
     @Insert(entity = AssignedSkill::class, onConflict = OnConflictStrategy.IGNORE)
-    fun assignSkill(assignedSkill: AssignedSkill)
+    suspend fun assignSkill(assignedSkill: AssignedSkill)
 
     @Insert(entity = ClosedTask::class, onConflict = OnConflictStrategy.IGNORE)
-    fun close(closedTask: ClosedTask): Long
-
-    fun closeTask(taskId: Long, status: Status, closedAt: Long = System.currentTimeMillis()): Long {
-        close(taskId, status, closedAt)
-        return if (status == Status.DONE) {
-            close(ClosedTask(taskId = taskId, closedAt = closedAt))
-        } else {
-            0L
-        }
-    }
-
-    fun closeRecurringTask(
-        taskId: Long,
-        status: Status,
-        closedAt: Long = System.currentTimeMillis()
-    ): Long {
-        updateClosedAt(taskId, closedAt)
-        return if (status == Status.DONE) {
-            close(ClosedTask(taskId = taskId, closedAt = closedAt))
-        } else {
-            0L
-        }
-    }
-
-    fun createTask(task: Task, skills: List<Skill>): Long {
-        val id = create(task)
-        for (skill in skills) {
-            assignSkill(AssignedSkill(skillId = skill.id, taskId = id))
-        }
-        return id
-    }
+    suspend fun close(closedTask: ClosedTask): Long
 
     // -------------------------------------  READ QUERIES  ------------------------------------- //
 
@@ -63,10 +33,10 @@ interface TaskDao {
         """
         SELECT *
         FROM tasks
-        WHERE id = :taskId
+        WHERE id = :id
     """
     )
-    fun findById(taskId: Long): Task
+    fun get(id: Long): Task?
 
     @Query(
         """
@@ -75,7 +45,7 @@ interface TaskDao {
         WHERE status = :status
     """
     )
-    fun findByStatus(status: Status): MutableList<Task>
+    fun getByStatus(status: Status): MutableList<Task>
 
     @Query(
         """
@@ -84,7 +54,7 @@ interface TaskDao {
         WHERE closed_at > :after AND closed_at < :before AND count_done > 0
     """
     )
-    fun findClosedTasks(after: Long, before: Long): List<Task>
+    fun getClosedTasks(after: Long, before: Long): List<Task>
 
     @Query(
         """
@@ -131,91 +101,146 @@ interface TaskDao {
         """
         UPDATE tasks
         SET count_done = count_done + 1
-        WHERE id = :taskId
+        WHERE id = :id
     """
     )
-    fun incrementCountDone(taskId: Long)
+    suspend fun incrementCountDone(id: Long)
 
     @Query(
         """
         UPDATE tasks
         SET count_done = count_done - 1
-        WHERE id = :taskId
+        WHERE id = :id
     """
     )
-    fun decrementCountDone(taskId: Long)
+    suspend fun decrementCountDone(id: Long)
 
     @Query(
         """
         UPDATE tasks
-        SET status = :status, closed_at = :closedAt
-        WHERE id = :taskId
+        SET goal = :goal
+        WHERE id = :id
     """
     )
-    fun close(taskId: Long, status: Status, closedAt: Long = System.currentTimeMillis())
+    suspend fun updateGoal(id: Long, goal: String)
 
     @Query(
         """
         UPDATE tasks
-        SET status = 'open'
-        WHERE id = :taskId
+        SET details = :details
+        WHERE id = :id
     """
     )
-    fun reopen(taskId: Long)
+    suspend fun updateDetails(id: Long, details: String?)
+
+    @Query(
+        """
+        UPDATE tasks
+        SET duration = :duration
+        WHERE id = :id
+    """
+    )
+    suspend fun updateDuration(id: Long, duration: Int)
+
+    @Query(
+        """
+        UPDATE tasks
+        SET icon_id = :iconId
+        WHERE id = :id
+    """
+    )
+    suspend fun updateIconId(id: Long, iconId: Int)
+
+    @Query(
+        """
+        UPDATE tasks
+        SET status = :status
+        WHERE id = :id
+    """
+    )
+    suspend fun updateStatus(id: Long, status: Status)
+
+    @Query(
+        """
+        UPDATE tasks
+        SET difficulty = :difficulty
+        WHERE id = :id
+    """
+    )
+    suspend fun updateDifficulty(id: Long, difficulty: Difficulty)
+
+    @Query(
+        """
+        UPDATE tasks
+        SET xp_value = :xp
+        WHERE id = :id
+    """
+    )
+    suspend fun updateXpValue(id: Long, xp: Int)
+
+    @Query(
+        """
+        UPDATE tasks
+        SET due_at = :dueAt
+        WHERE id = :id
+    """
+    )
+    suspend fun updateDueAt(id: Long, dueAt: Long?)
 
     @Query(
         """
         UPDATE tasks
         SET closed_at = :closedAt
-        WHERE id = :taskId
+        WHERE id = :id
     """
     )
-    fun updateClosedAt(taskId: Long, closedAt: Long? = System.currentTimeMillis())
+    suspend fun updateClosedAt(id: Long, closedAt: Long?)
 
     @Query(
         """
         UPDATE tasks
         SET event_id = :eventId
-        WHERE id = :taskId
+        WHERE id = :id
     """
     )
-    fun updateEventId(taskId: Long, eventId: String?)
+    suspend fun updateEventId(id: Long, eventId: String?)
+
+    @Query(
+        """
+        UPDATE tasks
+        SET rrule = :rrule
+        WHERE id = :id
+    """
+    )
+    suspend fun updateRRule(id: Long, rrule: String?)
 
     @Query(
         """
         UPDATE tasks
         SET reminder_request_code = :requestCode
-        WHERE id = :taskId
+        WHERE id = :id
     """
     )
-    fun updateAlarmRequestCode(taskId: Long, requestCode: Int)
+    suspend fun updateRequestCode(id: Long, requestCode: Int)
 
-    @Update(entity = Task::class, onConflict = OnConflictStrategy.REPLACE)
-    fun update(task: Task)
-
-    @Transaction
-    fun reassignSkills(taskId: Long, skills: List<Skill>) {
-        removeAssignedSkills(taskId)
-        for (skill in skills) {
-            assignSkill(AssignedSkill(skillId = skill.id, taskId = taskId))
-        }
-    }
-
-    @Transaction
-    fun updateTask(task: Task, skills: List<Skill>) {
-        update(task)
-        reassignSkills(task.id, skills)
-    }
+    @Query(
+        """
+        UPDATE tasks
+        SET status = 'open'
+        WHERE id = :id
+    """
+    )
+    suspend fun reopen(id: Long)
 
     // ------------------------------------- DELETE QUERIES ------------------------------------- //
 
     @Query(
         """
         DELETE FROM assigned_skills
-        WHERE task_id = :taskId
+        WHERE task_id = :id
     """
     )
-    fun removeAssignedSkills(taskId: Long)
+    suspend fun unassignSkills(id: Long)
 
     @Query(
         """
@@ -223,5 +248,5 @@ interface TaskDao {
         WHERE id = :id
     """
     )
-    fun removeClosedTask(id: Long)
+    suspend fun deleteClosedTask(id: Long)
 }

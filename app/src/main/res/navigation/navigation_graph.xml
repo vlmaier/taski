@@ -56,9 +56,6 @@
         <argument
             android:name="task"
             app:argType="com.vmaier.taski.data.entity.Task" />
-        <argument
-            android:name="cameFromTaskList"
-            app:argType="boolean" />
     </fragment>
 
     <fragment
