@@ -41,11 +41,11 @@ class ChartDailyXpFragment : TaskFragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_chart_daily_xp, container, false)
 
-        val tasks = db.taskDao().findClosedTasks(Utils.getStartOfDay(), Utils.getEndOfDay())
+        val tasks = taskRepository.getClosedTasks()
         var skillWithXp: MutableMap<String, Long> = mutableMapOf()
         val values = ArrayList<BarEntry>()
         tasks.forEach { task ->
-            val assignedSkills = db.skillDao().findAssignedSkills(task.id)
+            val assignedSkills = skillRepository.getAssignedSkills(task.id)
             if (assignedSkills.isEmpty()) {
                 fillSkillWithXp(
                     skillWithXp,
@@ -54,7 +54,7 @@ class ChartDailyXpFragment : TaskFragment() {
                 )
             } else {
                 assignedSkills.forEach { skill ->
-                    fillSkillWithXp(skillWithXp, skill.name, task.xp.toLong())
+                    fillSkillWithXp(skillWithXp, skill.name, task.xp.div(assignedSkills.size).toLong())
                 }
             }
         }

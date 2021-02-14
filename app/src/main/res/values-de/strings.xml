@@ -81,7 +81,7 @@
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Kann nicht leer sein</string>
-    <string name="error_too_short">Muss mindestens 4 Zeichen lang sein</string>
+    <string name="error_too_short">Muss mindestens %d Zeichen lang sein</string>
     <string name="error_skill_already_exists">Solche Fähigkeit existiert bereits</string>
     <string name="error_category_already_exists">Solche Kategorie existiert bereits</string>
 

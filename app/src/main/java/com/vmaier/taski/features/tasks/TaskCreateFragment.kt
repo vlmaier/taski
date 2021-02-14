@@ -25,7 +25,6 @@ import com.vmaier.taski.utils.KeyBoardHider
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.RequestCode
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
-import timber.log.Timber
 import java.util.*
 
 
@@ -176,7 +175,7 @@ class TaskCreateFragment : TaskFragment() {
         }
         if (goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.goal.requestFocus()
-            binding.goal.error = getString(R.string.error_too_short)
+            binding.goal.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             return false
         }
         val detailsValue = binding.details.editText?.text.toString().trim()
@@ -184,7 +183,7 @@ class TaskCreateFragment : TaskFragment() {
         val duration = getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()
-        val skillsToAssign = db.skillDao().findByName(skillNames)
+        val skillIds = skillRepository.getByNames(skillNames).map { it.id }
         val deadlineDate = binding.deadlineDate.editText?.text.toString()
         val deadlineTime = binding.deadlineTime.editText?.text.toString()
         var dueAt: Date? = null
@@ -205,32 +204,38 @@ class TaskCreateFragment : TaskFragment() {
             goal = goal, details = details, duration = duration, iconId = iconId,
             dueAt = dueAt?.time, difficulty = Difficulty.valueOf(difficulty), rrule = rrule
         )
-        val id = db.taskDao().createTask(task, skillsToAssign)
-        Timber.d("Task ($id) created.")
-        task.id = id
-        taskAdapter.notifyDataSetChanged()
-        calendarService.addToCalendar(binding.calendarSync.isChecked, task)
-        if (dueAt != null) {
-            // remind 15 minutes before the task is due (incl. duration)
-            val durationInMs: Long = duration.toLong() * 60 * 1000
-            val notifyAtInMs: Long = dueAt.time
-                .minus(durationInMs)
-                .minus(900000)
-            val taskReminderRequestCode = RequestCode.get(requireContext())
-            val message = if (deadlineTime.isNotBlank()) {
-                getString(R.string.term_due_at, deadlineTime)
-            } else {
-                getString(R.string.term_due_today)
-            }
-            notificationService.setReminder(
-                notifyAtInMs,
-                task.goal,
-                message,
-                requireActivity(),
-                taskReminderRequestCode
-            )
-            db.taskDao().updateAlarmRequestCode(id, taskReminderRequestCode)
+        val lifecycleOwner = requireContext().lifecycleOwner()
+        val taskId = taskRepository.create(task, skillIds)
+        if (lifecycleOwner != null) {
+            taskId.observe(lifecycleOwner, { id ->
+                if (id != null) {
+                    task.id = id
+                    calendarService.addToCalendar(binding.calendarSync.isChecked, task)
+                    if (dueAt != null) {
+                        // remind 15 minutes before the task is due (incl. duration)
+                        val durationInMs: Long = duration.toLong() * 60 * 1000
+                        val notifyAtInMs: Long = dueAt.time
+                            .minus(durationInMs)
+                            .minus(900000)
+                        val taskReminderRequestCode = RequestCode.get(requireContext())
+                        val message = if (deadlineTime.isNotBlank()) {
+                            getString(R.string.term_due_at, deadlineTime)
+                        } else {
+                            getString(R.string.term_due_today)
+                        }
+                        notificationService.setReminder(
+                            notifyAtInMs,
+                            task.goal,
+                            message,
+                            requireActivity(),
+                            taskReminderRequestCode
+                        )
+                        taskRepository.updateRequestCode(id, taskReminderRequestCode)
+                    }
+                }
+            })
         }
+        taskAdapter.notifyDataSetChanged()
         return true
     }
 }

@@ -6,6 +6,7 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,13 +16,12 @@ import com.vmaier.taski.MainActivity.Companion.drawerLayout
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortCategories
 import com.vmaier.taski.data.SortOrder
 import com.vmaier.taski.data.entity.Category
+import com.vmaier.taski.data.repository.CategoryRepository
 import com.vmaier.taski.databinding.FragmentCategoryListBinding
 import com.vmaier.taski.services.PreferenceService
-import timber.log.Timber
 
 
 /**
@@ -35,6 +35,8 @@ class CategoryListFragment : Fragment() {
         lateinit var categoryAdapter: CategoryAdapter
         lateinit var binding: FragmentCategoryListBinding
 
+        private lateinit var categoryRepository: CategoryRepository
+
         fun sortCategories(context: Context, categories: MutableList<Category>) {
             val prefService = PreferenceService(context)
             val sort = prefService.getSort(PreferenceService.SortType.CATEGORIES)
@@ -45,12 +47,11 @@ class CategoryListFragment : Fragment() {
                     else sortByDescending { it.name }
                 }
                 SortCategories.XP.value -> categories.apply {
-                    val db = AppDatabase(context)
                     if (order == SortOrder.ASC.value) sortBy {
-                        db.categoryDao().countCategoryXp(it.id)
+                        categoryRepository.countXP(it.id)
                     }
                     else sortByDescending {
-                        db.categoryDao().countCategoryXp(it.id)
+                        categoryRepository.countXP(it.id)
                     }
                 }
             }
@@ -104,6 +105,7 @@ class CategoryListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        categoryRepository = CategoryRepository(requireContext())
         categoryAdapter = CategoryAdapter(requireContext())
         categoryAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
@@ -126,10 +128,8 @@ class CategoryListFragment : Fragment() {
                 binding.emptyRv.visibility = visibility
             }
         })
-        val db = AppDatabase(requireContext())
-        val categories = db.categoryDao().findAll()
+        val categories = categoryRepository.getAll()
         sortCategories(requireContext(), categories)
-        Timber.d("${categories.size} categor${if (categories.size > 1) "ies" else "y"} found.")
         categoryAdapter.setCategories(categories)
         binding.rv.apply {
             layoutManager = LinearLayoutManager(activity)

@@ -11,13 +11,11 @@ import androidx.navigation.findNavController
 import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity.Companion.iconDialog
 import com.vmaier.taski.R
-import com.vmaier.taski.data.entity.Category
-import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentCreateSkillBinding
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
 import com.vmaier.taski.hideKeyboard
+import com.vmaier.taski.lifecycleOwner
 import com.vmaier.taski.utils.KeyBoardHider
-import timber.log.Timber
 
 
 /**
@@ -97,10 +95,10 @@ class SkillCreateFragment : SkillFragment() {
         } else {
             if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 binding.name.requestFocus()
-                binding.name.error = getString(R.string.error_too_short)
+                binding.name.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
                 return false
             }
-            val foundSkill = db.skillDao().findByName(name)
+            val foundSkill = skillRepository.get(name)
             if (foundSkill != null) {
                 binding.name.requestFocus()
                 binding.name.error = getString(R.string.error_skill_already_exists)
@@ -108,26 +106,26 @@ class SkillCreateFragment : SkillFragment() {
             }
         }
         val categoryName = binding.category.editText?.text.toString().trim()
-        val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        var categoryId: Long? = null
-        if (categoryName.isNotBlank()) {
-            if (categoryName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
-                binding.category.requestFocus()
-                binding.category.error = getString(R.string.error_too_short)
-                return false
-            } else {
-                val foundCategory = db.categoryDao().findByName(categoryName)
-                if (foundCategory != null) {
-                    categoryId = foundCategory.id
-                } else {
-                    categoryId = db.categoryDao().create(Category(name = categoryName))
-                    Timber.d("Category ($categoryId) created.")
-                }
-            }
+        if (categoryName.isNotBlank() && categoryName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
+            binding.category.requestFocus()
+            binding.category.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+            return false
         }
-        val skill = Skill(name = name, categoryId = categoryId, iconId = iconId)
-        val id = db.skillDao().create(skill)
-        Timber.d("Skill ($id) created.")
+        val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
+        val skillId = skillRepository.create(name, iconId, null)
+        val lifecycleOwner = requireContext().lifecycleOwner()
+        if (lifecycleOwner != null) {
+            skillId.observe(lifecycleOwner, { id ->
+                if (id != null && categoryName.isNotBlank()) {
+                    val foundCategory = categoryRepository.get(categoryName)
+                    if (foundCategory != null) {
+                        skillRepository.updateCategoryId(requireContext(), id, foundCategory.id)
+                    } else {
+                        categoryRepository.create(requireContext(), categoryName, null, id)
+                    }
+                }
+            })
+        }
         skillAdapter.notifyDataSetChanged()
         return true
     }

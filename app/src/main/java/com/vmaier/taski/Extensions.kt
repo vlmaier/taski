@@ -1,6 +1,7 @@
 package com.vmaier.taski
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.NumberPicker
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import com.vmaier.taski.data.DurationUnit
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.utils.Utils
@@ -180,5 +182,18 @@ fun NumberPicker.getDurationUnit(): DurationUnit {
         4 -> DurationUnit.WEEK
         5 -> DurationUnit.YEAR
         else -> DurationUnit.MINUTE
+    }
+}
+
+fun Context.lifecycleOwner(): LifecycleOwner? {
+    var context = this
+    var maxDepth = 20
+    while (maxDepth-- > 0 && context !is LifecycleOwner) {
+        context = (context as ContextWrapper).baseContext
+    }
+    return if (context is LifecycleOwner) {
+        context
+    } else {
+        null
     }
 }

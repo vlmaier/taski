@@ -51,8 +51,7 @@ class AssignedTaskAdapter internal constructor(
         holder.iconView.setIcon(task.iconId)
         holder.itemView.setOnClickListener {
             it.findNavController().navigate(
-                SkillEditFragmentDirections
-                    .actionSkillEditFragmentToEditTaskFragment(task, cameFromTaskList = false)
+                SkillEditFragmentDirections.actionSkillEditFragmentToEditTaskFragment(task)
             )
         }
     }

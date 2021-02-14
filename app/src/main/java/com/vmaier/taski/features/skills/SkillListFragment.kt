@@ -13,13 +13,13 @@ import com.vmaier.taski.MainActivity.Companion.drawerLayout
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortOrder
 import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.entity.Skill
+import com.vmaier.taski.data.repository.CategoryRepository
+import com.vmaier.taski.data.repository.SkillRepository
 import com.vmaier.taski.databinding.FragmentSkillListBinding
 import com.vmaier.taski.services.PreferenceService
-import timber.log.Timber
 
 
 /**
@@ -31,7 +31,9 @@ class SkillListFragment : Fragment() {
 
     companion object {
         lateinit var skillAdapter: SkillAdapter
-        lateinit var binding: FragmentSkillListBinding
+        private lateinit var binding: FragmentSkillListBinding
+        private lateinit var categoryRepository: CategoryRepository
+        private lateinit var skillRepository: SkillRepository
 
         fun sortSkills(context: Context, skills: MutableList<Skill>) {
             val prefService = PreferenceService(context)
@@ -47,16 +49,15 @@ class SkillListFragment : Fragment() {
                     else sortByDescending { it.xp }
                 }
                 SortSkills.CATEGORY.value -> skills.apply {
-                    val db = AppDatabase(context)
                     if (order == SortOrder.ASC.value) {
                         sortBy {
                             if (it.categoryId == null) ""
-                            else db.categoryDao().findById(it.categoryId).name
+                            else categoryRepository.get(it.categoryId)?.name
                         }
                     } else {
                         sortByDescending {
                             if (it.categoryId == null) ""
-                            else db.categoryDao().findById(it.categoryId).name
+                            else categoryRepository.get(it.categoryId)?.name
                         }
                     }
                 }
@@ -109,6 +110,8 @@ class SkillListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        categoryRepository = CategoryRepository(requireContext())
+        skillRepository = SkillRepository(requireContext())
         skillAdapter = SkillAdapter(requireContext())
         skillAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
@@ -131,10 +134,8 @@ class SkillListFragment : Fragment() {
                 binding.emptyRv.visibility = visibility
             }
         })
-        val db = AppDatabase(requireContext())
-        val skills = db.skillDao().findAll()
+        val skills = skillRepository.getAll()
         sortSkills(requireContext(), skills)
-        Timber.d("${skills.size} skill(s) found.")
         skillAdapter.setSkills(skills)
         binding.rv.apply {
             layoutManager = GridLayoutManager(activity, 2)

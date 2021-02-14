@@ -17,15 +17,14 @@ import com.vmaier.taski.MainActivity.Companion.drawerLayout
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortOrder
 import com.vmaier.taski.data.SortTasks
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.data.repository.TaskRepository
 import com.vmaier.taski.databinding.FragmentTaskListBinding
 import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.utils.Utils
-import timber.log.Timber
 
 
 /**
@@ -158,8 +157,8 @@ class TaskListFragment : Fragment() {
                 }
             }
         })
-        val db = AppDatabase(requireContext())
-        val tasks = db.taskDao().findByStatus(Status.OPEN)
+        val taskRepository = TaskRepository(requireContext())
+        val tasks = taskRepository.getByStatus(Status.OPEN)
         tasks.removeAll {
             if (it.rrule != null) {
                 val found = RecurrenceFinder().findBasedOn(
@@ -177,7 +176,6 @@ class TaskListFragment : Fragment() {
             }
         }
         sortTasks(requireContext(), tasks)
-        Timber.d("${tasks.size} task(s) found.")
         taskAdapter.setTasks(tasks)
         binding.rv.apply {
             layoutManager = LinearLayoutManager(activity)

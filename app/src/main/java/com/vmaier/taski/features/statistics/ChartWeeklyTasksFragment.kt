@@ -127,7 +127,6 @@ class ChartWeeklyTasksFragment : TaskFragment() {
     private fun getAmountOfTasksForDayOfTheWeek(day: Int): Float {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.DAY_OF_WEEK, day)
-        return db.taskDao()
-            .countDailyTasks(Utils.getStartOfDay(calendar), Utils.getEndOfDay(calendar)).toFloat()
+        return taskRepository.countDailyTasks(calendar).toFloat()
     }
 }
