@@ -159,8 +159,10 @@ open class TaskFragment : Fragment() {
     }
 
     fun updateXpGain(xpGain: TextView) {
-        val xp = Utils.calculateXp(Difficulty.valueOf(difficulty), getDurationInMinutes())
-        xpGain.text = resources.getString(R.string.term_xp_value, xp)
+        if (isDifficultyInitialized()) {
+            val xp = Utils.calculateXp(Difficulty.valueOf(difficulty), getDurationInMinutes())
+            xpGain.text = resources.getString(R.string.term_xp_value, xp)
+        }
     }
 
     fun setDeadlineDateOnClickListener(view: EditText?) {
