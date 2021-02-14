@@ -54,7 +54,7 @@ class ChartDailyXpFragment : TaskFragment() {
                 )
             } else {
                 assignedSkills.forEach { skill ->
-                    fillSkillWithXp(skillWithXp, skill.name, skill.xp)
+                    fillSkillWithXp(skillWithXp, skill.name, task.xp.div(assignedSkills.size).toLong())
                 }
             }
         }
