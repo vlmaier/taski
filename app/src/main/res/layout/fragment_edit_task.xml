@@ -129,7 +129,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/deadline_date"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="136dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
@@ -156,7 +156,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/deadline_time"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="106dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:hint="@string/hint_task_due_time"
