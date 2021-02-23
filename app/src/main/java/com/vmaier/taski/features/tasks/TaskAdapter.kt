@@ -150,6 +150,7 @@ class TaskAdapter internal constructor(
                                 dateTime.getTimeInAppFormat()
                             )
                         }
+                        bundle.putString(TaskFragment.KEY_RECURRENCE, task.rrule)
                         it.findNavController().navigate(
                             R.id.action_taskListFragment_to_createTaskFragment, bundle
                         )

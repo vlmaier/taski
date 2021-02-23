@@ -69,6 +69,7 @@ open class TaskFragment : Fragment() {
         const val KEY_ICON_ID = "icon_id"
         const val KEY_DEADLINE_DATE = "deadline_date"
         const val KEY_DEADLINE_TIME = "deadline_time"
+        const val KEY_RECURRENCE = "recurrence"
 
         fun setIcon(context: Context, icon: Icon, button: ImageButton) {
             IconDrawableLoader(context).loadDrawable(icon)

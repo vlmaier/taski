@@ -140,8 +140,18 @@ class TaskCreateFragment : TaskFragment() {
 
         // Recurrence settings
         recurrenceButton = binding.recurrenceButton
-        binding.recurrenceButton.text =
-            RecurrenceFormatter(App.dateTimeFormat).format(requireContext(), selectedRecurrence)
+        val argRRule = args?.getString(KEY_RECURRENCE)
+        val recurrence = RecurrenceFormatter(App.dateTimeFormat).format(
+            requireContext(),
+            if (argRRule != null) {
+                val taskRecurrence = RRuleFormatter().parse(argRRule)
+                selectedRecurrence = taskRecurrence
+                taskRecurrence
+            } else {
+                selectedRecurrence
+            }
+        )
+        binding.recurrenceButton.text = recurrence
         binding.recurrenceButton.setOnClickListener {
             recurrenceListDialog.selectedRecurrence = selectedRecurrence
             recurrenceListDialog.startDate = System.currentTimeMillis()
