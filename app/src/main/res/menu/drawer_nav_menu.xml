@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group>
+    <group
+        android:id="@+id/menu_top">
         <item
             android:id="@+id/nav_tasks"
             android:icon="@drawable/ic_tasks_24"
@@ -17,5 +18,16 @@
             android:id="@+id/nav_statistics"
             android:icon="@drawable/ic_statistics_24"
             android:title="@string/heading_statistics" />
+    </group>
+    <group
+        android:id="@+id/menu_bottom">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_24"
+            android:title="@string/heading_settings" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help_24"
+            android:title="@string/heading_help" />
     </group>
 </menu>

@@ -372,6 +372,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     else -> navController.navigate(R.id.categoryListFragment)
                 }
             }
+            R.id.nav_settings -> {
+                navController.navigate(R.id.settingsFragment)
+            }
+            R.id.nav_help -> {
+                navController.navigate(R.id.helpFragment)
+            }
         }
         // update selected menu item in bottom navigation as well
         val foundItem = bottomNav.menu.findItem(item.itemId)
