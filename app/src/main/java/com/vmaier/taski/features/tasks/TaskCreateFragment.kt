@@ -18,6 +18,7 @@ import com.vmaier.taski.MainActivity.Companion.iconDialog
 import com.vmaier.taski.MainActivity.Companion.recurrenceListDialog
 import com.vmaier.taski.MainActivity.Companion.selectedRecurrence
 import com.vmaier.taski.data.Difficulty
+import com.vmaier.taski.data.DurationUnit
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentCreateTaskBinding
 import com.vmaier.taski.features.tasks.TaskListFragment.Companion.taskAdapter
@@ -67,6 +68,14 @@ class TaskCreateFragment : TaskFragment() {
         setTaskIcon(args, binding.iconButton)
 
         // Duration settings
+        val argDurationUnit = args?.getString(KEY_DURATION_UNIT)
+        if (argDurationUnit != null) {
+            durationUnit = DurationUnit.valueOf(argDurationUnit)
+        }
+        val argDurationValue = args?.getInt(KEY_DURATION_VALUE)
+        if (argDurationValue != null) {
+            durationValue = argDurationValue
+        }
         binding.durationButton.text = getHumanReadableDuration()
         binding.durationButton.setOnClickListener {
             showDurationPickerDialog(binding.durationButton, binding.xpGain)

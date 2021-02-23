@@ -127,6 +127,9 @@ class TaskAdapter internal constructor(
                         val bundle = Bundle()
                         bundle.putString(TaskFragment.KEY_GOAL, task.goal)
                         bundle.putString(TaskFragment.KEY_DETAILS, task.details)
+                        val durationUnit = task.getDurationUnit()
+                        bundle.putInt(TaskFragment.KEY_DURATION_VALUE, task.convertDurationToMinutes(durationUnit))
+                        bundle.putString(TaskFragment.KEY_DURATION_UNIT, durationUnit.name)
                         bundle.putString(
                             TaskFragment.KEY_DIFFICULTY,
                             task.difficulty.value.toUpperCase(Locale.getDefault())

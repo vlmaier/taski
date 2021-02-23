@@ -63,6 +63,8 @@ open class TaskFragment : Fragment() {
         const val KEY_GOAL = "goal"
         const val KEY_DETAILS = "details"
         const val KEY_DIFFICULTY = "difficulty"
+        const val KEY_DURATION_VALUE = "duration_value"
+        const val KEY_DURATION_UNIT = "duration_unit"
         const val KEY_SKILLS = "skills"
         const val KEY_ICON_ID = "icon_id"
         const val KEY_DEADLINE_DATE = "deadline_date"

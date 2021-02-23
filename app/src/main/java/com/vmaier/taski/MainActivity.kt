@@ -264,9 +264,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 val overallLevel = levelService.getOverallLevel(overallXp)
                 levelView.text = getString(R.string.term_level_value, overallLevel)
             }
-            override fun onDrawerOpened(view: View) {}
-            override fun onDrawerClosed(view: View) {}
-            override fun onDrawerStateChanged(i: Int) {}
+            override fun onDrawerOpened(view: View) {
+                // Nothing to do here
+            }
+            override fun onDrawerClosed(view: View) {
+                // Nothing to do here
+            }
+            override fun onDrawerStateChanged(i: Int) {
+                // Nothing to do here
+            }
         })
     }
 
