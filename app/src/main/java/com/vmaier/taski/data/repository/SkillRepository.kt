@@ -169,6 +169,7 @@ class SkillRepository(context: Context) {
             val skill = skillDao.get(id)
             if (skill != null) {
                 val i = skillAdapter.skills.indexOfFirst { it.id == id }
+                if (i == -1) return@withContext
                 skillAdapter.skills[i] = skill
                 skillAdapter.notifyItemChanged(i)
                 if (sort) {

@@ -57,6 +57,7 @@ class CategoryAdapter internal constructor(
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nameView: TextView = itemView.findViewById(R.id.category_name)
+        var skillsView: TextView = itemView.findViewById(R.id.skills_amount)
         var colorView: ImageView = itemView.findViewById(R.id.category_color)
         var categoryIndicatorView: TextView = itemView.findViewById(R.id.category_sort_indicator)
     }
@@ -102,6 +103,14 @@ class CategoryAdapter internal constructor(
 
         // setup "Name" view
         holder.nameView.text = category.name
+
+        // setup "Skills" view
+        val countSkills = categoryRepository.countSkills(category.id)
+        holder.skillsView.text = if (countSkills > 0) {
+            context.resources.getQuantityString(R.plurals.heading_assigned_skills, countSkills, countSkills)
+        } else {
+            context.getString(R.string.heading_no_skills_assigned)
+        }
 
         // setup "Color" view
         if (category.color != null) {

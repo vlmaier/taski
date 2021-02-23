@@ -162,6 +162,12 @@
     <string name="heading_replay_intro">Повторить вступление</string>
     <string name="heading_manual">Руководство</string>
     <string name="heading_app_manual">Руководство Taski</string>
+    <string name="heading_no_skills_assigned">Навыки не назначены</string>
+    <plurals name="heading_assigned_skills">
+        <item quantity="one">%d назначенный навык</item>
+        <item quantity="few">%d назначенных навыка</item>
+        <item quantity="many">%d назначенных навыков</item>
+    </plurals>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Наименование навыка</string>

@@ -159,6 +159,11 @@
     <string name="heading_replay_intro">Replay intro</string>
     <string name="heading_manual">Manual</string>
     <string name="heading_app_manual">Taski Manual</string>
+    <string name="heading_no_skills_assigned">No skills assigned</string>
+    <plurals name="heading_assigned_skills">
+        <item quantity="one">%d assigned skill</item>
+        <item quantity="other">%d assigned skills</item>
+    </plurals>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>

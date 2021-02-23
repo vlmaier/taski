@@ -157,6 +157,11 @@
     <string name="heading_replay_intro">Intro wiederholen</string>
     <string name="heading_manual">Anleitung</string>
     <string name="heading_app_manual">Taski Anleitung</string>
+    <string name="heading_no_skills_assigned">Keine Fähigkeiten zugewiesen</string>
+    <plurals name="heading_assigned_skills">
+        <item quantity="one">%d zugewiesene Fähigkeit</item>
+        <item quantity="other">%d zugewiesene Fähigkeiten</item>
+    </plurals>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Bezeichnung</string>

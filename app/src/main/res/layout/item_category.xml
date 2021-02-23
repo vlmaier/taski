@@ -35,15 +35,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:singleLine="true"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/category_sort_indicator"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/category_color"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Intellect" />
@@ -60,10 +58,29 @@
                 app:autoSizeMinTextSize="12dp"
                 app:autoSizeStepGranularity="1dp"
                 app:autoSizeTextType="uniform"
-                app:layout_constraintBottom_toBottomOf="@+id/category_name"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/category_name"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="12000 XP"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/skills_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:singleLine="true"
+                android:textAlignment="textStart"
+                android:textSize="14sp"
+                app:autoSizeMaxTextSize="16dp"
+                app:autoSizeMinTextSize="12dp"
+                app:autoSizeStepGranularity="1dp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/category_name"
+                app:layout_constraintTop_toBottomOf="@+id/category_name"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="No skills assigned"
                 tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

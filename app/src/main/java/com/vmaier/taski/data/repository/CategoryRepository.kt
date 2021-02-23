@@ -57,6 +57,10 @@ class CategoryRepository(context: Context) {
         return categoryDao.countXP(id)
     }
 
+    fun countSkills(id: Long): Int {
+        return categoryDao.countSkills(id)
+    }
+
     @Transaction
     fun create(name: String, color: String?): LiveData<Long> {
         val liveData = MutableLiveData<Long>()

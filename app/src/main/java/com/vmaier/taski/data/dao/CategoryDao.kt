@@ -63,6 +63,15 @@ interface CategoryDao {
     )
     fun countXP(id: Long): Long
 
+    @Query(
+        """
+        SELECT COUNT(*)
+        FROM skills
+        WHERE category_id = :id
+    """
+    )
+    fun countSkills(id: Long): Int
+
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 
     @Query(
