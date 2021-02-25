@@ -13,15 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Default">
 
-        <activity
-            android:name="com.vmaier.taski.MainActivity"
-            android:theme="@style/Theme.Default"
-            android:windowSoftInputMode="stateAlwaysHidden">
+        <activity android:name=".SplashActivity"
+            android:theme="@style/Theme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.vmaier.taski.MainActivity"
+            android:theme="@style/Theme.Default"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
         <activity
