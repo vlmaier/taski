@@ -119,7 +119,7 @@ class SkillCreateFragment : SkillFragment() {
                 if (id != null && categoryName.isNotBlank()) {
                     val foundCategory = categoryRepository.get(categoryName)
                     if (foundCategory != null) {
-                        skillRepository.updateCategoryId(requireContext(), id, foundCategory.id)
+                        skillRepository.updateCategoryId(requireContext(), id, foundCategory.id, false)
                     } else {
                         categoryRepository.create(requireContext(), categoryName, null, id)
                     }
