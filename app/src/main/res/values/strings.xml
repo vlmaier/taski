@@ -264,21 +264,23 @@ The name *Taski* comes from a combination of two words *task* and *skill*. In ad
 Tasks represent goals or missions that you want to achieve.\n
 \n
 * **Goal**\\\n
-  Task goal is **mandatory** and must be between 4 and 36 characters long when creating or editing a task. Tasks can be sorted by goal.\n
+  Task goal is **mandatory** and must be between 2 and 36 characters long when creating or editing a task. Tasks can be sorted by goal.\n
 * **Details**\\\n
   Task details are optional and can be up to 100 characters long.\n
 * **Icon**\\\n
   Task icon can be selected from a variety of ~1000 icons. Icons are grouped by category.\n
 * **Duration**\\\n
-  Task duration can be selected from a range between 5 minutes and 1 week. The duration is used as parameter for the experience calculation. Tasks can be sorted by duration.\n
+  Task duration can be selected from a wide range between 5 minutes and 10 years. The duration is used as parameter for the experience calculation. Tasks can be sorted by duration.\n
 * **Difficulty**\\\n
-  Task difficulty can be selected from 4 values: *trivial*, *regular*, *hard* and *insane*. The difficulty is used as parameter for the experience calculation.\n
-* **Due date**\\\n
-  Due date is optional for tasks. Tasks can be sorted by due date.\n
+  Task difficulty can be selected from 4 values: *trivial*, *regular*, *hard* and *insane*. The difficulty is used as parameter for the experience calculation. Tasks can be sorted by difficulty.\n
+* **Deadline**\\\n
+  Deadline is optional for tasks. Tasks can be sorted by due date.\n
+* **Recurrence**\\\n
+  Recurrence is optional for tasks. The recurrence can be used to create repetitive tasks, e.g. dailies.\n
 * **Skills**\\\n
   Skills are optional. One or more skills can be assigned to a single task.\n
 * **Experience gain**\\\n
-  Amount of experience you will get when you complete the task.\n
+  Amount of experience you will get when you complete the task. Tasks can be sorted by experience gain.\n
 \n
 #### Actions on tasks:\n
 \n
@@ -299,9 +301,9 @@ Tasks represent goals or missions that you want to achieve.\n
 Skills represent your personal abilities that you want to work on.\n
 \n
 * **Name**\\\n
-  Skill name is **mandatory** and must be between 4 and 24 characters long when creating or editing a skill. Skills can be sorted by name.\n
+  Skill name is **mandatory** and must be between 2 and 24 characters long when creating or editing a skill. Skills can be sorted by name.\n
 * **Category**\\\n
-  Skill category is optional and must be between 4 and 24 characters long. Skills can be sorted by category.\n
+  Skill category is optional and must be between 2 and 24 characters long. Skills can be sorted by category.\n
 * **Icon**\\\n
   Skill icon can be selected from a variety of ~1000 icons. Icons are grouped by category.\n
 * **Experience**\\\n
@@ -326,7 +328,7 @@ Skills represent your personal abilities that you want to work on.\n
 Skill category represents a group of similar skills which have one thing in common e.g. skills *Reading* 📚 and *Playing Chess* ♟️ can belong to a category *Intelligence* 🧠.\n
 
 * **Name**\\\n
-  Category name is **mandatory** and must be between 4 and 24 characters long when creating or editing a category.\n
+  Category name is **mandatory** and must be between 2 and 24 characters long when creating or editing a category. Categories can be sorted by name.\n
 * **Color**\\\n
   Category color is optional. When a color is chosen all skills associated with the category will have a border of that color in *Skills* menu.\n
 \n
