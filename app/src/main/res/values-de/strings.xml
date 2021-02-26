@@ -57,12 +57,15 @@
     <string name="term_due_at">Fällig um %s</string>
     <string name="term_due_today">Heute fällig</string>
     <string name="term_monday_short">Mo.</string>
+    <string name="term_monday">Montag</string>
     <string name="term_tuesday_short">Di.</string>
     <string name="term_wednesday_short">Mi.</string>
     <string name="term_thursday_short">Do.</string>
     <string name="term_friday_short">Fr.</string>
     <string name="term_saturday_short">Sa.</string>
+    <string name="term_saturday">Samstag</string>
     <string name="term_sunday_short">So.</string>
+    <string name="term_sunday">Sonntag</string>
     <string name="term_sort_created_at">Erstellungsdatum</string>
     <string name="term_sort_goal">Ziel</string>
     <string name="term_sort_duration">Dauer</string>
@@ -153,7 +156,7 @@
     <string name="heading_sort_order">Sortierreihenfolge</string>
     <string name="heading_select_theme">Wähle ein Thema</string>
     <string name="heading_calendar_settings">Kalendereinstellungen</string>
-    <string name="heading_delete_completed_tasks">Abgeschlossene Aufgaben löschen</string>
+    <string name="heading_delete_completed_tasks">Erledigte Aufgaben löschen</string>
     <string name="heading_replay_intro">Intro wiederholen</string>
     <string name="heading_manual">Anleitung</string>
     <string name="heading_app_manual">Taski Anleitung</string>
@@ -162,6 +165,7 @@
         <item quantity="one">%d zugewiesene Fähigkeit</item>
         <item quantity="other">%d zugewiesene Fähigkeiten</item>
     </plurals>
+    <string name="heading_start_of_the_week">Anfang der Woche</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Bezeichnung</string>
@@ -188,6 +192,7 @@
     <string name="description_switch_to_dark">Wechsel zum Nachtmodus</string>
     <string name="description_switch_to_light">Wechsel zum Tagesmodus</string>
     <string name="description_delete_completed_tasks">Lösche Aufgaben aus dem Kalender, wenn diese abgeschlossen sind</string>
+    <string name="description_start_of_the_week">Bestimmt den Tag, an dem eine neue Woche beginnt (wirkt sich auf die wöchentliche Statistik aus)</string>
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Wähle eine Kategoriefarbe</string>

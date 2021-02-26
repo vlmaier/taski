@@ -48,6 +48,7 @@ import kotlin.random.Random
 open class TaskFragment : Fragment() {
 
     lateinit var calendarService: CalendarService
+    lateinit var prefService: PreferenceService
 
     companion object {
         lateinit var skillNames: List<String>
@@ -84,6 +85,7 @@ open class TaskFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         calendarService = CalendarService(context)
+        prefService = PreferenceService(context)
         taskRepository = TaskRepository(context)
         skillRepository = SkillRepository(context)
     }

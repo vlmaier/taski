@@ -15,6 +15,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
+import com.vmaier.taski.data.StartOfTheWeek
 import com.vmaier.taski.databinding.FragmentChartWeeklyTasksBinding
 import com.vmaier.taski.features.tasks.TaskFragment
 import com.vmaier.taski.utils.Utils
@@ -48,7 +49,10 @@ class ChartWeeklyTasksFragment : TaskFragment() {
             false
         )
 
-        val daysOfWeekWithValue = ArrayList<Float>()
+        val prefStartOfTheWeek = StartOfTheWeek
+            .valueOf(prefService.getStartOfTheWeek()
+            .toUpperCase(Locale.getDefault()))
+        val daysOfWeekWithValue = mutableListOf<Float>()
         daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.MONDAY))
         daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.TUESDAY))
         daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.WEDNESDAY))
@@ -56,6 +60,28 @@ class ChartWeeklyTasksFragment : TaskFragment() {
         daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.FRIDAY))
         daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.SATURDAY))
         daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.SUNDAY))
+        val captions = mutableListOf(
+            getString(R.string.term_monday_short),
+            getString(R.string.term_tuesday_short),
+            getString(R.string.term_wednesday_short),
+            getString(R.string.term_thursday_short),
+            getString(R.string.term_friday_short),
+            getString(R.string.term_saturday_short),
+            getString(R.string.term_sunday_short)
+        )
+        when (prefStartOfTheWeek) {
+            StartOfTheWeek.SATURDAY -> {
+                Utils.swapFirstAndLastElements(daysOfWeekWithValue, 2)
+                Utils.swapFirstAndLastElements(captions, 2)
+            }
+            StartOfTheWeek.SUNDAY -> {
+                Utils.swapFirstAndLastElements(daysOfWeekWithValue)
+                Utils.swapFirstAndLastElements(captions)
+            }
+            else -> {
+                // nothing to do
+            }
+        }
         val values = ArrayList<Entry>()
         if (daysOfWeekWithValue.sum() > 0) {
             for (i in 0..6) {
@@ -86,15 +112,6 @@ class ChartWeeklyTasksFragment : TaskFragment() {
         val xAxis = binding.chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
-        val captions = arrayListOf(
-            getString(R.string.term_monday_short),
-            getString(R.string.term_tuesday_short),
-            getString(R.string.term_wednesday_short),
-            getString(R.string.term_thursday_short),
-            getString(R.string.term_friday_short),
-            getString(R.string.term_saturday_short),
-            getString(R.string.term_sunday_short)
-        )
         val formatter = IndexAxisValueFormatter(captions)
         xAxis.valueFormatter = formatter
         xAxis.textSize = 14f

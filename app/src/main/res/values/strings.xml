@@ -59,12 +59,15 @@
     <string name="term_due_at">Due at %s</string>
     <string name="term_due_today">Due today</string>
     <string name="term_monday_short">MON</string>
+    <string name="term_monday">Monday</string>
     <string name="term_tuesday_short">TUE</string>
     <string name="term_wednesday_short">WED</string>
     <string name="term_thursday_short">THU</string>
     <string name="term_friday_short">FRI</string>
     <string name="term_saturday_short">SAT</string>
+    <string name="term_saturday">Saturday</string>
     <string name="term_sunday_short">SUN</string>
+    <string name="term_sunday">Sunday</string>
     <string name="term_sort_created_at">creation date</string>
     <string name="term_sort_goal">goal</string>
     <string name="term_sort_duration">duration</string>
@@ -164,6 +167,7 @@
         <item quantity="one">%d assigned skill</item>
         <item quantity="other">%d assigned skills</item>
     </plurals>
+    <string name="heading_start_of_the_week">Start of the week</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
@@ -190,6 +194,7 @@
     <string name="description_switch_to_light">Switch to light mode</string>
     <string name="description_select_language">Select language</string>
     <string name="description_delete_completed_tasks">Delete tasks from the calendar when they have been completed</string>
+    <string name="description_start_of_the_week">Determines the day on which a new week begins (affects weekly statistics)</string>
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Pick a category color</string>

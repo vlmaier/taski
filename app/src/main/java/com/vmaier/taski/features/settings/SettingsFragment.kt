@@ -74,6 +74,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val languageValues = resources.getStringArray(R.array.language_values_array)
         appLanguage?.setValueIndex(languageValues.indexOf(prefLanguage))
 
+        // preselect start of the week value
+        val startOfTheWeek = preferenceScreen.findPreference(PreferenceService.Keys.START_OF_THE_WEEK) as ListPreference?
+        val prefStartOfTheWeek = prefService.getStartOfTheWeek()
+        val startOfTheWeekValues = resources.getStringArray(R.array.start_of_the_week_values_array)
+        startOfTheWeek?.setValueIndex(startOfTheWeekValues.indexOf(prefStartOfTheWeek))
+
         val calendarTasksPref: CheckBoxPreference? =
             findPreference(PreferenceService.Keys.DELETE_COMPLETED_TASKS)
         calendarTasksPref?.isEnabled = prefService.isCalendarSyncEnabled()
@@ -119,6 +125,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 prefService.setLanguage(prefLanguage)
                 setLocale(Locale(prefLanguage))
                 Timber.d("Language changed to '${prefLanguage.toUpperCase(Locale.getDefault())}'")
+            }
+            PreferenceService.Keys.START_OF_THE_WEEK -> {
+                val pref: ListPreference? = findPreference(key)
+                val prefStartOfTheWeek = pref?.value ?: PreferenceService.Keys.START_OF_THE_WEEK
+                prefService.setStartOfTheWeek(prefStartOfTheWeek)
+                Timber.d("Start of the week changed to '$prefStartOfTheWeek'")
             }
         }
     }
@@ -223,7 +235,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             prefTheme = prefService.getTheme()
             val dialogView =
                 (context as Activity).layoutInflater.inflate(R.layout.select_theme_dialog, null)
-            val radioGroup = dialogView.findViewById(R.id.radio_group) as RadioGroupPlus
+            val radioGroup = dialogView.findViewById(R.id.radio_group_themes) as RadioGroupPlus
             preselectTheme(dialogView)
             val builder = AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.heading_select_theme))

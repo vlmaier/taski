@@ -40,6 +40,12 @@
             android:key="delete_completed_tasks"
             android:summary="@string/description_delete_completed_tasks"
             android:title="@string/heading_delete_completed_tasks" />
+        <androidx.preference.ListPreference
+            android:entries="@array/start_of_the_week_names_array"
+            android:entryValues="@array/start_of_the_week_values_array"
+            android:key="start_of_the_week"
+            android:summary="@string/description_start_of_the_week"
+            android:title="@string/heading_start_of_the_week" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/heading_general_settings">

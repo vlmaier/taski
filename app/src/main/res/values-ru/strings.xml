@@ -62,12 +62,15 @@
     <string name="term_due_at">Срок сдачи до %s</string>
     <string name="term_due_today">На сегодня</string>
     <string name="term_monday_short">ПНД</string>
+    <string name="term_monday">Понедельник</string>
     <string name="term_tuesday_short">ВТР</string>
     <string name="term_wednesday_short">СРД</string>
     <string name="term_thursday_short">ЧТВ</string>
     <string name="term_friday_short">ПТН</string>
     <string name="term_saturday_short">СБТ</string>
+    <string name="term_saturday">Суббота</string>
     <string name="term_sunday_short">ВСК</string>
+    <string name="term_sunday">Воскресенье</string>
     <string name="term_sort_created_at">дата создания</string>
     <string name="term_sort_goal">цель</string>
     <string name="term_sort_duration">продолжительность</string>
@@ -168,6 +171,7 @@
         <item quantity="few">%d назначенных навыка</item>
         <item quantity="many">%d назначенных навыков</item>
     </plurals>
+    <string name="heading_start_of_the_week">Начало недели</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Наименование навыка</string>
@@ -194,6 +198,7 @@
     <string name="description_switch_to_dark">Переключиться в ночной режим</string>
     <string name="description_switch_to_light">Переключиться в дневной режим</string>
     <string name="description_delete_completed_tasks">Удалять задачи из календаря, когда они были выполнены</string>
+    <string name="description_start_of_the_week">Определяет день начала новой недели (влияет на еженедельную статистику)</string>
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Выбери цвет категории</string>

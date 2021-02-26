@@ -10,6 +10,16 @@
         <item>de</item>
         <item>ru</item>
     </string-array>
+    <string-array name="start_of_the_week_names_array">
+        <item>@string/term_monday</item>
+        <item>@string/term_saturday</item>
+        <item>@string/term_sunday</item>
+    </string-array>
+    <string-array name="start_of_the_week_values_array">
+        <item>monday</item>
+        <item>saturday</item>
+        <item>sunday</item>
+    </string-array>
     <array name="md_colors_300">
         <item name="red_300" type="color">#F36C60</item>
         <item name="pink_300" type="color">#F06292</item>

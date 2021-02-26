@@ -96,6 +96,14 @@ class PreferenceService(val context: Context) {
         preferences.edit().putBoolean(Keys.ONBOARDING, value).apply()
     }
 
+    fun getStartOfTheWeek(): String {
+        return preferences.getString(Keys.START_OF_THE_WEEK, Defaults.START_OF_THE_WEEK) ?: Defaults.START_OF_THE_WEEK
+    }
+
+    fun setStartOfTheWeek(value: String) {
+        preferences.edit().putString(Keys.START_OF_THE_WEEK, value).apply()
+    }
+
     fun getSort(type: SortType): String {
         return when (type) {
             SortType.TASKS ->
@@ -172,6 +180,7 @@ class PreferenceService(val context: Context) {
             const val ONBOARDING = "onboarding"
             const val REQUEST_CODE_COUNTER = "request_code_counter"
             const val APP_LAUNCH_COUNTER = "app_starts_counter"
+            const val START_OF_THE_WEEK = "start_of_the_week"
         }
     }
 
@@ -192,6 +201,7 @@ class PreferenceService(val context: Context) {
             const val ONBOARDING = true
             const val REQUEST_CODE_COUNTER = 1
             const val APP_LAUNCH_COUNTER = 0
+            const val START_OF_THE_WEEK = "monday"
         }
     }
 }

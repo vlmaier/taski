@@ -94,4 +94,12 @@ object Utils {
         calendar.set(Calendar.SECOND, 59)
         return calendar.time.time
     }
+
+    fun <T> swapFirstAndLastElements(list: MutableList<T>, times: Int = 1) {
+        for (i in 1..times) {
+            val lastElement = list.last()
+            list.removeAt(list.lastIndex)
+            list.add(0, lastElement)
+        }
+    }
 }
