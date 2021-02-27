@@ -57,12 +57,15 @@
     <string name="term_due_at">Fällig um %s</string>
     <string name="term_due_today">Heute fällig</string>
     <string name="term_monday_short">Mo.</string>
+    <string name="term_monday">Montag</string>
     <string name="term_tuesday_short">Di.</string>
     <string name="term_wednesday_short">Mi.</string>
     <string name="term_thursday_short">Do.</string>
     <string name="term_friday_short">Fr.</string>
     <string name="term_saturday_short">Sa.</string>
+    <string name="term_saturday">Samstag</string>
     <string name="term_sunday_short">So.</string>
+    <string name="term_sunday">Sonntag</string>
     <string name="term_sort_created_at">Erstellungsdatum</string>
     <string name="term_sort_goal">Ziel</string>
     <string name="term_sort_duration">Dauer</string>
@@ -81,7 +84,7 @@
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Kann nicht leer sein</string>
-    <string name="error_too_short">Muss mindestens 4 Zeichen lang sein</string>
+    <string name="error_too_short">Muss mindestens %d Zeichen lang sein</string>
     <string name="error_skill_already_exists">Solche Fähigkeit existiert bereits</string>
     <string name="error_category_already_exists">Solche Kategorie existiert bereits</string>
 
@@ -153,10 +156,16 @@
     <string name="heading_sort_order">Sortierreihenfolge</string>
     <string name="heading_select_theme">Wähle ein Thema</string>
     <string name="heading_calendar_settings">Kalendereinstellungen</string>
-    <string name="heading_delete_completed_tasks">Abgeschlossene Aufgaben löschen</string>
+    <string name="heading_delete_completed_tasks">Erledigte Aufgaben löschen</string>
     <string name="heading_replay_intro">Intro wiederholen</string>
     <string name="heading_manual">Anleitung</string>
     <string name="heading_app_manual">Taski Anleitung</string>
+    <string name="heading_no_skills_assigned">Keine Fähigkeiten zugewiesen</string>
+    <plurals name="heading_assigned_skills">
+        <item quantity="one">%d zugewiesene Fähigkeit</item>
+        <item quantity="other">%d zugewiesene Fähigkeiten</item>
+    </plurals>
+    <string name="heading_start_of_the_week">Anfang der Woche</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Bezeichnung</string>
@@ -183,6 +192,7 @@
     <string name="description_switch_to_dark">Wechsel zum Nachtmodus</string>
     <string name="description_switch_to_light">Wechsel zum Tagesmodus</string>
     <string name="description_delete_completed_tasks">Lösche Aufgaben aus dem Kalender, wenn diese abgeschlossen sind</string>
+    <string name="description_start_of_the_week">Bestimmt den Tag, an dem eine neue Woche beginnt (wirkt sich auf die wöchentliche Statistik aus)</string>
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Wähle eine Kategoriefarbe</string>
@@ -218,10 +228,10 @@
     <string name="intro_slide_1_top">Willkommen zu Taski</string>
     <string name="intro_slide_1_bottom">deinem gamifizierten Aufgabenplaner.</string>
     <string name="intro_slide_2_top">Erstelle Fähigkeiten</string>
-    <string name="intro_slide_2_bottom">an denen du arbeiten willst.</string>
+    <string name="intro_slide_2_bottom">für deine persönlichen Interessen.</string>
     <string name="intro_slide_3_top">Erstelle Aufgaben</string>
     <string name="intro_slide_3_bottom">um deine Ziele zu erreichen.</string>
-    <string name="intro_slide_4_top">Weise Fähigkeiten der Aufgaben zu</string>
+    <string name="intro_slide_4_top">Weise Fähigkeiten den Aufgaben zu</string>
     <string name="intro_slide_4_bottom">und sehe den Fortschritt nach der Erfüllung.</string>
     <string name="intro_slide_5_top">Verfolge deinen Fortschritt</string>
     <string name="intro_slide_5_bottom">mit verschiedenen Diagrammen und Grafiken.</string>
@@ -239,21 +249,23 @@ Der Name *Taski* stammt aus einer Kombination von zwei Wörtern *Task* und *Skil
 Die Aufgaben stellen Ziele oder Missionen dar, die du erreichen möchtest.\n
 \n
 * **Ziel**\\\n
-  Das Aufgabenziel ist **obligatorisch** und muss beim Erstellen oder Bearbeiten einer Aufgabe zwischen 4 und 36 Zeichen lang sein. Aufgaben können nach dem Ziel sortiert werden.\n
+  Das Aufgabenziel ist **obligatorisch** und muss beim Erstellen oder Bearbeiten einer Aufgabe zwischen 2 und 36 Zeichen lang sein. Aufgaben können nach dem Ziel sortiert werden.\n
 * **Details**\\\n
   Die Aufgabendetails sind optional und können bis zu 100 Zeichen lang sein.\n
 * **Symbol**\\\n
   Das Aufgabensymbol kann aus einer Vielzahl von \~1000 Symbolen ausgewählt werden. Die Symbole werden nach den Kategorien gruppiert.\n
 * **Dauer**\\\n
-  Die Aufgabendauer kann aus einem Bereich zwischen 5 Minuten und 1 Woche ausgewählt werden. Die Dauer wird als Parameter für die Erfahrungsberechnung verwendet. Die Aufgaben können nach der Dauer sortiert werden.\n
+  Die Aufgabendauer kann aus einem Bereich zwischen 5 Minuten und 10 Jahren ausgewählt werden. Die Dauer wird als Parameter für die Erfahrungsberechnung verwendet. Die Aufgaben können nach der Dauer sortiert werden.\n
 * **Schwierigkeit**\\\n
-  Der Schwierigkeitsgrad der Aufgabe kann aus 4 Werten ausgewählt werden: *leicht*, *normal*, *schwer* und *sehr schwer*. Die Schwierigkeit wird als Parameter für die Erfahrungsberechnung verwendet.\n
-* **Fälligkeitsdatum**\\\n
-  Das Fälligkeitsdatum ist für Aufgaben optional. Die Aufgaben können nach dem Fälligkeitsdatum sortiert werden.\n
+  Der Schwierigkeitsgrad der Aufgabe kann aus 4 Werten ausgewählt werden: *leicht*, *normal*, *schwer* und *sehr schwer*. Die Schwierigkeit wird als Parameter für die Erfahrungsberechnung verwendet. Die Aufgaben können nach der Schwierigkeit sortiert werden.\n
+* **Frist**\\\n
+  Die Frist ist für Aufgaben optional. Die Aufgaben können nach dem Fälligkeitsdatum sortiert werden.\n
+* **Wiederholung**\\\n
+  Die Wiederholung ist für Aufgaben optional. Die Wiederholung kann verwendet werden, um wiederkehrende Aufgaben zu erzeugen, z. B. Routineaufgaben.\n
 * **Fähigkeiten**\\\n
   Die Fähigkeiten sind optional. Eine oder mehrere Fähigkeiten können einer einzelnen Aufgabe zugewiesen werden.\n
 * **Erfahrungsgewinn**\\\n
-  Die Menge an Erfahrung, die du erhältst, wenn du die Aufgabe erledigst.\n
+  Die Menge an Erfahrung, die du erhältst, wenn du die Aufgabe erledigst. Die Aufgaben können nach dem Erfahrungsgewinn sortiert werden.\n
 \n
 #### Aktionen mit Aufgaben:\n
 \n
@@ -274,9 +286,9 @@ Die Aufgaben stellen Ziele oder Missionen dar, die du erreichen möchtest.\n
 Die Fähigkeiten repräsentieren deine persönlichen Interessen, an denen du arbeiten möchtest.\n
 \n
 * **Bezeichnung**\\\n
-  Die Bezeichnung der Fähigkeit ist **obligatorisch** und muss beim Erstellen oder Bearbeiten einer Fähigkeit zwischen 4 und 24 Zeichen lang sein. Die Fähigkeiten können nach der Bezeichnung sortiert werden.\n
+  Die Bezeichnung der Fähigkeit ist **obligatorisch** und muss beim Erstellen oder Bearbeiten einer Fähigkeit zwischen 2 und 24 Zeichen lang sein. Die Fähigkeiten können nach der Bezeichnung sortiert werden.\n
 * **Kategorie**\\\n
-  Die Fähigkeitskategorie ist optional und muss zwischen 4 und 24 Zeichen lang sein. Die Fähigkeiten können nach der Kategorie sortiert werden.\n
+  Die Fähigkeitskategorie ist optional und muss zwischen 2 und 24 Zeichen lang sein. Die Fähigkeiten können nach der Kategorie sortiert werden.\n
 * **Symbol**\\\n
   Das Fähigkeitensymbol kann aus einer Vielzahl von \~1000 Symbolen ausgewählt werden. Die Symbole werden nach den Kategorien gruppiert.\n
 * **Erfahrung**\\\n
@@ -301,7 +313,7 @@ Die Fähigkeiten repräsentieren deine persönlichen Interessen, an denen du arb
 Die Fähigkeitskategorie stellt eine Gruppe ähnlicher Fähigkeiten dar, die etwas gemeinsam haben, z.B. Fähigkeiten *Lesen* 📚 und *Schach spielen* ♟️ können einer Kategorie *Intelligenz* 🧠 angehören.\n
 \n
 * **Name**\\\n
-  Der Kategoriename ist **obligatorisch** und muss beim Erstellen oder Bearbeiten einer Kategorie zwischen 4 und 24 Zeichen lang sein.\n
+  Der Kategoriename ist **obligatorisch** und muss beim Erstellen oder Bearbeiten einer Kategorie zwischen 2 und 24 Zeichen lang sein. Die Kategorien können nach dem Namen sortiert werden.\n
 * **Farbe**\\\n
   Die Farbe der Kategorie ist optional. Wenn eine Farbe ausgewählt ist, haben alle mit der Kategorie verknüpften Fähigkeiten im Menü *Fertigkeiten* einen Rand dieser Farbe.\n
 \n
@@ -345,7 +357,7 @@ Die Stufe wird folgendermaßen berechnet:\n
 ### \# Kalendersynchronisierung\n
 Wenn die Kalendersynchronisierung aktiviert ist, werden alle mit einem Fälligkeitsdatum erstellten Aufgaben mit dem Standardkalender synchronisiert. Das Aufgabenziel wird als Titel und die Aufgabendetails als Beschreibung des Kalenderereignisses ausgewählt.\n
 \n
-Um erledigte oder fehlgeschlagene Aufgaben aus dem Kalender zu löschen, aktiviere das Kontrollkästchen *Abgeschlossene Aufgaben löschen* in den Einstellungen.\n
+Um erledigte oder fehlgeschlagene Aufgaben aus dem Kalender zu löschen, aktiviere das Kontrollkästchen *Erledigte Aufgaben löschen* in den Einstellungen.\n
 \n
 Wenn du eine Aufgabe mit einem Fälligkeitsdatum erstellen möchtest, ohne sie jedoch mit dem Kalender zu synchronisieren, deaktiviere dazu das Kontrollkästchen *Mit Kalender synchronisieren*, während du eine Aufgabe erstellst oder bearbeitest.\n
 \n

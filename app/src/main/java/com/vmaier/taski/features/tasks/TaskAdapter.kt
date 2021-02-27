@@ -8,41 +8,44 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.maltaisn.recurpicker.RecurrenceFinder
 import com.maltaisn.recurpicker.format.RRuleFormatter
 import com.vmaier.taski.*
-import com.vmaier.taski.MainActivity.Companion.levelView
-import com.vmaier.taski.MainActivity.Companion.xpView
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Quadruple
 import com.vmaier.taski.data.SortTasks
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Task
+import com.vmaier.taski.data.repository.SkillRepository
+import com.vmaier.taski.data.repository.TaskRepository
 import com.vmaier.taski.features.tasks.TaskListFragment.Companion.taskAdapter
 import com.vmaier.taski.features.tasks.TaskListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.services.CalendarService
 import com.vmaier.taski.services.LevelService
+import com.vmaier.taski.services.PreferenceService
 import java.util.*
 
 
 /**
  * Created by Vladas Maier
- * on 16/02/2020
+ * on 16.02.2020
  * at 19:24
  */
 class TaskAdapter internal constructor(
-        private val context: Context
+    private val context: Context
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var levelService = LevelService(context)
-    private var calendarService = CalendarService(context)
+    private val taskRepository = TaskRepository(context)
+    private val skillRepository = SkillRepository(context)
+    private val prefService = PreferenceService(context)
+    private val levelService = LevelService(context)
+    private val calendarService = CalendarService(context)
     var tasks: MutableList<Task> = mutableListOf()
-    val db = AppDatabase(context)
 
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var goalView: TextView = itemView.findViewById(R.id.task_goal)
@@ -96,9 +99,8 @@ class TaskAdapter internal constructor(
         holder.taskIconView.setIcon(task.iconId)
 
         // Sort indicator settings
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val sortPref = prefs.getString(Const.Prefs.SORT_TASKS, Const.Defaults.SORT_TASKS)
-        holder.sortIndicatorView.text = when (sortPref) {
+        val sort = prefService.getSort(PreferenceService.SortType.TASKS)
+        holder.sortIndicatorView.text = when (sort) {
             SortTasks.DIFFICULTY.value -> task.difficulty.getName(context)
             SortTasks.CREATED_AT.value -> task.getHumanReadableCreationDate()
             SortTasks.DUE_ON.value -> task.getHumanReadableDueDate()
@@ -110,8 +112,7 @@ class TaskAdapter internal constructor(
 
         holder.itemView.setOnClickListener {
             it.findNavController().navigate(
-                    TaskListFragmentDirections
-                            .actionTaskListFragmentToEditTaskFragment(task, cameFromTaskList = true)
+                TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(task)
             )
         }
 
@@ -122,17 +123,20 @@ class TaskAdapter internal constructor(
             menu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.copy -> {
-                        val taskSkills = db.skillDao().findAssignedSkills(task.id)
+                        val taskSkills = skillRepository.getAssignedSkills(task.id)
                         val bundle = Bundle()
                         bundle.putString(TaskFragment.KEY_GOAL, task.goal)
                         bundle.putString(TaskFragment.KEY_DETAILS, task.details)
+                        val durationUnit = task.getDurationUnit()
+                        bundle.putInt(TaskFragment.KEY_DURATION_VALUE, task.convertDurationToMinutes(durationUnit))
+                        bundle.putString(TaskFragment.KEY_DURATION_UNIT, durationUnit.name)
                         bundle.putString(
-                                TaskFragment.KEY_DIFFICULTY,
-                                task.difficulty.value.toUpperCase(Locale.getDefault())
+                            TaskFragment.KEY_DIFFICULTY,
+                            task.difficulty.value.toUpperCase(Locale.getDefault())
                         )
                         bundle.putStringArray(
-                                TaskFragment.KEY_SKILLS,
-                                taskSkills.map { skill -> skill.name }.toTypedArray()
+                            TaskFragment.KEY_SKILLS,
+                            taskSkills.map { skill -> skill.name }.toTypedArray()
                         )
                         bundle.putInt(TaskFragment.KEY_ICON_ID, task.iconId)
                         if (task.dueAt != null) {
@@ -146,8 +150,9 @@ class TaskAdapter internal constructor(
                                 dateTime.getTimeInAppFormat()
                             )
                         }
+                        bundle.putString(TaskFragment.KEY_RECURRENCE, task.rrule)
                         it.findNavController().navigate(
-                                R.id.action_taskListFragment_to_createTaskFragment, bundle
+                            R.id.action_taskListFragment_to_createTaskFragment, bundle
                         )
                     }
                 }
@@ -160,62 +165,91 @@ class TaskAdapter internal constructor(
 
     override fun getItemCount(): Int = tasks.size
 
-    fun removeItem(position: Int, status: Status): Quadruple<Task, Long, Boolean, Long?> {
+    fun removeItem(position: Int, status: Status): Quadruple<Task?, LiveData<Long>, Boolean, Long?> {
         val task = tasks.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, tasks.size)
         return updateTaskStatus(task, status)
     }
 
-    fun restoreItem(task: Task, position: Int, decrementCounter: Boolean, closedAt: Long?) {
-        tasks.add(position, task)
-        notifyItemInserted(position)
-        updateTaskStatus(task, Status.OPEN, decrementCounter, closedAt)
+    fun restoreItem(id: Long, position: Int, decrementCounter: Boolean, closedAt: Long?) {
+        val task = taskRepository.get(id)
+        if (task != null) {
+            tasks.add(position, task)
+            notifyItemInserted(position)
+            updateTaskStatus(task, Status.OPEN, decrementCounter, closedAt)
+        }
     }
 
     private fun setupSkillIcons(holder: TaskViewHolder, task: Task) {
-        val skills = db.skillDao().findAssignedSkills(task.id).sortedBy { it.name }
+        val skills = skillRepository.getAssignedSkills(task.id).sortedBy { it.name }
         val size = skills.size
         val icons = App.iconPack
         if (size > 0) {
             holder.skillIcon1View.background =
-                if (size >= 1) icons.getIconDrawable(skills[0].iconId, IconDrawableLoader(context)) else null
+                if (size >= 1) icons.getIconDrawable(
+                    skills[0].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon1View.visibility = if (size >= 1) View.VISIBLE else View.INVISIBLE
             holder.skillIcon2View.background =
-                if (size >= 2) icons.getIconDrawable(skills[1].iconId, IconDrawableLoader(context)) else null
+                if (size >= 2) icons.getIconDrawable(
+                    skills[1].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon2View.visibility = if (size >= 2) View.VISIBLE else View.INVISIBLE
             holder.skillIcon3View.background =
-                if (size >= 3) icons.getIconDrawable(skills[2].iconId, IconDrawableLoader(context)) else null
+                if (size >= 3) icons.getIconDrawable(
+                    skills[2].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon3View.visibility = if (size >= 3) View.VISIBLE else View.INVISIBLE
             holder.skillIcon4View.background =
-                if (size >= 4) icons.getIconDrawable(skills[3].iconId, IconDrawableLoader(context)) else null
+                if (size >= 4) icons.getIconDrawable(
+                    skills[3].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon4View.visibility = if (size >= 4) View.VISIBLE else View.INVISIBLE
             holder.skillIcon5View.background =
-                if (size >= 5) icons.getIconDrawable(skills[4].iconId, IconDrawableLoader(context)) else null
+                if (size >= 5) icons.getIconDrawable(
+                    skills[4].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon5View.visibility = if (size >= 5) View.VISIBLE else View.INVISIBLE
             holder.skillIcon6View.background =
-                if (size >= 6) icons.getIconDrawable(skills[5].iconId, IconDrawableLoader(context)) else null
+                if (size >= 6) icons.getIconDrawable(
+                    skills[5].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon6View.visibility = if (size >= 6) View.VISIBLE else View.INVISIBLE
             holder.skillIcon7View.background =
-                if (size >= 7) icons.getIconDrawable(skills[6].iconId, IconDrawableLoader(context)) else null
+                if (size >= 7) icons.getIconDrawable(
+                    skills[6].iconId,
+                    IconDrawableLoader(context)
+                ) else null
             holder.skillIcon7View.visibility = if (size >= 7) View.VISIBLE else View.INVISIBLE
             holder.tooMuchSkillsView.visibility = if (size > 7) View.VISIBLE else View.INVISIBLE
         }
     }
 
-    private fun updateTaskStatus(task: Task, status: Status, decrementCounter: Boolean = false, closedAt: Long? = null): Quadruple<Task, Long, Boolean, Long?> {
-        val assignedSkills = db.skillDao().findAssignedSkills(task.id)
+    private fun updateTaskStatus(
+        task: Task,
+        status: Status,
+        decrementCounter: Boolean = false,
+        closedAt: Long? = null
+    ): Quadruple<Task?, LiveData<Long>, Boolean, Long?> {
+        val assignedSkills = skillRepository.getAssignedSkills(task.id)
         val xpPerSkill = if (assignedSkills.size >= 2) task.xp.div(assignedSkills.size) else task.xp
-        var closedTaskId = 0L
+        var closedTaskId: LiveData<Long> = MutableLiveData<Long>().apply { value = 0L }
         var isCounterIncremented = false
         if (status != Status.OPEN) {
             if (status == Status.DONE) {
                 for (skill in assignedSkills) {
-                    db.skillDao().updateXp(skill.id, xpPerSkill)
-                    levelService.checkForSkillLevelUp(skill, xpPerSkill)
+                    skillRepository.updateXp(skill.id, xpPerSkill)
+                    levelService.checkSkillLevelUp(skill, xpPerSkill)
                 }
-                levelService.checkForOverallLevelUp(task.xp)
-                db.taskDao().incrementCountDone(task.id)
+                levelService.checkOverallLevelUp(task.xp)
+                taskRepository.incrementCountDone(task.id)
                 isCounterIncremented = true
             }
             // handle recurrence
@@ -231,50 +265,44 @@ class TaskAdapter internal constructor(
                 ).size == 0
                 if (isRecurrenceDone) {
                     // recurrence is finished
-                    closedTaskId = db.taskDao().closeTask(task.id, status)
+                    closedTaskId = taskRepository.close(task.id, status)
                     removeTaskFromCalendar(task)
                 } else {
-                    closedTaskId = db.taskDao().closeRecurringTask(task.id, status)
+                    closedTaskId = taskRepository.close(task.id, status, isRecurring = true)
                 }
             } else {
-                closedTaskId = db.taskDao().closeTask(task.id, status)
+                closedTaskId = taskRepository.close(task.id, status)
                 removeTaskFromCalendar(task)
             }
         } else {
             if (task.status == Status.DONE) {
                 for (skill in assignedSkills) {
-                    db.skillDao().updateXp(skill.id, -xpPerSkill)
+                    skillRepository.updateXp(skill.id, -xpPerSkill)
                 }
             }
-            db.taskDao().reopen(task.id)
+            taskRepository.reopen(task.id)
             if (decrementCounter) {
-                db.taskDao().decrementCountDone(task.id)
+                taskRepository.decrementCountDone(task.id)
             }
             if (task.rrule == null) {
-                db.taskDao().updateClosedAt(task.id, null)
+                taskRepository.updateClosedAt(task.id, null)
             } else {
-                db.taskDao().updateClosedAt(task.id, closedAt)
+                taskRepository.updateClosedAt(task.id, closedAt)
             }
-        }
-        if (status != Status.FAILED) {
-            val overallXp = db.taskDao().countOverallXp()
-            val overallLevel = levelService.getOverallLevel(overallXp)
-            xpView.text = context.getString(R.string.term_xp_value, overallXp)
-            levelView.text = context.getString(R.string.term_level_value, overallLevel)
         }
         taskAdapter.notifyDataSetChanged()
         updateSortedByHeader(context, tasks)
-        return Quadruple(db.taskDao().findById(task.id), closedTaskId, isCounterIncremented, task.closedAt)
+        return Quadruple(
+            taskRepository.get(task.id),
+            closedTaskId,
+            isCounterIncremented,
+            task.closedAt
+        )
     }
 
     private fun removeTaskFromCalendar(task: Task) {
-        val deleteCompletedTasks = PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean(
-                Const.Prefs.DELETE_COMPLETED_TASKS,
-                Const.Defaults.DELETE_COMPLETED_TASKS
-            )
-        if (task.eventId != null && deleteCompletedTasks) {
-            calendarService.deleteCalendarEvent(task)
+        if (task.eventId != null && prefService.isDeleteCompletedTasksEnabled()) {
+            calendarService.deleteFromCalendar(task)
         }
     }
 }

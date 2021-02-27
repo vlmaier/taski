@@ -13,7 +13,6 @@ import com.maltaisn.recurpicker.RecurrenceFinder
 import com.maltaisn.recurpicker.format.RRuleFormatter
 import com.vmaier.taski.*
 import com.vmaier.taski.data.Status
-import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentEditSkillBinding
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
@@ -21,12 +20,14 @@ import com.vmaier.taski.features.skills.SkillListFragment.Companion.sortSkills
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.utils.KeyBoardHider
 import com.vmaier.taski.utils.Utils
-import timber.log.Timber
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 /**
  * Created by Vladas Maier
- * on 03/03/2020
+ * on 03.03.2020
  * at 17:38
  */
 class SkillEditFragment : SkillFragment() {
@@ -42,7 +43,11 @@ class SkillEditFragment : SkillFragment() {
         fun isTaskAdapterInitialized() = ::taskAdapter.isInitialized
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         levelService = LevelService(requireContext())
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_skill, container, false)
@@ -61,7 +66,8 @@ class SkillEditFragment : SkillFragment() {
 
         // Category settings
         val categoryId = skill.categoryId
-        val categoryName = if (categoryId != null) db.categoryDao().findNameById(categoryId) else null
+        val categoryName =
+            if (categoryId != null) categoryRepository.getNameById(categoryId) else null
         binding.category.editText?.setText(saved?.getString(KEY_CATEGORY) ?: categoryName)
         binding.category.onFocusChangeListener = KeyBoardHider()
         val arrayAdapter = ArrayAdapter(
@@ -72,11 +78,11 @@ class SkillEditFragment : SkillFragment() {
         autoCompleteCategory.setAdapter(arrayAdapter)
 
         // "Done tasks" settings
-        val doneTasksAmount = db.skillDao().countDoneTasksWithSkill(skill.id)
+        val doneTasksAmount = skillRepository.countDoneTasksBySkillId(skill.id)
         binding.skillDoneTasksValue.text = "$doneTasksAmount"
 
         // "Skill hours" settings
-        val skillHoursAmount = db.skillDao().countMinutes(skill.id).div(60)
+        val skillHoursAmount = skillRepository.countMinutes(skill.id).div(60)
         binding.skillHoursValue.text = "$skillHoursAmount"
 
         // XP settings
@@ -100,7 +106,7 @@ class SkillEditFragment : SkillFragment() {
             it.hideKeyboard()
             isCanceled = true
         }
-        val tasks = db.skillDao().findTasksWithSkillByStatus(skill.id, Status.OPEN)
+        val tasks = skillRepository.getTasksWithSkillByStatus(skill.id, Status.OPEN)
         tasks.removeAll {
             if (it.rrule != null) {
                 val found = RecurrenceFinder().findBasedOn(
@@ -117,7 +123,6 @@ class SkillEditFragment : SkillFragment() {
                 false
             }
         }
-        Timber.d("${tasks.size} task(s) found.")
         tasks.sortBy { it.goal }
         taskAdapter = AssignedTaskAdapter(requireContext())
         taskAdapter.setTasks(tasks)
@@ -134,7 +139,7 @@ class SkillEditFragment : SkillFragment() {
     override fun onPause() {
         super.onPause()
         // check if the skill was not deleted
-        if (db.skillDao().findById(skill.id) != null && !isCanceled) {
+        if (skillRepository.get(skill.id) != null && !isCanceled) {
             saveChangesOnSkill()
         }
         binding.name.hideKeyboard()
@@ -150,6 +155,7 @@ class SkillEditFragment : SkillFragment() {
     }
 
     private fun saveChangesOnSkill() {
+        val context = requireContext()
         val name = binding.name.editText?.text.toString().trim()
         if (name.isBlank()) {
             binding.name.requestFocus()
@@ -158,37 +164,36 @@ class SkillEditFragment : SkillFragment() {
         }
         if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.name.requestFocus()
-            binding.name.error = getString(R.string.error_too_short)
+            binding.name.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             return
         }
-        val categoryName = binding.category.editText?.text.toString().trim()
+        if (skill.name != name) {
+            skillRepository.updateName(context, skill.id, name)
+        }
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
-        val categoryId: Long?
+        if (skill.iconId != iconId) {
+            skillRepository.updateIconId(context, skill.id, iconId)
+        }
+        val categoryName = binding.category.editText?.text.toString().trim()
         if (categoryName.isNotBlank()) {
             if (categoryName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 binding.category.requestFocus()
-                binding.category.error = getString(R.string.error_too_short)
+                binding.category.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
                 return
             } else {
-                val foundCategory = db.categoryDao().findByName(categoryName)
+                val foundCategory = categoryRepository.get(categoryName)
                 if (foundCategory != null) {
-                    categoryId = foundCategory.id
+                    if (foundCategory.id != skill.categoryId) {
+                        skillRepository.updateCategoryId(context, skill.id, foundCategory.id)
+                    }
                 } else {
-                    categoryId = db.categoryDao().create(Category(name = categoryName))
-                    Timber.d("Category ($categoryId) created.")
+                    categoryRepository.create(context, categoryName, null, skill.id)
                 }
             }
         } else {
-            categoryId = null
-        }
-        val toUpdate = Skill(id = skill.id, name = name, categoryId = categoryId, xp = skill.xp, iconId = iconId)
-        if (skill != toUpdate) {
-            db.skillDao().update(toUpdate)
-            Timber.d("Skill (${skill.id}) updated.")
-            skillAdapter.skills[itemPosition] = toUpdate
-            sortSkills(requireContext(), skillAdapter.skills)
-            skillAdapter.notifyDataSetChanged()
-            getString(R.string.event_skill_updated).toast(requireContext())
+            if (skill.categoryId != null) {
+                skillRepository.updateCategoryId(context, skill.id, null)
+            }
         }
     }
 }

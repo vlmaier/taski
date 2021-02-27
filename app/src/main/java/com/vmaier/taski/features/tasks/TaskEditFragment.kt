@@ -25,18 +25,16 @@ import com.vmaier.taski.utils.KeyBoardHider
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.RequestCode
 import kotlinx.android.synthetic.main.fragment_create_task.view.*
-import timber.log.Timber
 import java.util.*
 
 
 /**
  * Created by Vladas Maier
- * on 08/02/2020
+ * on 08.02.2020
  * at 11:26
  */
 class TaskEditFragment : TaskFragment() {
 
-    private var cameFromTaskList: Boolean = true
     private var isCanceled = false
 
     companion object {
@@ -49,7 +47,11 @@ class TaskEditFragment : TaskFragment() {
         fun isRecurrenceButtonInitialized() = Companion::recurrenceButton.isInitialized
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_task, container, false)
 
@@ -59,7 +61,6 @@ class TaskEditFragment : TaskFragment() {
         // Get arguments from bundle
         val args = TaskEditFragmentArgs.fromBundle(this.requireArguments())
         task = args.task
-        cameFromTaskList = args.cameFromTaskList
 
         // Creation date
         binding.createdAtValue.text = Date(task.createdAt).getDateTimeInAppFormat()
@@ -106,12 +107,13 @@ class TaskEditFragment : TaskFragment() {
         val adapter = ArrayAdapter(
             requireContext(), R.layout.support_simple_spinner_dropdown_item, skillNames
         )
-        assignedSkills = db.skillDao().findAssignedSkills(task.id)
+        assignedSkills = skillRepository.getAssignedSkills(task.id)
         binding.skills.setAdapter(adapter)
         binding.skills.hint = if (skillNames.isEmpty()) getString(R.string.hint_no_skills) else ""
         binding.skills.onFocusChangeListener = getSkillsRestrictor(binding.skills)
         binding.skills.chipTokenizer = getSkillsTokenizer()
-        binding.skills.setText(saved?.getStringArrayList(KEY_SKILLS) ?: assignedSkills.map { it.name })
+        binding.skills.setText(
+            saved?.getStringArrayList(KEY_SKILLS) ?: assignedSkills.map { it.name })
         val amountOfSkills = assignedSkills.size
         val linesNeeded = if (amountOfSkills <= 3) 1 else assignedSkills.size.div(3) + 1
         binding.skills.setLines(linesNeeded)
@@ -136,7 +138,8 @@ class TaskEditFragment : TaskFragment() {
 
         // Recurrence settings
         recurrenceButton = binding.recurrenceButton
-        val recurrence = RecurrenceFormatter(App.dateTimeFormat).format(requireContext(),
+        val recurrence = RecurrenceFormatter(App.dateTimeFormat).format(
+            requireContext(),
             if (task.rrule != null) {
                 val taskRecurrence = RRuleFormatter().parse(task.rrule.toString())
                 selectedRecurrence = taskRecurrence
@@ -149,7 +152,10 @@ class TaskEditFragment : TaskFragment() {
         binding.recurrenceButton.setOnClickListener {
             recurrenceListDialog.selectedRecurrence = selectedRecurrence
             recurrenceListDialog.startDate = System.currentTimeMillis()
-            recurrenceListDialog.show(requireActivity().supportFragmentManager, Const.Tags.RECURRENCE_LIST_DIALOG)
+            recurrenceListDialog.show(
+                requireActivity().supportFragmentManager,
+                Const.Tags.RECURRENCE_LIST_DIALOG
+            )
         }
 
         binding.iconButton.setOnClickListener {
@@ -198,7 +204,7 @@ class TaskEditFragment : TaskFragment() {
         }
         if (goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.goal.requestFocus()
-            binding.goal.error = getString(R.string.error_too_short)
+            binding.goal.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             return
         }
         val detailsValue = binding.details.editText?.text.toString().trim()
@@ -206,7 +212,8 @@ class TaskEditFragment : TaskFragment() {
         val duration = getDurationInMinutes()
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
         val skillNames = binding.skills.chipAndTokenValues.toList()
-        val skillsToAssign = db.skillDao().findByName(skillNames)
+        val skillsToAssign = skillRepository.getByNames(skillNames)
+        val skillIds = skillsToAssign.map { it.id }
         val deadlineDate = binding.deadlineDate.editText?.text.toString()
         val deadlineTime = binding.deadlineTime.editText?.text.toString()
         var dueAt: Date? = null
@@ -221,21 +228,26 @@ class TaskEditFragment : TaskFragment() {
             null
         }
         val toUpdate = Task(
-            id = task.id, goal = goal, details = details, duration = duration, iconId = iconId,
-            createdAt = task.createdAt, dueAt = dueAt?.time, closedAt = task.closedAt,
-            difficulty = Difficulty.valueOf(difficulty), eventId = task.eventId,
-            reminderRequestCode = task.reminderRequestCode, rrule = rrule, countDone = task.countDone
+            id = task.id,
+            goal = goal,
+            details = details,
+            duration = duration,
+            iconId = iconId,
+            createdAt = task.createdAt,
+            dueAt = dueAt?.time,
+            closedAt = task.closedAt,
+            difficulty = Difficulty.valueOf(difficulty),
+            eventId = task.eventId,
+            reminderRequestCode = task.reminderRequestCode,
+            rrule = rrule,
+            countDone = task.countDone
         )
-        if (task != toUpdate || assignedSkills != skillsToAssign) {
-            val reminderUpdateRequired = task.dueAt != toUpdate.dueAt
-            db.taskDao().updateTask(toUpdate, skillsToAssign)
-            Timber.d("Updated task with ID: ${task.id}.")
-            updateInAdapter(toUpdate, skillsToAssign)
-            TaskListFragment.sortTasks(requireContext(), TaskListFragment.taskAdapter.tasks)
-            TaskListFragment.taskAdapter.notifyDataSetChanged()
+        val context = requireContext()
+        if (task.isUpdateRequired(toUpdate) || assignedSkills != skillsToAssign) {
+            taskRepository.update(context, toUpdate, skillIds)
             calendarService.updateInCalendar(binding.calendarSync.isChecked, task, toUpdate)
-            getString(R.string.event_task_updated).toast(requireContext())
-            if (reminderUpdateRequired && toUpdate.dueAt != null) {
+            getString(R.string.event_task_updated).toast(context)
+            if (toUpdate.dueAt != null && task.dueAt != toUpdate.dueAt) {
                 notificationService.cancelReminder(requireActivity(), task.reminderRequestCode)
                 // remind 15 minutes before the task is due (incl. duration)
                 val durationInMs: Long = duration.toLong() * 60 * 1000
@@ -243,7 +255,7 @@ class TaskEditFragment : TaskFragment() {
                     ?.minus(durationInMs)
                     ?.minus(900000)
                     ?: 0
-                val taskReminderRequestCode = RequestCode.get(requireContext())
+                val taskReminderRequestCode = RequestCode.get(context)
                 val message = if (deadlineTime.isNotBlank()) {
                     getString(R.string.term_due_at, deadlineTime)
                 } else {
@@ -256,38 +268,17 @@ class TaskEditFragment : TaskFragment() {
                     requireActivity(),
                     taskReminderRequestCode
                 )
-                db.taskDao().updateAlarmRequestCode(task.id, taskReminderRequestCode)
+                taskRepository.updateRequestCode(task.id, taskReminderRequestCode)
             }
-        // enable sync (only) after disabling before
+            // enable sync (only) after disabling before
         } else if (binding.calendarSync.isChecked && task.eventId == null) {
             calendarService.addToCalendar(true, task)
-            getString(R.string.event_task_updated).toast(requireContext())
-        // disable sync (only) after enabling before
+            getString(R.string.event_task_updated).toast(context)
+            // disable sync (only) after enabling before
         } else if (!binding.calendarSync.isChecked && task.eventId != null) {
-            calendarService.deleteCalendarEvent(task)
-            getString(R.string.event_task_updated).toast(requireContext())
+            calendarService.deleteFromCalendar(task)
+            getString(R.string.event_task_updated).toast(context)
         }
         selectedRecurrence = Recurrence(Recurrence.Period.NONE)
-    }
-
-    private fun updateInAdapter(task: Task, skills: List<Skill>) {
-        for (i in 0..TaskListFragment.taskAdapter.tasks.size) {
-            if (TaskListFragment.taskAdapter.tasks[i].id == task.id) {
-                TaskListFragment.taskAdapter.tasks[i] = task
-                break
-            }
-        }
-        if (!cameFromTaskList && SkillEditFragment.isTaskAdapterInitialized()) {
-            for (i in 0..SkillEditFragment.taskAdapter.tasks.size) {
-                if (SkillEditFragment.taskAdapter.tasks[i].id == task.id) {
-                    if (skills.contains(SkillEditFragment.skill)) {
-                        SkillEditFragment.taskAdapter.tasks[i] = task
-                    } else {
-                        SkillEditFragment.taskAdapter.tasks.remove(task)
-                    }
-                    break
-                }
-            }
-        }
     }
 }

@@ -59,7 +59,8 @@ class EditTextDialog : DialogFragment() {
         val message = arguments?.getString(EXTRA_MESSAGE)
         val hint = arguments?.getString(EXTRA_HINT)
         val positiveButton: Int = arguments?.getInt(EXTRA_POSITIVE_BUTTON) ?: android.R.string.ok
-        val negativeButton: Int = arguments?.getInt(EXTRA_NEGATIVE_BUTTON) ?: android.R.string.cancel
+        val negativeButton: Int =
+            arguments?.getInt(EXTRA_NEGATIVE_BUTTON) ?: android.R.string.cancel
 
         val view = requireActivity().layoutInflater.inflate(R.layout.edit_text_dialog, null)
 

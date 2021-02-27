@@ -7,7 +7,7 @@
     android:fillViewport="true">
 
     <worker8.com.github.radiogroupplus.RadioGroupPlus
-        android:id="@+id/radio_group"
+        android:id="@+id/radio_group_themes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

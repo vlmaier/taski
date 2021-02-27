@@ -59,12 +59,15 @@
     <string name="term_due_at">Due at %s</string>
     <string name="term_due_today">Due today</string>
     <string name="term_monday_short">MON</string>
+    <string name="term_monday">Monday</string>
     <string name="term_tuesday_short">TUE</string>
     <string name="term_wednesday_short">WED</string>
     <string name="term_thursday_short">THU</string>
     <string name="term_friday_short">FRI</string>
     <string name="term_saturday_short">SAT</string>
+    <string name="term_saturday">Saturday</string>
     <string name="term_sunday_short">SUN</string>
+    <string name="term_sunday">Sunday</string>
     <string name="term_sort_created_at">creation date</string>
     <string name="term_sort_goal">goal</string>
     <string name="term_sort_duration">duration</string>
@@ -83,7 +86,7 @@
 
     <!-- Error messages -->
     <string name="error_cannot_be_empty">Cannot be empty</string>
-    <string name="error_too_short">Must be at least 4 characters long</string>
+    <string name="error_too_short">Must be at least %d characters long</string>
     <string name="error_skill_already_exists">Such skill already exists</string>
     <string name="error_category_already_exists">Such category already exists</string>
 
@@ -159,6 +162,12 @@
     <string name="heading_replay_intro">Replay intro</string>
     <string name="heading_manual">Manual</string>
     <string name="heading_app_manual">Taski Manual</string>
+    <string name="heading_no_skills_assigned">No skills assigned</string>
+    <plurals name="heading_assigned_skills">
+        <item quantity="one">%d assigned skill</item>
+        <item quantity="other">%d assigned skills</item>
+    </plurals>
+    <string name="heading_start_of_the_week">Start of the week</string>
 
     <!-- Hint messages -->
     <string name="hint_skill_name">Name of the skill</string>
@@ -185,6 +194,7 @@
     <string name="description_switch_to_light">Switch to light mode</string>
     <string name="description_select_language">Select language</string>
     <string name="description_delete_completed_tasks">Delete tasks from the calendar when they have been completed</string>
+    <string name="description_start_of_the_week">Determines the day on which a new week begins (affects weekly statistics)</string>
 
     <!-- Dialog messages -->
     <string name="pick_a_color">Pick a category color</string>
@@ -220,7 +230,7 @@
     <string name="intro_slide_1_top">Welcome to Taski</string>
     <string name="intro_slide_1_bottom">your gamified task scheduler.</string>
     <string name="intro_slide_2_top">Create skills</string>
-    <string name="intro_slide_2_bottom">to represent your personal abilities.</string>
+    <string name="intro_slide_2_bottom">to represent your personal interests.</string>
     <string name="intro_slide_3_top">Create tasks</string>
     <string name="intro_slide_3_bottom">to accomplish your goals.</string>
     <string name="intro_slide_4_top">Assign skills to tasks</string>
@@ -228,7 +238,7 @@
     <string name="intro_slide_5_top">Keep track of your progress</string>
     <string name="intro_slide_5_bottom">with various charts and graphs.</string>
     <string name="intro_slide_6_top">Enjoy the selection</string>
-    <string name="intro_slide_6_bottom">of numerous hand-picked themes.</string>
+    <string name="intro_slide_6_bottom">of numerous handpicked themes.</string>
 
     <!-- Theme values -->
     <string name="theme_default" translatable="false">Theme.Default</string>
@@ -254,21 +264,23 @@ The name *Taski* comes from a combination of two words *task* and *skill*. In ad
 Tasks represent goals or missions that you want to achieve.\n
 \n
 * **Goal**\\\n
-  Task goal is **mandatory** and must be between 4 and 36 characters long when creating or editing a task. Tasks can be sorted by goal.\n
+  Task goal is **mandatory** and must be between 2 and 36 characters long when creating or editing a task. Tasks can be sorted by goal.\n
 * **Details**\\\n
   Task details are optional and can be up to 100 characters long.\n
 * **Icon**\\\n
   Task icon can be selected from a variety of ~1000 icons. Icons are grouped by category.\n
 * **Duration**\\\n
-  Task duration can be selected from a range between 5 minutes and 1 week. The duration is used as parameter for the experience calculation. Tasks can be sorted by duration.\n
+  Task duration can be selected from a wide range between 5 minutes and 10 years. The duration is used as parameter for the experience calculation. Tasks can be sorted by duration.\n
 * **Difficulty**\\\n
-  Task difficulty can be selected from 4 values: *trivial*, *regular*, *hard* and *insane*. The difficulty is used as parameter for the experience calculation.\n
-* **Due date**\\\n
-  Due date is optional for tasks. Tasks can be sorted by due date.\n
+  Task difficulty can be selected from 4 values: *trivial*, *regular*, *hard* and *insane*. The difficulty is used as parameter for the experience calculation. Tasks can be sorted by difficulty.\n
+* **Deadline**\\\n
+  Deadline is optional for tasks. Tasks can be sorted by due date.\n
+* **Recurrence**\\\n
+  Recurrence is optional for tasks. The recurrence can be used to create repetitive tasks, e.g. dailies.\n
 * **Skills**\\\n
   Skills are optional. One or more skills can be assigned to a single task.\n
 * **Experience gain**\\\n
-  Amount of experience you will get when you complete the task.\n
+  Amount of experience you will get when you complete the task. Tasks can be sorted by experience gain.\n
 \n
 #### Actions on tasks:\n
 \n
@@ -289,9 +301,9 @@ Tasks represent goals or missions that you want to achieve.\n
 Skills represent your personal abilities that you want to work on.\n
 \n
 * **Name**\\\n
-  Skill name is **mandatory** and must be between 4 and 24 characters long when creating or editing a skill. Skills can be sorted by name.\n
+  Skill name is **mandatory** and must be between 2 and 24 characters long when creating or editing a skill. Skills can be sorted by name.\n
 * **Category**\\\n
-  Skill category is optional and must be between 4 and 24 characters long. Skills can be sorted by category.\n
+  Skill category is optional and must be between 2 and 24 characters long. Skills can be sorted by category.\n
 * **Icon**\\\n
   Skill icon can be selected from a variety of ~1000 icons. Icons are grouped by category.\n
 * **Experience**\\\n
@@ -316,7 +328,7 @@ Skills represent your personal abilities that you want to work on.\n
 Skill category represents a group of similar skills which have one thing in common e.g. skills *Reading* 📚 and *Playing Chess* ♟️ can belong to a category *Intelligence* 🧠.\n
 
 * **Name**\\\n
-  Category name is **mandatory** and must be between 4 and 24 characters long when creating or editing a category.\n
+  Category name is **mandatory** and must be between 2 and 24 characters long when creating or editing a category. Categories can be sorted by name.\n
 * **Color**\\\n
   Category color is optional. When a color is chosen all skills associated with the category will have a border of that color in *Skills* menu.\n
 \n

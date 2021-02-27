@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -18,7 +17,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.hootsuite.nachos.ChipConfiguration
 import com.hootsuite.nachos.NachoTextView
 import com.hootsuite.nachos.chip.ChipInfo
@@ -30,11 +28,13 @@ import com.maltaisn.icondialog.pack.IconDrawableLoader
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.DurationUnit
+import com.vmaier.taski.data.repository.SkillRepository
+import com.vmaier.taski.data.repository.TaskRepository
 import com.vmaier.taski.services.CalendarService
 import com.vmaier.taski.services.NotificationService
+import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.utils.Utils
 import java.util.*
 import kotlin.random.Random
@@ -42,18 +42,19 @@ import kotlin.random.Random
 
 /**
  * Created by Vladas Maier
- * on 15/02/2020
+ * on 15.02.2020
  * at 15:22
  */
 open class TaskFragment : Fragment() {
 
-    lateinit var prefs: SharedPreferences
     lateinit var calendarService: CalendarService
+    lateinit var prefService: PreferenceService
 
     companion object {
         lateinit var skillNames: List<String>
         lateinit var difficulty: String
-        lateinit var db: AppDatabase
+        lateinit var taskRepository: TaskRepository
+        lateinit var skillRepository: SkillRepository
 
         var durationValue: Int = 15
         var durationUnit: DurationUnit = DurationUnit.MINUTE
@@ -63,10 +64,13 @@ open class TaskFragment : Fragment() {
         const val KEY_GOAL = "goal"
         const val KEY_DETAILS = "details"
         const val KEY_DIFFICULTY = "difficulty"
+        const val KEY_DURATION_VALUE = "duration_value"
+        const val KEY_DURATION_UNIT = "duration_unit"
         const val KEY_SKILLS = "skills"
         const val KEY_ICON_ID = "icon_id"
         const val KEY_DEADLINE_DATE = "deadline_date"
         const val KEY_DEADLINE_TIME = "deadline_time"
+        const val KEY_RECURRENCE = "recurrence"
 
         fun setIcon(context: Context, icon: Icon, button: ImageButton) {
             IconDrawableLoader(context).loadDrawable(icon)
@@ -80,21 +84,29 @@ open class TaskFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        db = AppDatabase(context)
-        prefs = getDefaultSharedPreferences(context)
         calendarService = CalendarService(context)
+        prefService = PreferenceService(context)
+        taskRepository = TaskRepository(context)
+        skillRepository = SkillRepository(context)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View? {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_tasks)
         toggleBottomMenu(false, View.GONE)
-        val skills = db.skillDao().findAll()
-        skillNames = skills.map { it.name }
+        skillNames = skillRepository.getAllNames()
         return this.view
     }
 
-    fun setTaskIcon(saved: Bundle?, button: ImageButton, fallback: Int = Random.nextInt(App.iconPack.allIcons.size)) {
+    fun setTaskIcon(
+        saved: Bundle?,
+        button: ImageButton,
+        fallback: Int = Random.nextInt(App.iconPack.allIcons.size)
+    ) {
         val iconId = saved?.getInt(KEY_ICON_ID) ?: fallback
         val icon = App.iconPack.getIconDrawable(iconId, IconDrawableLoader(requireContext()))
         icon?.clearColorFilter()
@@ -105,8 +117,7 @@ open class TaskFragment : Fragment() {
     fun getSkillsTokenizer(): SpanChipTokenizer<ChipSpan> {
         return SpanChipTokenizer(requireContext(), object : ChipSpanChipCreator() {
             override fun createChip(context: Context, text: CharSequence, data: Any?): ChipSpan {
-                val skills = db.skillDao().findAll()
-                val skill = skills.find { it.name == text }
+                val skill = skillRepository.get(text.toString())
                 var icon: Drawable? = null
                 if (skill != null) {
                     icon = App.iconPack.getIconDrawable(skill.iconId, IconDrawableLoader(context))
@@ -121,10 +132,20 @@ open class TaskFragment : Fragment() {
                 super.configureChip(chip, chipConfiguration)
                 chip.setShowIconOnLeft(true)
                 chip.setBackgroundColor(
-                    ColorStateList.valueOf(Utils.getThemeColor(requireContext(), R.attr.colorControlHighlight))
+                    ColorStateList.valueOf(
+                        Utils.getThemeColor(
+                            requireContext(),
+                            R.attr.colorControlHighlight
+                        )
+                    )
                 )
                 chip.setTextColor(Utils.getThemeColor(requireContext(), R.attr.colorOnSurface))
-                chip.setIconBackgroundColor(Utils.getThemeColor(requireContext(), R.attr.colorSecondary))
+                chip.setIconBackgroundColor(
+                    Utils.getThemeColor(
+                        requireContext(),
+                        R.attr.colorSecondary
+                    )
+                )
             }
         }, ChipSpan::class.java)
     }
@@ -142,25 +163,11 @@ open class TaskFragment : Fragment() {
         }
     }
 
-    fun getDurationBarListener(
-        durationValue: TextView, xpGain: TextView, durationBar: SeekBar
-    ): SeekBar.OnSeekBarChangeListener {
-        return object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seek: SeekBar, progress: Int, fromUser: Boolean) {
-                durationValue.text = seek.getHumanReadableValue()
-                // do not allow the seekbar going beyond 1
-                if (progress <= 1) seek.progress = 1
-                updateXpGain(xpGain)
-            }
-
-            override fun onStartTrackingTouch(seek: SeekBar) = Unit
-            override fun onStopTrackingTouch(seek: SeekBar) = Unit
-        }
-    }
-
     fun updateXpGain(xpGain: TextView) {
-        val xp = Utils.calculateXp(Difficulty.valueOf(difficulty), getDurationInMinutes())
-        xpGain.text = resources.getString(R.string.term_xp_value, xp)
+        if (isDifficultyInitialized()) {
+            val xp = Utils.calculateXp(Difficulty.valueOf(difficulty), getDurationInMinutes())
+            xpGain.text = resources.getString(R.string.term_xp_value, xp)
+        }
     }
 
     fun setDeadlineDateOnClickListener(view: EditText?) {
@@ -186,7 +193,8 @@ open class TaskFragment : Fragment() {
         view?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 if (s.isNotEmpty()) {
-                    val isCalendarSyncOn = prefs.getBoolean(Const.Prefs.CALENDAR_SYNC, false)
+                    val prefService = PreferenceService(requireContext())
+                    val isCalendarSyncOn = prefService.isCalendarSyncEnabled()
                     calendarSync.isChecked = isCalendarSyncOn
                     calendarSync.isEnabled = true
                 } else {
@@ -198,6 +206,7 @@ open class TaskFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                 // not used
             }
+
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 // not used
             }
@@ -230,7 +239,8 @@ open class TaskFragment : Fragment() {
         val weeks = IntRange(1, 52).toList()
         val years = IntRange(1, 10).toList()
 
-        val dialogView = (context as Activity).layoutInflater.inflate(R.layout.duration_picker_dialog, null)
+        val dialogView =
+            (context as Activity).layoutInflater.inflate(R.layout.duration_picker_dialog, null)
         val durationValuePicker = dialogView.findViewById(R.id.duration_value) as NumberPicker
         val durationUnitPicker = dialogView.findViewById(R.id.duration_unit) as NumberPicker
 
@@ -305,26 +315,50 @@ open class TaskFragment : Fragment() {
                 durationButton.text = when (durationUnitPicker.value) {
                     1 -> {
                         durationValue = minutes[durationValuePicker.value - 1]
-                        resources.getQuantityString(R.plurals.duration_minute, durationValue, durationValue)
+                        resources.getQuantityString(
+                            R.plurals.duration_minute,
+                            durationValue,
+                            durationValue
+                        )
                     }
                     2 -> {
                         durationValue = hours[durationValuePicker.value - 1]
-                        resources.getQuantityString(R.plurals.duration_hour, durationValue, durationValue)
+                        resources.getQuantityString(
+                            R.plurals.duration_hour,
+                            durationValue,
+                            durationValue
+                        )
                     }
                     3 -> {
                         durationValue = days[durationValuePicker.value - 1]
-                        resources.getQuantityString(R.plurals.duration_day, durationValue, durationValue)
+                        resources.getQuantityString(
+                            R.plurals.duration_day,
+                            durationValue,
+                            durationValue
+                        )
                     }
                     4 -> {
                         durationValue = weeks[durationValuePicker.value - 1]
-                        resources.getQuantityString(R.plurals.duration_week, durationValue, durationValue)
+                        resources.getQuantityString(
+                            R.plurals.duration_week,
+                            durationValue,
+                            durationValue
+                        )
                     }
                     5 -> {
                         durationValue = years[durationValuePicker.value - 1]
-                        resources.getQuantityString(R.plurals.duration_year, durationValue, durationValue)
+                        resources.getQuantityString(
+                            R.plurals.duration_year,
+                            durationValue,
+                            durationValue
+                        )
                     }
                     else -> {
-                        resources.getQuantityString(R.plurals.duration_hour, durationValue, durationValue)
+                        resources.getQuantityString(
+                            R.plurals.duration_hour,
+                            durationValue,
+                            durationValue
+                        )
                     }
                 }
                 updateXpGain(xpGain)
@@ -338,11 +372,31 @@ open class TaskFragment : Fragment() {
 
     fun getHumanReadableDuration(): String {
         return when (durationUnit) {
-            DurationUnit.MINUTE -> resources.getQuantityString(R.plurals.duration_minute, durationValue, durationValue)
-            DurationUnit.HOUR -> resources.getQuantityString(R.plurals.duration_hour, durationValue, durationValue)
-            DurationUnit.DAY -> resources.getQuantityString(R.plurals.duration_day, durationValue, durationValue)
-            DurationUnit.WEEK -> resources.getQuantityString(R.plurals.duration_week, durationValue, durationValue)
-            DurationUnit.YEAR -> resources.getQuantityString(R.plurals.duration_year, durationValue, durationValue)
+            DurationUnit.MINUTE -> resources.getQuantityString(
+                R.plurals.duration_minute,
+                durationValue,
+                durationValue
+            )
+            DurationUnit.HOUR -> resources.getQuantityString(
+                R.plurals.duration_hour,
+                durationValue,
+                durationValue
+            )
+            DurationUnit.DAY -> resources.getQuantityString(
+                R.plurals.duration_day,
+                durationValue,
+                durationValue
+            )
+            DurationUnit.WEEK -> resources.getQuantityString(
+                R.plurals.duration_week,
+                durationValue,
+                durationValue
+            )
+            DurationUnit.YEAR -> resources.getQuantityString(
+                R.plurals.duration_year,
+                durationValue,
+                durationValue
+            )
         }
     }
 
@@ -357,11 +411,16 @@ open class TaskFragment : Fragment() {
     }
 
     private fun updateDurationUnitValue(picker: NumberPicker, value: Int) {
-        val min = resources.getQuantityString(R.plurals.duration_minute, value, value).substringAfter(" ")
-        val h = resources.getQuantityString(R.plurals.duration_hour, value, value).substringAfter(" ")
-        val d = resources.getQuantityString(R.plurals.duration_day, value, value).substringAfter(" ")
-        val w = resources.getQuantityString(R.plurals.duration_week, value, value).substringAfter(" ")
-        val a = resources.getQuantityString(R.plurals.duration_year, value, value).substringAfter(" ")
+        val min =
+            resources.getQuantityString(R.plurals.duration_minute, value, value).substringAfter(" ")
+        val h =
+            resources.getQuantityString(R.plurals.duration_hour, value, value).substringAfter(" ")
+        val d =
+            resources.getQuantityString(R.plurals.duration_day, value, value).substringAfter(" ")
+        val w =
+            resources.getQuantityString(R.plurals.duration_week, value, value).substringAfter(" ")
+        val a =
+            resources.getQuantityString(R.plurals.duration_year, value, value).substringAfter(" ")
         val values = arrayOf(min, h, d, w, a)
         picker.displayedValues = values
         picker.maxValue = values.size

@@ -32,22 +32,26 @@ class ChartCategoryXpFragment : SkillFragment() {
         lateinit var binding: FragmentChartCategoryXpBinding
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_statistics)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_category_xp, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_chart_category_xp, container, false)
 
-        val categories = db.categoryDao().findAll()
+        val categories = categoryRepository.getAll()
         val values = ArrayList<PieEntry>()
         val colors = mutableListOf<Int>()
         categories.forEach {
-            val category = it
-            val categoryXp = db.categoryDao().countCategoryXp(category.id)
+            val categoryXp = categoryRepository.countXP(it.id)
             if (categoryXp > 0) {
-                values.add(PieEntry(categoryXp.toFloat(), category.name))
-                if (category.color != null) {
+                values.add(PieEntry(categoryXp.toFloat(), it.name))
+                if (it.color != null) {
                     // set category color in pie chart
-                    colors.add(Color.parseColor(category.color))
+                    colors.add(Color.parseColor(it.color))
                 } else {
                     // otherwise take a random color if category is colorless
                     colors.add(Utils.getRandomMaterialColor(requireContext()))

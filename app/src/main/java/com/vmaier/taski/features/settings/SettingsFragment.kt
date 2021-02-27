@@ -12,12 +12,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.preference.*
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.vmaier.taski.*
 import com.vmaier.taski.MainActivity.Companion.avatarView
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
+import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.views.EditTextDialog
 import timber.log.Timber
@@ -27,12 +27,13 @@ import java.util.*
 
 /**
  * Created by Vladas Maier
- * on 20/04/2020
+ * on 20.04.2020
  * at 20:34
  */
-class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private lateinit var prefs: SharedPreferences
+    private lateinit var prefService: PreferenceService
 
     companion object {
         lateinit var calendarSyncPref: CheckBoxPreference
@@ -53,7 +54,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        prefs = getDefaultSharedPreferences(context)
+        prefService = PreferenceService(requireContext())
 
         setChangeAvatarClickListener()
         setResetAvatarClickListener()
@@ -61,69 +62,75 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         setThemeClickListener()
 
         // preselect dark mode icon
-        val isDarkModeOn = prefs.getBoolean(Const.Prefs.DARK_MODE, Const.Defaults.DARK_MODE)
-        val darkMode = preferenceScreen.findPreference(Const.Prefs.DARK_MODE) as SwitchPreference?
+        val isDarkModeOn = prefService.isDarkModeEnabled()
+        val darkMode = preferenceScreen.findPreference(PreferenceService.Keys.DARK_MODE) as SwitchPreference?
         darkMode?.setIcon(if (isDarkModeOn) R.drawable.ic_light_mode_24 else R.drawable.ic_dark_mode_24)
-        darkMode?.title = getString(if (isDarkModeOn) R.string.heading_light_mode else R.string.heading_dark_mode)
+        darkMode?.title =
+            getString(if (isDarkModeOn) R.string.heading_light_mode else R.string.heading_dark_mode)
 
         // preselect language value
-        val appLanguage = preferenceScreen.findPreference(Const.Prefs.LANGUAGE) as ListPreference?
-        val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)
+        val appLanguage = preferenceScreen.findPreference(PreferenceService.Keys.LANGUAGE) as ListPreference?
+        val prefLanguage = prefService.getLanguage()
         val languageValues = resources.getStringArray(R.array.language_values_array)
         appLanguage?.setValueIndex(languageValues.indexOf(prefLanguage))
 
-        val calendarTasksPref: CheckBoxPreference? = findPreference(Const.Prefs.DELETE_COMPLETED_TASKS)
-        calendarTasksPref?.isEnabled = prefs.getBoolean(Const.Prefs.CALENDAR_SYNC, Const.Defaults.CALENDAR_SYNC)
+        // preselect start of the week value
+        val startOfTheWeek = preferenceScreen.findPreference(PreferenceService.Keys.START_OF_THE_WEEK) as ListPreference?
+        val prefStartOfTheWeek = prefService.getStartOfTheWeek()
+        val startOfTheWeekValues = resources.getStringArray(R.array.start_of_the_week_values_array)
+        startOfTheWeek?.setValueIndex(startOfTheWeekValues.indexOf(prefStartOfTheWeek))
+
+        val calendarTasksPref: CheckBoxPreference? =
+            findPreference(PreferenceService.Keys.DELETE_COMPLETED_TASKS)
+        calendarTasksPref?.isEnabled = prefService.isCalendarSyncEnabled()
     }
 
     override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
         when (key) {
-            Const.Prefs.CALENDAR_SYNC -> {
+            PreferenceService.Keys.CALENDAR_SYNC -> {
                 calendarSyncPref = findPreference(key)!!
                 val isCalendarSyncOn = calendarSyncPref.isChecked
                 if (isCalendarSyncOn) PermissionUtils.setupCalendarPermissions(requireContext())
-                prefs.edit()
-                    .putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
-                    .apply()
+                prefService.setCalendarSyncEnabled(isCalendarSyncOn)
                 Timber.d("Calendar synchronization is ${if (isCalendarSyncOn) "enabled" else "disabled"}.")
-                val calendarTasksPref: CheckBoxPreference? = findPreference(Const.Prefs.DELETE_COMPLETED_TASKS)
+                val calendarTasksPref: CheckBoxPreference? =
+                    findPreference(PreferenceService.Keys.DELETE_COMPLETED_TASKS)
                 calendarTasksPref?.isEnabled = isCalendarSyncOn
                 // deselect "Delete completed tasks" if "Calendar sync" gets disabled
                 if (!isCalendarSyncOn) {
                     calendarTasksPref?.isChecked = isCalendarSyncOn
-                    prefs.edit()
-                        .putBoolean(Const.Prefs.DELETE_COMPLETED_TASKS, false)
-                        .apply()
+                    prefService.setDeleteCompletedTasksEnabled(false)
                 }
             }
-            Const.Prefs.DELETE_COMPLETED_TASKS -> {
+            PreferenceService.Keys.DELETE_COMPLETED_TASKS -> {
                 val pref: CheckBoxPreference? = findPreference(key)
-                val calendarSyncPref: CheckBoxPreference? = findPreference(Const.Prefs.CALENDAR_SYNC)
+                val calendarSyncPref: CheckBoxPreference? =
+                    findPreference(PreferenceService.Keys.CALENDAR_SYNC)
                 val isCalendarSyncOn = calendarSyncPref?.isChecked ?: false
                 if (isCalendarSyncOn) {
-                    val value = pref?.isChecked ?: Const.Defaults.DELETE_COMPLETED_TASKS
-                    prefs.edit()
-                        .putBoolean(Const.Prefs.DELETE_COMPLETED_TASKS, value)
-                        .apply()
+                    val value = pref?.isChecked ?: PreferenceService.Defaults.DELETE_COMPLETED_TASKS
+                    prefService.setDeleteCompletedTasksEnabled(value)
                 }
             }
-            Const.Prefs.DARK_MODE -> {
+            PreferenceService.Keys.DARK_MODE -> {
                 val pref: SwitchPreference? = findPreference(key)
                 val isDarkModeOn = pref?.isChecked ?: false
                 setDefaultNightMode(if (isDarkModeOn) MODE_NIGHT_YES else MODE_NIGHT_NO)
-                prefs.edit()
-                    .putBoolean(Const.Prefs.DARK_MODE, isDarkModeOn)
-                    .apply()
+                prefService.setDarkModeEnabled(isDarkModeOn)
                 Timber.d("Dark mode is ${if (isDarkModeOn) "enabled" else "disabled"}.")
             }
-            Const.Prefs.LANGUAGE -> {
+            PreferenceService.Keys.LANGUAGE -> {
                 val pref: ListPreference? = findPreference(key)
-                val prefLanguage = pref?.value ?: Const.Defaults.LANGUAGE
-                prefs.edit()
-                    .putString(Const.Prefs.LANGUAGE, prefLanguage)
-                    .apply()
+                val prefLanguage = pref?.value ?: PreferenceService.Keys.LANGUAGE
+                prefService.setLanguage(prefLanguage)
                 setLocale(Locale(prefLanguage))
                 Timber.d("Language changed to '${prefLanguage.toUpperCase(Locale.getDefault())}'")
+            }
+            PreferenceService.Keys.START_OF_THE_WEEK -> {
+                val pref: ListPreference? = findPreference(key)
+                val prefStartOfTheWeek = pref?.value ?: PreferenceService.Keys.START_OF_THE_WEEK
+                prefService.setStartOfTheWeek(prefStartOfTheWeek)
+                Timber.d("Start of the week changed to '$prefStartOfTheWeek'")
             }
         }
     }
@@ -142,13 +149,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == PermissionUtils.PICK_IMAGE_REQUEST_CODE &&
             resultCode == Activity.RESULT_OK &&
-            intent != null && intent.data != null) {
-            val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, intent.data)
+            intent != null && intent.data != null
+        ) {
+            val bitmap =
+                MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, intent.data)
             val compressedBitmap = bitmap.compress(10)
             avatarView.setImageBitmap(compressedBitmap)
-            prefs.edit()
-                .putString(Const.Prefs.USER_AVATAR, compressedBitmap.encodeToBase64())
-                .apply()
+            prefService.setUserAvatar(compressedBitmap.encodeToBase64())
             Timber.d("Avatar changed.")
         }
     }
@@ -162,7 +169,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     private fun setChangeAvatarClickListener() {
-        val preference = preferenceScreen.findPreference(Const.Prefs.CHANGE_AVATAR) as Preference?
+        val preference = preferenceScreen.findPreference(PreferenceService.Keys.CHANGE_AVATAR) as Preference?
         preference?.setOnPreferenceClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.type = "image/*"
@@ -179,16 +186,14 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     private fun setResetAvatarClickListener() {
-        val preference = preferenceScreen.findPreference(Const.Prefs.RESET_AVATAR) as Preference?
+        val preference = preferenceScreen.findPreference(PreferenceService.Keys.RESET_AVATAR) as Preference?
         preference?.setOnPreferenceClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
                 .setTitle(getString(R.string.alert_reset_avatar))
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.action_proceed_with_reset)) { _, _ ->
-                    prefs.edit()
-                        .putString(Const.Prefs.USER_AVATAR, null)
-                        .apply()
+                    prefService.resetUserAvatar()
                     avatarView.setImageDrawable(getDrawable(requireContext(), R.mipmap.ic_launcher))
                     Timber.d("Avatar reset")
                 }
@@ -201,9 +206,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     private fun setUsernameClickListener() {
-        val preference = preferenceScreen.findPreference(Const.Prefs.USER_NAME) as Preference?
+        val preference = preferenceScreen.findPreference(PreferenceService.Keys.USER_NAME) as Preference?
         preference?.setOnPreferenceClickListener {
-            val usernameValue = prefs.getString(Const.Prefs.USER_NAME, getString(R.string.app_name))
+            val usernameValue = prefService.getUserName()
             val dialog = EditTextDialog.newInstance(
                 title = getString(R.string.heading_user_name),
                 hint = getString(R.string.hint_user_name),
@@ -212,9 +217,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             )
             dialog.onPositiveButtonClicked = {
                 val textValue = dialog.editText.text.toString().trim()
-                prefs.edit()
-                    .putString(Const.Prefs.USER_NAME, textValue)
-                    .apply()
+                prefService.setUserName(textValue)
                 MainActivity.userNameView.text = textValue
                 Timber.d("Username changed.")
             }
@@ -227,20 +230,19 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     private fun setThemeClickListener() {
-        val preference = preferenceScreen.findPreference(Const.Prefs.THEME) as Preference?
+        val preference = preferenceScreen.findPreference(PreferenceService.Keys.THEME) as Preference?
         preference?.setOnPreferenceClickListener {
-            prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME) ?: Const.Defaults.THEME
-            val dialogView = (context as Activity).layoutInflater.inflate(R.layout.select_theme_dialog, null)
-            val radioGroup = dialogView.findViewById(R.id.radio_group) as RadioGroupPlus
+            prefTheme = prefService.getTheme()
+            val dialogView =
+                (context as Activity).layoutInflater.inflate(R.layout.select_theme_dialog, null)
+            val radioGroup = dialogView.findViewById(R.id.radio_group_themes) as RadioGroupPlus
             preselectTheme(dialogView)
             val builder = AlertDialog.Builder(requireContext())
                 .setTitle(getString(R.string.heading_select_theme))
                 .setView(dialogView)
                 .setCancelable(true)
                 .setPositiveButton(getString(R.string.action_set)) { _, _ ->
-                    prefs.edit()
-                        .putString(Const.Prefs.THEME, prefTheme)
-                        .apply()
+                    prefService.setTheme(prefTheme)
                     activity?.recreate()
                     Timber.d("Theme changed to '${prefTheme}'")
                 }

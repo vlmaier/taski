@@ -6,38 +6,39 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.MainActivity.Companion.drawerLayout
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortOrder
 import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.entity.Skill
+import com.vmaier.taski.data.repository.CategoryRepository
+import com.vmaier.taski.data.repository.SkillRepository
 import com.vmaier.taski.databinding.FragmentSkillListBinding
-import timber.log.Timber
+import com.vmaier.taski.services.PreferenceService
 
 
 /**
  * Created by Vladas Maier
- * on 25/02/2020
+ * on 25.02.2020
  * at 18:01
  */
 class SkillListFragment : Fragment() {
 
     companion object {
         lateinit var skillAdapter: SkillAdapter
-        lateinit var binding: FragmentSkillListBinding
+        private lateinit var binding: FragmentSkillListBinding
+        private lateinit var categoryRepository: CategoryRepository
+        private lateinit var skillRepository: SkillRepository
 
         fun sortSkills(context: Context, skills: MutableList<Skill>) {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val sort = prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)
-            val order = prefs.getString(Const.Prefs.SORT_SKILLS_ORDER, Const.Defaults.SORT_SKILLS_ORDER)
+            val prefService = PreferenceService(context)
+            val sort = prefService.getSort(PreferenceService.SortType.SKILLS)
+            val order = prefService.getSortOrder(PreferenceService.SortType.SKILLS)
             when (sort) {
                 SortSkills.NAME.value -> skills.apply {
                     if (order == SortOrder.ASC.value) sortBy { it.name }
@@ -48,17 +49,15 @@ class SkillListFragment : Fragment() {
                     else sortByDescending { it.xp }
                 }
                 SortSkills.CATEGORY.value -> skills.apply {
-                    val db = AppDatabase(context)
                     if (order == SortOrder.ASC.value) {
                         sortBy {
                             if (it.categoryId == null) ""
-                            else db.categoryDao().findById(it.categoryId).name
+                            else categoryRepository.get(it.categoryId)?.name
                         }
-                    }
-                    else {
+                    } else {
                         sortByDescending {
                             if (it.categoryId == null) ""
-                            else db.categoryDao().findById(it.categoryId).name
+                            else categoryRepository.get(it.categoryId)?.name
                         }
                     }
                 }
@@ -67,9 +66,9 @@ class SkillListFragment : Fragment() {
         }
 
         fun updateSortedByHeader(context: Context, skills: MutableList<Skill>) {
-            val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-            val sort = prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)
-            val order = prefs.getString(Const.Prefs.SORT_SKILLS_ORDER, Const.Defaults.SORT_SKILLS_ORDER)
+            val prefService = PreferenceService(context)
+            val sort = prefService.getSort(PreferenceService.SortType.SKILLS)
+            val order = prefService.getSortOrder(PreferenceService.SortType.SKILLS)
             val sortString = when (sort) {
                 SortSkills.NAME.value -> context.getString(R.string.term_sort_name)
                 SortSkills.XP.value -> context.getString(R.string.term_sort_xp)
@@ -81,7 +80,8 @@ class SkillListFragment : Fragment() {
                 else context.getString(R.string.term_sort_desc)
             if (skills.isNotEmpty()) {
                 binding.header.visibility = View.VISIBLE
-                binding.header.text = context.getString(R.string.term_sort_by, sortString, orderString)
+                binding.header.text =
+                    context.getString(R.string.term_sort_by, sortString, orderString)
             } else {
                 binding.header.visibility = View.GONE
                 binding.header.text = ""
@@ -97,7 +97,7 @@ class SkillListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         saved: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_skills)
         toggleBottomMenu(true, View.VISIBLE)
@@ -110,6 +110,8 @@ class SkillListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        categoryRepository = CategoryRepository(requireContext())
+        skillRepository = SkillRepository(requireContext())
         skillAdapter = SkillAdapter(requireContext())
         skillAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
@@ -132,10 +134,8 @@ class SkillListFragment : Fragment() {
                 binding.emptyRv.visibility = visibility
             }
         })
-        val db = AppDatabase(requireContext())
-        val skills = db.skillDao().findAll()
+        val skills = skillRepository.getAll()
         sortSkills(requireContext(), skills)
-        Timber.d("${skills.size} skill(s) found.")
         skillAdapter.setSkills(skills)
         binding.rv.apply {
             layoutManager = GridLayoutManager(activity, 2)
@@ -155,17 +155,18 @@ class SkillListFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.skill_sort_menu, menu)
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val menuItemId = when (prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)) {
-            SortSkills.NAME.value -> R.id.sort_name
-            SortSkills.XP.value -> R.id.sort_xp
-            SortSkills.CATEGORY.value -> R.id.sort_category
-            else -> R.id.sort_name
-        }
+        val prefService = PreferenceService(requireContext())
+        val menuItemId =
+            when (prefService.getSort(PreferenceService.SortType.SKILLS)) {
+                SortSkills.NAME.value -> R.id.sort_name
+                SortSkills.XP.value -> R.id.sort_xp
+                SortSkills.CATEGORY.value -> R.id.sort_category
+                else -> R.id.sort_name
+            }
         val sortItem = menu.findItem(menuItemId)
         sortItem.isChecked = true
         val sortOrderItem = menu.findItem(R.id.sort_skills_order)
-        val order = prefs.getString(Const.Prefs.SORT_SKILLS_ORDER, Const.Defaults.SORT_SKILLS_ORDER)
+        val order = prefService.getSortOrder(PreferenceService.SortType.SKILLS)
         if (order == SortOrder.ASC.value) {
             sortOrderItem.setIcon(R.drawable.ic_sort_order_asc_24)
         } else {
@@ -175,9 +176,9 @@ class SkillListFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val prefService = PreferenceService(requireContext())
         if (item.itemId == R.id.sort_skills_order) {
-            val savedOrder = prefs.getString(Const.Prefs.SORT_SKILLS_ORDER, Const.Defaults.SORT_SKILLS_ORDER)
+            val savedOrder = prefService.getSortOrder(PreferenceService.SortType.SKILLS)
             val newOrder = if (savedOrder == SortOrder.ASC.value) {
                 item.setIcon(R.drawable.ic_sort_order_desc_24)
                 SortOrder.DESC.value
@@ -185,24 +186,19 @@ class SkillListFragment : Fragment() {
                 item.setIcon(R.drawable.ic_sort_order_asc_24)
                 SortOrder.ASC.value
             }
-            prefs.edit()
-                .putString(Const.Prefs.SORT_SKILLS_ORDER, newOrder)
-                .apply()
+            prefService.setSortOrder(newOrder, PreferenceService.SortType.SKILLS)
             sortSkills(requireContext(), skillAdapter.skills)
             skillAdapter.notifyDataSetChanged()
         } else {
             item.isChecked = true
-            var sort = prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)
-                ?: SortSkills.NAME.value
+            var sort = prefService.getSort(PreferenceService.SortType.SKILLS)
             when (item.itemId) {
                 R.id.sort_name -> sort = SortSkills.NAME.value
                 R.id.sort_xp -> sort = SortSkills.XP.value
                 R.id.sort_category -> sort = SortSkills.CATEGORY.value
                 else -> super.onOptionsItemSelected(item)
             }
-            prefs.edit()
-                .putString(Const.Prefs.SORT_SKILLS, sort)
-                .apply()
+            prefService.setSort(sort, PreferenceService.SortType.SKILLS)
             sortSkills(requireContext(), skillAdapter.skills)
             skillAdapter.notifyDataSetChanged()
         }

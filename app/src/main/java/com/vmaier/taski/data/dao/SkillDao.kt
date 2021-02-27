@@ -9,7 +9,7 @@ import com.vmaier.taski.data.entity.Task
 
 /**
  * Created by Vladas Maier
- * on 22/04/2020
+ * on 22.04.2020
  * at 16:43
  */
 @Dao
@@ -18,7 +18,7 @@ interface SkillDao {
     // ------------------------------------- CREATE QUERIES ------------------------------------- //
 
     @Insert(entity = Skill::class, onConflict = OnConflictStrategy.REPLACE)
-    fun create(skill: Skill): Long
+    suspend fun create(skill: Skill): Long
 
     // -------------------------------------  READ QUERIES  ------------------------------------- //
 
@@ -26,26 +26,10 @@ interface SkillDao {
         """
         SELECT *
         FROM skills
+        WHERE id = :id
     """
     )
-    fun findAll(): MutableList<Skill>
-
-    @Query(
-        """
-        SELECT COUNT(*)
-        FROM skills
-    """
-    )
-    fun countAll(): Int
-
-    @Query(
-        """
-        SELECT *
-        FROM skills
-        WHERE id = :skillId
-    """
-    )
-    fun findById(skillId: Long): Skill?
+    fun get(id: Long): Skill?
 
     @Query(
         """
@@ -54,7 +38,15 @@ interface SkillDao {
         WHERE name = :name COLLATE NOCASE
     """
     )
-    fun findByName(name: String): Skill?
+    fun get(name: String): Skill?
+
+    @Query(
+        """
+        SELECT *
+        FROM skills
+    """
+    )
+    fun getAll(): MutableList<Skill>
 
     @Query(
         """
@@ -63,7 +55,16 @@ interface SkillDao {
         WHERE name IN (:names) COLLATE NOCASE
     """
     )
-    fun findByName(names: List<String>): List<Skill>
+    fun getByNames(names: List<String>): List<Skill>
+
+    @Query(
+        """
+        SELECT *
+        FROM skills
+        WHERE category_id = :categoryId 
+    """
+    )
+    fun getByCategoryId(categoryId: Long): List<Skill>
 
     @Query(
         """
@@ -74,59 +75,16 @@ interface SkillDao {
         WHERE task_id = :taskId 
     """
     )
-    fun findAssignedSkills(taskId: Long): List<Skill>
-
-    @Query(
-        """
-        SELECT *
-        FROM skills
-        WHERE category_id = :categoryId 
-    """
-    )
-    fun findSkillsByCategoryId(categoryId: Long): List<Skill>
+    fun getAssignedSkills(taskId: Long): List<Skill>
 
     @Query(
         """
         SELECT *
         FROM assigned_skills
-        WHERE skill_id = :skillId
+        WHERE skill_id = :id
     """
     )
-    fun findAssignments(skillId: Long): List<AssignedSkill>
-
-    @Query(
-        """
-        SELECT COUNT(*)
-        FROM assigned_skills 
-        INNER JOIN tasks
-          ON task_id = tasks.id
-        WHERE skill_id = :skillId
-          AND status != 'failed'
-    """
-    )
-    fun countTasksWithSkill(skillId: Long): Int
-
-    @Query(
-        """
-        SELECT SUM(tasks.count_done)
-        FROM assigned_skills 
-        INNER JOIN tasks
-          ON task_id = tasks.id
-        WHERE skill_id = :skillId
-    """
-    )
-    fun countDoneTasksWithSkill(skillId: Long): Long
-
-    @Query(
-        """
-        SELECT SUM(duration * count_done) 
-        FROM assigned_skills 
-        INNER JOIN tasks
-          ON task_id = tasks.id
-        WHERE skill_id = :skillId
-    """
-    )
-    fun countMinutes(skillId: Long): Int
+    fun getAssignments(id: Long): List<AssignedSkill>
 
     @Query(
         """
@@ -134,11 +92,45 @@ interface SkillDao {
         FROM assigned_skills 
         INNER JOIN tasks
           ON task_id = tasks.id
-        WHERE skill_id = :skillId 
+        WHERE skill_id = :id
           AND status = :status 
     """
     )
-    fun findTasksWithSkillByStatus(skillId: Long, status: Status): MutableList<Task>
+    fun getTasksWithSkillByStatus(id: Long, status: Status): MutableList<Task>
+
+    @Query(
+        """
+        SELECT COUNT(*)
+        FROM assigned_skills 
+        INNER JOIN tasks
+          ON task_id = tasks.id
+        WHERE skill_id = :id
+          AND status != 'failed'
+    """
+    )
+    fun countTasksBySkillId(id: Long): Int
+
+    @Query(
+        """
+        SELECT SUM(tasks.count_done)
+        FROM assigned_skills 
+        INNER JOIN tasks
+          ON task_id = tasks.id
+        WHERE skill_id = :id
+    """
+    )
+    fun countDoneTasksBySkillId(id: Long): Int
+
+    @Query(
+        """
+        SELECT SUM(duration * count_done) 
+        FROM assigned_skills 
+        INNER JOIN tasks
+          ON task_id = tasks.id
+        WHERE skill_id = :id
+    """
+    )
+    fun countMinutes(id: Long): Int
 
     @Query(
         """
@@ -147,42 +139,53 @@ interface SkillDao {
         WHERE category_id = :categoryId
     """
     )
-    fun countSkillsWithCategory(categoryId: Long): Int
-
-    @Query(
-        """
-        SELECT COUNT(*)
-        FROM assigned_skills
-        WHERE task_id = :taskId 
-    """
-    )
-    fun countAssignedSkills(taskId: Long): Int
+    fun countSkillsByCategoryId(categoryId: Long): Int
 
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 
-    @Update(entity = Skill::class, onConflict = OnConflictStrategy.REPLACE)
-    fun update(skill: Skill)
+    @Query(
+        """
+        UPDATE skills
+        SET name = :name
+        WHERE id = :id
+    """
+    )
+    suspend fun updateName(id: Long, name: String)
+
+    @Query(
+        """
+        UPDATE skills
+        SET icon_id = :iconId
+        WHERE id = :id
+    """
+    )
+    suspend fun updateIconId(id: Long, iconId: Int)
 
     @Query(
         """
         UPDATE skills
         SET category_id = :categoryId
-        WHERE id = :skillId
+        WHERE id = :id
     """
     )
-    fun updateCategoryId(skillId: Long, categoryId: Long)
+    suspend fun updateCategoryId(id: Long, categoryId: Long?)
 
     @Query(
         """
         UPDATE skills
         SET xp_value = xp_value + :xp
-        WHERE id = :skillId
+        WHERE id = :id
     """
     )
-    fun updateXp(skillId: Long, xp: Int)
+    suspend fun updateXp(id: Long, xp: Int)
 
     // ------------------------------------- DELETE QUERIES ------------------------------------- //
 
-    @Delete
-    fun delete(skill: Skill)
+    @Query(
+        """
+        DELETE FROM skills
+        WHERE id = :id
+    """
+    )
+    suspend fun delete(id: Long)
 }

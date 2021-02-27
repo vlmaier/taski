@@ -21,7 +21,8 @@ class PermissionUtils {
             val activity = context as Activity
             val res = context.resources
             val read = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR)
-            val write = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
+            val write =
+                ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
             if (read == PackageManager.PERMISSION_DENIED || write == PackageManager.PERMISSION_DENIED) {
                 Timber.d("Permission to access calendar is denied")
                 if (ActivityCompat.shouldShowRequestPermissionRationale(

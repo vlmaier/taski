@@ -1,8 +1,9 @@
 package com.vmaier.taski.data
 
+
 /**
  * Created by Vladas Maier
- * on 15/02/2020
+ * on 15.02.2020
  * at 13:41
  */
 enum class DurationUnit(val value: String) {

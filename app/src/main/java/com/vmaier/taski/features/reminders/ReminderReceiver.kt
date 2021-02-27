@@ -24,7 +24,8 @@ class ReminderReceiver : BroadcastReceiver() {
             NotificationService.ACTION_DISMISS -> {
                 Timber.d("Dismiss pressed.")
                 val notificationId = intent.getIntExtra(KEY_NOTIFICATION_ID, 1)
-                val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                val notificationManager =
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.cancel(notificationId)
             }
             else -> {

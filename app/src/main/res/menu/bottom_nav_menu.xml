@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group>
         <item
-                android:id="@+id/nav_tasks"
-                android:icon="@drawable/ic_tasks_24"
-                android:title="@string/heading_tasks" />
+            android:id="@+id/nav_tasks"
+            android:icon="@drawable/ic_tasks_24"
+            android:title="@string/heading_tasks" />
         <item
-                android:id="@+id/nav_skills"
-                android:icon="@drawable/ic_skills_24"
-                android:title="@string/heading_skills" />
+            android:id="@+id/nav_skills"
+            android:icon="@drawable/ic_skills_24"
+            android:title="@string/heading_skills" />
     </group>
 </menu>

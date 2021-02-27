@@ -3,53 +3,59 @@
 
     <PreferenceCategory android:title="@string/heading_visual_prefs">
         <androidx.preference.Preference
-                android:icon="@drawable/ic_person_24"
-                android:key="user_name"
-                android:summary="@string/description_user_name"
-                android:title="@string/heading_user_name" />
+            android:icon="@drawable/ic_person_24"
+            android:key="user_name"
+            android:summary="@string/description_user_name"
+            android:title="@string/heading_user_name" />
         <androidx.preference.Preference
-                android:key="change_avatar"
-                android:summary="@string/description_change_avatar"
-                android:title="@string/heading_change_avatar" />
+            android:key="change_avatar"
+            android:summary="@string/description_change_avatar"
+            android:title="@string/heading_change_avatar" />
         <androidx.preference.Preference
-                android:key="reset_avatar"
-                android:summary="@string/description_reset_avatar"
-                android:title="@string/heading_reset_avatar" />
+            android:key="reset_avatar"
+            android:summary="@string/description_reset_avatar"
+            android:title="@string/heading_reset_avatar" />
         <androidx.preference.Preference
-                android:icon="@drawable/ic_theme_24"
-                android:key="app_theme"
-                android:summary="@string/description_select_theme"
-                android:title="@string/heading_theme" />
+            android:icon="@drawable/ic_theme_24"
+            android:key="app_theme"
+            android:summary="@string/description_select_theme"
+            android:title="@string/heading_theme" />
         <androidx.preference.SwitchPreference
-                android:key="dark_mode"
-                android:summaryOff="@string/description_switch_to_dark"
-                android:summaryOn="@string/description_switch_to_light"
-                android:title="@string/heading_dark_mode" />
+            android:key="dark_mode"
+            android:summaryOff="@string/description_switch_to_dark"
+            android:summaryOn="@string/description_switch_to_light"
+            android:title="@string/heading_dark_mode" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/heading_calendar_settings">
         <androidx.preference.CheckBoxPreference
-                android:defaultValue="false"
-                android:icon="@drawable/ic_calendar_24"
-                android:key="calendar_sync"
-                android:summary="@string/description_calendar_sync"
-                android:title="@string/heading_calendar_sync" />
+            android:defaultValue="false"
+            android:icon="@drawable/ic_calendar_24"
+            android:key="calendar_sync"
+            android:summary="@string/description_calendar_sync"
+            android:title="@string/heading_calendar_sync" />
         <androidx.preference.CheckBoxPreference
-                android:defaultValue="false"
-                android:enabled="false"
-                android:key="delete_completed_tasks"
-                android:summary="@string/description_delete_completed_tasks"
-                android:title="@string/heading_delete_completed_tasks" />
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="delete_completed_tasks"
+            android:summary="@string/description_delete_completed_tasks"
+            android:title="@string/heading_delete_completed_tasks" />
+        <androidx.preference.ListPreference
+            android:entries="@array/start_of_the_week_names_array"
+            android:entryValues="@array/start_of_the_week_values_array"
+            android:key="start_of_the_week"
+            android:summary="@string/description_start_of_the_week"
+            android:title="@string/heading_start_of_the_week" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/heading_general_settings">
         <androidx.preference.ListPreference
-                android:entries="@array/language_names_array"
-                android:entryValues="@array/language_values_array"
-                android:icon="@drawable/ic_language_24"
-                android:key="app_language"
-                android:summary="@string/description_select_language"
-                android:title="@string/heading_language" />
+            android:entries="@array/language_names_array"
+            android:entryValues="@array/language_values_array"
+            android:icon="@drawable/ic_language_24"
+            android:key="app_language"
+            android:summary="@string/description_select_language"
+            android:title="@string/heading_language" />
     </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

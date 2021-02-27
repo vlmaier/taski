@@ -1,7 +1,6 @@
 package com.vmaier.taski
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources.Theme
@@ -15,13 +14,14 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -43,9 +43,11 @@ import com.maltaisn.recurpicker.list.RecurrenceListDialog
 import com.maltaisn.recurpicker.picker.RecurrencePickerCallback
 import com.maltaisn.recurpicker.picker.RecurrencePickerDialog
 import com.maltaisn.recurpicker.picker.RecurrencePickerFragment
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Category
+import com.vmaier.taski.data.repository.CategoryRepository
+import com.vmaier.taski.data.repository.SkillRepository
+import com.vmaier.taski.data.repository.TaskRepository
 import com.vmaier.taski.databinding.ActivityMainBinding
 import com.vmaier.taski.features.categories.CategoryListFragment
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
@@ -57,6 +59,7 @@ import com.vmaier.taski.features.statistics.StatisticsFragmentDirections
 import com.vmaier.taski.features.tasks.*
 import com.vmaier.taski.intro.Onboarding
 import com.vmaier.taski.services.LevelService
+import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.views.EditTextDialog
@@ -75,9 +78,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     private lateinit var navController: NavController
     private lateinit var drawerNav: NavigationView
     private lateinit var binding: ActivityMainBinding
-    private lateinit var prefs: SharedPreferences
     private lateinit var levelService: LevelService
-    private var backButtonPressedOnce = false
+    private lateinit var prefService: PreferenceService
+    private var isBackButtonPressedOnce = false
 
     companion object {
         lateinit var iconDialog: IconDialog
@@ -86,15 +89,19 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         lateinit var bottomNav: BottomNavigationView
         lateinit var bottomBar: BottomAppBar
         lateinit var fab: FloatingActionButton
-        lateinit var xpView: TextView
-        lateinit var levelView: TextView
         lateinit var userNameView: TextView
         lateinit var avatarView: ImageView
-        lateinit var db: AppDatabase
+        lateinit var taskRepository: TaskRepository
+        lateinit var skillRepository: SkillRepository
+        lateinit var categoryRepository: CategoryRepository
 
         private val recurrenceSettings = RecurrencePickerSettings()
-        val recurrenceListDialog by lazy { RecurrenceListDialog.newInstance(recurrenceSettings) }
-        val recurrencePickerDialog by lazy { RecurrencePickerDialog.newInstance(recurrenceSettings) }
+        val recurrenceListDialog by lazy {
+            RecurrenceListDialog.newInstance(recurrenceSettings)
+        }
+        val recurrencePickerDialog by lazy {
+            RecurrencePickerDialog.newInstance(recurrenceSettings)
+        }
         var selectedRecurrence = Recurrence(Recurrence.Period.NONE)
 
         fun toggleBottomMenu(showFab: Boolean = false, visibility: Int = View.GONE) {
@@ -106,29 +113,31 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        prefs = getDefaultSharedPreferences(this)
+        prefService = PreferenceService(this)
 
         // Onboarding settings
-        val firstStart = prefs.getBoolean(Const.Prefs.ONBOARDING, Const.Defaults.ONBOARDING)
+        val firstStart = prefService.isOnboardingEnabled()
         if (firstStart) {
             val intent = Intent(this, Onboarding::class.java)
             startActivity(intent)
         }
 
         // Language settings
-        val prefLanguage = prefs.getString(Const.Prefs.LANGUAGE, Const.Defaults.LANGUAGE)
+        val prefLanguage = prefService.getLanguage()
         val prefLocale = Locale(prefLanguage)
         val currentLocale: Locale = resources.configuration.locale
         if (prefLocale != currentLocale) {
             val config: Configuration = resources.configuration
-            config.locale = prefLocale
+            config.setLocale(prefLocale)
             resources.updateConfiguration(config, null)
             Locale.setDefault(prefLocale)
         }
 
         super.onCreate(savedInstanceState)
 
-        db = AppDatabase(this)
+        taskRepository = TaskRepository(this)
+        skillRepository = SkillRepository(this)
+        categoryRepository = CategoryRepository(this)
         levelService = LevelService(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -158,7 +167,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         // "Bottom Navigation" settings
         bottomNav = findViewById(R.id.bottom_nav)
         bottomNav.setOnNavigationItemSelectedListener { onNavigationItemSelected(it) }
-        val taskAmount = db.taskDao().countByStatus(Status.OPEN)
+        val taskAmount = taskRepository.countByStatus(Status.OPEN)
         bottomNav.getOrCreateBadge(R.id.nav_tasks).number = taskAmount
         bottomNav.getOrCreateBadge(R.id.nav_tasks).isVisible = taskAmount > 0
 
@@ -175,12 +184,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         setFabOnClickListener()
 
         // Theme settings
-        val prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME)
+        val prefTheme = prefService.getTheme()
         val prefThemeId = Utils.getThemeByName(this, prefTheme)
         setTheme(prefThemeId)
 
         // "Dark mode" settings
-        val isDarkModeOn = prefs.getBoolean(Const.Prefs.DARK_MODE, Const.Defaults.DARK_MODE)
+        val isDarkModeOn = prefService.isDarkModeEnabled()
         if (isDarkModeOn) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
@@ -210,11 +219,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
         // "Status Bar" settings
         this.window.statusBarColor = Utils.getThemeColor(this, R.attr.colorPrimary)
-        var launchCounter = prefs.getInt(Const.Prefs.APP_LAUNCH_COUNTER, Const.Defaults.APP_LAUNCH_COUNTER)
-        launchCounter++
-        prefs.edit()
-            .putInt(Const.Prefs.APP_LAUNCH_COUNTER, launchCounter)
-            .apply()
+        val launchCounter = prefService.incrementAppLaunchCounter()
         if (launchCounter == Const.Defaults.APP_LAUNCH_COUNTER_FOR_REVIEW) {
             val manager: ReviewManager = ReviewManagerFactory.create(this)
             val request: Task<ReviewInfo> = manager.requestReviewFlow()
@@ -234,31 +239,44 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
 
         // "User name" settings
         userNameView = headerView.findViewById(R.id.user_name) as TextView
-        userNameView.text = prefs.getString(Const.Prefs.USER_NAME, Const.Defaults.USER_NAME)
+        userNameView.text = prefService.getUserName()
 
         // "User avatar" settings
         avatarView = headerView.findViewById(R.id.user_avatar)
         avatarView.clipToOutline = true
-        val avatar = prefs.getString(Const.Prefs.USER_AVATAR, null)
-        val fallbackImage = getDrawable(R.mipmap.ic_launcher)
+        val avatar = prefService.getUserAvatar()
+        val fallbackImage = AppCompatResources.getDrawable(this, R.mipmap.ic_launcher)
         if (avatar != null) {
             val bitmap = avatar.decodeBase64()
             if (bitmap != null) avatarView.setImageBitmap(bitmap)
             else avatarView.setImageDrawable(fallbackImage)
         } else avatarView.setImageDrawable(fallbackImage)
 
-        // XP settings
-        xpView = headerView.findViewById(R.id.xp_counter) as TextView
-        val overallXp = db.taskDao().countOverallXp()
-        xpView.text = getString(R.string.term_xp_value, overallXp)
+        drawerLayout.addDrawerListener(object : DrawerListener {
+            override fun onDrawerSlide(view: View, v: Float) {
+                // XP settings
+                val xpView = headerView.findViewById(R.id.xp_counter) as TextView
+                val overallXp = taskRepository.countOverallXp()
+                xpView.text = getString(R.string.term_xp_value, overallXp)
 
-        // Level settings
-        levelView = headerView.findViewById(R.id.level_counter) as TextView
-        val overallLevel = levelService.getOverallLevel(overallXp)
-        levelView.text = getString(R.string.term_level_value, overallLevel)
+                // Level settings
+                val levelView = headerView.findViewById(R.id.level_counter) as TextView
+                val overallLevel = levelService.getOverallLevel(overallXp)
+                levelView.text = getString(R.string.term_level_value, overallLevel)
+            }
+            override fun onDrawerOpened(view: View) {
+                // Nothing to do here
+            }
+            override fun onDrawerClosed(view: View) {
+                // Nothing to do here
+            }
+            override fun onDrawerStateChanged(i: Int) {
+                // Nothing to do here
+            }
+        })
     }
 
-    override val iconDialogIconPack: IconPack? get() = App.iconPack
+    override val iconDialogIconPack: IconPack get() = App.iconPack
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -354,6 +372,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     else -> navController.navigate(R.id.categoryListFragment)
                 }
             }
+            R.id.nav_settings -> {
+                navController.navigate(R.id.settingsFragment)
+            }
+            R.id.nav_help -> {
+                navController.navigate(R.id.helpFragment)
+            }
         }
         // update selected menu item in bottom navigation as well
         val foundItem = bottomNav.menu.findItem(item.itemId)
@@ -391,16 +415,32 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 fragments.forEach {
                     when (it) {
                         is TaskCreateFragment -> {
-                            TaskFragment.setIcon(this, selectedIcon, TaskCreateFragment.binding.iconButton)
+                            TaskFragment.setIcon(
+                                this,
+                                selectedIcon,
+                                TaskCreateFragment.binding.iconButton
+                            )
                         }
                         is TaskEditFragment -> {
-                            TaskFragment.setIcon(this, selectedIcon, TaskEditFragment.binding.iconButton)
+                            TaskFragment.setIcon(
+                                this,
+                                selectedIcon,
+                                TaskEditFragment.binding.iconButton
+                            )
                         }
                         is SkillCreateFragment -> {
-                            SkillFragment.setIcon(this, selectedIcon, SkillCreateFragment.binding.iconButton)
+                            SkillFragment.setIcon(
+                                this,
+                                selectedIcon,
+                                SkillCreateFragment.binding.iconButton
+                            )
                         }
                         is SkillEditFragment -> {
-                            SkillFragment.setIcon(this, selectedIcon, SkillEditFragment.binding.iconButton)
+                            SkillFragment.setIcon(
+                                this,
+                                selectedIcon,
+                                SkillEditFragment.binding.iconButton
+                            )
                         }
                     }
                 }
@@ -426,12 +466,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
     }
 
     override fun onBackPressed() {
-        if (backButtonPressedOnce) {
+        if (isBackButtonPressedOnce) {
             // close app if back button was pressed twice in last 2 seconds
             finish()
         }
-        backButtonPressedOnce = true
-        Handler().postDelayed({ backButtonPressedOnce = false }, 500)
+        isBackButtonPressedOnce = true
+        Handler().postDelayed({ isBackButtonPressedOnce = false }, 500)
 
         val count = supportFragmentManager.backStackEntryCount
         if (count == 0) {
@@ -441,8 +481,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 fragments.forEach {
                     when (it) {
                         is TaskCreateFragment -> onBackPressedTaskCreateFragment()
-                        is SkillEditFragment -> onBackPressedSkillEditFragment()
                         is TaskEditFragment -> onBackPressedTaskEditFragment()
+                        is SkillEditFragment -> onBackPressedSkillEditFragment()
+                        is CategoryListFragment -> onBackPressedCategoryListFragment()
                         is HelpFragment -> onBackPressedHelpFragment()
                         else -> {
                             super.onBackPressed()
@@ -455,26 +496,24 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         }
     }
 
-    override fun getTheme(): Theme? {
+    override fun getTheme(): Theme {
         val theme: Theme = super.getTheme()
-        val prefs = getDefaultSharedPreferences(this)
-        val prefTheme = prefs.getString(Const.Prefs.THEME, Const.Defaults.THEME)
+        val prefTheme = prefService.getTheme()
         val prefThemeId = Utils.getThemeByName(this, prefTheme)
         theme.applyStyle(prefThemeId, true)
         return theme
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             PermissionUtils.ACCESS_CALENDAR_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Timber.d("Requested permission has been denied by user")
-                    val isCalendarSyncOn = prefs
-                        .getBoolean(Const.Prefs.CALENDAR_SYNC, Const.Defaults.CALENDAR_SYNC)
-                    prefs.edit()
-                        .putBoolean(Const.Prefs.CALENDAR_SYNC, isCalendarSyncOn)
-                        .apply()
                     if (SettingsFragment.isCalendarSyncPrefInitialized()) {
                         SettingsFragment.calendarSyncPref.isChecked = false
                     }
@@ -493,16 +532,22 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             SkillEditFragment.binding.name.requestFocus()
             SkillEditFragment.binding.name.error = getString(R.string.error_cannot_be_empty)
         } else {
-            val foundSkill = db.skillDao().findByName(name)
+            val foundSkill = skillRepository.get(name)
             if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.name.requestFocus()
-                SkillEditFragment.binding.name.error = getString(R.string.error_too_short)
+                SkillEditFragment.binding.name.error = getString(
+                    R.string.error_too_short,
+                    Const.Defaults.MINIMAL_INPUT_LENGTH
+                )
             } else if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                 SkillEditFragment.binding.name.requestFocus()
                 SkillEditFragment.binding.name.error = getString(R.string.error_skill_already_exists)
             } else if (category.isNotBlank() && category.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.category.requestFocus()
-                SkillEditFragment.binding.category.error = getString(R.string.error_too_short)
+                SkillEditFragment.binding.category.error = getString(
+                    R.string.error_too_short,
+                    Const.Defaults.MINIMAL_INPUT_LENGTH
+                )
             } else {
                 super.onBackPressed()
             }
@@ -523,7 +568,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             }
             goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH -> {
                 TaskEditFragment.binding.goal.requestFocus()
-                TaskEditFragment.binding.goal.error = getString(R.string.error_too_short)
+                TaskEditFragment.binding.goal.error = getString(
+                    R.string.error_too_short,
+                    Const.Defaults.MINIMAL_INPUT_LENGTH
+                )
             }
             else -> {
                 super.onBackPressed()
@@ -537,6 +585,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         HelpFragment.binding.replayIntroButton.visibility = View.VISIBLE
         HelpFragment.binding.licensesButton.visibility = View.VISIBLE
         HelpFragment.binding.versionButton.visibility = View.VISIBLE
+        super.onBackPressed()
+    }
+
+    private fun onBackPressedCategoryListFragment() {
+        categoryAdapter.closeMenu()
         super.onBackPressed()
     }
 
@@ -567,21 +620,27 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             val name = dialog.editText.text.toString().trim()
             if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 dialog.editText.requestFocus()
-                dialog.editText.error = getString(R.string.error_too_short)
+                dialog.editText.error = getString(
+                    R.string.error_too_short,
+                    Const.Defaults.MINIMAL_INPUT_LENGTH
+                )
             } else {
-                val foundCategory = db.categoryDao().findByName(name)
+                val foundCategory = categoryRepository.get(name)
                 if (foundCategory != null) {
                     dialog.editText.requestFocus()
                     dialog.editText.error = getString(R.string.error_category_already_exists)
                 } else {
-                    val category = Category(name = name)
-                    val id = db.categoryDao().create(category)
-                    categoryAdapter.categories.add(
-                        Category(id = id, name = name)
-                    )
-                    CategoryListFragment.sortCategories(dialog.editText.context, categoryAdapter.categories)
-                    categoryAdapter.notifyDataSetChanged()
-                    Timber.d("Category ($id) created.")
+                    val categoryId = categoryRepository.create(name, null)
+                    categoryId.observe(this, { id ->
+                        if (id != null) {
+                            categoryAdapter.categories.add(Category(id = id, name = name))
+                            CategoryListFragment.sortCategories(
+                                dialog.editText.context,
+                                categoryAdapter.categories
+                            )
+                            categoryAdapter.notifyDataSetChanged()
+                        }
+                    })
                     dialog.dismiss()
                 }
             }
@@ -598,7 +657,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         if (fragment != null) {
             val fragments = fragment.childFragmentManager.fragments
             fragments.forEach {
-                when(it) {
+                when (it) {
                     is TaskCreateFragment ->
                         TaskCreateFragment.recurrenceButton.text =
                             RecurrenceFormatter(App.dateTimeFormat).format(this, selectedRecurrence)

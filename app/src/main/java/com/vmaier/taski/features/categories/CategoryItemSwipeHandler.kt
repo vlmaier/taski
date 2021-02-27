@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_category.view.*
 
 /**
  * Created by Vladas Maier
- * on 24/07/2020
+ * on 24.07.2020
  * at 10:22
  */
 class CategoryItemSwipeHandler :

@@ -8,23 +8,23 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vmaier.taski.*
-import com.vmaier.taski.data.AppDatabase
+import com.vmaier.taski.R
 import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.entity.AssignedSkill
-import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
+import com.vmaier.taski.data.repository.CategoryRepository
+import com.vmaier.taski.data.repository.SkillRepository
 import com.vmaier.taski.features.skills.SkillListFragment.Companion.updateSortedByHeader
 import com.vmaier.taski.services.LevelService
+import com.vmaier.taski.services.PreferenceService
+import com.vmaier.taski.setIcon
 import kotlinx.android.synthetic.main.item_skill.view.*
-import timber.log.Timber
 
 
 /**
  * Created by Vladas Maier
- * on 25/02/2020
+ * on 25.02.2020
  * at 19:27
  */
 class SkillAdapter internal constructor(
@@ -32,9 +32,11 @@ class SkillAdapter internal constructor(
 ) : RecyclerView.Adapter<SkillAdapter.SkillViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private val categoryRepository = CategoryRepository(context)
+    private val skillRepository = SkillRepository(context)
+
     var skills: MutableList<Skill> = mutableListOf()
     var levelService = LevelService(context)
-    val db = AppDatabase(context)
 
     inner class SkillViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nameView: TextView = itemView.findViewById(R.id.skill_name)
@@ -63,14 +65,16 @@ class SkillAdapter internal constructor(
         holder.nameView.isSelected = true
 
         // setup "Category" view
-        val category: Category? = if (skill.categoryId != null) db.categoryDao().findById(skill.categoryId) else null
-        holder.categoryView.text = category?.name ?: ""
-        holder.categoryView.isSelected = true
-        if (category?.color != null) {
-            holder.itemView.cv.strokeColor = Color.parseColor(category.color)
-        } else {
-            // set transparent
-            holder.itemView.cv.strokeColor = 0x00000000
+        holder.categoryView.text = ""
+        holder.itemView.cv.strokeColor = 0x00000000
+        if (skill.categoryId != null) {
+            val category = categoryRepository.get(skill.categoryId)
+            if (category != null) {
+                holder.categoryView.text = category.name
+                holder.categoryView.isSelected = true
+                holder.itemView.cv.strokeColor =
+                    if (category.color != null) Color.parseColor(category.color) else 0x00000000
+            }
         }
 
         // setup "Icon" view
@@ -81,9 +85,9 @@ class SkillAdapter internal constructor(
         holder.levelView.text = context.getString(R.string.term_level_value, skillLevel)
 
         // setup "Sort indicator" view
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val sortPref = prefs.getString(Const.Prefs.SORT_SKILLS, Const.Defaults.SORT_SKILLS)
-        holder.sortIndicatorView.text = when (sortPref) {
+        val prefService = PreferenceService(context)
+        val sort = prefService.getSort(PreferenceService.SortType.SKILLS)
+        holder.sortIndicatorView.text = when (sort) {
             SortSkills.XP.value -> {
                 holder.sortIndicatorView.visibility = View.VISIBLE
                 "(" + skill.xp + " XP)"
@@ -109,9 +113,8 @@ class SkillAdapter internal constructor(
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, skills.size)
         updateSortedByHeader(context, skills)
-        val foundAssignments = db.skillDao().findAssignments(skill.id)
-        db.skillDao().delete(skill)
-        Timber.d("Skill (${skill.id}) removed.")
+        val foundAssignments = skillRepository.getAssignments(skill.id)
+        skillRepository.delete(skill.id)
         return Pair(skill, foundAssignments)
     }
 
@@ -119,10 +122,6 @@ class SkillAdapter internal constructor(
         skills.add(position, toRestore.first)
         notifyItemInserted(position)
         updateSortedByHeader(context, skills)
-        db.skillDao().create(toRestore.first)
-        toRestore.second.forEach {
-            db.taskDao().assignSkill(it)
-        }
-        Timber.d("Skill (${toRestore.first.id}) restored.")
+        skillRepository.restore(toRestore.first, toRestore.second)
     }
 }

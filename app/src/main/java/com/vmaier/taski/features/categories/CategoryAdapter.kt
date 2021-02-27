@@ -10,29 +10,28 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.vmaier.taski.Const
 import com.vmaier.taski.MainActivity
 import com.vmaier.taski.R
-import com.vmaier.taski.data.AppDatabase
 import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.entity.Category
 import com.vmaier.taski.data.entity.Skill
-import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
+import com.vmaier.taski.data.repository.CategoryRepository
+import com.vmaier.taski.data.repository.SkillRepository
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.sortCategories
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.updateSortedByHeader
+import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.utils.Utils
 import com.vmaier.taski.views.EditTextDialog
 import dev.sasikanth.colorsheet.ColorSheet
 import dev.sasikanth.colorsheet.utils.ColorSheetUtils
-import timber.log.Timber
 
 
 /**
  * Created by Vladas Maier
- * on 23/07/2020
+ * on 23.07.2020
  * at 16:47
  */
 class CategoryAdapter internal constructor(
@@ -40,8 +39,10 @@ class CategoryAdapter internal constructor(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private val categoryRepository = CategoryRepository(context)
+    private val skillRepository = SkillRepository(context)
+
     var categories: MutableList<Category> = mutableListOf()
-    val db = AppDatabase(context)
 
     enum class ItemViewType(val value: Int) {
         MENU(0),
@@ -56,6 +57,7 @@ class CategoryAdapter internal constructor(
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var nameView: TextView = itemView.findViewById(R.id.category_name)
+        var skillsView: TextView = itemView.findViewById(R.id.skills_amount)
         var colorView: ImageView = itemView.findViewById(R.id.category_color)
         var categoryIndicatorView: TextView = itemView.findViewById(R.id.category_sort_indicator)
     }
@@ -96,12 +98,19 @@ class CategoryAdapter internal constructor(
     override fun getItemCount(): Int = categories.size
 
     private fun setupCategoryItemView(viewHolder: RecyclerView.ViewHolder, position: Int) {
-
         val category = categories[position]
         val holder = viewHolder as CategoryAdapter.CategoryViewHolder
 
         // setup "Name" view
         holder.nameView.text = category.name
+
+        // setup "Skills" view
+        val countSkills = categoryRepository.countSkills(category.id)
+        holder.skillsView.text = if (countSkills > 0) {
+            context.resources.getQuantityString(R.plurals.heading_assigned_skills, countSkills, countSkills)
+        } else {
+            context.getString(R.string.heading_no_skills_assigned)
+        }
 
         // setup "Color" view
         if (category.color != null) {
@@ -112,11 +121,11 @@ class CategoryAdapter internal constructor(
         }
 
         // setup "Sort indicator" view
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val sortPref = prefs.getString(Const.Prefs.SORT_CATEGORIES, Const.Defaults.SORT_CATEGORIES)
-        holder.categoryIndicatorView.text = when (sortPref) {
+        val prefService = PreferenceService(context)
+        val sort = prefService.getSort(PreferenceService.SortType.CATEGORIES)
+        holder.categoryIndicatorView.text = when (sort) {
             SortSkills.XP.value -> {
-                val xp = db.categoryDao().countCategoryXp(category.id)
+                val xp = categoryRepository.countXP(category.id)
                 holder.categoryIndicatorView.visibility = View.VISIBLE
                 "$xp XP"
             }
@@ -128,7 +137,6 @@ class CategoryAdapter internal constructor(
     }
 
     private fun setupMenuItemView(viewHolder: RecyclerView.ViewHolder, position: Int) {
-
         val category = categories[position]
         val fragmentManager = (context as AppCompatActivity).supportFragmentManager
         val resources = context.resources
@@ -142,15 +150,26 @@ class CategoryAdapter internal constructor(
                 text = category.name,
                 positiveButton = R.string.action_set
             )
-            dialog.onPositiveButtonClicked = {
+            dialog.onPositiveButtonListener = {
                 val newName = dialog.editText.text.toString().trim()
-                db.categoryDao().updateName(category.id, newName)
-                category.name = newName
-                notifyItemChanged(position)
-                sortCategories(dialog.editText.context, categoryAdapter.categories)
-                categoryAdapter.notifyDataSetChanged()
-                closeMenu()
-                Timber.d("Category (${category.id}) name changed.")
+                if (newName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
+                    dialog.editText.requestFocus()
+                    dialog.editText.error = resources.getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+                } else {
+                    val foundCategory = MainActivity.categoryRepository.get(newName)
+                    if (foundCategory != null && newName != category.name) {
+                        dialog.editText.requestFocus()
+                        dialog.editText.error = resources.getString(R.string.error_category_already_exists)
+                    } else {
+                        categoryRepository.updateName(category.id, newName)
+                        category.name = newName
+                        notifyItemChanged(position)
+                        sortCategories(dialog.editText.context, categories)
+                        notifyDataSetChanged()
+                        closeMenu()
+                        dialog.dismiss()
+                    }
+                }
             }
             dialog.onNegativeButtonClicked = {
                 dialog.dismiss()
@@ -160,25 +179,26 @@ class CategoryAdapter internal constructor(
 
         // setup "Pick Color" button
         holder.pickColorView.setOnClickListener {
-            val selectedColor = if (category.color != null) Color.parseColor(category.color) else null
+            val selectedColor =
+                if (category.color != null) Color.parseColor(category.color) else null
             ColorSheet().colorPicker(
                 colors = Utils.getMaterialColors(context),
                 selectedColor = selectedColor,
                 noColorOption = true,
                 listener = { color ->
-                    val hexColor = if (color == ColorSheet.NO_COLOR) null else ColorSheetUtils.colorToHex(color)
-                    db.categoryDao().updateColor(category.id, hexColor)
+                    val hexColor =
+                        if (color == ColorSheet.NO_COLOR) null else ColorSheetUtils.colorToHex(color)
+                    categoryRepository.updateColor(category.id, hexColor)
                     category.color = hexColor
                     notifyItemChanged(position)
                     closeMenu()
-                    Timber.d("Category (${category.id}) color changed.")
                 })
                 .show(fragmentManager)
         }
 
         // setup "Delete" button
         holder.deleteView.setOnClickListener {
-            val countSkills = db.skillDao().countSkillsWithCategory(category.id)
+            val countSkills = skillRepository.countSkillsByCategoryId(category.id)
             // show dialog if there are skills attached to category
             if (countSkills > 0) {
                 val dialogBuilder = AlertDialog.Builder(context)
@@ -205,14 +225,14 @@ class CategoryAdapter internal constructor(
     }
 
     private fun deleteCategory(position: Int) {
-        val categoryToRestore = CategoryListFragment.categoryAdapter.removeItem(position)
+        val categoryToRestore = removeItem(position)
         closeMenu()
         val message = context.getString(R.string.event_category_deleted)
         // show snackbar with "Undo" option
         val snackbar = Snackbar.make(MainActivity.fab, message, Snackbar.LENGTH_LONG)
             .setAction(context.getString(R.string.action_undo)) {
                 // "Undo" is selected -> restore deleted item
-                CategoryListFragment.categoryAdapter.restoreItem(categoryToRestore, position)
+                restoreItem(categoryToRestore, position)
                 closeMenu()
             }
             .setActionTextColor(Utils.getThemeColor(context, R.attr.colorSecondary))
@@ -225,9 +245,8 @@ class CategoryAdapter internal constructor(
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, categories.size)
         updateSortedByHeader(context, categories)
-        val foundSkills = db.skillDao().findSkillsByCategoryId(category.id)
-        db.categoryDao().delete(category)
-        Timber.d("Category (${category.id}) removed.")
+        val foundSkills = skillRepository.getByCategoryId(category.id)
+        categoryRepository.delete(category.id)
         return Pair(category, foundSkills)
     }
 
@@ -235,11 +254,7 @@ class CategoryAdapter internal constructor(
         categories.add(position, toRestore.first)
         notifyItemInserted(position)
         updateSortedByHeader(context, categories)
-        db.categoryDao().create(toRestore.first)
-        toRestore.second.forEach {
-            db.skillDao().updateCategoryId(it.id, toRestore.first.id)
-        }
-        Timber.d("Category (${toRestore.first.id}) restored.")
+        categoryRepository.restore(toRestore.first, toRestore.second)
     }
 
     fun showMenu(position: Int) {

@@ -15,7 +15,7 @@ interface CategoryDao {
     // ------------------------------------- CREATE QUERIES ------------------------------------- //
 
     @Insert(entity = Category::class, onConflict = OnConflictStrategy.IGNORE)
-    fun create(category: Category): Long
+    suspend fun create(category: Category): Long
 
     // -------------------------------------  READ QUERIES  ------------------------------------- //
 
@@ -23,19 +23,10 @@ interface CategoryDao {
         """
         SELECT *
         FROM categories
-        WHERE id = :categoryId
+        WHERE id = :id
     """
     )
-    fun findById(categoryId: Long): Category
-
-    @Query(
-        """
-        SELECT name
-        FROM categories
-        WHERE id = :categoryId
-    """
-    )
-    fun findNameById(categoryId: Long): String
+    fun get(id: Long): Category?
 
     @Query(
         """
@@ -44,7 +35,7 @@ interface CategoryDao {
         WHERE name = :name COLLATE NOCASE
     """
     )
-    fun findByName(name: String): Category?
+    fun get(name: String): Category?
 
     @Query(
         """
@@ -52,20 +43,34 @@ interface CategoryDao {
         FROM categories
     """
     )
-    fun findAll(): MutableList<Category>
+    fun getAll(): MutableList<Category>
 
     @Query(
         """
-        SELECT SUM(tasks.xp_value * tasks.count_done)
-        FROM assigned_skills 
-        INNER JOIN tasks
-          ON task_id = tasks.id
-        INNER JOIN skills
-          ON skill_id = skills.id
-        WHERE category_id = :categoryId
+        SELECT name
+        FROM categories
+        WHERE id = :id
     """
     )
-    fun countCategoryXp(categoryId: Long): Long
+    fun getNameById(id: Long): String?
+
+    @Query(
+        """
+        SELECT SUM(skills.xp_value)
+        FROM skills
+        WHERE category_id = :id
+    """
+    )
+    fun countXP(id: Long): Long
+
+    @Query(
+        """
+        SELECT COUNT(*)
+        FROM skills
+        WHERE category_id = :id
+    """
+    )
+    fun countSkills(id: Long): Int
 
     // ------------------------------------- UPDATE QUERIES ------------------------------------- //
 
@@ -73,22 +78,27 @@ interface CategoryDao {
         """
         UPDATE categories
         SET name = :name
-        WHERE id = :categoryId
+        WHERE id = :id
     """
     )
-    fun updateName(categoryId: Long, name: String)
+    suspend fun updateName(id: Long, name: String)
 
     @Query(
         """
         UPDATE categories
         SET color = :color
-        WHERE id = :categoryId
+        WHERE id = :id
     """
     )
-    fun updateColor(categoryId: Long, color: String?)
+    suspend fun updateColor(id: Long, color: String?)
 
     // ------------------------------------- DELETE QUERIES ------------------------------------- //
 
-    @Delete
-    fun delete(category: Category)
+    @Query(
+        """
+        DELETE FROM categories
+        WHERE id = :id
+    """
+    )
+    suspend fun delete(id: Long)
 }

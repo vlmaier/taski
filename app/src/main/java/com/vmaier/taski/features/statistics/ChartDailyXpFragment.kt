@@ -17,7 +17,6 @@ import com.vmaier.taski.R
 import com.vmaier.taski.databinding.FragmentChartDailyXpBinding
 import com.vmaier.taski.features.tasks.TaskFragment
 import com.vmaier.taski.utils.Utils
-import kotlin.collections.ArrayList
 import kotlin.math.floor
 
 
@@ -32,21 +31,30 @@ class ChartDailyXpFragment : TaskFragment() {
         lateinit var binding: FragmentChartDailyXpBinding
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        saved: Bundle?
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_statistics)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chart_daily_xp, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_chart_daily_xp, container, false)
 
-        val tasks = db.taskDao().findClosedTasks(Utils.getStartOfDay(), Utils.getEndOfDay())
+        val tasks = taskRepository.getClosedTasks()
         var skillWithXp: MutableMap<String, Long> = mutableMapOf()
         val values = ArrayList<BarEntry>()
         tasks.forEach { task ->
-            val assignedSkills = db.skillDao().findAssignedSkills(task.id)
+            val assignedSkills = skillRepository.getAssignedSkills(task.id)
             if (assignedSkills.isEmpty()) {
-                fillSkillWithXp(skillWithXp, getString(R.string.heading_unassigned), task.xp.toLong())
+                fillSkillWithXp(
+                    skillWithXp,
+                    getString(R.string.heading_unassigned),
+                    task.xp.toLong()
+                )
             } else {
                 assignedSkills.forEach { skill ->
-                    fillSkillWithXp(skillWithXp, skill.name, task.xp.toLong())
+                    fillSkillWithXp(skillWithXp, skill.name, task.xp.div(assignedSkills.size).toLong())
                 }
             }
         }
@@ -76,7 +84,11 @@ class ChartDailyXpFragment : TaskFragment() {
         val xAxis = binding.chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
-        val captions = skillWithXp.keys
+        val captions = skillWithXp.keys.map {
+            if (it.length > 6) {
+                it.substring(0, 6).plus("...")
+            } else it
+        }
         val formatter = IndexAxisValueFormatter(captions)
         xAxis.valueFormatter = formatter
         xAxis.textSize = 12f
@@ -107,7 +119,11 @@ class ChartDailyXpFragment : TaskFragment() {
         return binding.root
     }
 
-    private fun fillSkillWithXp(skillWithXp: MutableMap<String, Long>, skillName: String, xp: Long) {
+    private fun fillSkillWithXp(
+        skillWithXp: MutableMap<String, Long>,
+        skillName: String,
+        xp: Long
+    ) {
         skillWithXp[skillName] = xp + (skillWithXp[skillName] ?: 0)
     }
 }

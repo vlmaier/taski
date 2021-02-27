@@ -23,7 +23,7 @@ class StatisticsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, saved: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, saved)
         toolbar.title = getString(R.string.heading_statistics)
         toggleBottomMenu(false, View.GONE)
@@ -35,10 +35,16 @@ class StatisticsFragment : Fragment() {
     private fun setupViewPager() {
         val adapter = StatisticsPagerAdapter(childFragmentManager)
         adapter.addFragment(ChartSkillXpFragment(), getString(R.string.heading_skill_xp_title))
-        adapter.addFragment(ChartCategoryXpFragment(), getString(R.string.heading_category_xp_title))
+        adapter.addFragment(
+            ChartCategoryXpFragment(),
+            getString(R.string.heading_category_xp_title)
+        )
         adapter.addFragment(ChartDailyXpFragment(), getString(R.string.heading_daily_xp_title))
         adapter.addFragment(ChartWeeklyXpFragment(), getString(R.string.heading_weekly_xp_title))
-        adapter.addFragment(ChartWeeklyTasksFragment(), getString(R.string.heading_weekly_tasks_title))
+        adapter.addFragment(
+            ChartWeeklyTasksFragment(),
+            getString(R.string.heading_weekly_tasks_title)
+        )
         binding.viewpager.adapter = adapter
         binding.tabs.setupWithViewPager(binding.viewpager)
     }
