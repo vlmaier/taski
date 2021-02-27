@@ -230,7 +230,7 @@
     <string name="intro_slide_1_top">Welcome to Taski</string>
     <string name="intro_slide_1_bottom">your gamified task scheduler.</string>
     <string name="intro_slide_2_top">Create skills</string>
-    <string name="intro_slide_2_bottom">to represent your personal abilities.</string>
+    <string name="intro_slide_2_bottom">to represent your personal interests.</string>
     <string name="intro_slide_3_top">Create tasks</string>
     <string name="intro_slide_3_bottom">to accomplish your goals.</string>
     <string name="intro_slide_4_top">Assign skills to tasks</string>
@@ -238,7 +238,7 @@
     <string name="intro_slide_5_top">Keep track of your progress</string>
     <string name="intro_slide_5_bottom">with various charts and graphs.</string>
     <string name="intro_slide_6_top">Enjoy the selection</string>
-    <string name="intro_slide_6_bottom">of numerous hand-picked themes.</string>
+    <string name="intro_slide_6_bottom">of numerous handpicked themes.</string>
 
     <!-- Theme values -->
     <string name="theme_default" translatable="false">Theme.Default</string>

@@ -84,7 +84,11 @@ class ChartDailyXpFragment : TaskFragment() {
         val xAxis = binding.chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
-        val captions = skillWithXp.keys
+        val captions = skillWithXp.keys.map {
+            if (it.length > 6) {
+                it.substring(0, 6).plus("...")
+            } else it
+        }
         val formatter = IndexAxisValueFormatter(captions)
         xAxis.valueFormatter = formatter
         xAxis.textSize = 12f
