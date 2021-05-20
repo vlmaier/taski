@@ -29,9 +29,14 @@ class CalendarService(val context: Context) {
         if (task == null) return
         val calendarId = getCalendarId() ?: return
         val event = createEvent(calendarId, task)
-        val eventId = context.contentResolver.insert(Calendar.Events.CONTENT_URI, event)
-        Timber.d("Created new event ($eventId) in calendar.")
-        taskRepository.updateEventId(task.id, eventId.toString())
+        try {
+            val eventId = context.contentResolver.insert(Calendar.Events.CONTENT_URI, event)
+            Timber.d("Created new event ($eventId) in calendar.")
+            taskRepository.updateEventId(task.id, eventId.toString())
+        } catch (e: IllegalArgumentException) {
+            Timber.e("Could not create event in calendar.")
+            Timber.d(e)
+        }
     }
 
     fun updateInCalendar(isCalendarSyncOn: Boolean, before: Task, after: Task?) {
@@ -55,18 +60,28 @@ class CalendarService(val context: Context) {
         if (eventId != null) {
             val calendarId = getCalendarId() ?: return
             val event = updateEvent(calendarId, before, after)
-            context.contentResolver.update(eventId, event, null, null)
-            Timber.d("Updated event ($eventId) in calendar.")
-            taskRepository.updateEventId(before.id, eventId.toString())
+            try {
+                context.contentResolver.update(eventId, event, null, null)
+                Timber.d("Updated event ($eventId) in calendar.")
+                taskRepository.updateEventId(before.id, eventId.toString())
+            } catch (e: IllegalArgumentException) {
+                Timber.e("Could not update event ($eventId) in calendar.")
+                Timber.d(e)
+            }
         }
     }
 
     fun deleteFromCalendar(task: Task) {
         val eventId: Uri? = Uri.parse(task.eventId)
         if (eventId != null) {
-            context.contentResolver.delete(eventId, null, null)
-            Timber.d("Deleted event ($eventId) from calendar.")
-            taskRepository.updateEventId(task.id, null)
+            try {
+                context.contentResolver.delete(eventId, null, null)
+                Timber.d("Deleted event ($eventId) from calendar.")
+                taskRepository.updateEventId(task.id, null)
+            } catch (e: IllegalArgumentException) {
+                Timber.e("Could not delete event ($eventId) from calendar.")
+                Timber.d(e)
+            }
         }
     }
 
