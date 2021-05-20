@@ -9,7 +9,7 @@ buildscript {
     ext {
         kotlinVersion = '1.4.31'
         navVersion = '2.3.3'
-        gradleVersion = '4.1.2'
+        gradleVersion = '4.2.1'
         latestAboutLibsRelease = '8.3.0'
         dataBindingCompilerVersion = gradleVersion
     }
