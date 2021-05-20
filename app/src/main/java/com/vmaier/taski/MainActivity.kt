@@ -264,12 +264,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 val overallLevel = levelService.getOverallLevel(overallXp)
                 levelView.text = getString(R.string.term_level_value, overallLevel)
             }
+
             override fun onDrawerOpened(view: View) {
                 // Nothing to do here
             }
+
             override fun onDrawerClosed(view: View) {
                 // Nothing to do here
             }
+
             override fun onDrawerStateChanged(i: Int) {
                 // Nothing to do here
             }
@@ -541,7 +544,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                 )
             } else if (foundSkill != null && foundSkill.id != SkillEditFragment.skill.id) {
                 SkillEditFragment.binding.name.requestFocus()
-                SkillEditFragment.binding.name.error = getString(R.string.error_skill_already_exists)
+                SkillEditFragment.binding.name.error =
+                    getString(R.string.error_skill_already_exists)
             } else if (category.isNotBlank() && category.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.category.requestFocus()
                 SkillEditFragment.binding.category.error = getString(

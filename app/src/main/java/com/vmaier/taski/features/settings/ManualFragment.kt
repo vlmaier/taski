@@ -37,8 +37,8 @@ class ManualFragment : Fragment() {
 
         val version = "v${BuildConfig.VERSION_NAME}"
         binding.version.text = version
-        val md = Markwon.create(requireContext());
-        md.setMarkdown(binding.text, resources.getString(R.string.text_manual));
+        val md = Markwon.create(requireContext())
+        md.setMarkdown(binding.text, resources.getString(R.string.text_manual))
 
         return binding.root
     }

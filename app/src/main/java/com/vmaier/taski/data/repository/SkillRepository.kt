@@ -134,7 +134,12 @@ class SkillRepository(context: Context) {
     }
 
     @Transaction
-    fun updateCategoryId(context: Context, id: Long, categoryId: Long?, showMessage: Boolean = true) {
+    fun updateCategoryId(
+        context: Context,
+        id: Long,
+        categoryId: Long?,
+        showMessage: Boolean = true
+    ) {
         CoroutineScope(Dispatchers.Main + Job()).launch {
             withContext(Dispatchers.IO) {
                 skillDao.updateCategoryId(id, categoryId)
@@ -164,7 +169,12 @@ class SkillRepository(context: Context) {
         }
     }
 
-    private suspend fun refreshUI(context: Context, id: Long, sort: Boolean = false, showMessage: Boolean = true) {
+    private suspend fun refreshUI(
+        context: Context,
+        id: Long,
+        sort: Boolean = false,
+        showMessage: Boolean = true
+    ) {
         withContext(Dispatchers.Main) {
             val skill = skillDao.get(id)
             if (skill != null) {

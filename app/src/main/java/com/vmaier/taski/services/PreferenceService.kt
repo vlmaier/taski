@@ -97,7 +97,8 @@ class PreferenceService(val context: Context) {
     }
 
     fun getStartOfTheWeek(): String {
-        return preferences.getString(Keys.START_OF_THE_WEEK, Defaults.START_OF_THE_WEEK) ?: Defaults.START_OF_THE_WEEK
+        return preferences.getString(Keys.START_OF_THE_WEEK, Defaults.START_OF_THE_WEEK)
+            ?: Defaults.START_OF_THE_WEEK
     }
 
     fun setStartOfTheWeek(value: String) {

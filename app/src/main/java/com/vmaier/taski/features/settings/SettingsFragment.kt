@@ -12,11 +12,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.preference.*
-import com.vmaier.taski.*
+import com.vmaier.taski.MainActivity
 import com.vmaier.taski.MainActivity.Companion.avatarView
 import com.vmaier.taski.MainActivity.Companion.toggleBottomMenu
 import com.vmaier.taski.MainActivity.Companion.toolbar
 import com.vmaier.taski.R
+import com.vmaier.taski.compress
+import com.vmaier.taski.encodeToBase64
 import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.views.EditTextDialog
@@ -63,19 +65,22 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         // preselect dark mode icon
         val isDarkModeOn = prefService.isDarkModeEnabled()
-        val darkMode = preferenceScreen.findPreference(PreferenceService.Keys.DARK_MODE) as SwitchPreference?
+        val darkMode =
+            preferenceScreen.findPreference(PreferenceService.Keys.DARK_MODE) as SwitchPreference?
         darkMode?.setIcon(if (isDarkModeOn) R.drawable.ic_light_mode_24 else R.drawable.ic_dark_mode_24)
         darkMode?.title =
             getString(if (isDarkModeOn) R.string.heading_light_mode else R.string.heading_dark_mode)
 
         // preselect language value
-        val appLanguage = preferenceScreen.findPreference(PreferenceService.Keys.LANGUAGE) as ListPreference?
+        val appLanguage =
+            preferenceScreen.findPreference(PreferenceService.Keys.LANGUAGE) as ListPreference?
         val prefLanguage = prefService.getLanguage()
         val languageValues = resources.getStringArray(R.array.language_values_array)
         appLanguage?.setValueIndex(languageValues.indexOf(prefLanguage))
 
         // preselect start of the week value
-        val startOfTheWeek = preferenceScreen.findPreference(PreferenceService.Keys.START_OF_THE_WEEK) as ListPreference?
+        val startOfTheWeek =
+            preferenceScreen.findPreference(PreferenceService.Keys.START_OF_THE_WEEK) as ListPreference?
         val prefStartOfTheWeek = prefService.getStartOfTheWeek()
         val startOfTheWeekValues = resources.getStringArray(R.array.start_of_the_week_values_array)
         startOfTheWeek?.setValueIndex(startOfTheWeekValues.indexOf(prefStartOfTheWeek))
@@ -169,7 +174,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun setChangeAvatarClickListener() {
-        val preference = preferenceScreen.findPreference(PreferenceService.Keys.CHANGE_AVATAR) as Preference?
+        val preference =
+            preferenceScreen.findPreference(PreferenceService.Keys.CHANGE_AVATAR) as Preference?
         preference?.setOnPreferenceClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK)
             galleryIntent.type = "image/*"
@@ -186,7 +192,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun setResetAvatarClickListener() {
-        val preference = preferenceScreen.findPreference(PreferenceService.Keys.RESET_AVATAR) as Preference?
+        val preference =
+            preferenceScreen.findPreference(PreferenceService.Keys.RESET_AVATAR) as Preference?
         preference?.setOnPreferenceClickListener {
             val dialogBuilder = AlertDialog.Builder(requireContext())
             dialogBuilder
@@ -206,7 +213,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun setUsernameClickListener() {
-        val preference = preferenceScreen.findPreference(PreferenceService.Keys.USER_NAME) as Preference?
+        val preference =
+            preferenceScreen.findPreference(PreferenceService.Keys.USER_NAME) as Preference?
         preference?.setOnPreferenceClickListener {
             val usernameValue = prefService.getUserName()
             val dialog = EditTextDialog.newInstance(
@@ -230,7 +238,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun setThemeClickListener() {
-        val preference = preferenceScreen.findPreference(PreferenceService.Keys.THEME) as Preference?
+        val preference =
+            preferenceScreen.findPreference(PreferenceService.Keys.THEME) as Preference?
         preference?.setOnPreferenceClickListener {
             prefTheme = prefService.getTheme()
             val dialogView =

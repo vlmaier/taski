@@ -11,18 +11,16 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.maltaisn.recurpicker.RecurrenceFinder
 import com.maltaisn.recurpicker.format.RRuleFormatter
-import com.vmaier.taski.*
+import com.vmaier.taski.Const
+import com.vmaier.taski.MainActivity
+import com.vmaier.taski.R
 import com.vmaier.taski.data.Status
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.databinding.FragmentEditSkillBinding
-import com.vmaier.taski.features.skills.SkillListFragment.Companion.skillAdapter
-import com.vmaier.taski.features.skills.SkillListFragment.Companion.sortSkills
+import com.vmaier.taski.hideKeyboard
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.utils.KeyBoardHider
 import com.vmaier.taski.utils.Utils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 /**
@@ -167,7 +165,8 @@ class SkillEditFragment : SkillFragment() {
         }
         if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.name.requestFocus()
-            binding.name.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+            binding.name.error =
+                getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             return
         }
         if (skill.name != name) {
@@ -181,7 +180,8 @@ class SkillEditFragment : SkillFragment() {
         if (categoryName.isNotBlank()) {
             if (categoryName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 binding.category.requestFocus()
-                binding.category.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+                binding.category.error =
+                    getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
                 return
             } else {
                 val foundCategory = categoryRepository.get(categoryName)

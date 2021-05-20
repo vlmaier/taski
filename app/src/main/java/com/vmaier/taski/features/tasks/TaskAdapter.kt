@@ -128,7 +128,10 @@ class TaskAdapter internal constructor(
                         bundle.putString(TaskFragment.KEY_GOAL, task.goal)
                         bundle.putString(TaskFragment.KEY_DETAILS, task.details)
                         val durationUnit = task.getDurationUnit()
-                        bundle.putInt(TaskFragment.KEY_DURATION_VALUE, task.convertDurationToMinutes(durationUnit))
+                        bundle.putInt(
+                            TaskFragment.KEY_DURATION_VALUE,
+                            task.convertDurationToMinutes(durationUnit)
+                        )
                         bundle.putString(TaskFragment.KEY_DURATION_UNIT, durationUnit.name)
                         bundle.putString(
                             TaskFragment.KEY_DIFFICULTY,
@@ -165,7 +168,10 @@ class TaskAdapter internal constructor(
 
     override fun getItemCount(): Int = tasks.size
 
-    fun removeItem(position: Int, status: Status): Quadruple<Task?, LiveData<Long>, Boolean, Long?> {
+    fun removeItem(
+        position: Int,
+        status: Status
+    ): Quadruple<Task?, LiveData<Long>, Boolean, Long?> {
         val task = tasks.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, tasks.size)

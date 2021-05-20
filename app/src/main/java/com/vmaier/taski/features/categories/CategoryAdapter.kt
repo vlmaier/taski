@@ -107,7 +107,11 @@ class CategoryAdapter internal constructor(
         // setup "Skills" view
         val countSkills = categoryRepository.countSkills(category.id)
         holder.skillsView.text = if (countSkills > 0) {
-            context.resources.getQuantityString(R.plurals.heading_assigned_skills, countSkills, countSkills)
+            context.resources.getQuantityString(
+                R.plurals.heading_assigned_skills,
+                countSkills,
+                countSkills
+            )
         } else {
             context.getString(R.string.heading_no_skills_assigned)
         }
@@ -154,12 +158,16 @@ class CategoryAdapter internal constructor(
                 val newName = dialog.editText.text.toString().trim()
                 if (newName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                     dialog.editText.requestFocus()
-                    dialog.editText.error = resources.getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+                    dialog.editText.error = resources.getString(
+                        R.string.error_too_short,
+                        Const.Defaults.MINIMAL_INPUT_LENGTH
+                    )
                 } else {
                     val foundCategory = MainActivity.categoryRepository.get(newName)
                     if (foundCategory != null && newName != category.name) {
                         dialog.editText.requestFocus()
-                        dialog.editText.error = resources.getString(R.string.error_category_already_exists)
+                        dialog.editText.error =
+                            resources.getString(R.string.error_category_already_exists)
                     } else {
                         categoryRepository.updateName(category.id, newName)
                         category.name = newName

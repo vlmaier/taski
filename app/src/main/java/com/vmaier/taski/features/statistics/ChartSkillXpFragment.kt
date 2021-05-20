@@ -98,7 +98,7 @@ class ChartSkillXpFragment : SkillFragment() {
         legend.textColor = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
         legend.setDrawInside(true)
 
-        val p = binding.chart.getPaint(Chart.PAINT_INFO);
+        val p = binding.chart.getPaint(Chart.PAINT_INFO)
         p.textSize = 48f
         p.color = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
         binding.chart.setNoDataText(getString(R.string.description_no_data))

@@ -6,13 +6,13 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
+import android.provider.CalendarContract.Calendars
 import androidx.core.content.ContextCompat.checkSelfPermission
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.data.repository.TaskRepository
 import timber.log.Timber
 import java.util.*
 import android.provider.CalendarContract as Calendar
-import android.provider.CalendarContract.Calendars as Calendars
 
 
 /**

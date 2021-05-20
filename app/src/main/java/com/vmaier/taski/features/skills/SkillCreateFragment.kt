@@ -98,7 +98,8 @@ class SkillCreateFragment : SkillFragment() {
         } else {
             if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 binding.name.requestFocus()
-                binding.name.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+                binding.name.error =
+                    getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
                 return false
             }
             val foundSkill = skillRepository.get(name)
@@ -111,7 +112,8 @@ class SkillCreateFragment : SkillFragment() {
         val categoryName = binding.category.editText?.text.toString().trim()
         if (categoryName.isNotBlank() && categoryName.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.category.requestFocus()
-            binding.category.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+            binding.category.error =
+                getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             return false
         }
         val iconId: Int = Integer.parseInt(binding.iconButton.tag.toString())
@@ -122,7 +124,12 @@ class SkillCreateFragment : SkillFragment() {
                 if (id != null && categoryName.isNotBlank()) {
                     val foundCategory = categoryRepository.get(categoryName)
                     if (foundCategory != null) {
-                        skillRepository.updateCategoryId(requireContext(), id, foundCategory.id, false)
+                        skillRepository.updateCategoryId(
+                            requireContext(),
+                            id,
+                            foundCategory.id,
+                            false
+                        )
                     } else {
                         categoryRepository.create(requireContext(), categoryName, null, id)
                     }

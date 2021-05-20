@@ -54,7 +54,11 @@ class ChartDailyXpFragment : TaskFragment() {
                 )
             } else {
                 assignedSkills.forEach { skill ->
-                    fillSkillWithXp(skillWithXp, skill.name, task.xp.div(assignedSkills.size).toLong())
+                    fillSkillWithXp(
+                        skillWithXp,
+                        skill.name,
+                        task.xp.div(assignedSkills.size).toLong()
+                    )
                 }
             }
         }
@@ -109,7 +113,7 @@ class ChartDailyXpFragment : TaskFragment() {
         binding.chart.legend.isEnabled = false
         binding.chart.setTouchEnabled(false)
 
-        val p = binding.chart.getPaint(Chart.PAINT_INFO);
+        val p = binding.chart.getPaint(Chart.PAINT_INFO)
         p.textSize = 48f
         p.color = Utils.getThemeColor(requireContext(), R.attr.colorOnSurface)
         binding.chart.setNoDataText(getString(R.string.description_no_data))

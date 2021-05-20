@@ -194,7 +194,8 @@ class TaskCreateFragment : TaskFragment() {
         }
         if (goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.goal.requestFocus()
-            binding.goal.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+            binding.goal.error =
+                getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             return false
         }
         val detailsValue = binding.details.editText?.text.toString().trim()

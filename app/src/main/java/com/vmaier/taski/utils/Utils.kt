@@ -41,7 +41,7 @@ object Utils {
     fun getRandomMaterialColor(context: Context): Int {
         val colors = context.resources.obtainTypedArray(R.array.md_colors_300)
         val index = (Math.random() * colors.length()).toInt()
-        val randomColor = colors.getColor(index, Color.BLACK);
+        val randomColor = colors.getColor(index, Color.BLACK)
         colors.recycle()
         return randomColor
     }

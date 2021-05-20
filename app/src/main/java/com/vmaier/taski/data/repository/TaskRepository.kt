@@ -187,7 +187,12 @@ class TaskRepository(context: Context) {
     }
 
     @Transaction
-    fun updateDurationAndDifficulty(context: Context, id: Long, duration: Int, difficulty: Difficulty) {
+    fun updateDurationAndDifficulty(
+        context: Context,
+        id: Long,
+        duration: Int,
+        difficulty: Difficulty
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
             val task = get(id)
             if (task != null) {
@@ -330,7 +335,12 @@ class TaskRepository(context: Context) {
         }
     }
 
-    private suspend fun refreshUI(context: Context, id: Long, sort: Boolean = false, skillIds: List<Long> = arrayListOf()) {
+    private suspend fun refreshUI(
+        context: Context,
+        id: Long,
+        sort: Boolean = false,
+        skillIds: List<Long> = arrayListOf()
+    ) {
         withContext(Dispatchers.Main) {
             val task = taskDao.get(id)
             if (task != null) {

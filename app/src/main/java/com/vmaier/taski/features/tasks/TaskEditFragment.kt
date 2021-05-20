@@ -20,7 +20,6 @@ import com.vmaier.taski.data.Difficulty
 import com.vmaier.taski.data.entity.Skill
 import com.vmaier.taski.data.entity.Task
 import com.vmaier.taski.databinding.FragmentEditTaskBinding
-import com.vmaier.taski.features.skills.SkillEditFragment
 import com.vmaier.taski.utils.KeyBoardHider
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.RequestCode
@@ -204,7 +203,8 @@ class TaskEditFragment : TaskFragment() {
         }
         if (goal.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
             binding.goal.requestFocus()
-            binding.goal.error = getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
+            binding.goal.error =
+                getString(R.string.error_too_short, Const.Defaults.MINIMAL_INPUT_LENGTH)
             return
         }
         val detailsValue = binding.details.editText?.text.toString().trim()
