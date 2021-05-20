@@ -40,8 +40,8 @@ class TaskCreateFragment : TaskFragment() {
         lateinit var binding: FragmentCreateTaskBinding
         lateinit var difficultyChip: Chip
         lateinit var recurrenceButton: Button
-        fun isBindingInitialized() = Companion::binding.isInitialized
-        fun isRecurrenceButtonInitialized() = Companion::recurrenceButton.isInitialized
+        fun isBindingInitialized() = ::binding.isInitialized
+        fun isRecurrenceButtonInitialized() = ::recurrenceButton.isInitialized
     }
 
     override fun onCreateView(

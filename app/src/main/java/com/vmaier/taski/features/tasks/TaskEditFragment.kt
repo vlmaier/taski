@@ -43,8 +43,8 @@ class TaskEditFragment : TaskFragment() {
         lateinit var recurrenceButton: Button
         lateinit var task: Task
         lateinit var assignedSkills: List<Skill>
-        fun isBindingInitialized() = Companion::binding.isInitialized
-        fun isRecurrenceButtonInitialized() = Companion::recurrenceButton.isInitialized
+        fun isBindingInitialized() = ::binding.isInitialized
+        fun isRecurrenceButtonInitialized() = ::recurrenceButton.isInitialized
     }
 
     override fun onCreateView(

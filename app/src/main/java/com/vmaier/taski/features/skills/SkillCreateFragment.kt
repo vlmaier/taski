@@ -27,6 +27,7 @@ class SkillCreateFragment : SkillFragment() {
 
     companion object {
         lateinit var binding: FragmentCreateSkillBinding
+        fun isBindingInitialized() = ::binding.isInitialized
     }
 
     override fun onCreateView(
@@ -81,9 +82,11 @@ class SkillCreateFragment : SkillFragment() {
 
     override fun onSaveInstanceState(out: Bundle) {
         super.onSaveInstanceState(out)
-        out.putString(KEY_NAME, binding.name.editText?.text.toString())
-        out.putString(KEY_CATEGORY, binding.category.editText?.text.toString())
-        out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
+        if (isBindingInitialized()) {
+            out.putString(KEY_NAME, binding.name.editText?.text.toString())
+            out.putString(KEY_CATEGORY, binding.category.editText?.text.toString())
+            out.putInt(KEY_ICON_ID, Integer.parseInt(binding.iconButton.tag.toString()))
+        }
     }
 
     private fun createSkillButtonClicked(): Boolean {
