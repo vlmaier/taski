@@ -345,7 +345,7 @@ class TaskRepository(context: Context) {
                 }
                 if (SkillEditFragment.isTaskAdapterInitialized() && skillIds.isNotEmpty()) {
                     val j = SkillEditFragment.taskAdapter.tasks.indexOfFirst { it.id == id }
-                    if (skillIds.contains(SkillEditFragment.skill.id)) {
+                    if (skillIds.contains(SkillEditFragment.skill.id) && j != -1) {
                         SkillEditFragment.taskAdapter.tasks[j] = task
                     } else {
                         SkillEditFragment.taskAdapter.tasks.remove(task)
