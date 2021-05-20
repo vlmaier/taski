@@ -532,7 +532,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
             SkillEditFragment.binding.name.requestFocus()
             SkillEditFragment.binding.name.error = getString(R.string.error_cannot_be_empty)
         } else {
-            val foundSkill = skillRepository.get(name)
+            val foundSkill = skillRepository.get(name.trim())
             if (name.length < Const.Defaults.MINIMAL_INPUT_LENGTH) {
                 SkillEditFragment.binding.name.requestFocus()
                 SkillEditFragment.binding.name.error = getString(
