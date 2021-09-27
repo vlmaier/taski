@@ -7,9 +7,9 @@ buildscript {
     }
 
     ext {
-        kotlinVersion = '1.5.20'
+        kotlinVersion = '1.5.31'
         navVersion = '2.3.5'
-        gradleVersion = '4.2.2'
+        gradleVersion = '7.0.2'
         aboutLibsVersion = '8.9.0'
         dataBindingCompilerVersion = gradleVersion
     }
@@ -26,7 +26,10 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://jitpack.io' }
+        mavenCentral()
+        maven {
+            url 'https://jitpack.io'
+        }
     }
 }
 
