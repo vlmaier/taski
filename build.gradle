@@ -7,18 +7,18 @@ buildscript {
     }
 
     ext {
-        kotlinVersion = '1.5.31'
-        navVersion = '2.3.5'
-        gradleVersion = '7.0.2'
+        kotlinVersion = '1.6.10'
+        navVersion = '2.5.0-alpha01'
+        gradleVersion = '7.1.0-rc01'
         aboutLibsVersion = '8.9.0'
         dataBindingCompilerVersion = gradleVersion
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:${gradleVersion}"
+        classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion"
-        classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:${aboutLibsVersion}"
+        classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$aboutLibsVersion"
     }
 }
 

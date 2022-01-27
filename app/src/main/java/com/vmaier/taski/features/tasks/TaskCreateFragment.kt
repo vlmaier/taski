@@ -7,7 +7,6 @@ import android.view.View.NO_ID
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.android.material.chip.Chip
 import com.maltaisn.recurpicker.Recurrence
@@ -25,7 +24,6 @@ import com.vmaier.taski.features.tasks.TaskListFragment.Companion.taskAdapter
 import com.vmaier.taski.utils.KeyBoardHider
 import com.vmaier.taski.utils.PermissionUtils
 import com.vmaier.taski.utils.RequestCode
-import kotlinx.android.synthetic.main.fragment_create_task.view.*
 import java.util.*
 
 
@@ -50,7 +48,7 @@ class TaskCreateFragment : TaskFragment() {
         saved: Bundle?
     ): View {
         super.onCreateView(inflater, container, saved)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_create_task, container, false)
+        binding = FragmentCreateTaskBinding.inflate(inflater)
 
         // Get arguments from bundle
         val args = saved ?: this.arguments
@@ -95,10 +93,10 @@ class TaskCreateFragment : TaskFragment() {
         val selectedDifficulty = Difficulty.valueOf(
             args?.getString(KEY_DIFFICULTY) ?: Difficulty.REGULAR.name
         )
-        binding.difficulty.trivial.isChecked = selectedDifficulty == Difficulty.TRIVIAL
-        binding.difficulty.regular.isChecked = selectedDifficulty == Difficulty.REGULAR
-        binding.difficulty.hard.isChecked = selectedDifficulty == Difficulty.HARD
-        binding.difficulty.insane.isChecked = selectedDifficulty == Difficulty.INSANE
+        binding.trivial.isChecked = selectedDifficulty == Difficulty.TRIVIAL
+        binding.regular.isChecked = selectedDifficulty == Difficulty.REGULAR
+        binding.hard.isChecked = selectedDifficulty == Difficulty.HARD
+        binding.insane.isChecked = selectedDifficulty == Difficulty.INSANE
 
         // Skills settings
         val adapter = ArrayAdapter(

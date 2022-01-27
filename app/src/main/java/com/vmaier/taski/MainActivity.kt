@@ -389,7 +389,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         return true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.basic_options_menu, menu)
         return true

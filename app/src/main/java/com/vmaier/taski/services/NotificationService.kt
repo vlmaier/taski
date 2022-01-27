@@ -62,7 +62,7 @@ class NotificationService : IntentService("NotificationService") {
                 context,
                 ACTION_TAP_REQUEST_CODE,
                 notifyIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE
             )
 
             val notificationId = NotificationId.getId()
@@ -78,7 +78,7 @@ class NotificationService : IntentService("NotificationService") {
                 this,
                 ACTION_DISMISS_REQUEST_CODE,
                 dismissIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT
+                PendingIntent.FLAG_IMMUTABLE
             )
             val dismissAction: Notification.Action = Notification.Action.Builder(
                 R.drawable.ic_time_24, getString(R.string.action_dismiss),
@@ -141,7 +141,7 @@ class NotificationService : IntentService("NotificationService") {
             activity,
             requestCode,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE
         )
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = timeInMs
@@ -166,7 +166,7 @@ class NotificationService : IntentService("NotificationService") {
                 activity,
                 requestCode,
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_IMMUTABLE
             )
             val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             alarmManager.cancel(pendingIntent)
