@@ -3,7 +3,7 @@
 
     <string name="app_name" translatable="false">Taski</string>
     <string name="three_dots" translatable="false">...</string>
-    <string name="version">Version %s\n\n© 2021 Vladas Maier</string>
+    <string name="version">Version %s\n\n© 2022 Vladas Maier</string>
 
     <!-- Theme names -->
     <string name="theme_default_name">Default</string>

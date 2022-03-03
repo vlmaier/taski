@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="version">Version %s\n\n© 2021 Vladas Maier</string>
+    <string name="version">Version %s\n\n© 2022 Vladas Maier</string>
 
     <!-- Theme names -->
     <string name="theme_default_name">Standard</string>
