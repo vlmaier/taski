@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import com.vmaier.taski.R
 import com.vmaier.taski.data.SortSkills
 import com.vmaier.taski.data.entity.AssignedSkill
@@ -19,7 +20,6 @@ import com.vmaier.taski.features.skills.SkillListFragment.Companion.updateSorted
 import com.vmaier.taski.services.LevelService
 import com.vmaier.taski.services.PreferenceService
 import com.vmaier.taski.setIcon
-import kotlinx.android.synthetic.main.item_skill.view.*
 
 
 /**
@@ -39,6 +39,7 @@ class SkillAdapter internal constructor(
     var levelService = LevelService(context)
 
     inner class SkillViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var cardView: MaterialCardView = itemView.findViewById(R.id.card_view_skill)
         var nameView: TextView = itemView.findViewById(R.id.skill_name)
         var categoryView: TextView = itemView.findViewById(R.id.skill_category)
         var levelView: TextView = itemView.findViewById(R.id.skill_level)
@@ -66,13 +67,13 @@ class SkillAdapter internal constructor(
 
         // setup "Category" view
         holder.categoryView.text = ""
-        holder.itemView.cv.strokeColor = 0x00000000
+        holder.cardView.strokeColor = 0x00000000
         if (skill.categoryId != null) {
             val category = categoryRepository.get(skill.categoryId)
             if (category != null) {
                 holder.categoryView.text = category.name
                 holder.categoryView.isSelected = true
-                holder.itemView.cv.strokeColor =
+                holder.cardView.strokeColor =
                     if (category.color != null) Color.parseColor(category.color) else 0x00000000
             }
         }

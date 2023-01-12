@@ -145,7 +145,7 @@ class CategoryListFragment : Fragment() {
                 }
             }
         })
-        val simpleItemTouchCallback = CategoryItemSwipeHandler()
+        val simpleItemTouchCallback = CategoryItemSwipeHandler(layoutInflater)
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(binding.rv)
     }

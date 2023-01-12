@@ -50,10 +50,7 @@ class ChartWeeklyTasksFragment : TaskFragment() {
         )
 
         val prefStartOfTheWeek = StartOfTheWeek
-            .valueOf(
-                prefService.getStartOfTheWeek()
-                    .toUpperCase(Locale.getDefault())
-            )
+            .valueOf(prefService.getStartOfTheWeek().uppercase(Locale.getDefault()))
         val daysOfWeekWithValue = mutableListOf<Float>()
         daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.MONDAY))
         daysOfWeekWithValue.add(getAmountOfTasksForDayOfTheWeek(Calendar.TUESDAY))

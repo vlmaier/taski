@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources.Theme
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
@@ -125,7 +126,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         // Language settings
         val prefLanguage = prefService.getLanguage()
         val prefLocale = Locale(prefLanguage)
-        val currentLocale: Locale = resources.configuration.locale
+        val currentLocale: Locale = getCurrentLocale()
         if (prefLocale != currentLocale) {
             val config: Configuration = resources.configuration
             config.setLocale(prefLocale)
@@ -230,6 +231,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
                     flow.addOnCompleteListener { }
                 }
             }
+        }
+    }
+
+    @Suppress("DEPRECATION")
+    private fun getCurrentLocale(): Locale {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            resources.configuration.locales.get(0);
+        } else {
+            resources.configuration.locale
         }
     }
 
@@ -389,7 +399,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener,
         return true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.basic_options_menu, menu)
         return true

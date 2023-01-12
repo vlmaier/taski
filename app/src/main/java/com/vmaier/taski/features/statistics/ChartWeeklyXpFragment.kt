@@ -46,10 +46,7 @@ class ChartWeeklyXpFragment : TaskFragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_chart_weekly_xp, container, false)
 
         val prefStartOfTheWeek = StartOfTheWeek
-            .valueOf(
-                prefService.getStartOfTheWeek()
-                    .toUpperCase(Locale.getDefault())
-            )
+            .valueOf(prefService.getStartOfTheWeek().uppercase(Locale.getDefault()))
         val daysOfWeekWithValue = mutableListOf<Float>()
         daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.MONDAY))
         daysOfWeekWithValue.add(getXpForDayOfTheWeek(Calendar.TUESDAY))

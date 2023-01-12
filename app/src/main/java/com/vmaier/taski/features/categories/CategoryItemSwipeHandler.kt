@@ -2,13 +2,14 @@ package com.vmaier.taski.features.categories
 
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
+import android.view.LayoutInflater
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback
 import androidx.recyclerview.widget.RecyclerView
 import com.vmaier.taski.R
+import com.vmaier.taski.databinding.ItemCategoryBinding
 import com.vmaier.taski.features.categories.CategoryListFragment.Companion.categoryAdapter
 import com.vmaier.taski.utils.Utils
-import kotlinx.android.synthetic.main.item_category.view.*
 
 
 /**
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.item_category.view.*
  * on 24.07.2020
  * at 10:22
  */
-class CategoryItemSwipeHandler :
+class CategoryItemSwipeHandler(val inflater: LayoutInflater) :
     SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
     override fun onMove(
@@ -55,7 +56,8 @@ class CategoryItemSwipeHandler :
     ) {
         val item = viewHolder.itemView
         val context = item.context
-        var background = ColorDrawable(item.cv.cardBackgroundColor.defaultColor)
+        val itemCategoryBinding = ItemCategoryBinding.inflate(inflater)
+        var background = ColorDrawable(itemCategoryBinding.cv.cardBackgroundColor.defaultColor)
         when {
             // swipe to the right
             dX > 0 -> {
