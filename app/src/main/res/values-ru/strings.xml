@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="version">Версия %s\n\n© 2022 Владас Майер</string>
+    <string name="version">Версия %s\n\n© 2023 Владас Майер</string>
 
     <!-- Theme names -->
     <string name="theme_default_name">Стандарт</string>
